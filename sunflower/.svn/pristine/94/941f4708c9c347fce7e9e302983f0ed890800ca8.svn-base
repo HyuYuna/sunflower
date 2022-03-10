@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.cms.dao.singl.uwamAlarmLogDAO">
+
+	<sql id="uwamAlarmLog-where">
+		<if test='searchWrd != null and searchWrd != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[	AND a.alarm_sj LIKE '%' + #{searchWrd} + '%' 		]]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[	AND c.site_nm LIKE '%' + #{searchWrd} + '%' 		]]>
+			</if>
+		</if>
+	</sql>
+
+	<select id="countUwamAlarmLog" parameterType="zvl" resultType="long">
+		<![CDATA[
+		/* countUwamAlarmLog */
+
+		SELECT COUNT(*)
+		FROM TC_UWAM_SITE_ALARM_LOG A
+		INNER JOIN TC_UWAM_SITE_URL_ERROR B ON B.ALARM_SN = A.ALARM_SN
+		INNER JOIN TC_UWAM_SITE C ON C.SITE_SN = B.URL_SN
+		WHERE 1=1
+		]]>
+		<include refid = "uwamAlarmLog-where"/>
+	</select>
+
+	<select id="findAllUwamAlarmLog" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+	SELECT AA.*  FROM (
+	SELECT ROW_NUMBER() OVER(ORDER BY ALL_LIST.regist_dt DESC) RNUM , ALL_LIST.*  FROM(
+
+
+				SELECT
+					  A.ALARM_SN
+					, A.ALARM_SJ
+					, A.USER_SN
+					, B.HTTP_RSPNS_CD
+					, B.RSPNS_ERROR_MSSAGE
+					, B.RSPNS_SUCCES_AT
+					, B.REGIST_DT
+					, C.SITE_SN
+					, C.SITE_SE_CD
+					, C.SITE_NM
+				FROM TC_UWAM_SITE_ALARM_LOG A
+				INNER JOIN TC_UWAM_SITE_URL_ERROR B ON B.ALARM_SN = A.ALARM_SN
+				INNER JOIN TC_UWAM_SITE C ON C.SITE_SN = B.URL_SN
+				WHERE 1=1
+		]]>
+		<include refid = "uwamAlarmLog-where"/>
+		<![CDATA[
+
+			) ALL_LIST   )AA
+	  WHERE AA.RNUM > #{firstIndex}
+		AND AA.RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="findOneUwamAlarmLog" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+		/* findOneUwamAlarmLog */
+
+		SELECT
+			  A.ALARM_SN
+			, A.ALARM_SJ
+			, A.ALARM_CN
+			, A.ALARM_URLAD
+			, A.USER_SN
+			, B.HTTP_RSPNS_CD
+			, B.RSPNS_ERROR_MSSAGE
+			, B.RSPNS_SUCCES_AT
+			, B.REGIST_DT
+			, D.USER_NM
+		FROM TC_UWAM_SITE_ALARM_LOG A
+		INNER JOIN TC_UWAM_SITE_URL_ERROR B ON B.ALARM_SN = A.ALARM_SN
+		INNER JOIN TC_UWAM_SITE C ON C.SITE_SN = B.URL_SN
+		INNER JOIN TM_UWAM_ADMIN D ON D.USER_SN = A.USER_SN
+		WHERE a.alarm_sn = #{alarmSn}
+	]]>
+	</select>
+</mapper>

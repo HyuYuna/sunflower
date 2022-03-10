@@ -1,0 +1,73 @@
+/*view*/
+.reg,
+.view{
+	border-top: 2px solid $viewbdtopcolor;border-bottom: 1px solid $bdColor;margin-bottom:20px;
+	.subject{font-size:19px;color:#000000;padding:8px 18px;margin:0;border-bottom:1px solid $viewbdtopcolor;}
+	.subject+dl>*{border-top:none;}
+	>div>dl,
+	>dl{display: table;width: 100%;border-collapse: collapse;table-layout: fixed;}
+	>div>dl>dt,
+	>div>dl>dd,
+	>dl>dt,
+	>dl>dd{
+		display: table-cell;padding: 13px 0;vertical-align: top;border-left:1px solid $bdColor;border-top:1px solid $bdColor;
+	}
+	>dl:first-child>*{border-top:none;}
+	>div>dl>dt,
+	>dl>dt{
+		width:15%;font-weight: bold;text-align:center;background-color:$viewheadBgcolor;color:$viewheadcolor;vertical-align:middle;
+		&:first-child{
+			border-left:none;
+		}
+	}
+	>div>dl>dd,
+	>dl>dd{
+		padding-left: 10px;padding-right: 10px;border-right:1px solid $bdColor;
+		&:last-child{
+			border-right:none;
+		}
+	}
+	>dl.w>dt,
+	>dl.w>dd{display: block;width: 100%;}
+	>dl.w>dt{border-right:1px solid $bdColor;}
+	>dl+.dbData{border-top:1px solid $bdColor;}
+	label{
+		font-weight:bold;
+	}
+}
+.view-type2>dl>dd{
+	&:last-child{
+		width:190px;
+		text-align:center;
+	}
+}
+/*dbData*/
+.dbData{padding:20px;
+	img{max-width:100%;}
+}
+/*bdViewNav*/
+.bdViewNav{
+	margin-top:20px;overflow:hidden;border:1px solid $bdColor;border-top:2px solid #000;display:table;width:100%;
+	dl{display:table-row;}
+	dl{
+		>*{display:table-cell;vertical-align:middle;}
+		dt{
+			width:15%;text-align:center;font-weight:bold;background-color:$viewheadBgcolor;padding:18px 0;border-right:1px solid $bdColor;color:$viewheadcolor;
+			&:after{content: ' ▼'; display:inline; color:#535e65; }
+		}
+		dd>span{display:block;padding:18px 20px;}
+		&:first-child{
+			>*{border-bottom:1px dotted #e1e1e1;}
+			dt:after{content: ' ▲'; display:inline; color:#535e65; }
+		}
+	}
+	a{
+		overflow:hidden;display:block;padding:18px 0 18px 20px;
+		span{
+			float:right;width:17%;position:relative;text-align:center;
+			&:after{content: '|';position:absolute;left:0;top:-1px;color:$bdColor;font-size:9px; }
+			&:first-child{float:left;width:83%;text-align:left;}
+			&:first-child:after{display:none}
+		}
+	}
+}

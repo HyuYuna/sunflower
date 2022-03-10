@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="menu">
+
+	<insert id="saveMenu" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="menuNo">
+			SELECT NVL(MAX(MENU_NO),#{siteSn} || '00000')+1 AS MENU_NO FROM TC_MENU_INFO WHERE SITE_ID=#{pSiteId}
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TC_MENU_INFO (
+			    MENU_NO,MENU_NM,UPPER_MENU_NO,MENU_ORDR,MENU_DC,MENU_CNTNTS_CD,
+			    MENU_LINK,POPUP_AT,SITE_ID,DEPT_ID,USER_ID,RELATE_MENU_NM_LIST,
+			    RELATE_MENU_LINK_LIST,ALL_MENU_COURS,CNTNTS_FILE_COURS,MENU_LC,BBS_ID,
+			    LEAF_NODE_AT,KWRD_NM,ADI_INFO,USE_AT,REGIST_ID,REGIST_DT,UPDT_ID,UPDT_DT,DELETE_CD,MENU_EXPSR_SE
+			)
+			VALUES (
+			    #{menuNo},#{menuNm},#{upperMenuNo},#{menuOrdr},#{menuDc},#{menuCntntsCd},
+			    #{menuLink},#{popupAt},#{pSiteId},#{deptId},#{userId},#{relateMenuNmList},
+			    #{relateMenuLinkList},#{allMenuCours},#{cntntsFileCours},#{menuLc},#{bbsId},
+			    #{leafNodeAt},#{kwrdNm},#{adiInfo},#{useAt},#{registId},SYSDATE,#{updtId},SYSDATE,'0','NONE'
+			)
+		]]>
+	</insert>
+
+	<select id="selectMaxMenuOrdr" parameterType="zvl" resultType="long">
+		<![CDATA[
+			SELECT ROUND(NVL(MAX(MENU_ORDR),0)/10)*10+10
+		    FROM TC_MENU_INFO
+			WHERE SITE_ID = #{pSiteId} AND UPPER_MENU_NO = #{upperMenuNo}
+		]]>
+	</select>
+
+	<select id="selectSiteSn" parameterType="zvl" resultType="string">
+		<![CDATA[
+			SELECT SITE_SN
+			FROM TC_SITE_INFO
+			WHERE SITE_ID = #{pSiteId}
+		]]>
+	</select>
+
+	<select id="findAllMenuByParam" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllMenuByParam */
+			SELECT
+			    A.MENU_NO,
+			    A.MENU_NM,
+			    A.UPPER_MENU_NO,
+			    A.MENU_ORDR,
+			    A.MENU_DC,
+			    A.MENU_CNTNTS_CD,
+			    A.MENU_LINK,
+			    A.POPUP_AT,
+			    A.SITE_ID,
+			    A.DEPT_ID,
+			    A.USER_ID,
+			    A.RELATE_MENU_NM_LIST,
+			    A.RELATE_MENU_LINK_LIST,
+			    A.ALL_MENU_COURS,
+			    A.CNTNTS_FILE_COURS,
+			    A.MENU_LC,
+			    A.BBS_ID,
+			    A.LEAF_NODE_AT,
+			    A.KWRD_NM,
+			    A.ADI_INFO,
+			    A.USE_AT,
+			    A.MENU_EXPSR_SE,
+			    A.REGIST_ID,
+			    A.REGIST_DT,
+			    A.UPDT_ID,
+			    A.UPDT_DT,
+			    A.USER_INFO_SE,
+                CASE
+                WHEN (SELECT 1 FROM TC_MENU_INFO WHERE SITE_ID = #{pSiteId} AND UPPER_MENU_NO = A.MENU_NO AND DELETE_CD = '0' AND ROWNUM=1) = 1 THEN 'jstree-folder'
+                ELSE 'jstree-file'
+                END AS ICON
+			FROM TC_MENU_INFO A
+			WHERE A.SITE_ID = #{pSiteId} AND A.DELETE_CD = '0'
+		]]>
+			<choose>
+			    <when test='upperMenuNo != "" and upperMenuNo != null'>
+			    	<![CDATA[  AND A.UPPER_MENU_NO = #{upperMenuNo}	]]>
+			    </when>
+			    <otherwise>
+			    	<![CDATA[  AND A.UPPER_MENU_NO = 0	]]>
+			    </otherwise>
+		    </choose>
+			ORDER BY A.MENU_ORDR
+	</select>
+
+	<select id="findOneByIdMenu" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+			    A.MENU_NO,
+			    A.MENU_NM,
+			    A.UPPER_MENU_NO,
+			    A.MENU_ORDR,
+			    A.MENU_DC,
+			    A.MENU_CNTNTS_CD,
+			    A.MENU_LINK,
+			    A.POPUP_AT,
+			    A.SITE_ID,
+			    A.DEPT_ID,
+			    A.USER_ID,
+                B.USER_NM,
+                B.USER_CPNO,
+                B.USER_EMAD,
+                C.DEPT_KOR_NM,
+                D.BBS_NM,
+			    A.RELATE_MENU_NM_LIST,
+			    A.RELATE_MENU_LINK_LIST,
+			    A.ALL_MENU_COURS,
+			    A.CNTNTS_FILE_COURS,
+			    A.MENU_LC,
+			    A.BBS_ID,
+			    A.LEAF_NODE_AT,
+			    A.KWRD_NM,
+			    A.ADI_INFO,
+			    NVL(A.MENU_EXPSR_SE,'NONE') AS MENU_EXPSR_SE,
+			    A.USE_AT,
+			    A.REGIST_ID,
+			    A.REGIST_DT,
+			    A.UPDT_ID,
+			    A.UPDT_DT,
+			    A.USER_INFO_SE
+			FROM TC_MENU_INFO A
+            LEFT OUTER JOIN TM_MNGR_INFO B ON B.USER_ID = A.USER_ID
+            LEFT OUTER JOIN TM_DEPT_INFO C ON C.DEPT_ID = A.DEPT_ID
+            LEFT OUTER JOIN TB_BBS_MASTR D ON D.BBS_ID = A.BBS_ID
+			WHERE A.MENU_NO = #{cMenuNo} AND A.DELETE_CD = '0'
+		]]>
+	</select>
+
+	<update id="updateMenu" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_MENU_INFO
+			SET
+			    MENU_NM = #{menuNm},
+			    UPPER_MENU_NO = #{upperMenuNo},
+			    MENU_ORDR = #{menuOrdr},
+			    MENU_DC = #{menuDc},
+			    MENU_CNTNTS_CD = #{menuCntntsCd},
+			    MENU_LINK = #{menuLink},
+			    POPUP_AT = #{popupAt},
+			    DEPT_ID = #{deptId},
+			    USER_ID = #{userId},
+			    RELATE_MENU_NM_LIST = #{relateMenuNmList},
+			    RELATE_MENU_LINK_LIST = #{relateMenuLinkList},
+			    ALL_MENU_COURS = #{allMenuCours},
+			    CNTNTS_FILE_COURS = #{cntntsFileCours},
+			    MENU_LC = #{menuLc},
+			    BBS_ID = #{bbsId},
+			    LEAF_NODE_AT = #{leafNodeAt},
+			    KWRD_NM = #{kwrdNm},
+			    ADI_INFO = #{adiInfo},
+			    MENU_EXPSR_SE =#{menuExpsrSe},
+			    USER_INFO_SE =#{userInfoSe},
+			    USE_AT = #{useAt},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = SYSDATE
+			WHERE MENU_NO = #{cMenuNo}
+		]]>
+	</update>
+
+	<update id="deleteMenu" parameterType="zvl">
+		<![CDATA[
+		    UPDATE TC_MENU_INFO
+		    SET DELETE_CD = '1'
+			WHERE MENU_NO = #{cMenuNo}
+		]]>
+	</update>
+
+	<select id="findAllMenu" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.MENU_NO
+				, A.UPPER_MENU_NO
+				, A.MENU_NM
+				, A.MENU_ORDR
+				, A.MENU_DC
+				, A.MENU_CNTNTS_CD
+				, A.MENU_LINK
+				, A.POPUP_AT
+				, A.ALL_MENU_COURS
+				, A.DEPT_ID
+				, A.CNTNTS_FILE_COURS
+				, A.REGIST_DT
+				, A.MENU_LC
+				, A.MENU_EXPSR_SE
+				, A.USE_AT
+				, A.SITE_ID
+				, A.BBS_ID
+				, A.USER_ID
+				, B.USER_NM
+				, B.USER_CPNO
+				, B.USER_EMAD
+				, C.DEPT_KOR_NM
+				, B.USER_CPNO
+				, B.USER_EMAD
+			FROM TC_MENU_INFO A
+			LEFT JOIN TM_MNGR_INFO B ON A.USER_ID = B.USER_ID
+			LEFT JOIN TM_DEPT_INFO C ON A.DEPT_ID = C.DEPT_ID
+			WHERE A.USE_AT = 'Y' AND A.DELETE_CD = '0'
+			ORDER BY A.UPPER_MENU_NO, A.MENU_ORDR
+		]]>
+	</select>
+
+	<select id="findAllMenuBySiteId" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.MENU_NO
+				, A.UPPER_MENU_NO
+				, A.MENU_NM
+				, A.MENU_ORDR
+				, A.MENU_DC
+				, A.MENU_CNTNTS_CD
+				, A.MENU_LINK
+				, A.POPUP_AT
+				, A.ALL_MENU_COURS
+				, A.DEPT_ID
+				, A.CNTNTS_FILE_COURS
+				, A.REGIST_DT
+				, A.MENU_LC
+				, A.MENU_EXPSR_SE
+				, A.USE_AT
+				, A.SITE_ID
+				, A.BBS_ID
+				, A.USER_ID
+				, B.USER_NM
+				, C.DEPT_KOR_NM
+				, B.USER_CPNO
+				, B.USER_EMAD
+			FROM TC_MENU_INFO A
+			LEFT JOIN TM_MNGR_INFO B ON A.USER_ID = B.USER_ID
+			LEFT JOIN TM_DEPT_INFO C ON A.DEPT_ID = C.DEPT_ID
+			WHERE A.SITE_ID = #{pSiteId} AND A.DELETE_CD = '0'
+		]]>
+			<if test='tempValue != "1"'>AND A.USE_AT = 'Y'</if>
+			ORDER BY A.UPPER_MENU_NO, A.MENU_ORDR
+	</select>
+
+	<update id="modifyRearrangeMenu" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_MENU_INFO SET
+				 ALL_MENU_COURS = #{allMenuCours}
+				, MENU_LC = #{menuLc}
+				, RELATE_MENU_NM_LIST = #{path}
+				, RELATE_MENU_LINK_LIST = #{fullPath}
+				, LEAF_NODE_AT = #{leafNodeAt}
+			WHERE MENU_NO = #{menuNo}
+		]]>
+	</update>
+
+	<update id="modifyRearrangeMenu2" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_MENU_INFO SET
+				 ALL_MENU_COURS = #{allMenuCours}
+				, MENU_LC = #{menuLc}
+				, CNTNTS_FILE_COURS = #{cntntsFileCours}
+				, RELATE_MENU_NM_LIST = #{path}
+				, RELATE_MENU_LINK_LIST = #{fullPath}
+			WHERE MENU_NO = #{menuNo}
+		]]>
+	</update>
+
+	<select id="findOneByIdMenuByContents" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				MENU_NO
+				, CNTNTS_MNNO
+				, CNTNTS_CN
+			FROM TC_CNTNTS_MANAGE
+			WHERE MENU_NO = #{cMenuNo} AND USE_AT = 'Y'
+		]]>
+	</select>
+
+	<!-- 콘텐츠 타입 변경 -->
+	<update id="updateMenuCntntsCd" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_MENU_INFO SET
+				MENU_CNTNTS_CD = #{menuCntntsCd},
+			    MENU_LINK = #{menuLink}
+			WHERE MENU_NO = #{cMenuNo}
+		]]>
+	</update>
+
+	<!-- 메뉴명 수정(메뉴관리 오른쪽 마우스 rename기능) -->
+	<update id="updateMenuForMenuNm" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_MENU_INFO
+			SET
+			    MENU_NM = #{menuNm},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = SYSDATE
+			WHERE MENU_NO = #{cMenuNo}
+		]]>
+	</update>
+
+	<!-- 상위메뉴번호 변경(메뉴관리 오른쪽 마우스 마우스 drag기능) -->
+	<update id="updateMenuForUpperMenuNo" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_MENU_INFO
+			SET
+			    UPPER_MENU_NO = #{upperMenuNo},
+			    MENU_ORDR = 0,
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = SYSDATE
+			WHERE MENU_NO = #{cMenuNo}
+		]]>
+	</update>
+
+	<!-- 메뉴 순서 변경 -->
+	<update id="updateMoveMenuNo" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_MENU_INFO
+			SET
+			    MENU_ORDR = #{menuOrdr},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = SYSDATE
+			WHERE MENU_NO = #{cMenuNo}
+		]]>
+	</update>
+
+
+	<!-- 권한별 메뉴목록조회-->
+	<select id="findAllMenuByAuthor" parameterType="zvl" resultType="zvl">
+	/* findAllMenuByAuthor */
+		<![CDATA[
+		 SELECT
+		 	DISTINCT
+		 		A.MENU_NO
+				, A.UPPER_MENU_NO
+				, A.MENU_NM
+				, A.MENU_ORDR
+				, A.MENU_DC
+				, A.MENU_CNTNTS_CD
+				, A.MENU_LINK
+				, A.POPUP_AT
+				, A.ALL_MENU_COURS
+				, A.DEPT_ID
+				, A.CNTNTS_FILE_COURS
+				, A.REGIST_DT
+				, A.MENU_LC
+				, A.USE_AT
+				, A.MENU_EXPSR_SE
+				, A.SITE_ID
+				, A.BBS_ID
+				, A.USER_ID
+				, C.DEPT_KOR_NM
+				, (SELECT COUNT(B.MENU_NO)
+					FROM TC_MENU_AUTHOR B
+					WHERE B.MENU_NO = A.MENU_NO AND B.AUTHOR_CD = #{authorCd}) AS chkYeoBu
+		 FROM TC_MENU_INFO A
+		 INNER JOIN TC_MENU_AUTHOR B ON  A.MENU_NO = B.MENU_NO
+		 LEFT JOIN TM_DEPT_INFO C ON A.DEPT_ID = C.DEPT_ID
+		 WHERE NVL(A.USE_AT,'N') = 'Y' AND A.DELETE_CD = '0'
+		 AND B.AUTHOR_CD IN
+		]]>
+		<foreach item="item" index="index" collection="authorities" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		<![CDATA[
+		 ORDER BY A.UPPER_MENU_NO, A.MENU_ORDR
+		]]>
+	</select>
+
+	<!-- 해당 메뉴의 개인정보 기능여부 조회-->
+	<select id="findMenuByUserInfoSe" parameterType="zvl" resultType="zvl">
+		SELECT USER_INFO_SE FROM TC_MENU_INFO
+		WHERE MENU_NO = #{menuNo}
+	</select>
+</mapper>

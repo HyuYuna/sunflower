@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.sys">
+
+	<sql id="SiteConectDateStats-where">
+		<choose>
+		<when test='searchCnd == "D"'>
+			<if test='sdate != null and sdate != ""'>
+				<![CDATA[	AND A.CONECT_DE >= #{sdate} 		]]>
+			</if>
+			<if test='edate != null and edate != ""'>
+				<![CDATA[	AND A.CONECT_DE <= #{edate} 		]]>
+			</if>
+		</when>
+		<when test='searchCnd == "M"'>
+			<if test='smonth != null and smonth != ""'>
+				<![CDATA[	AND SUBSTRING(REPLACE(A.CONECT_DE,'-',''),1,6) >= REPLACE(#{smonth},'-','') 		]]>
+			</if>
+			<if test='emonth != null and emonth != ""'>
+				<![CDATA[	AND SUBSTRING(REPLACE(A.CONECT_DE,'-',''),1,6) <= REPLACE(#{emonth},'-','') 		]]>
+			</if>
+		</when>
+		</choose>
+	</sql>
+
+	<sql id="SiteConectStats-where">
+		<choose>
+		<when test='searchCnd == "D"'>
+			<if test='sdate != null and sdate != ""'>
+				<![CDATA[	AND SM_DE >= REPLACE(#{sdate},'-','') 		]]>
+			</if>
+			<if test='edate != null and edate != ""'>
+				<![CDATA[	AND SM_DE <= REPLACE(#{edate},'-','') 		]]>
+			</if>
+		</when>
+		<when test='searchCnd == "M"'>
+			<if test='smonth != null and smonth != ""'>
+				<![CDATA[	AND substring(SM_DE,1,6) >= REPLACE(#{smonth},'-','') 		]]>
+			</if>
+			<if test='emonth != null and emonth != ""'>
+				<![CDATA[	AND substring(SM_DE,1,6) <= REPLACE(#{emonth},'-','') 		]]>
+			</if>
+		</when>
+		</choose>
+		<if test='menuNo1 != null and menuNo1 != ""'>
+			<if test='menuNo2 != null and menuNo2 != ""'>
+				<![CDATA[	AND B.MENU_NO = #{menuNo2} 		]]>
+			</if>
+			<if test='menuNo2 == null or menuNo2 == ""'>
+				<![CDATA[	AND B.UPPER_MENU_NO = #{menuNo1} 		]]>
+			</if>
+		</if>
+	</sql>
+
+
+	<insert id="saveSiteConectStats" parameterType="zvl" >
+		<![CDATA[
+		/* saveSiteConectStats */
+		INSERT
+		  INTO TC_SITE_CONECT_STATS
+		       (
+		          USER_ID
+		         ,USER_NM
+		         ,USER_IPAD
+		         ,USER_LOGIN_DT
+		         ,SESION_ID
+		         ,SITE_ID
+		         ,CONECT_URLAD
+		         ,MENU_NO
+		         ,CONECT_OPERSYSM_NM
+		         ,CONECT_WBSR_NM
+		         ,CONECT_PC_MOBILE_SE
+		         ,CONECT_YM
+		         ,CONECT_DE
+		         ,REGIST_DT
+				 ,BEFORE_MENU_NO
+				 ,RELATE_MENU_NM_LIST
+				 ,GHVR_SUMRY
+		        )
+		       VALUES
+		       (
+		          #{userId}
+		         ,CASE WHEN #{userNm} is null AND #{siteId}='bos' THEN (SELECT top 1 USER_NM FROM tm_mngr_info WHERE USER_ID=#{userId} AND DELETE_CD='0') ELSE #{userNm} END
+		         ,#{userIpad}
+		         ,#{loginDt}
+		         ,#{sesionId}
+		         ,#{siteId}
+		         ,#{conectUrlad}
+		         ,#{menuNo}
+		         ,#{conectOpersysmNm}
+		         ,#{conectWbsrNm}
+		         ,#{conectPcMobileSe}
+		         ,CONVERT(char(6),getdate(),112)
+		         ,CONVERT(char(8),getdate(),112)
+		         ,GETDATE()
+		         ,CASE WHEN #{beforeMenuNo}='' THEN 0 ELSE #{beforeMenuNo} END
+		         ,CASE WHEN #{menuNo}='1' THEN '메인'
+		               WHEN #{menuNo}<>'' THEN
+			               (SELECT CASE WHEN RELATE_MENU_NM_LIST IS NULL OR RELATE_MENU_NM_LIST='' THEN
+			                              (SELECT TOP 1
+			                                     (
+			                                         CASE WHEN A.UPPER_MENU_NO<>0 THEN
+			                                                 (SELECT
+			                                                        (
+			                                                            CASE WHEN B.UPPER_MENU_NO<>0  THEN
+			                                                                    (SELECT
+			                                                                           (
+			                                                                               CASE WHEN C.UPPER_MENU_NO<>0 THEN
+			                                                                                       (SELECT
+			                                                                                              (
+			                                                                                                  CASE
+			                                                                                                      WHEN D.UPPER_MENU_NO<>0 THEN
+			                                                                                                          (SELECT ISNULL(CONCAT(MENU_NM,'>'),'')
+			                                                                                                            FROM tc_menu_info E
+			                                                                                                           WHERE MENU_NO=D.UPPER_MENU_NO
+			                                                                                                          )
+			                                                                                                      ELSE ''
+			                                                                                                  END + ISNULL(CONCAT(MENU_NM,'>'),'')
+			                                                                                              )
+			                                                                                         FROM tc_menu_info D
+			                                                                                        WHERE MENU_NO=C.UPPER_MENU_NO
+			                                                                                       )
+			                                                                               ELSE ''
+			                                                                               END + ISNULL(CONCAT(MENU_NM,'>'),'')
+			                                                                           )
+			                                                                      FROM tc_menu_info C
+			                                                                     WHERE MENU_NO=B.UPPER_MENU_NO
+			                                                                    )
+			                                                            ELSE ''
+			                                                            END + ISNULL(CONCAT(MENU_NM,'>'),'')
+			                                                        )
+			                                                   FROM tc_menu_info B
+			                                                  WHERE MENU_NO=A.UPPER_MENU_NO
+			                                                 )
+			                                         ELSE ''
+			                                         END + A.MENU_NM
+			                                     )
+			                                FROM tc_menu_info A
+			                               WHERE MENU_NO=#{menuNo}
+			                              )
+			                      ELSE REPLACE(RELATE_MENU_NM_LIST,'|','>')
+			                      END
+			                 FROM tc_menu_info
+			                WHERE MENU_NO=#{menuNo}
+			               )
+			           ELSE #{ghvrSumry}
+			       END
+		         ,#{ghvrSumry}
+		       )
+		]]>
+	</insert>
+
+
+	<select id="findOndSiteConectMenuNm" parameterType="zvl" resultType="string" >
+	<![CDATA[
+         SELECT
+       	   CASE  WHEN #{menuNo}='1' THEN '메인'
+           		 WHEN #{menuNo}<>'' THEN
+		               (SELECT top 1
+		                      CASE
+		                          WHEN RELATE_MENU_NM_LIST IS NULL OR RELATE_MENU_NM_LIST='' THEN
+		                              (SELECT
+		                                     (
+		                                         CASE WHEN A.UPPER_MENU_NO<>0 THEN
+		                                                 (SELECT
+		                                                        (
+		                                                            CASE WHEN B.UPPER_MENU_NO<>0 THEN
+		                                                                    (SELECT
+		                                                                           (
+		                                                                               CASE WHEN C.UPPER_MENU_NO<>0 THEN
+		                                                                                       (SELECT
+		                                                                                              (
+		                                                                                                  CASE  WHEN D.UPPER_MENU_NO<>0   THEN
+		                                                                                                          (SELECT ISNULL((MENU_NM+'>'),'')
+		                                                                                                            FROM tc_menu_info E
+		                                                                                                           WHERE MENU_NO=D.UPPER_MENU_NO
+		                                                                                                          )
+		                                                                                                  ELSE ''
+		                                                                                                  END + ISNULL((MENU_NM+'>'),'')
+		                                                                                              )
+		                                                                                         FROM tc_menu_info D
+		                                                                                        WHERE MENU_NO=C.UPPER_MENU_NO
+		                                                                                       )
+		                                                                               ELSE ''
+		                                                                               END + ISNULL((MENU_NM+'>'),'')
+		                                                                           )
+		                                                                      FROM tc_menu_info C
+		                                                                     WHERE MENU_NO=B.UPPER_MENU_NO
+		                                                                    )
+		                                                            ELSE ''
+		                                                            END + ((MENU_NM+'>')+'')
+		                                                        )
+		                                                   FROM tc_menu_info B
+		                                                  WHERE MENU_NO=A.UPPER_MENU_NO
+		                                                 )
+		                                         ELSE ''
+		                                         END + A.MENU_NM
+		                                     )
+		                                FROM tc_menu_info A
+		                               WHERE MENU_NO=#{menuNo}
+		                              )
+		                      ELSE REPLACE(RELATE_MENU_NM_LIST,'|','>')
+		                      END
+		                 FROM tc_menu_info
+		                WHERE MENU_NO=#{menuNo}
+		               )
+		       ELSE NULL
+		       END AS MENU_FULL_NM
+	]]>
+	</select>
+
+	<select id="findAllBySiteConectCount" parameterType="zvl" resultType="zvl" >
+
+		<choose>
+			<when test='searchCnd == "D"'>
+			<![CDATA[
+				SELECT P.CONECT_DE, ISNULL(V.PCNT,0) AS PCNT, ISNULL(V.VCNT,0) AS VCNT FROM
+				(
+					SELECT A.CONECT_DE
+					FROM (
+    					SELECT
+    						DATEADD(day, -(A.A + (10 * B.A) + (100 * C.A)), GETDATE()) AS CONECT_DE
+    					FROM (
+    						SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+    						UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+    					) AS A
+    					CROSS JOIN (
+    						SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+    						UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+    					) AS B
+    					CROSS JOIN (
+    						SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+    						UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+    					) AS C
+
+					) A
+					WHERE 1 = 1
+			]]>
+			<include refid="SiteConectDateStats-where" />
+			<![CDATA[
+
+				)P
+				LEFT JOIN
+				(
+				 SELECT
+			        SUBSTRING(SM_DE, 1, 4)+SUBSTRING(SM_DE, 5, 2)+SUBSTRING(SM_DE, 7, 2) as CONECT_DE,
+			        PGE_VIEW_CO AS PCNT,
+			        VISITR_CO AS VCNT
+				FROM TS_SITE_CONECT_STATS_SM
+		        WHERE SITE_ID = #{pSiteId}
+		        AND SM_SE = #{smSe}
+			]]>
+			<include refid="SiteConectStats-where" />
+			<![CDATA[
+		        )V
+		        ON P.CONECT_DE = V.CONECT_DE
+				ORDER BY P.CONECT_DE ASC
+				]]>
+			</when>
+			<when test='searchCnd == "M"'>
+			<![CDATA[
+				SELECT CONVERT(char(7),P.CONECT_DE,120)  AS CONECT_DE, ISNULL(V.PCNT,0) AS PCNT, ISNULL(V.VCNT,0) AS VCNT FROM
+				(
+					SELECT A.CONECT_DE
+					FROM (
+    					SELECT
+
+    						substring(DATEADD(MONTH, -(A.A + (10 * B.A) + (100 * C.A)), GETDATE()),1,7)+'-01' AS CONECT_DE
+    					FROM (SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS A
+    							CROSS JOIN (SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS B
+    							CROSS JOIN (SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9) AS C
+
+					) A
+					WHERE 1 = 1
+			]]>
+			<include refid="SiteConectDateStats-where" />
+			<![CDATA[
+				)P
+				LEFT JOIN
+				(
+					SELECT
+						CONECT_DE,
+						SUM(PGE_VIEW_CO) AS PCNT,
+						SUM(VISITR_CO) AS VCNT
+					FROM
+					(
+						SELECT
+					        SUBSTRING(SM_DE, 1, 4) + SUBSTRING(SM_DE, 5, 2),'-01') AS CONECT_DE,
+					        PGE_VIEW_CO,
+					        VISITR_CO
+				        FROM TS_SITE_CONECT_STATS_SM
+				        WHERE SITE_ID = #{pSiteId}
+			        	AND SM_SE = #{smSe}
+			]]>
+			<include refid="SiteConectStats-where" />
+			<![CDATA[
+					)A
+			        GROUP BY CONECT_DE
+		        )V
+				ON P.CONECT_DE = V.CONECT_DE
+				ORDER BY P.CONECT_DE ASC
+			]]>
+			</when>
+		</choose>
+	</select>
+
+
+	<select id="findAllBySiteMenuConectCount" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT
+				A.MENU_NO,
+				A.PCNT,
+				case
+				when A.MENU_NO = '1'
+				THEN '메인'
+				ELSE
+				ISNULL((SELECT REPLACE(RELATE_MENU_NM_LIST,'|',' > ') FROM TC_MENU_INFO B  WHERE B.MENU_NO = A.MENU_NO),(SELECT MENU_NM FROM TC_MENU_INFO B  WHERE B.MENU_NO = A.MENU_NO))
+				END  MENU_PATH,
+				A.RNUM
+			FROM
+			(
+				SELECT
+			    	ALL_LIST.MENU_NO,
+					ALL_LIST.PCNT,
+					ROW_NUMBER() OVER(ORDER BY ALL_LIST.PCNT DESC) RNUM
+				FROM
+				(
+			    	SELECT
+			        	MENU_NO,
+			            SUM(PGE_VIEW_CO) AS PCNT
+					FROM
+					(
+			        	SELECT
+			            	A.MENU_NO ,
+							A.PGE_VIEW_CO
+						FROM TS_SITE_CONECT_STATS_SM A
+                      	WHERE A.SITE_ID = #{pSiteId}
+						AND A.MENU_NO != 0
+				        AND A.SM_SE = #{smSe}
+		]]>
+		<include refid="SiteConectStats-where" />
+		<![CDATA[
+					) C
+					GROUP BY MENU_NO
+				)ALL_LIST
+			)A
+		]]>
+		<if test='searchGb == "N"'>
+		<![CDATA[
+			WHERE A.RNUM < 21
+        ]]>
+        </if>
+	</select>
+
+	<select id="findAllBySiteGubunConectCount" parameterType="zvl" resultType="zvl" >
+	<![CDATA[
+		SELECT
+			SM_SE_VALUE,
+       		SUM(PGE_VIEW_CO) AS PCNT,
+       		SUM(VISITR_CO) AS VCNT
+  		FROM
+       	(
+       		SELECT
+       			SM_SE_VALUE,
+              	PGE_VIEW_CO,
+              	VISITR_CO,
+              	SM_DE
+         	FROM TS_SITE_CONECT_STATS_SM
+        	WHERE SITE_ID = #{pSiteId}
+        	AND SM_SE_VALUE != ''
+            AND SM_SE = #{smSe}
+	 ]]>
+     <include refid="SiteConectStats-where" />
+     <![CDATA[
+
+       )A
+		GROUP BY SM_SE_VALUE
+
+       ]]>
+	</select>
+
+
+	<sql id="sankey-where">
+		<choose>
+		<when test='searchCnd == "D"'>
+			<if test='sdate != null and sdate != ""'>
+				<![CDATA[	AND A.REGIST_DT >= #{sdate} 		]]>
+			</if>
+			<if test='edate != null and edate != ""'>
+				<![CDATA[	AND A.REGIST_DT <= #{edate} 		]]>
+			</if>
+		</when>
+		<when test='searchCnd == "M"'>
+			<if test='smonth != null and smonth != ""'>
+				<![CDATA[	AND SUBSTRING(REPLACE(A.REGIST_DT,'-',''),1,6) >= REPLACE(#{smonth},'-','') 		]]>
+			</if>
+			<if test='emonth != null and emonth != ""'>
+				<![CDATA[	AND SUBSTRING(REPLACE(A.REGIST_DT,'-',''),1,6) <= REPLACE(#{emonth},'-','') 		]]>
+			</if>
+		</when>
+		</choose>
+
+	</sql>
+
+	<select id="findAllSankeyNodes" parameterType="zvl" resultType="zvl" >
+	<![CDATA[
+		SELECT
+			MENU_NO
+			, MENU_NM AS NAME
+		FROM (
+			SELECT
+				A.MENU_NO
+				, CASE WHEN A.MENU_NO = 0 THEN '메인'
+				  ELSE B.MENU_NM
+				  END MENU_NM
+			FROM
+				TC_SITE_CONECT_STATS A LEFT OUTER JOIN TC_MENU_INFO B ON A.MENU_NO=B.MENU_NO
+			WHERE 1=1
+	 ]]>
+     <include refid="sankey-where" />
+     <![CDATA[
+				AND A.SITE_ID=#{pSiteId}
+			GROUP BY MENU_NO
+		) M
+	]]>
+	</select>
+
+	<select id="findAllSankeyLinks" parameterType="zvl" resultType="zvl" >
+	<![CDATA[
+		SELECT
+			  A.BEFORE_MENU_NO
+			, A.MENU_NO
+			, COUNT(*) AS value
+		FROM
+			TC_SITE_CONECT_STATS A LEFT OUTER JOIN TC_MENU_INFO B ON A.MENU_NO=B.MENU_NO
+		WHERE 1=1
+	 ]]>
+     <include refid="sankey-where" />
+     <![CDATA[
+			AND A.SITE_ID=#{pSiteId}
+			AND A.BEFORE_MENU_NO IS NOT NULL
+			AND A.MENU_NO <> A.BEFORE_MENU_NO
+			AND A.MENU_NO <> 0
+		GROUP BY
+			A.BEFORE_MENU_NO, A.MENU_NO
+		ORDER BY
+			A.BEFORE_MENU_NO, A.MENU_NO
+	]]>
+	</select>
+</mapper>

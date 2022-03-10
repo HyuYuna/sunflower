@@ -1,0 +1,55 @@
+$m1:13px;
+$mw : 1000px;
+
+$xs                 : max-width 459px;
+$sm                 : max-width 767px;
+$md                 : 768px;
+$lg                 : 992px;
+$tb                 : max-width 1023px;
+$xl                 : max-width 1199px;
+
+// board list color
+$bdColor            : #e0e2e8;
+$bdtopcolor         : #242424;
+$linkColor          : #000;
+$cellhovercolor		: #f4f4f4;
+
+// board view color
+$viewbdColor    : #e0e2e8;
+$viewbdtopcolor : #494b50;
+$viewheadBgcolor : #f4f4f4;
+$viewheadcolor : #333333; 
+
+// input
+$formHeight         : 30px;
+// button
+$btnHeight          : $formHeight;
+
+$color_black        : #000;
+$color_deepgray     : #333;
+$color_orange       : #e73100;
+$color_blue         : #3679C1;
+$color_cobalt       : #02728D;
+$color_red          : #c10101;
+$color_green        : #3A7525;
+
+
+/* font color */
+.fc_black    {color : $color_black}
+.fc_deepgray {color : $color_deepgray}
+.fc_orange   {color : $color_orange}
+.fc_blue     {color : $color_blue}
+.fc_cobalt   {color : $color_cobalt}
+.fc_red      {color : $color_red}
+.fc_green    {color : $color_green}
+
+$fontSet            : "맑은고딕","malgun gothic","AppleGothic","돋움","dotum",Helvetica,Arial,sans-serif;
+//"Nanum Gothic",
+//h1~h6
+$headingFont        : "Noto Sans","맑은고딕","malgun gothic";
+
+@mixin clearfix() {
+	display:block;
+	&:before,
+	&:after{content:"."; display:block; height:0; clear:both; visibility:hidden }
+}

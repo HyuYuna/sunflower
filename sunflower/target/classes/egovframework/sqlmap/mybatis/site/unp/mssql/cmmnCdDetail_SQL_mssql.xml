@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.dao.cmmnCd.cmmnCdDetail">
+
+	<select id="findAllCmmnCdDetailByCdId" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+		SELECT
+			A.CD,
+	       	A.CD_ID,
+	       	A.CD_NM,
+	       	A.CD_ENG_NM,
+	       	A.CD_DC,
+	       	A.CD_ENG_DC,
+	       	A.UPPER_CD,
+	       	A.DP,
+	       	A.SORT_ORDR,
+	       	A.OPTN1,
+	       	A.OPTN2,
+	       	A.OPTN3,
+	       	A.OPTN4,
+	       	A.OPTN5,
+	       	A.USE_AT,
+	       	A.REGIST_ID,
+	       	A.REGIST_DT,
+	        B.CD_ID_NM,
+	        A.CD as id,
+			A.CD_NM as text,
+			CASE
+            WHEN (SELECT COUNT(*) FROM TC_CMMN_CD_DETAIL WHERE CD_ID = A.CD_ID AND UPPER_CD = A.CD) > 0 THEN 'jstree-folder'
+            ELSE 'jstree-file'
+            END AS  icon
+
+		FROM TC_CMMN_CD_DETAIL A, TC_CMMN_CD_CTGRY B
+		WHERE B.USE_AT  = 'Y'
+		AND A.CD_ID = B.CD_ID
+		AND A.CD_ID = #{cdId}
+	]]>
+		<choose>
+		    <when test='upperCd != null and upperCd != ""'>
+		      <![CDATA[  AND A.UPPER_CD = #{upperCd}	]]>
+		    </when>
+		    <otherwise>
+		     <![CDATA[  AND	A.UPPER_CD = '0'	]]>
+		    </otherwise>
+	    </choose>
+		<choose>
+		    <when test='siteId == "bos"'>
+		    	<if test='useAt != null and useAt != ""'>
+					<![CDATA[ AND A.USE_AT = #{useAt} 	]]>
+				</if>
+		    </when>
+		    <otherwise>
+			    <![CDATA[  AND A.USE_AT = 'Y'	]]>
+		    </otherwise>
+	    </choose>
+
+	<![CDATA[
+		ORDER BY A.SORT_ORDR ASC, A.REGIST_DT ASC
+	]]>
+	</select>
+
+	<!-- 공통코드상세 상세코드정보 -->
+	<select id="findOneCmmnCdDetail" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+            /* findOneCmmnCdDetail */
+            SELECT
+            	A.CD,
+		       	A.CD_ID,
+		       	B.CD_ID_NM,
+		       	A.CD_NM,
+		       	A.CD_ENG_NM,
+		       	A.CD_DC,
+		       	A.CD_ENG_DC,
+		       	A.UPPER_CD,
+		       	A.DP,
+		       	A.SORT_ORDR,
+		       	A.OPTN1,
+		       	A.OPTN2,
+		       	A.OPTN3,
+		       	A.OPTN4,
+		       	A.OPTN5,
+		       	A.USE_AT,
+		       	A.REGIST_ID,
+		       	A.REGIST_DT
+			FROM TC_CMMN_CD_DETAIL A, TC_CMMN_CD_CTGRY B
+            WHERE  A.CD_ID = B.CD_ID
+			AND  A.CD_ID = #{cdId}
+			AND  A.CD    = #{cd}
+		]]>
+	</select>
+
+	<!-- 공통코드 상세 등록 -->
+	<insert id="saveCmmnCdDetail" parameterType="zvl">
+		<selectKey resultType="long" order="BEFORE" keyProperty="sortOrdr">
+			SELECT ISNULL(MAX(SORT_ORDR),0)+1 FROM TC_CMMN_CD_DETAIL WHERE CD_ID = #{cdId} AND UPPER_CD = #{upperCd}
+		</selectKey>
+
+		<![CDATA[
+		/* saveCmmnCdDetail */
+			INSERT INTO TC_CMMN_CD_DETAIL (
+	           CD,
+	           CD_ID,
+	           CD_NM,
+	           CD_ENG_NM,
+	           CD_DC,
+	           CD_ENG_DC,
+	           UPPER_CD,
+	           DP,
+	           SORT_ORDR,
+	           OPTN1,
+	           OPTN2,
+	           OPTN3,
+	           OPTN4,
+	           OPTN5,
+	           USE_AT,
+	           REGIST_ID,
+	           REGIST_DT
+	       )
+	       VALUES (
+	           #{cd},
+	           #{cdId},
+	           #{cdNm},
+	           #{cdEngNm},
+	           #{cdDc},
+	           #{cdEngDc},
+	           #{upperCd},
+	           #{dp},
+	           #{sortOrdr},
+	           #{optn1},
+	           #{optn2},
+	           #{optn3},
+	           #{optn4},
+	           #{optn5},
+	           #{useAt},
+	           #{registId},
+	           GETDATE()
+	       )
+		]]>
+	</insert>
+
+	<!-- 공통코드 상세 수정 -->
+	<update id="updateCmmnCdDetail" parameterType="zvl">
+		<![CDATA[
+		/* modifyCmmnCdDetail */
+            UPDATE TC_CMMN_CD_DETAIL SET
+		       	CD_NM = #{cdNm},
+		       	CD_ENG_NM = #{cdEngNm},
+		       	CD_DC = #{cdDc},
+		       	CD_ENG_DC = #{cdEngDc},
+		       	UPPER_CD = #{upperCd},
+		       	DP = #{dp},
+		       	OPTN1 = #{optn1},
+		       	OPTN2 = #{optn2},
+		       	OPTN3 = #{optn3},
+		       	OPTN4 = #{optn4},
+		       	OPTN5 = #{optn5},
+		       	USE_AT = #{useAt},
+		       	UPDT_ID = #{updtId},
+		       	UPDT_DT = GETDATE()
+            WHERE  CD_ID   = #{cdId}
+            AND  CD  = #{cd}
+		]]>
+	</update>
+
+	<delete id="deleteCmmnCdDetail" parameterType="zvl">
+		<![CDATA[
+		/* deleteCmmnCdDetail */
+			DELETE FROM TC_CMMN_CD_DETAIL
+            WHERE  CD = #{cd}
+            AND CD_ID = #{cdId}
+		]]>
+	</delete>
+
+	<delete id="deleteCmmnCdDetailAll" parameterType="zvl">
+		<![CDATA[
+		/* deleteCmmnCdDetailAll */
+			DELETE FROM TC_CMMN_CD_DETAIL
+            WHERE CD_ID = #{cdId}
+		]]>
+	</delete>
+
+
+
+	<!-- 공통코드 다중 선택 항목 조회 -->
+	<select id="findAllCmmnCdMultiByParams" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+		SELECT
+			A.CD_ID,
+			A.PROGRM_ID,
+	       	A.PROGRM_SN,
+	       	A.CD,
+	       	A.REGIST_DT,
+	       	A.MEMO,
+	       	B.CD_NM,
+	       	B.DP,
+	       	B.UPPER_CD
+	  	FROM TC_CMMN_CD_MULTI A, TC_CMMN_CD_DETAIL B
+	  	WHERE A.CD_ID = B.CD_ID AND A.CD = B.CD
+	  	AND A.CD_ID = #{cdId}
+	  	AND A.PROGRM_ID = #{progrmId}
+	]]>
+		<if test='progrmSn != null and progrmSn != ""'>
+	  		<![CDATA[ AND A.PROGRM_SN = #{progrmSn} ]]>
+	  	</if>
+	  	<if test='upperCd != null and upperCd != ""'>
+	  		<![CDATA[ AND B.UPPER_CD = #{upperCd} ]]>
+	  	</if>
+	<![CDATA[ ORDER BY B.DP ASC, B.SORT_ORDR ASC ]]>
+
+	</select>
+
+	<!-- 공통코드 다중선택 등록 -->
+	<insert id="saveCmmnCdMulti" parameterType="zvl">
+		<![CDATA[
+		INSERT INTO TC_CMMN_CD_MULTI (
+			CD_ID,
+			PROGRM_ID,
+			PROGRM_SN,
+			CD,
+			REGIST_DT,
+			MEMO
+		)
+		VALUES (
+			#{cdId},
+			#{progrmId},
+			#{progrmSn},
+			#{cd},
+			GETDATE(),
+			#{memo}
+		)
+		]]>
+	</insert>
+
+	<delete id="deleteCmmnCdMulti" parameterType="zvl">
+		<![CDATA[
+		DELETE FROM TC_CMMN_CD_MULTI
+		      WHERE CD_ID = #{cdId}
+		        AND PROGRM_ID = #{progrmId}
+		        AND PROGRM_SN = #{progrmSn}
+		]]>
+	</delete>
+
+
+	<select id="countMaxSortOrdr" parameterType="zvl" resultType="Long">
+		<![CDATA[
+		/* countMaxSortOrdr */
+			SELECT  ISNULL(MAX(SORT_ORDR),0)+10 AS SORT_ORDR
+			  FROM TC_CMMN_CD_DETAIL A
+			 WHERE A.USE_AT = 'Y'
+			   AND A.CD_ID = #{cdId}
+			   AND A.UPPER_CD = #{upperCd}
+		]]>
+	</select>
+
+	<update id="updateCdNm" parameterType="zvl">
+		<![CDATA[
+			/* updateCdNm */
+			UPDATE TC_CMMN_CD_DETAIL
+			SET
+			    CD_NM = #{cdNm},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = GETDATE()
+			WHERE CD_ID = #{cdId}
+			  AND CD = #{cd}
+		]]>
+	</update>
+
+	<update id="updateMoveCd" parameterType="zvl">
+		<![CDATA[
+			UPDATE TC_CMMN_CD_DETAIL
+			SET
+			    SORT_ORDR = #{sortOrdr},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = GETDATE()
+			WHERE CD_ID = #{cdId}
+			  AND CD = #{cd}
+		]]>
+	</update>
+</mapper>

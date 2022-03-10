@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>sublayout</title>
+<link rel="stylesheet" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" href="/static/commons/common.css">
+<link rel="stylesheet" href="/static/ucms/css/ucmsdefault.css">
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+<div class="skip">
+	<a href="#content">본문내용 바로가기</a>
+	<a href="#gnb">주메뉴 바로가기</a>
+</div>
+<div id="wrap">
+	<!-- header -->
+	<header id="header">
+		<p class="logo"><a href=""><img src="/static/ucms/img/logo.png" alt="unp"></a></p>
+		<ul class="global">
+			<li><a href="#">로그인</a></li>
+			<li><a href="#">회원가입</a></li>
+			<li><a href="#">사이트맵</a></li>
+		</ul>
+		<nav id="gnb">
+			<ul>
+				<li class="on"><a href="">COMPANY</a></li>
+				<li><a href="">BUSINESS</a></li>
+				<li><a href="">PR CENTER</a></li>
+				<li><a href="">CUSTOMER</a></li>
+				<li><a href="">CAREER</a></li>
+			</ul>
+		</nav>
+	</header>
+	<!-- //header -->
+	<!-- Container -->
+	<div id="container">
+		<nav class="lnb">
+			<h1>회원가입</h1>
+			<ul>
+				<li class="on"><a href="#">왼쪽메뉴 리스트</a></li>
+				<li><a href="#">왼쪽메뉴 리스트</a></li>
+				<li><a href="#">왼쪽메뉴 리스트</a></li>
+				<li><a href="#">왼쪽메뉴 리스트</a></li>
+			</ul>
+		</nav>
+		<main>
+			<div class="hgroup">
+				<h1>로그인</h1>
+				<p>HOME > 회원가입 > 로그인</p>
+			</div>
+			<div id="content">
+
+<div class="sh">
+	<select name="" title="검색어 구분">
+		<option value="">전체</option>
+	</select>
+	<input title="검색어" class="keyword" type="text">
+	<input value="검색" class="search" type="submit">
+</div>
+<div class="totalCount"><em>총 <em>70</em>건</em></div>
+<div class="bdList">
+	<table class="table">
+		<caption>000 목록</caption>
+		<thead>
+			<tr>
+				<th scope="col" class="no">번호</th>
+				<th scope="col" class="">제목</th>
+				<th scope="col" class="name">작성자</th>
+				<th scope="col" class="date">등록일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>9</td>
+				<td class="tit">
+					<a href="">
+						참신한 로맨스코미디 장르 스토리를 찾고 있습니다.
+					</a>
+				</td>
+				<td>남궁길동</td>
+				<td>2016-04-30</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<jsp:include page="paging.jsp" flush="true" />
+			</div>
+		</main>
+	</div>
+</div>
+</body>
+</html>

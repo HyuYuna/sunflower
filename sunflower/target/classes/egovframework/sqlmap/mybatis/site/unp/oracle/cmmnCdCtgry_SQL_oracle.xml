@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.cmmnCd.cmmnCdCtgry">
+
+	<!-- 공통코드카테고리 목록 -->
+	<select id="findAllCmmnCdCtgry" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAllCmmnCdCtgry */
+		SELECT * FROM  (
+				SELECT ROWNUM RNUM, ALL_LIST.* FROM  (
+			SELECT
+				B.CL_CD_NM,
+				A.CD_ID,
+			    A.CD_ID_NM,
+			    A.CD_ID_DC,
+			    A.USE_AT
+			FROM  TC_CMMN_CD_CTGRY A, TC_CMMN_CD_CL B
+			WHERE A.CL_CD = B.CL_CD
+		]]>
+			<if test='searchKwd != null and searchKwd != ""'>
+				<if test='searchCnd == "1"'>
+					<![CDATA[and A.CD_ID LIKE '%' || #{searchKwd} || '%']]>
+				</if>
+				<if test='searchCnd == "2"'>
+					<![CDATA[and A.CD_ID_NM LIKE '%' || #{searchKwd} || '%']]>
+				</if>
+			</if>
+			<if test='clCd != null and clCd != ""'>
+				<![CDATA[and A.CL_Cd = #{clCd}]]>
+			</if>
+		<![CDATA[
+
+			ORDER BY A.REGIST_DT DESC
+
+			) ALL_LIST
+	    	)
+			WHERE  RNUM  > #{firstIndex}
+			AND  RNUM <= #{firstIndex} +
+				#{recordCountPerPage}
+		]]>
+
+	</select>
+
+	<!-- 공통코드카테고리 전체count수 -->
+	<select id="countCmmnCdCtgry" parameterType="zvl" resultType="Long">
+		<![CDATA[
+		/* countAllCmmnCdCtgry */
+			SELECT  COUNT(*) totcnt
+			  FROM  TC_CMMN_CD_CTGRY A, TC_CMMN_CD_CL B
+			 WHERE  A.CL_CD = B.CL_CD AND A.USE_AT = 'Y'
+		]]>
+			<if test='searchKwd != null and searchKwd != ""'>
+				<if test='searchCnd == "1"'>
+					<![CDATA[and A.CD_ID LIKE '%' || #{searchKwd} || '%']]>
+				</if>
+				<if test='searchCnd == "2"'>
+					<![CDATA[and A.CD_ID_NM LIKE '%' || #{searchKwd} || '%']]>
+				</if>
+			</if>
+			<if test='clCd != null and clCd != ""'>
+				<![CDATA[and A.CL_Cd = #{clCd}]]>
+			</if>
+	</select>
+
+	<!-- 공통코드카테고리 상세 -->
+	<select id="findOneCmmnCdCtgry" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+            SELECT
+				A.CD_ID,
+		       	A.CL_CD,
+		       	A.CD_ID_NM,
+		       	A.CD_ID_ENG_NM,
+		       	A.CD_ID_DC,
+		       	A.CD_ID_ENG_DC,
+		       	A.USE_AT,
+		       	A.REGIST_ID,
+		       	A.REGIST_DT,
+		       	B.CL_CD_NM
+		  	FROM TC_CMMN_CD_CTGRY A, TC_CMMN_CD_CL B
+		 	WHERE  A.CL_CD = B.CL_CD
+               AND  A.CD_ID = #{cdId}
+		]]>
+	</select>
+
+	<!-- 공통코드카테고리 등록 -->
+	<insert id="saveCmmnCdCtgry" parameterType="zvl">
+		<![CDATA[
+		   INSERT INTO TC_CMMN_CD_CTGRY (
+	           CD_ID,
+	           CL_CD,
+	           CD_ID_NM,
+	           CD_ID_ENG_NM,
+	           CD_ID_DC,
+	           CD_ID_ENG_DC,
+	           USE_AT,
+	           REGIST_ID,
+	           REGIST_DT
+	       )
+	       VALUES (
+	           #{cdId},
+	           #{clCd},
+	           #{cdIdNm},
+	           #{cdIdEngNm},
+	           #{cdIdDc},
+	           #{cdIdEngDc},
+	           'Y',
+	           #{registId},
+	           SYSDATE
+	       )
+		]]>
+	</insert>
+
+	<!-- 공통코드카테고리 수정 -->
+	<update id="updateCmmnCdCtgry" parameterType="zvl">
+		<![CDATA[
+            UPDATE TC_CMMN_CD_CTGRY SET
+		       	CL_CD = #{clCd},
+		       	CD_ID_NM = #{cdIdNm},
+		       	CD_ID_ENG_NM = #{cdIdEngNm},
+		       	CD_ID_DC = #{cdIdDc},
+		       	CD_ID_ENG_DC = #{cdIdEngDc},
+		       	USE_AT = #{useAt},
+		       	UPDT_ID = #{updtId},
+		       	UPDT_DT = SYSDATE
+             WHERE  CD_ID = #{cdId}
+		]]>
+	</update>
+
+	<!-- 공통코드카테고리 삭제-->
+	<delete id="deleteCmmnCdCtgry" parameterType="zvl">
+		<![CDATA[
+          	DELETE FROM TC_CMMN_CD_CTGRY WHERE CD_ID = #{cdId}
+		]]>
+	</delete>
+
+	<!-- 공통코드카테고리 코드ID 전체목록 -->
+	<select id="findAllCdId" resultType="string">
+		<![CDATA[
+			SELECT
+				A.CD_ID
+			FROM  TC_CMMN_CD_CTGRY A
+			WHERE A.USE_AT = 'Y'
+		]]>
+	</select>
+
+	<!-- 공통코드카테고리 중복count수 -->
+	<select id="countCmmnCdCtgryDuplicate" parameterType="zvl" resultType="Long">
+		<![CDATA[
+		/* countCmmnCdCtgryDuplicate */
+			SELECT  COUNT(*) totcnt
+			  FROM  TC_CMMN_CD_CTGRY A
+			 WHERE A.CL_Cd = #{clCd}
+		]]>
+	</select>
+
+</mapper>

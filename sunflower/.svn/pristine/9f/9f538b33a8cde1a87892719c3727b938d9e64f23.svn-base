@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.9.11.201912160804-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+	</configs>
+	<autoconfigs>
+		<config>src/main/resources/egovframework/spring/unp/context-aspect.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-bbs.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-cmmnCd.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-security.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-idgen.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-pageGenerator.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-ariacrypto.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-mapper.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-scheduler.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-scheduler_real.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-sns.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-ehcache.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-acl.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-datasource.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-cmmProgram.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-common.xml</config>
+		<config>src/main/resources/egovframework/spring/unp/context-transaction.xml</config>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

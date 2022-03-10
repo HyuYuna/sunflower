@@ -1,0 +1,19 @@
+@media print {
+	.totalNews,
+	.gnb-wrap,
+	.util,
+	.lnb-empty-wrap,
+	.lnb,
+	.footer,
+	.pg-top,
+	.page-coment2,
+	.util-wp
+	{
+		display:none !important;
+	}
+	.content-wp{
+		width:auto !important;
+		float:none !important;
+		padding:0 !important;
+	}
+}

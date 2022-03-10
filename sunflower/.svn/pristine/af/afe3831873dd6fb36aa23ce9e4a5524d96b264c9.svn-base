@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>관리자(#번서버)</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1" />
+<meta name="robots" content="all" />
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/nanumgothic/nanumgothic.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/jslibrary/bootstrap/js/bootstrap.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+<script src="/static/commons/commons.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<div id="header_wrap">
+			<div class="header">
+				<h1><a href="/bos/main/main.do"><img src="/cmmn/file/getImage.do?atchFileId=FILE_000000000000031&fileSn=1" alt="CMS관리자 로고" height="27"/></a></h1>
+				<div class="user"> <em> 관리자(admin) </em> 님으로 로그인 하셨습니다.<!-- 로그인 접속IP:127.0.0.1 -->
+					<a href="javascript:openPopup();" class="btn btn-xs btn-success"><i class="fa fa-wrench"></i> 내정보수정</a>
+					<a href="/bos/member/admin/logout.do" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> 로그아웃</a>
+				</div>
+				<div class="util "> <div class="btn-group"> <a href="?menuNo=100085" class='on'><i class="fa fa-cogs"></i> 관리자</a> <a href="/ucms/main/main.do" target="_blank" ><i class="fa "></i> 홈페이지</a> </div> </div>
+			</div>
+			<div id="gnb">
+				<ul class="gnb_width">
+	 			<li class='on'> <a href="?menuNo=100007" >홈페이지 관리자</a> </li>
+	 			<li > <a href="?menuNo=100072" >홈페이지 관리</a> </li>
+	 			<li > <a href="?menuNo=100073" >홈페이지 통계</a> </li>
+	 			<li class='pr0'> <a href="?menuNo=100025" >미인증 메뉴</a> </li>
+				</ul>
+			</div>
+		</div>
+		<div id="container">
+			<div id="lnb">
+				<h2>홈페이지 관리자</h2>
+				<ul class="lnbNav">
+					홈페이지 관리자
+				</ul>
+			</div>
+			<div id="content">
+				<div class="hgroup clearfix">
+					<h1>홈페이지 관리자 권한관리</h1>
+					<div class="fr">
+						<a href="/bos/siteManage/siteHpcm/view.do?pGroupId=auth&amp;pSrvcId=auth&amp;pMethodId=list&amp;viewType=BODY" class="b-help" title="도움말 새창열림" target="_blank" onclick="window.open(this.href, 'siteHpcm', 'resizable=1, scrollbars=1, width=1280,height=800'); return false;">도움말</a>
+						<a class="b-print" href="/cmmn/bosForPrint.jsp" id="print" title="새창" onclick="window.open(this.href, 'printPage', 'width=840,height=640,scrollbars,toolbar,status');return false;">
+						<!-- <i class="fa fa-hover fa-print"></i> -->
+						<span >인쇄하기</span>
+						</a>
+					</div>
+				</div>
+				
+<div class="sh">
+	<div>
+		<label><span class="w50">상태</span> <select name="" id="">
+				<option value="">전체</option>
+				<option value="">진행중</option>
+				<option value="">종료</option>
+		</select> </label> <label><span class="w50">검색조건</span> <select name="" id="">
+				<option value="">설문주제</option>
+				<option value="">담당부서</option>
+		</select> </label> <input type="text" class="keyword">
+		<button class="b-sh">검색</button>
+		<button type="button" class="b-reset">전체보기</button>
+	</div>
+</div>
+<div class="totalCount">
+	<em>총 <em>70</em>건
+	</em> | <em>1/12</em> Page
+</div>
+<div class="displayedItems">
+	<label>목록 <select name="">
+			<option value="10">10개</option>
+			<option value="20">20개</option>
+			<option value="30">30개</option>
+	</select>
+	</label>
+	<button type="button" class="b-ok">적용</button>
+</div>
+<table class="table">
+	<caption>설문 목록</caption>
+	<thead>
+		<tr>
+			<th scope="col">번호</th>
+			<th scope="col" style="width: 25%">설문주제</th>
+			<th scope="col">담당부서</th>
+			<th scope="col">조사기간</th>
+			<th scope="col">참여인원</th>
+			<th scope="col">문제수<br>(문제추가)
+			</th>
+			<th scope="col">설문결과<br>(통계)
+			</th>
+			<th scope="col">등록일</th>
+		</tr>
+	</thead>
+	<tr>
+		<td>65</td>
+		<td><a href="">2017겨울방학 대학생 아르바이트 설문</a></td>
+		<td>자치행정과</td>
+		<td>2017-02-17 09:00 ~2017-03-30 00:00</td>
+		<td>24</td>
+		<td><a href="">14문제</a></td>
+		<td><a href="">결과보기</a></td>
+		<td>2017-02-10</td>
+	</tr>
+
+
+	<tr>
+		<td colspan="8" class="tac">데이터가 없습니다.</td>
+	</tr>
+</table>
+페이징
+<div class="btnSet">
+	<a href="" class="b-reg">등록</a>
+</div>
+
+<hr>
+
+<div class="bdView">
+	<table>
+		<tr>
+			<th scope="row" style="width: 15%">설문주제</th>
+			<td>동작구 홈페이지개편에 따른 디자인시안</td>
+		</tr>
+		<tr>
+			<th scope="row">조사기간</th>
+			<td>2017-02-17 09:00 ~2017-03-30 00:00</td>
+		</tr>
+		<tr>
+			<th scope="row">설문대상</th>
+			<td>회원</td>
+		</tr>
+		<tr>
+			<th scope="row">결과보기 공개여부</th>
+			<td>공개</td>
+		</tr>
+		<tr>
+			<th scope="row">담당부서</th>
+			<td>홍보전산과</td>
+		</tr>
+		<tr>
+			<th scope="row">전화번호</th>
+			<td>02-820-1643</td>
+		</tr>
+		<tr>
+			<th scope="row">등록일</th>
+			<td>2017-02-17</td>
+		</tr>
+		<tr>
+			<th scope="row">내용</th>
+			<td>설문내용 설문내용</td>
+		</tr>
+	</table>
+</div>
+
+<div class="btnSet">
+	<a href="" class="b-edit">수정</a> <a href="" class="b-del">삭제</a> <a href="" class="b-list">목록</a>
+</div>
+
+<hr>
+
+<div class="bdView">
+	<table>
+		<tr>
+			<th scope="row" style="width: 15%">설문주제</th>
+			<td><input type="text" class="w100p"></td>
+		</tr>
+		<tr>
+			<th scope="row">조사기간</th>
+			<td><span class="shDate"> <input id="sdate" name="sdate" class="sdate" title="조사기간 시작일" value="" type="text"> <select name="" id="">
+						<option value="">00시</option>
+				</select> : <select name="" id="">
+						<option value="">00분</option>
+				</select> ~ <input id="edate" name="edate" class="edate" title="조사기간 종료일" value="" type="text"> <select name="" id="">
+						<option value="">00시</option>
+				</select> : <select name="" id="">
+						<option value="">00분</option>
+				</select>
+			</span></td>
+		</tr>
+		<tr>
+			<th scope="row">설문대상</th>
+			<td><label for=""><input type="radio" name="" id=""> 회원</label> <label for=""><input type="radio" name="" id=""> 누구나</label></td>
+		</tr>
+		<tr>
+			<th scope="row">결과보기 공개여부</th>
+			<td><label for=""><input type="radio" name="" id=""> 공개</label> <label for=""><input type="radio" name="" id=""> 비공개</label></td>
+		</tr>
+		<tr>
+			<th scope="row">담당부서</th>
+			<td><select name="" id="">
+					<option value="">홍보전산과</option>
+			</select></td>
+		</tr>
+		<tr>
+			<th scope="row">전화번호</th>
+			<td><select name="ntcrMobile1" title="전호번호 앞 자리">
+					<option value="" selected>선택</option>
+					<option value="010">010</option>
+					<option value="011">011</option>
+					<option value="016">016</option>
+					<option value="017">017</option>
+					<option value="018">018</option>
+					<option value="019">019</option>
+					<option value="02">02</option>
+					<option value="070">070</option>
+					<option value="051">051</option>
+					<option value="053">053</option>
+					<option value="032">032</option>
+					<option value="062">062</option>
+					<option value="042">042</option>
+					<option value="052">052</option>
+					<option value="044">044</option>
+					<option value="031">031</option>
+					<option value="033">033</option>
+					<option value="043">043</option>
+					<option value="041">041</option>
+					<option value="063">063</option>
+					<option value="061">061</option>
+					<option value="054">054</option>
+					<option value="055">055</option>
+					<option value="064">064</option>
+			</select> - <input type="text" name="ntcrMobile2" class="tel" title="전호번호 중간 3~4자리" maxlength="4" /> - <input type="text" name="ntcrMobile3" class="tel" title="전호번호 끝 4자리" maxlength="4" /></td>
+		</tr>
+		<tr>
+			<th scope="row">내용</th>
+			<td>에디터</td>
+		</tr>
+	</table>
+</div>
+
+<div class="btnSet">
+	<a href="" class="b-save">확인</a> <a href="" class="b-cancel">취소</a>
+</div>
+
+
+<hr>
+
+<div class="tar mb10">
+	<button type="button" class="b-add" data-toggle="modal" data-target="#myModal">문제추가</button>
+</div>
+<div class="view">
+	<h2 class="subject">게시물제목</h2>
+	<dl>
+		<dt>홍보전산과</dt>
+		<dd>02-820-1643</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+	</dl>
+	<dl>
+		<dt>설문대상</dt>
+		<dd></dd>
+		<dt>참여인원</dt>
+		<dd></dd>
+	</dl>
+	<dl>
+		<dt>조사기간</dt>
+		<dd>2017-02-17 09:00 ~2017-03-30 00:00</dd>
+	</dl>
+	<div class="dbData">동작구 얼굴이 될 수 있는 대표 홈페이지 디자인 선정을 위한 선호도를 조사 합니다. 마음에 드시는 디자인을 선택해 주시고, 개선점을 기재해 주시면 최대한 반영하도록 하겠습니다.</div>
+</div>
+
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+
+<h2>설문조사 문제</h2>
+<div class="surveyList">
+	<dl>
+		<dt>
+			1. 디자인 시안 중 선호하는 디자인은?
+			<button type="button" class="b-edit btn-xs">수정</button>
+			<button type="button" class="b-del btn-xs">삭제</button>
+		</dt>
+		<dd>
+			<ul>
+				<li><label><input type="radio" name="" id=""> 1. 1안</label></li>
+				<li><label><input type="radio" name="" id=""> 1. 2안</label></li>
+			</ul>
+		</dd>
+	</dl>
+	<dl>
+		<dt>
+			2. 디자인 시안 중 선호하는 디자인은?
+			<button type="button" class="b-edit btn-xs">수정</button>
+			<button type="button" class="b-del btn-xs">삭제</button>
+		</dt>
+		<dd>
+			<ul>
+				<li><label><input type="radio" name="" id=""> 1. 1안</label></li>
+				<li><label><input type="radio" name="" id=""> 1. 2안</label></li>
+			</ul>
+		</dd>
+	</dl>
+</div>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">설문조사 문제추가</h4>
+			</div>
+			<div class="modal-body">
+				<div class="bdView">
+					<table>
+						<tr>
+							<th scope="row">질문형식</th>
+							<td><label><input type="radio" name=""> 단일선택 객관식</label> <label><input type="radio" name=""> 복수선택 객관식</label> <label><input type="radio" name=""> 단답형 주관식</label> <label><input type="radio" name=""> 서술형 주관식</label></td>
+						</tr>
+						<tr>
+							<th scope="row">질문등록</th>
+							<td><input type="text" class="w100p"></td>
+						</tr>
+						<tr>
+							<th scope="row">필수답변여부</th>
+							<td><label><input type="radio" /> 필수</label> <label><input type="radio" /> 선택</label>
+								<p class="help">※ 문제에 대해 꼭 답변을 해야 할 경우에 선택합니다.</p></td>
+						</tr>
+						<tr>
+							<th scope="row">필수선택 수</th>
+							<td><select name="" id="">
+									<option value=""></option>
+							</select></td>
+						</tr>
+						<tr>
+							<th scope="row">답변등록</th>
+							<td>
+								<div class="fieldList">
+									<div class="row">
+										<div class="col-xs-1 tar">1.</div>
+										<div class="col-xs-8">
+											<input type="text" class="w100p" title="답변 1">
+										</div>
+										<div class="col-xs-2">
+											<button type="button" class="b-add btn-xs">추가</button>
+											<button type="button" class="b-del btn-xs">삭제</button>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xs-1 tar">2.</div>
+										<div class="col-xs-8">
+											<input type="text" class="w100p" title="답변 2">
+										</div>
+										<div class="col-xs-2">
+											<button type="button" class="b-add btn-xs">추가</button>
+											<button type="button" class="b-del btn-xs">삭제</button>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">답변등록</th>
+							<td><textarea name="" cols="30" rows="10" class="w100p" style="height: 150px"></textarea></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="b-save">저장</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<hr>
+설문결과(통계)
+<div class="view">
+	<h2 class="subject">게시물제목</h2>
+	<dl>
+		<dt>홍보전산과</dt>
+		<dd>02-820-1643</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+	</dl>
+	<dl>
+		<dt>설문대상</dt>
+		<dd></dd>
+		<dt>참여인원</dt>
+		<dd></dd>
+	</dl>
+	<dl>
+		<dt>조사기간</dt>
+		<dd>2017-02-17 09:00 ~2017-03-30 00:00</dd>
+	</dl>
+	<div class="dbData">동작구 얼굴이 될 수 있는 대표 홈페이지 디자인 선정을 위한 선호도를 조사 합니다. 마음에 드시는 디자인을 선택해 주시고, 개선점을 기재해 주시면 최대한 반영하도록 하겠습니다.</div>
+</div>
+<div class="btnSet">
+	<a href="" class="b-down">설문조사결과 엑셀다운</a> <a href="" class="b-list">목록</a>
+</div>
+<div role="tabpanel">
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">설문조사결과</a></li>
+		<li role="presentation"><a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">설문조사 참여현황</a></li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="home">
+			<div class="toggleDl">
+				<dl>
+					<dt>
+						1. 디자인 시안 중 선호하는 디자인은?
+						<button type="button" class="b-close btn-sm">열기</button>
+					</dt>
+					<dd>
+						<table class="table">
+							<thead>
+								<tr>
+									<th scope="col">응답항목</th>
+									<th scope="col">사례수(건)</th>
+									<th scope="col">비율(%)</th>
+									<th scope="col">그래프</th>
+								</tr>
+							</thead>
+							<tr>
+								<td>1. 1안</td>
+								<td>50/105</td>
+								<td>47%</td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>2. 2안</td>
+								<td>20/105</td>
+								<td>19%</td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>3. 3안</td>
+								<td>29/105</td>
+								<td>27%</td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>4. 4안</td>
+								<td>6/105</td>
+								<td>5%</td>
+								<td>
+									<div class="progress">
+										<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">60%</div>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</dd>
+				</dl>
+			</div>
+		</div>
+		<div role="tabpanel" class="tab-pane" id="tab">
+			<div class="toggleDl">
+				<dl>
+					<dt>
+						1. 디자인 시안 중 선호하는 디자인은?
+						<button type="button" class="b-view btn-sm">열기</button>
+					</dt>
+					<dd>
+						<table class="table">
+							<caption>1번 답변 결과</caption>
+							<thead>
+								<tr>
+									<th scope="col" style="width: 15%">이름</th>
+									<th scope="col">답변</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>홍길동</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</dd>
+				</dl>
+				<dl>
+					<dt>
+						2. 디자인 시안 중 선호하는 디자인은?
+						<button type="button" class="b-view btn-sm">열기</button>
+					</dt>
+					<dd>
+						<table class="table">
+							<caption>1번 답변 결과</caption>
+							<thead>
+								<tr>
+									<th scope="col" style="width: 15%">이름</th>
+									<th scope="col">답변</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>홍길동</td>
+									<td>-</td>
+								</tr>
+							</tbody>
+						</table>
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	jQuery(function($) {
+		var article = $('.toggleDl dt>button');
+		article.each(function(index, el) {
+			$(this).click(function(event) {
+				if ($(this).parent().hasClass('open')) {
+					$(this).parent().removeClass('open').next().hide();
+					$(this).text('열기').addClass('b-view').removeClass('b-hide')
+				} else {
+					$(this).parent().addClass('open').next().show();
+					$(this).text('닫기').addClass('b-hide').removeClass('b-view')
+				}
+			}).trigger('click');
+		});
+	});
+</script>

@@ -1,0 +1,138 @@
+﻿.pure-table { width:720px; }
+.pure-table-main-width { width:800px !important; }
+
+.pure-table .th1 { width:25%; background-color:#f8f8f8; }
+.pure-table .th3 { width:75%; }
+.pure-table .th2 { width:25%; }
+.pure-table .th4 { width:50%; }
+
+/*.pure-button {
+	border-radius: 4px;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}*/
+
+.pure-button-xsmall {
+  font-size: 70%;
+}
+
+.pure-button-small {
+  font-size: 85%;
+}
+
+.pure-button-large {
+  font-size: 110%;
+}
+
+.pure-button-xlarge {
+  font-size: 125%;
+}
+
+.pure-button-mirae {
+  padding-top:2px;
+  padding-bottom:2px;
+}
+
+.pure-button-inline {
+	padding:3px 10px;
+}
+
+.pure-button-success {
+	color: white;
+	background: rgb(157, 198, 48); /* this is a green */
+}
+
+.pure-button-error {
+	color: white;
+	background: rgb(202, 60, 60); /* this is a maroon */
+}
+
+.pure-button-warning {
+	color: white;
+	background: rgb(223, 117, 20); /* this is an orange */
+}
+
+.pure-button-secondary {
+	color: white;
+	background: rgb(66, 184, 221); /* this is a light blue */
+}
+
+.pure-button-save {
+	color: rgb(255, 255, 255);
+	background: rgb(152, 81, 160); /* this is a violet */
+}
+
+.pure-button-cancel {
+	color: rgb(255, 255, 255);
+	background: rgb(57, 181, 9); /* this is a green */
+}
+
+.pure-button-list {
+	color: rgb(255, 255, 255);
+	background: rgb(68, 107, 182); /* this is a blue */
+}
+
+.pure-button-update {
+	color: rgb(255, 255, 255);
+	background: rgb(0, 120, 231); /* this is a light blue */
+}
+
+.pure-button-request {
+	color: rgb(255, 255, 255);
+	background: rgb(123, 156, 192); /* this is a light blue */
+}
+
+.pure-button-select {
+	color: rgb(255, 255, 255);
+	background: rgb(92, 75, 81); 
+}
+
+.pure-button-delete {
+	color: rgb(255, 255, 255);
+	background: rgb(140, 190, 178);
+}
+
+.pure-button-insert {
+	color: rgb(255, 255, 255);
+	background: rgb(2, 138, 158); 
+}
+
+.pure-button-view {
+	color: rgb(255, 255, 255);
+	background: rgb(4, 191, 191);
+}
+
+.pure-button-print {
+	color: rgb(255, 255, 255);
+	background: rgb(239, 132, 123);
+}
+
+.pure-button-excel {
+	color: rgb(255, 255, 255);
+	background: rgb(70, 152, 64);
+}
+
+
+.pure-button-save2 {  /* 진회색 */
+	color: rgb(255, 255, 255);
+	background: rgb(177, 177, 177);
+}
+
+.pure-default-height { 
+	height:25px; 
+	/*font-weight:bold;*/
+}
+
+.pure-font-size12 {font-size:12px !important;}
+
+
+
+
+/* */
+.btnUpdate {color: #fff; background: #0078e7;}
+.btnList {color: #fff;background: #446bb6;}
+.btnInsert {color: #fff; background:#028a9e;} 
+.btnCancel {color: #fff;background: #39b509;}
+.btnSave {color: #fff;background: #9851a0;}
+.btnDelete {	color: #fff;background: #8cbeb2;}
+.btnSearch {color: #fff;background: #ffc000;}
+.btnDownload{color: #333;background: #fff url(../image/icon-download.png) no-repeat right 10px top 4px;border: 1px solid #333;padding: 0.4em 3em 0.4em 1.2em;}

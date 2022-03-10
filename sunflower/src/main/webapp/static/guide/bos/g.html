@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>관리자 가이드</title>
+<meta http-Equiv="Cache-Control" Content="no-cache" />
+<meta http-Equiv="Pragma" Content="no-cache" />
+<meta http-Equiv="Expires" Content="0" />
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<!-- <link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap-theme.css" /> -->
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/jquery-ui/jquery-ui.css">
+
+<link rel="stylesheet" type="text/css" href="/static/commons/common.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/jslibrary/bootstrap/js/bootstrap.js"></script>
+<script src="/static/jslibrary/jquery-ui/jquery-ui.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+
+</head>
+<body>
+<style>
+body::before{display:none;}
+h1{margin: 10px 0;}
+h2{margin:5px 0;}
+h3{margin:5px 0;}
+h4{margin:5px 0;}
+h5{margin:5px 0;}
+body{padding:15px 50px;}
+.linkList{padding: 20px;}
+textarea{width:100%;height:80px;}
+h1[id]{
+	padding-bottom: 9px;
+    margin: 40px 0 20px;
+    border-bottom: 1px solid #eee;
+    padding-top:20px;
+}
+/*h1{font-size:20px;font-weight:700;margin:0 0 0;border:1px dotted red;padding-top:30px;margin:5px 0;}*/
+body{padding:10px;margin:0 auto;}
+#nav{position:fixed;top:20px;}
+#codeList{}
+</style>
+
+
+<div class="container bs-docs-container">
+	<div class="row">
+	<div class="col-md-9">
+
+
+<div id="codeList">
+
+<h1 id="content-commingsoon">콘텐츠 준비중</h1>
+<p class="content-commingsoon"></p>
+<div class="help">
+	사용자,관리자 공통
+</div>
+<pre>&lt;p class="content-commingsoon"></p></pre>
+<h1 id="fontsizePreview">fontsize 최소 규격 </h1>
+<style>
+.aaa{font-family:tahoma;}
+.aaa li.b1{font-size:1px;}
+.aaa li.b1:before{content: '\25aa  ';font-size:1px;display:inline-block;vertical-align:middle;}
+.aaa li.b2{font-size:2px;}
+.aaa li.b2:before{content: '\25aa  ';font-size:2px;display:inline-block;vertical-align:middle;}
+.aaa li.b3{font-size:3px;}
+.aaa li.b3:before{content: '\25aa  ';font-size:3px;display:inline-block;vertical-align:middle;}
+.aaa li.b4{font-size:4px;}
+.aaa li.b4:before{content: '\25aa  ';font-size:4px;display:inline-block;vertical-align:middle;}
+.aaa li.b5{font-size:5px;}
+.aaa li.b5:before{content: '\25aa  ';font-size:5px;display:inline-block;vertical-align:middle;}
+.aaa li.b6{font-size:6px;}
+.aaa li.b6:before{content: '\25aa  ';font-size:6px;display:inline-block;vertical-align:middle;}
+.aaa li.b7{font-size:7px;}
+.aaa li.b7:before{content: '\25aa  ';font-size:7px;display:inline-block;vertical-align:middle;}
+.aaa li.b8{font-size:8px;}
+.aaa li.b8:before{content: '\25aa  ';font-size:8px;display:inline-block;vertical-align:middle;}
+.aaa li.b9{font-size:9px;}
+.aaa li.b9:before{content: '\25aa  ';font-size:9px;display:inline-block;vertical-align:middle;}
+.aaa li.b10{font-size:10px;}
+.aaa li.b10:before{content: '\25aa  ';font-size:10px;display:inline-block;vertical-align:middle;}
+.aaa li.b11{font-size:11px;}
+.aaa li.b11:before{content: '\25aa  ';font-size:11px;display:inline-block;vertical-align:middle;}
+.aaa li.b12{font-size:12px;}
+.aaa li.b12:before{content: '\25aa  ';font-size:12px;display:inline-block;vertical-align:middle;}
+.aaa li.b13{font-size:13px;}
+.aaa li.b13:before{content: '\25aa  ';font-size:13px;display:inline-block;vertical-align:middle;}
+.aaa li.b14{font-size:14px;}
+.aaa li.b14:before{content: '\25aa  ';font-size:14px;display:inline-block;vertical-align:middle;}
+.aaa li.b15{font-size:15px;}
+.aaa li.b15:before{content: '\25aa  ';font-size:15px;display:inline-block;vertical-align:middle;}
+.aaa li.b16{font-size:16px;}
+.aaa li.b16:before{content: '\25aa  ';font-size:16px;display:inline-block;vertical-align:middle;}
+.aaa li.b17{font-size:17px;}
+.aaa li.b17:before{content: '\25aa  ';font-size:17px;display:inline-block;vertical-align:middle;}
+</style>
+<ul class="aaa">
+<li class="b1">fontsize 1px 가나다라마바사</li>
+<li class="b2">fontsize 2px 가나다라마바사</li>
+<li class="b3">fontsize 3px 가나다라마바사</li>
+<li class="b4">fontsize 4px 가나다라마바사</li>
+<li class="b5">fontsize 5px 가나다라마바사</li>
+<li class="b6">fontsize 6px 가나다라마바사</li>
+<li class="b7">fontsize 7px 가나다라마바사</li>
+<li class="b8">fontsize 8px 가나다라마바사</li>
+<li class="b9">fontsize 9px 가나다라마바사</li>
+<li class="b10">fontsize 10px 가나다라마바사</li>
+<li class="b11">fontsize 11px 가나다라마바사</li>
+<li class="b12">fontsize 12px 가나다라마바사</li>
+<li class="b13">fontsize 13px 가나다라마바사</li>
+<li class="b14">fontsize 14px 가나다라마바사</li>
+<li class="b15">fontsize 15px 가나다라마바사</li>
+<li class="b16">fontsize 16px 가나다라마바사</li>
+<li class="b17">fontsize 17px 가나다라마바사</li>
+</ul>
+
+<h1 id="popup">팝업호출</h1>
+<p> 클래스 js-pop 삽입 & 속성 data-size="가로,세로" 선언 </p>
+<p>스크립트 위치 /static/commons/commons.js</p>
+<p>기본스타일을 포함한 버튼은 js-pop 대신 b-pop을 사용한다.</p>
+<p><a class="js-pop" data-size="100,300" href="http://google.com">js-pop 버튼 스타일 없음</a></p>
+<pre>&lt;a class="js-pop" data-size="100,300" href="http://google.com">js-pop 버튼 스타일 없음&lt;/a></pre>
+<p><a class="b-pop" data-size="100,300" href="http://google.com">b-pop 버튼 스타일 있음</a></p>
+<pre>&lt;a class="b-pop" data-size="100,300" href="http://google.com">b-pop 버튼 스타일 있음&lt;/a>
+</pre>
+<script>
+function openPop(argument) {
+	$('.js-pop, .b-pop').on('click',function(event) {
+		event.preventDefault();
+		// window.open(URL,name,specs,replace)
+		var size = $(this).data().size.split(',')
+		var scrollbars='';
+		if (size[2]!==undefined) {scrollbars=',scrollbars='+size[2]}
+		var myWindow = window.open($(this).attr('href'), $(this).attr('href'), "width="+size[0]+'",height='+size[1]+scrollbars+'"');
+	});
+}
+$(function () {
+	openPop();
+});
+</script>
+<pre>
+function openPop(argument) {
+	$('.js-pop, .b-pop').on('click',function(event) {
+		event.preventDefault();
+		// window.open(URL,name,specs,replace)
+		var size = $(this).data().size.split(',')
+		var scrollbars='';
+		if (size[2]!==undefined) {scrollbars=',scrollbars='+size[2]}
+		var myWindow = window.open($(this).attr('href'), $(this).attr('href'), "width="+size[0]+'",height='+size[1]+scrollbars+'"');
+	});
+}
+$(function () {
+	openPop();
+});
+</pre>
+<h1 id="buttonSample">버튼 샘플</h1>
+<h2>size -xs,-sm,-lg</h2>
+<table class="table">
+	<colgroup>
+		<col style="width:15%"/>
+		<col style="width:85%"/>
+	</colgroup>
+	<tr><td><a href="" class="b-default btn-xs">아주작게</a></td><td>class="b-default btn-xs"</td></tr>
+	<tr><td><a href="" class="b-default btn-sm">작게</a></td><td>class="b-default btn-sm"</td></tr>
+	<tr><td><a href="" class="b-default">보통(기본값)</a></td><td>class="b-default"</td></tr>
+	<tr><td><a href="" class="b-default btn-lg">크게</a></td><td>class="b-default btn-lg"</td></tr>
+</table>
+
+<pre>
+<h3>sample code</h3>
+&lt;a href="" class="b-default">기본버튼&lt;/a></pre>
+<div class="row">
+	<div class="col-sm-6">
+		<table class="table sm">
+			<colgroup>
+				<col style="width:15%"/>
+				<col style="width:85%"/>
+			</colgroup>
+			<tr> <td><a href="" class="b-default">기본버튼</a></td><td>b-default</td> </tr>
+			<tr> <td><a href="" class="b-reg">쓰기,등록</a></td><td>b-reg</td> </tr>
+			<tr> <td><a href="" class="b-del">삭제</a></td><td>b-del</td> </tr>
+			<tr> <td><a href="" class="b-cancel">취소</a></td><td>b-cancel</td> </tr>
+			<tr> <td><a href="" class="b-edit">수정</a></td><td>b-edit</td> </tr>
+			<tr> <td><a href="" class="b-list">목록</a></td><td>b-list</td> </tr>
+			<tr> <td><a href="" class="b-move">이동</a></td><td>b-move</td> </tr>
+			<tr> <td><a href="" class="b-reply">답글</a></td><td>b-reply</td> </tr>
+			<tr> <td><a href="" class="b-sh">검색</a></td><td>b-sh</td> </tr>
+			<tr> <td><a href="" class="b-ok">확인</a></td><td>b-ok</td> </tr>
+			<tr> <td><a href="" class="b-disabled">비활성</a></td><td>b-disabled</td> </tr>
+			<tr>
+				<td>
+					<bb class="b-use">사용중</bb>
+
+				</td>
+				<td>b-use</td>
+			</tr>
+			<tr>
+				<td><bb class="b-notuse">미사용중</bb></td>
+				<td>b-notuse</td>
+			</tr>
+		</table>
+	</div>
+	<div class="col-sm-6">
+		<table class="table sm">
+			<colgroup>
+				<col style="width:15%"/>
+				<col style="width:85%"/>
+			</colgroup>
+			<tr> <td><a href="" class="b-down">다운로드</a></td><td>b-down</td> </tr>
+			<tr> <td><a href="" class="b-reset">리셋</a></td><td>b-reset</td> </tr>
+			<tr> <td><a href="" class="b-add">추가</a></td><td>b-add</td> </tr>
+			<tr> <td><a href="" class="b-view">보기,미리보기</a></td><td>b-view</td> </tr>
+			<tr> <td><a href="" class="b-back">뒤로</a></td><td>b-back</td> </tr>
+			<tr> <td><a href="" class="b-save">저장</a></td><td>b-save</td> </tr>
+			<tr> <td><a href="" class="b-end">종료</a></td><td>b-end</td> </tr>
+			<tr> <td><a href="" class="b-set">설정</a></td><td>b-set</td> </tr>
+			<tr> <td><a href="" class="b-open">열기,새창</a></td><td>b-open</td> </tr>
+			<tr> <td><a href="" class="b-select">선택</a></td><td>b-select</td> </tr>
+			<tr> <td><a href="" class="b-unlock">해제</a></td><td>b-unlock</td> </tr>
+		</table>
+	</div>
+</div>
+
+
+<!-- <table class="table">
+	<tr>
+		<th style="width:70px">버튼</th>
+		<td style="width:100px">
+			<a href="" class="btn btn-primary"><i class="fa fa-reply" aria-hidden="true"></i> 버튼</a>
+			<a href="" class="btn btn-sm btn-primary"><i class="fa fa-reply" aria-hidden="true"></i> 버튼</a>
+			<a href="" class="btn btn-xs btn-primary"><i class="fa fa-reply" aria-hidden="true"></i> 버튼</a>
+		</td>
+		<td><textarea name="" cols="30" rows="3">
+<a href="" class="btn btn-info"><i class="fa fa-reply" aria-hidden="true"></i> 버튼</a>
+<a href="" class="btn btn-sm btn-info"><i class="fa fa-reply" aria-hidden="true"></i> 버튼</a>
+<a href="" class="btn btn-xs btn-info"><i class="fa fa-reply" aria-hidden="true"></i> 버튼</a>
+		</textarea></td>
+	</tr>
+	<tr>
+		<th style="width:70px">답글</th>
+		<td style="width:100px"><i class="fa fa-reply" aria-hidden="true"></i> 답글<br>
+			<a href="" class="btn btn-info"><i class="fa fa-reply" aria-hidden="true"></i> 답글</a>
+		</td>
+		<td><textarea name="" cols="30" rows="3"><i class="fa fa-reply" aria-hidden="true"></i> 답글
+<a href="" class="btn btn-info"><i class="fa fa-reply" aria-hidden="true"></i> 답글</a>
+		</textarea></td>
+	</tr>
+	<tr>
+		<th>삭제</th>
+		<td><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제<br>
+		<button type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button>
+		</td>
+		<td><textarea name="" cols="30" rows="3"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제
+<button type="button" class="btn btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i> 삭제</button>
+		</textarea></td>
+	</tr>
+	<tr>
+		<th>등록</th>
+		<td><i class="fa fa-pencil" aria-hidden="true"></i> 등록<br>
+			<button type="submit" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true"></i> 등록</button>
+		</td>
+		<td><textarea name="" cols="30" rows="3"><i class="fa fa-pencil" aria-hidden="true"></i> 등록
+<button type="submit" class="btn btn-success"><i class="fa fa-pencil" aria-hidden="true"></i> 등록</button>
+		</textarea></td>
+	</tr>
+	<tr>
+		<th>리스트</th>
+		<td><i class="fa fa-list" aria-hidden="true"></i> 리스트<br>
+			<a href="" class="btn btn-default"><i class="fa fa-list" aria-hidden="true"></i> 리스트</a>
+		</td>
+		<td><textarea name="" cols="30" rows="3"><i class="fa fa-list" aria-hidden="true"></i> 리스트
+<a href="" class="btn btn-default"><i class="fa fa-list" aria-hidden="true"></i> 리스트</a>
+		</textarea></td>
+	</tr>
+	<tr>
+		<th>수정</th>
+		<td><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정
+			<a href="" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</a>
+		</td>
+		<td><textarea name="" cols="30" rows="3"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정
+<a href="" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 수정</a>
+		</textarea></td>
+	</tr>
+</table> -->
+
+<h1 id="widthSize">너비사이즈 % = 5단위</h1>
+<input type="text" class="w5p" value="class = w5p"><br>
+<input type="text" class="w10p" value="class = w10p"><br>
+~<br>
+<input type="text" class="w95p" value="class = w95p"><br>
+<input type="text" class="w100p" value="class = w100p"><br>
+
+
+<input type="text" class="w10" value="class = w10">w10<br>
+<input type="text" class="w20" value="class = w20">w20<br>
+<input type="text" class="w30" value="class = w30">w30<br>
+<input type="text" class="w40" value="class = w40">w40<br>
+<input type="text" class="w50" value="class = w50">w50<br>
+<input type="text" class="w60" value="class = w60">w60<br>
+<input type="text" class="w70" value="class = w70">w70<br>
+<input type="text" class="w80" value="class = w80">w80<br>
+<input type="text" class="w90" value="class = w90">w90<br>
+<input type="text" class="w100" value="class = w100">w100<br>
+<input type="text" class="w110" value="class = w110">w110<br>
+<input type="text" class="w120" value="class = w120">w120<br>
+<input type="text" class="w130" value="class = w130">w130<br>
+<input type="text" class="w140" value="class = w140">w140<br>
+<input type="text" class="w150" value="class = w150">w150<br>
+<input type="text" class="w160" value="class = w160">w160<br>
+<input type="text" class="w170" value="class = w170">w170<br>
+<input type="text" class="w180" value="class = w180">w180<br>
+<input type="text" class="w190" value="class = w190">w190<br>
+<input type="text" class="w200" value="class = w200">w200<br>
+<input type="text" class="w300" value="class = w300">w300<br>
+<input type="text" class="w400" value="class = w400">w400<br>
+<input type="text" class="w500" value="class = w500">w500
+
+
+<h1 id="tel">전화번호</h1>
+<select name="ntcrMobile1" title="담당자 연락처 앞 자리" >
+	<option value="" selected>선택</option>
+	<option value="010" >010</option>
+	<option value="011" >011</option>
+	<option value="016" >016</option>
+	<option value="017" >017</option>
+	<option value="018" >018</option>
+	<option value="019" >019</option>
+	<option value="02"  >02</option>
+	<option value="070" >070</option>
+	<option value="051" >051</option>
+	<option value="053" >053</option>
+	<option value="032" >032</option>
+	<option value="062" >062</option>
+	<option value="042" >042</option>
+	<option value="052" >052</option>
+	<option value="044" >044</option>
+	<option value="031" >031</option>
+	<option value="033" >033</option>
+	<option value="043" >043</option>
+	<option value="041" >041</option>
+	<option value="063" >063</option>
+	<option value="061" >061</option>
+	<option value="054" >054</option>
+	<option value="055" >055</option>
+	<option value="064" >064</option>
+</select>
+-
+<input type="text" name="ntcrMobile2" class="tel" title="담당자 연락처 중간 3~4자리" maxlength="4" />
+-
+<input type="text" name="ntcrMobile3" class="tel" title="담당자 연락처 끝 4자리" maxlength="4" />
+<pre>
+&lt;select name="ntcrMobile1" title="담당자 연락처 앞 자리" >
+	&lt;option value="" selected>선택&lt;/option>
+	&lt;option value="010" >010&lt;/option>
+	&lt;option value="011" >011&lt;/option>
+	&lt;option value="016" >016&lt;/option>
+	&lt;option value="017" >017&lt;/option>
+	&lt;option value="018" >018&lt;/option>
+	&lt;option value="019" >019&lt;/option>
+	&lt;option value="02"  >02&lt;/option>
+	&lt;option value="070" >070&lt;/option>
+	&lt;option value="051" >051&lt;/option>
+	&lt;option value="053" >053&lt;/option>
+	&lt;option value="032" >032&lt;/option>
+	&lt;option value="062" >062&lt;/option>
+	&lt;option value="042" >042&lt;/option>
+	&lt;option value="052" >052&lt;/option>
+	&lt;option value="044" >044&lt;/option>
+	&lt;option value="031" >031&lt;/option>
+	&lt;option value="033" >033&lt;/option>
+	&lt;option value="043" >043&lt;/option>
+	&lt;option value="041" >041&lt;/option>
+	&lt;option value="063" >063&lt;/option>
+	&lt;option value="061" >061&lt;/option>
+	&lt;option value="054" >054&lt;/option>
+	&lt;option value="055" >055&lt;/option>
+	&lt;option value="064" >064&lt;/option>
+&lt;/select>
+-
+&lt;input type="text" name="ntcrMobile2" class="tel" title="담당자 연락처 중간 3~4자리" maxlength="4" />
+-
+&lt;input type="text" name="ntcrMobile3" class="tel" title="담당자 연락처 끝 4자리" maxlength="4" />
+</pre>
+
+
+<h1 id="formid">아이디중복확인</h1>
+<label for="id"><span class="req"><span>필수입력</span></span> 아이디</label>
+<input type="text" id="id" class="userId"/><button type="button" class="b-ok idChk">아이디 중복확인</button>
+<div class="inputDeco"><p>※ 6~16자까지  영문자(대소문자), 숫자 및 특수문자(제외 : !, &amp;, #, ?) 사용 가능합니다.</p></div>
+<pre>
+&lt;label for="id">&lt;span class="req">&lt;span>필수입력&lt;/span>&lt;/span> 아이디&lt;/label>
+&lt;input type="text" id="id" class="userId"/>&lt;button type="button" class="b-ok idChk">아이디 중복확인&lt;/button>
+&lt;div class="inputDeco">&lt;p>※ 6~16자까지  영문자(대소문자), 숫자 및 특수문자(제외 : !, &amp;, #, ?) 사용 가능합니다.&lt;/p>&lt;/div>
+</pre>
+
+
+<h1 id="ceocode">사업자등록번호</h1>
+<input type="text" class="companyCode1" title="사업자등록번호 처음 구분"/> -
+<input type="text" class="companyCode2" title="사업자등록번호 중간 구분"/> -
+<input type="text" class="companyCode3" title="사업자등록번호 끝 구분"/>
+<button type="button" class="b-ok companyCodeChk">중복확인</button>
+<pre>
+&lt;input type="text" class="companyCode1" title="사업자등록번호 처음 구분"/> -
+&lt;input type="text" class="companyCode2" title="사업자등록번호 중간 구분"/> -
+&lt;input type="text" class="companyCode3" title="사업자등록번호 끝 구분"/>
+&lt;button type="button" class="b-ok companyCodeChk">중복확인&lt;/button>
+</pre>
+
+
+<h1 id="sex">성별</h1>
+<label><input type="radio" name="sex" /> 남</label>
+<label><input type="radio" name="sex" /> 여</label>
+<pre>
+&lt;label>&lt;input type="radio" name="sex" /> 남&lt;/label>
+&lt;label>&lt;input type="radio" name="sex" /> 여&lt;/label>
+</pre>
+
+<h1 id="post">우편번호</h1>
+<div class="postSet">
+	<span>
+	<input type="text" name="" value="" class="post" title="우편번호" placeholder="우편번호" />
+	<a href="#" class="b-sh" title="새창열림">주소 찾기</a>
+	</span>
+	<span><input type="text" name="" value="" class="w100p" title="주소" placeholder="기본 주소" /></span>
+	<span><input type="text" name="" value="" class="w100p" title="상세주소" placeholder="상세주소 입력" /></span>
+</div>
+<pre>
+&lt;div class="postSet">
+	&lt;span>
+	&lt;input type="text" name="" value="" class="post" title="우편번호" />
+	&lt;a href="#" class="b-sh" title="새창열림">주소 찾기&lt;/a>
+	&lt;/span>
+	&lt;span>&lt;input type="text" name="" value="" class="w100p" title="주소" />&lt;/span>
+	&lt;span>&lt;input type="text" name="" value="" class="w100p" title="상세주소" />&lt;/span>
+&lt;/div>
+</pre>
+
+<h1 id="email">이메일폼</h1>
+<input name="ntcrEmail1" id="ntcrEmail1" type="text" title="이메일 아이디" placeholder="이메일 아이디" value="" class="emailId" />
+@
+<input name="ntcrEmail2" id="ntcrEmail2" type="text" title="이메일 주소" placeholder="이메일 주소" value="" readonly="readonly" class="emailAddr emailDomainForm" />
+<label for="sr_email_more" class="hidden">이메일 도메인 선택</label>
+<select id="sr_email_more" name="" class="input_select select_email_js" title="직접입력 선택시 자동활성화&amp;포커스 이동">
+	<option selected>메일주소선택</option>
+	<option value   ="gmail.com">gmail.com</option>
+	<option value   ="naver.com">naver.com</option>
+	<option value   ="hanmail.net">hanmail.net</option>
+	<option value   ="daum.net">daum.net</option>
+	<option value   ="hotmail.com">hotmail.com</option>
+	<option value   ="nate.com">nate.com</option>
+	<option value   ="yahoo.co.kr">yahoo.co.kr</option>
+	<option value   ="emaildomain_false">직접입력</option>
+</select>
+<script>
+jQuery(function(){
+	jQuery('select.select_email_js').change(function() {
+		if (jQuery(this).val()=='emaildomain_false') {
+			jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+			jQuery('.emailDomainForm').attr('readonly',false).focus();
+		}else{
+			jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+			jQuery('.emailDomainForm:text[name=ntcrEmail2]').val(jQuery(this).val());
+			jQuery('.emailDomainForm').attr('readonly',true)
+		}
+	});
+});
+</script>
+<pre>
+&lt;input name="ntcrEmail1" id="ntcrEmail1" type="text" title="이메일 아이디" placeholder="이메일 아이디" value="" class="emailId" />
+@
+&lt;input name="ntcrEmail2" id="ntcrEmail2" type="text" title="이메일 주소" placeholder="이메일 주소" value="" readonly="readonly" class="emailAddr emailDomainForm" />
+&lt;label for="sr_email_more" class="hidden">이메일 도메인 선택&lt;/label>
+&lt;select id="sr_email_more" name="" class="input_select select_email_js" title="직접입력 선택시 자동활성화&amp;포커스 이동">
+	&lt;option selected>메일주소선택&lt;/option>
+	&lt;option value   ="gmail.com">gmail.com&lt;/option>
+	&lt;option value   ="naver.com">naver.com&lt;/option>
+	&lt;option value   ="hanmail.net">hanmail.net&lt;/option>
+	&lt;option value   ="daum.net">daum.net&lt;/option>
+	&lt;option value   ="hotmail.com">hotmail.com&lt;/option>
+	&lt;option value   ="nate.com">nate.com&lt;/option>
+	&lt;option value   ="yahoo.co.kr">yahoo.co.kr&lt;/option>
+	&lt;option value   ="emaildomain_false">직접입력&lt;/option>
+&lt;/select>
+&lt;script>
+jQuery(function(){
+	jQuery('select.select_email_js').change(function() {
+		if (jQuery(this).val()=='emaildomain_false') {
+			jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+			jQuery('.emailDomainForm').attr('readonly',false).focus();
+		}else{
+			jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+			jQuery('.emailDomainForm:text[name=ntcrEmail2]').val(jQuery(this).val());
+			jQuery('.emailDomainForm').attr('readonly',true)
+		}
+	});
+});
+&lt;/script>
+</pre>
+<h1 id="bdviewnav">이전다음글</h1>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd><a href=""> 창창한 대화-융합편 with 와디즈, 이연택 디자인연구소 </a></dd>
+	</dl>
+	<dl>
+		<dt>아랫글</dt>
+		<dd><a href=""> 2016 아이디어 융합팩토리 6기 창작자 모집공고 </a></dd>
+	</dl>
+</div>
+<pre>
+&lt;div class="bdViewNav">
+	&lt;dl>
+		&lt;dt>이전글&lt;/dt>
+		&lt;dd>&lt;a href=""> 창창한 대화-융합편 with 와디즈, 이연택 디자인연구소 &lt;/a>&lt;/dd>
+	&lt;/dl>
+	&lt;dl>
+		&lt;dt>다음글&lt;/dt>
+		&lt;dd>&lt;a href=""> 2016 아이디어 융합팩토리 6기 창작자 모집공고 &lt;/a>&lt;/dd>
+	&lt;/dl>
+&lt;/div>
+</pre>
+
+
+<h1 id="loginform">폼-로그인</h1>
+<div class="loginSet">
+	<form action="">
+		<span>
+			<label for="userId">아이디</label>
+			<input type="text" id="userId" />
+		</span>
+		<span>
+			<label for="password">비밀번호</label>
+			<input type="password" id="password" />
+		</span>
+		<button class="b-login">로그인</button>
+	</form>
+	<div class="moreLink">
+	<a href="">회원가입</a>
+	<a href="">아이디 찾기</a>
+	<a href="">비밀번호 찾기</a>
+	</div>
+</div>
+<pre>
+&lt;div class="loginSet">
+	&lt;form action="">
+		&lt;span>
+			&lt;label for="userId">아이디&lt;/label>
+			&lt;input type="text" id="userId" />
+		&lt;/span>
+		&lt;span>
+			&lt;label for="password">비밀번호&lt;/label>
+			&lt;input type="password" id="password" />
+		&lt;/span>
+		&lt;input type="submit" value="로그인" />
+		&lt;button class="b-login">로그인&lt;/button>
+	&lt;/form>
+	&lt;div class="moreLink">
+	&lt;a href="">회원가입&lt;/a>
+	&lt;a href="">아이디 찾기&lt;/a>
+	&lt;a href="">비밀번호 찾기&lt;/a>
+	&lt;/div>
+&lt;/div>
+</pre>
+<h1 id="req">필수입력</h1>
+<span class="req"><span>필수입력</span></span>
+<pre>
+&lt;span class="req">&lt;span>필수입력&lt;/span>&lt;/span>
+</pre>
+
+<h1 id="reqInfor">필수입력안내</h1>
+<div class="reqInfor"><span class="req"><span>필수입력</span></span>표시 항목은 필수 입력 항목입니다.</div>
+<pre>
+&lt;div class="reqInfor">&lt;span class="req">&lt;span>필수입력&lt;/span>&lt;/span>표시 항목은 필수 입력 항목입니다.&lt;/div>
+</pre>
+
+<h1 id="recomentSample">답글</h1>
+<h4>답글 남기기</h4>
+<div class="reComentSubmit view">
+	<dl>
+		<dt><span class="req"><span>필수입력</span></span>공개여부</dt>
+		<dd>
+			<label><input type="radio" /> 공개</label>
+			<label><input type="radio" /> 비공개</label>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="recomentTextarea"><span class="req"><span>필수입력</span></span>답글쓰기</label></dt>
+		<dd>
+			<textarea name="" id="recomentTextarea" cols="30" rows="3" class="w100p"></textarea>
+			<button class="b-reg w100p mt5">등록</button>
+		</dd>
+	</dl>
+</div>
+<h4>댓글목록</h4>
+<div class="reComentList">
+	<ul>
+		<li>
+			<div class="fl">
+				<span class="name">이**</span>
+				<span class="time">2016-05-05 15:03</span>
+			</div>
+			<div class="fr">
+				<button type="button" class="b-edit btn-xs">수정</button>
+				<button type="button" class="b-del btn-xs">삭제</button>
+			</div>
+			<p class="clear">
+				비공개 글입니다.
+			</p>
+		</li>
+		<li>
+			<div class="fl">
+				<span class="name">이**</span>
+				<span class="time">2016-05-05 15:03</span>
+			</div>
+			<div class="row clear">
+				<div class="col-sm-10"><textarea name="" id="" cols="30" rows="10" class="w100p" title="댓글수정" style="height:67px"></textarea></div>
+				<div class="col-sm-2">
+				<button type="button" class="b-edit btn-sm w100p">수정</button>
+				<button type="button" class="b-cancel btn-sm w100p mt5">수정취소</button>
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<pre>
+&lt;div class="reComentList">
+	&lt;ul>
+		&lt;li>
+			&lt;div class="fl">
+				&lt;span class="name">이**&lt;/span>
+				&lt;span class="time">2016-05-05 15:03&lt;/span>
+			&lt;/div>
+			&lt;div class="fr">
+				&lt;button type="button" class="b-edit btn-xs">수정&lt;/button>
+				&lt;button type="button" class="b-del btn-xs">삭제&lt;/button>
+			&lt;/div>
+			&lt;p class="clear">
+				비공개 글입니다.
+			&lt;/p>
+		&lt;/li>
+		&lt;li>
+			&lt;div class="fl">
+				&lt;span class="name">이**&lt;/span>
+				&lt;span class="time">2016-05-05 15:03&lt;/span>
+			&lt;/div>
+			&lt;div class="row clear">
+				&lt;div class="col-sm-10">&lt;textarea name="" id="" cols="30" rows="10" class="w100p" title="댓글수정" style="height:67px">&lt;/textarea>&lt;/div>
+				&lt;div class="col-sm-2">
+				&lt;button type="button" class="b-edit btn-sm w100p">수정&lt;/button>
+				&lt;button type="button" class="b-cancel btn-sm w100p mt5">수정취소&lt;/button>
+				&lt;/div>
+			&lt;/div>
+		&lt;/li>
+	&lt;/ul>
+&lt;/div>
+</pre>
+
+<hr>
+<h1 id="profileMent">프로필이미지 사이즈 안내 멘트</h1>
+<p>
+권장사이즈 275 × 370 픽셀이며, 용량은 <spring:eval expression="@prop['Globals.imgFile.limitSize']" />이하
+</p>
+
+<div class="productForm">
+	<ul>
+		<li>
+			<input type="file" title="파일 1">
+			<button type="button" class="b-del">삭제</button>
+		</li>
+	</ul>
+	<div class="ctrl">
+		<button type="button" class="b-add">추가</button>
+	</div>
+</div>
+
+
+
+<h1 id="tabspanel">tabspanel(앵커탭)</h1>
+<div role="tabpanel">
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs" role="tablist">
+		<li role="presentation" class="active">
+			<a href="#home" aria-controls="home" role="tab" data-toggle="tab">home</a>
+		</li>
+		<li role="presentation">
+			<a href="#tab" aria-controls="tab" role="tab" data-toggle="tab">tab</a>
+		</li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content">
+		<div role="tabpanel" class="tab-pane active" id="home">...</div>
+		<div role="tabpanel" class="tab-pane" id="tab">...</div>
+	</div>
+</div>
+
+<h1 id="linkTab">tabs(링크탭)</h1>
+<div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs">
+		<li class="active"> <a href="#home">home</a> </li>
+		<li>				<a href="#tab">tab</a> </li>
+	</ul>
+
+</div>
+
+<h1 id="tabDropdown">tabs+tabs(2뎁스탭) dropdown-menu</h1>
+<div class="bs-example" data-example-id="nav-tabs-with-dropdown">
+	<ul class="nav nav-tabs">
+		<li role="presentation" class="active"><a href="#">Home</a></li>
+		<li role="presentation"><a href="#">Help</a></li>
+		<li role="presentation" class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+				Dropdown <span class="caret"></span>
+			</a>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+<h1 id="tab2depth">tab 2depth</h1>
+<div>
+	<!-- Nav tabs -->
+	<ul class="nav nav-tabs nav-justified">
+		<li class="active"><a href="#home">home</a>
+			<ul class="tab-2depth">
+				<li class="active"><a href="">예선</a></li>
+				<li><a href="">본선</a></li>
+			</ul>
+		</li>
+		<li><a href="#tab">tab</a>
+			<ul class="tab-2depth">
+				<li><a href="">예선</a></li>
+				<li><a href="">본선</a></li>
+			</ul>
+		</li>
+	</ul>
+</div>
+
+<h1 id="searchtype1">검색</h1>
+<form action="">
+	<div class="sh">
+		<fieldset>
+		<legend>게시물검색</legend>
+			<div>
+				<label><input type="checkbox" name=""> 체크박스 1</label>
+				<label><input type="checkbox" name=""> 체크박스 1</label>
+				<label><input type="checkbox" name=""> 체크박스 1</label>
+				<label><input type="checkbox" name=""> 체크박스 1</label>
+			</div>
+			<div>
+				<label><input type="radio" name="sr-radio1"> 라디오 1</label>
+				<label><input type="radio" name="sr-radio1"> 라디오 1</label>
+				<label><input type="radio" name="sr-radio1"> 라디오 1</label>
+				<label><input type="radio" name="sr-radio1"> 라디오 1</label>
+			</div>
+
+			<div>
+				<label>
+					카테고리
+					<select name="" id="select1">
+						<option value="">선택</option>
+					</select>
+				</label>
+				<label>
+					카테고리
+					<select name="" id="select2">
+						<option value="">선택</option>
+					</select>
+				</label>
+				<label>
+					카테고리
+					<select name="" id="select3">
+						<option value="">선택</option>
+					</select>
+				</label>
+				<label>
+					카테고리
+					<select name="" id="select4">
+						<option value="">선택</option>
+					</select>
+				</label>
+			</div>
+			<div>
+				<input type="text" id="sdate" name="sdate" value="" size="10" /> ~
+				<input type="text" id="edate" name="edate" value="" size="10" />
+				<select name="searchCnd" title="검색조건">
+				   <option value="1">제목</option>
+				   <option value="2">내용</option>
+				</select>
+				<input type="text" title="검색어" name="searchWrd" value="" />
+				<button type="submit" class="b-sh">검색</button>
+			</div>
+		</fieldset>
+	</div>
+</form>
+
+<hr />
+<h1 id="searchtype2">검색 한줄</h1>
+<form action="">
+	<div class="sh">
+		<fieldset>
+		<legend>게시물검색</legend>
+			<div>
+				<input type="text" id="sdate" name="sdate" value="" size="10" /> ~
+				<input type="text" id="edate" name="edate" value="" size="10" />
+				<select name="searchCnd" title="검색조건">
+					<option value="1">제목</option>
+					<option value="2">내용</option>
+				</select>
+				<input type="text" title="검색어" name="searchWrd" value="" />
+				<button type="submit" class="b-sh">검색</button>
+			</div>
+		</fieldset>
+	</div>
+</form>
+
+<h1 id="stepsBswizard">스텝(임시용)</h1>
+<div class="row bs-wizard">
+
+	<div class="col-xs-3 bs-wizard-step complete">
+		<div class="text-center bs-wizard-stepnum">Step 1</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<span class="bs-wizard-dot"></span>
+		<div class="bs-wizard-info text-center">Step 1 설명</div>
+	</div>
+
+	<div class="col-xs-3 bs-wizard-step complete"><!-- complete -->
+		<div class="text-center bs-wizard-stepnum">Step 2</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<span class="bs-wizard-dot"></span>
+		<div class="bs-wizard-info text-center">Step 2 설명</div>
+	</div>
+
+	<div class="col-xs-3 bs-wizard-step active"><!-- complete -->
+		<div class="text-center bs-wizard-stepnum">Step 3</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<span class="bs-wizard-dot"></span>
+		<div class="bs-wizard-info text-center">Step 3 설명</div>
+	</div>
+
+	<div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
+		<div class="text-center bs-wizard-stepnum">Step 4</div>
+		<div class="progress"><div class="progress-bar"></div></div>
+		<span class="bs-wizard-dot"></span>
+		<div class="bs-wizard-info text-center">Step 4 설명</div>
+	</div>
+</div>
+
+<h1 id="maxTextSize">몇자이내입력</h1>
+<p>data-lensize="글자수"</p>
+<script>
+$(function() {
+	$('.characterLen').each(function(index, el) {
+		$(this).keyup(function (e){
+			var selfintroduction = $(this).val();
+			var str = $(this).val();
+			var limit = $(this).data().lensize;
+			$(this).next().html(selfintroduction.length + '/'+limit+'자 이내 입력');
+			if(selfintroduction.length >= 2000){
+				alert("글자수는 "+limit+"자를 초과할수 없습니다.");
+				$(this).val(str.substring(0,limit))
+			}
+		})
+		.next().html($(this).data().lensize+'자 이내 입력')
+	});
+});
+</script>
+<textarea class="characterLen" data-lensize="1980" cols="100" rows="10"></textarea>
+<p class="characterLenDeco"></p>
+<pre>
+&lt;script>
+$(function() {
+	$('.characterLen').each(function(index, el) {
+		$(this).keyup(function (e){
+			var selfintroduction = $(this).val();
+			var str = $(this).val();
+			var limit = $(this).data().lensize;
+			$(this).next().html(selfintroduction.length + '/'+limit+'자 이내 입력');
+			if(selfintroduction.length >= 2000){
+				alert("글자수는 "+limit+"자를 초과할수 없습니다.");
+				$(this).val(str.substring(0,limit))
+			}
+		})
+		.next().html($(this).data().lensize+'자 이내 입력')
+	});
+});
+&lt;/script>
+&lt;textarea class="characterLen" data-lensize="1980" cols="100" rows="10">&lt;/textarea>
+&lt;p class="characterLenDeco">&lt;/p>
+</pre>
+
+<h1 id="tooltip1">툴팁</h1>
+<p><a href="http://bootstrapk.com/javascript/#tooltips" target="_blank" title="새창열림" class="b-open">자세한 설명은 ?</a></p>
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="Tooltip on left">Tooltip on left</button>
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top</button>
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">Tooltip on bottom</button>
+<button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Tooltip on right">Tooltip on right</button>
+
+<div class="highlight"><pre><code class="language-js" data-lang="js"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">'[data-toggle="tooltip"]'</span><span class="p">).</span><span class="nx">tooltip</span><span class="p">()</span>
+<span class="p">})</span></code></pre></div>
+<script>
+$(function () {
+	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+
+<pre>
+&lt;button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="Tooltip on left">Tooltip on left&lt;/button>
+&lt;button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Tooltip on top">Tooltip on top&lt;/button>
+&lt;button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">Tooltip on bottom&lt;/button>
+&lt;button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="Tooltip on right">Tooltip on right&lt;/button>
+</pre>
+
+<h1 id="imeKo">한글입력</h1>
+<p>
+	<input type="text" class="imeKo">
+	클래스 추가 &amp; 스크립트 추가 &lt;input type="text" class="imeKo">
+	<script>
+		$('.imeKo').each(function(index, el) {
+			$(this).css('ime-mode','active')
+		});
+	</script>
+	<h2>지원브라우저</h2>
+	<table class="table table-bordered">
+		<tbody>
+			<tr>
+				<th>Feature</th>
+				<th>Chrome</th>
+				<th style="color:#f0f">Edge</th>
+				<th style="color:#f0f">Firefox (Gecko)</th>
+				<th style="color:#f0f">Internet Explorer</th>
+				<th>Opera</th>
+				<th>Safari (WebKit)</th>
+			</tr>
+			<tr>
+				<td>Basic support</td>
+				<td style="color:#f00">No support</td>
+				<td style="color:#f0f">(Yes)</td>
+				<td style="color:#f0f">3.0 (1.9)</td>
+				<td style="color:#f0f">5.0</td>
+				<td style="color:#f00">No support</td>
+				<td style="color:#f00">No support</td>
+			</tr>
+		</tbody>
+	</table>
+</p>
+<pre>
+$('.imeKo').each(function(index, el) {
+	$(this).css('ime-mode','active')
+});
+</pre>
+
+<jsp:include page="noticeView.jsp" flush="true" />
+<!--  -->
+</div>
+	</div>
+	<div class="col-md-3">
+		<nav id="nav">
+			<ol>
+			</ol>
+		</nav>
+	</div>
+
+</div>
+</div>
+
+<script>
+$(function() {
+	$('#codeList h1').each(function(index, el) {
+		$('#nav>ol').append('<li>').find('li:last').append('<a href=#'+$(this).attr('id')+'>'+$(this).text()+'</a>');
+	});
+});
+</script>
+
+<link href="/static/jslibrary/google-code-prettify/prettify.css" type="text/css" rel="stylesheet" />
+<script type="text/javascript" src="/static/jslibrary/google-code-prettify/prettify.js"></script>
+<script>
+$('pre').addClass('prettyprint');
+prettyPrint();
+</script>
+</body>
+
+
+
+</html>

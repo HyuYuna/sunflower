@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.bbs.BbsCmDAO">
+
+	<sql id="BbsCm-where">
+		<if test="searchWrd != null and searchWrd != ''">
+			<if test="searchCnd == '1'">
+				<![CDATA[	AND A.NTT_CN LIKE CONCAT('%',#{nttCn},'%')		]]>
+			</if>
+		</if>
+	</sql>
+	
+	<select id="countBbsCm" parameterType="zvl" resultType="long">
+		<![CDATA[
+			/* countBbsCm */
+		
+			SELECT	COUNT(BCIDX)
+			FROM	EDU_BOARD_COMMENT
+			WHERE	BCBOABCBOARDCODE = #{bid}
+					AND BCBOIDX = #{bcboidx}
+		]]>
+	</select>
+
+	<!-- <select id="countBbsCm" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT	COUNT(A.CM_ID)
+			FROM TB_BBS_CM A
+			WHERE A.BBS_ID = #{bbsId}
+			AND A.NTT_ID = #{nttId}
+			AND A.DELETE_CD = '0'
+		]]>
+		<include refid="BbsCm-where" />
+	</select> -->
+	
+	<select id="findAllBbsCm" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAllBbsCm */
+		
+			SELECT	  BCIDX
+					, BCNAME
+					, BCUSERID
+					, BCCONTENTS
+					, BCCREATEDATE
+			FROM	EDU_BOARD_COMMENT
+			WHERE	BCBOABCBOARDCODE = #{bid}
+					AND BCBOIDX = #{bcboidx}
+			ORDER BY BCIDX DESC
+		]]>
+	</select>
+
+	<!-- <select id="findAllBbsCm" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT
+				 A.CM_ID
+				, A.NTT_ID
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.BBS_ID
+				, A.NTCR_ID
+				, A.NTCR_NM
+				, A.PASSWORD
+				, A.NTCR_EMAD
+				, A.RECOMMEND_CO
+				, A.CM_SE
+				, A.USER_SN
+				, A.OPTN1
+				, A.OPTN2
+				, A.OPTN3
+				, A.OPTN4
+				, A.OPTN5
+				, A.OPTN6
+				, A.OPTN7
+				, A.OPTN8
+				, A.OPTN9
+				, A.OPTN10
+				, A.EXPSR_AT
+				, A.DELETE_CD
+				, A.USE_AT
+				, A.REGIST_ID
+				, A.REGIST_DT
+			FROM TB_BBS_CM A
+			WHERE A.BBS_ID = #{bbsId}
+			AND A.NTT_ID = #{nttId}
+			AND A.DELETE_CD = '0'
+		]]>
+		<include refid="BbsCm-where" />
+		<![CDATA[
+			ORDER BY A.CM_ID DESC
+			limit #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select> -->
+
+
+	<select id="findOneBbsCm" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT
+                  A.CM_ID
+                 , A.NTT_ID
+                 , A.NTT_SJ
+                 , A.NTT_CN
+                 , A.BBS_ID
+                 , A.NTCR_ID
+                 , A.NTCR_NM
+                 , A.PASSWORD
+                 , A.NTCR_EMAD
+                 , A.RECOMMEND_CO
+                 , A.CM_SE
+                 , A.USER_SN
+                 , A.OPTN1
+                 , A.OPTN2
+                 , A.OPTN3
+                 , A.OPTN4
+                 , A.OPTN5
+                 , A.OPTN6
+                 , A.OPTN7
+                 , A.OPTN8
+                 , A.OPTN9
+                 , A.OPTN10
+                 , A.EXPSR_AT
+                 , A.DELETE_CD
+                 , A.USE_AT
+                 , A.REGIST_ID
+                 , A.REGIST_DT
+                 , A.UPDT_ID
+                 , A.UPDT_DT
+			FROM TB_BBS_CM A
+			WHERE
+				A.CM_ID = #{cmId}
+		]]>
+	</select>
+
+	<insert id="saveBbsCm" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="bcidx">
+			SELECT IFNULL(Max(BCIDX),0)+1 FROM EDU_BOARD_COMMENT
+		</selectKey>
+			<![CDATA[
+			INSERT INTO EDU_BOARD_COMMENT (
+				  BCIDX
+				, BCBOIDX
+				, BCBOABCBOARDCODE
+				, BCUSERID
+				, BCCREATEDATE
+				, BCNAME
+				, BCCONTENTS
+				, BCBOABCBOARDCODE_OLD
+				, BCUID
+				, BCNO
+				, BCREPLYID
+				, BCPASSWORD
+		     )
+			VALUES (
+				  #{bcidx}
+				, #{bcboidx}
+				, #{bid}
+				, #{bcuserid}
+				, NOW()
+				, #{bcname}
+				, #{bccontents}
+				, #{bcboabcboardcodeOld}
+				, #{bcuid}
+				, #{bcno}
+				, #{bcreplyid}
+				, #{bcpassword}
+			)
+			]]>
+	</insert>
+
+	<!-- <insert id="saveBbsCm" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="cmId">
+			SELECT IFNULL(Max(CM_ID),0)+1 FROM TB_BBS_CM
+		</selectKey>
+		<![CDATA[
+		     INSERT INTO TB_BBS_CM (
+                  CM_ID
+                 , NTT_ID
+                 , NTT_SJ
+                 , NTT_CN
+                 , BBS_ID
+                 , NTCR_ID
+                 , NTCR_NM
+                 , PASSWORD
+                 , NTCR_EMAD
+                 , RECOMMEND_CO
+                 , CM_SE
+                 , USER_SN
+                 , OPTN1
+                 , OPTN2
+                 , OPTN3
+                 , OPTN4
+                 , OPTN5
+                 , OPTN6
+                 , OPTN7
+                 , OPTN8
+                 , OPTN9
+                 , OPTN10
+                 , EXPSR_AT
+                 , DELETE_CD
+                 , USE_AT
+                 , REGIST_ID
+                 , REGIST_DT
+                 , UPDT_ID
+                 , UPDT_DT
+		     )
+			VALUES (
+				 #{cmId}
+				, #{nttId}
+				, #{nttSj}
+				, #{nttCn}
+				, #{bbsId}
+				, #{registId}
+				, #{ntcrNm}
+				, #{password}
+				, #{ntcrEmad}
+				, #{recommendCo}
+				, #{cmSe}
+				, #{userSn}
+				, #{optn1}
+				, #{optn2}
+				, #{optn3}
+				, #{optn4}
+				, #{optn5}
+				, #{optn6}
+				, #{optn7}
+				, #{optn8}
+				, #{optn9}
+				, #{optn10}
+				, 'Y'
+				, 0
+				, 'Y'
+				, #{registId}
+				, NOW()
+				, #{updtId}
+				, NOW()
+			)
+		]]>
+	</insert> -->
+	
+	<update id="updateBbsCm" parameterType="zvl">
+		<![CDATA[
+			UPDATE EDU_BOARD_COMMENT
+			SET
+				BCCONTENTS = #{bccontents}
+			WHERE BCIDX = #{bcidx}
+		]]>
+	</update>
+
+	<!-- <update id="updateBbsCm" parameterType="zvl">
+		<![CDATA[
+		     UPDATE TB_BBS_CM
+			 SET
+                 NTT_SJ = #{nttSj}
+                 ,NTT_CN = #{nttCn}
+                 ,BBS_ID = #{bbsId}
+                 ,PASSWORD = #{password}
+                 ,NTCR_EMAD = #{ntcrEmad}
+                 ,CM_SE = #{cmSe}
+                 ,OPTN1 = #{optn1}
+                 ,OPTN2 = #{optn2}
+                 ,OPTN3 = #{optn3}
+                 ,OPTN4 = #{optn4}
+                 ,OPTN5 = #{optn5}
+                 ,OPTN6 = #{optn6}
+                 ,OPTN7 = #{optn7}
+                 ,OPTN8 = #{optn8}
+                 ,OPTN9 = #{optn9}
+                 ,OPTN10 = #{optn10}
+                 ,UPDT_ID = #{updtId}
+                 ,UPDT_DT = NOW()
+			 WHERE CM_ID = #{cmId}
+		]]>
+	</update> -->
+	
+	<delete id="deleteBbsCm" parameterType="zvl">
+		<![CDATA[
+			DELETE
+			FROM EDU_BOARD_COMMENT
+			WHERE BCIDX = #{bcidx} AND BCBOABCBOARDCODE = #{bid}
+		]]>
+	</delete>
+
+	<!-- <update id="deleteBbsCm" parameterType="zvl">
+		<![CDATA[
+		     UPDATE TB_BBS_CM SET
+		     DELETE_CD = '1'
+			 WHERE CM_ID = #{cmId}
+		]]>
+	</update> -->
+	
+	<!--
+	<delete id="deleteBbsCm" parameterType="zvl">
+		<![CDATA[
+		     DELETE TB_BBS_CM
+			 WHERE CM_ID = #{cmId}
+		]]>
+	</delete>
+	-->
+
+	<select id="findOneBbsCmAccessInfo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				CM_ID, NTT_ID, BBS_ID, NTCR_ID
+			FROM TB_BBS_CM A
+			WHERE  A.CM_ID = #{cmId}
+		]]>
+	</select>
+</mapper>

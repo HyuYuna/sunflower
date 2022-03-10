@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.cms.dao.bbs.BoardMasterDAO">
+
+	<sql id="BbsMastr-where">
+		<if test='searchWrd != null and searchWrd != ""'>
+			<if test="searchCnd != null and searchCnd == 0">
+				<![CDATA[	AND	A.BBS_NM LIKE '%' + #{searchWrd} + '%' 		]]>
+			</if>
+			<if test="searchCnd != null and searchCnd == 1">
+				<![CDATA[	AND	B.CD_NM LIKE '%' + #{searchWrd} + '%' 			]]>
+			</if>
+		</if>
+		<if test='bbsAttrbCd != null and bbsAttrbCd != ""'>
+			<![CDATA[	AND	A.BBS_ATTRB_CD = #{bbsAttrbCd}		]]>
+		</if>
+	</sql>
+
+	<insert id="saveBbsMastr" parameterType="zvl" >
+		<![CDATA[
+			INSERT INTO TB_BBS_MASTR (
+			    REGIST_ID,REGIST_DT,UPDT_ID,UPDT_DT,BBS_ID,BBS_TY_CD,
+			    BBS_ATTRB_CD,BBS_NM,BBS_DC,REPLY_POSBL_AT,FILE_ATCH_POSBL_AT,
+			    ATCH_POSBL_FILE_CO,ATCH_POSBL_FILE_SIZE,NTCE_BGNDE,NTCE_ENDDE,TMPLAT_ID,
+			    CM_POSBL_AT,ADIT_CNTNTS_CN,PAGE_SIZE,PAGE_UNIT,PREV_NEXT_POSBL_AT,
+			    TABLE_NM,DELETE_CD,USE_AT
+			)
+			VALUES (
+			    #{registId},GETDATE(),#{updtId},GETDATE(),#{bbsId},#{bbsTyCd},
+			    #{bbsAttrbCd},#{bbsNm},#{bbsDc},#{replyPosblAt},#{fileAtchPosblAt},
+			    #{atchPosblFileCo},#{atchPosblFileSize},#{ntceBgnde},#{ntceEndde},#{tmplatId},
+			    #{cmPosblAt},#{aditCntntsCn},#{pageSize},#{pageUnit},#{prevNextPosblAt},
+			    #{tableNm},'0','Y'
+			)
+		]]>
+	</insert>
+
+	<select id="findAllBbsMastr" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+		SELECT  AA.*
+			  FROM  (
+			SELECT ROW_NUMBER() OVER(ORDER BY ALL_LIST.BBS_ID DESC) RNUM, ALL_LIST.*
+			  FROM  (
+
+			SELECT
+				A.BBS_ID, A.BBS_TY_CD, B.CD_NM as BBS_TY_NM, A.BBS_DC,
+				A.BBS_ATTRB_CD, C.ATTRB_NM AS BBS_ATTRB_NM, A.BBS_NM,
+				A.TMPLAT_ID, D.TMPLAT_NM, D.TMPLAT_COURS, A.FILE_ATCH_POSBL_AT,
+				A.REPLY_POSBL_AT,
+				A.USE_AT, A.REGIST_DT,
+				A.ADIT_CNTNTS_CN,
+				A.TABLE_NM, A.PREV_NEXT_POSBL_AT, A.CM_POSBL_AT,
+				A.PAGE_UNIT, A.PAGE_SIZE
+			FROM
+				TB_BBS_MASTR A
+			LEFT OUTER JOIN
+				(SELECT CD_ID, CD, CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'COM004' AND USE_AT='Y') B
+				ON A.BBS_TY_CD = B.CD
+			LEFT OUTER JOIN TB_ATTRB_INFO C
+				ON A.BBS_ATTRB_CD = C.ATTRB_CD
+			LEFT OUTER JOIN TC_TMPLAT_INFO D
+				ON A.TMPLAT_ID = D.TMPLAT_ID
+			WHERE A.USE_AT = 'Y'
+		]]>
+		<include refid="BbsMastr-where" />
+		<![CDATA[
+			 		) ALL_LIST
+				 ) AA
+			 WHERE  RNUM  > #{firstIndex}
+			   AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="countBbsMastr" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT
+				COUNT(a.BBS_ID)
+			FROM
+				TB_BBS_MASTR A
+			LEFT OUTER JOIN
+				(SELECT CD_ID, CD, CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'COM004' AND USE_AT='Y') B
+				ON A.BBS_TY_CD = B.CD
+			LEFT OUTER JOIN TB_ATTRB_INFO C
+				ON A.BBS_ATTRB_CD = C.ATTRB_CD
+			LEFT OUTER JOIN TC_TMPLAT_INFO D
+				ON A.TMPLAT_ID = D.TMPLAT_ID
+			WHERE A.USE_AT = 'Y'
+		]]>
+		<include refid="BbsMastr-where" />
+	</select>
+
+	<select id="findOneBbsMastrByBbsId" parameterType="string" resultType="zvl" >
+		<![CDATA[
+			SELECT
+				a.BBS_ID, a.BBS_TY_CD, b.CD_NM as BBS_TY_NM, a.BBS_DC,
+				a.BBS_ATTRB_CD, c.ATTRB_NM AS BBS_ATTRB_NM, a.BBS_NM,
+				a.TMPLAT_ID, d.TMPLAT_NM, d.TMPLAT_COURS, a.FILE_ATCH_POSBL_AT,
+				a.REPLY_POSBL_AT,
+				a.USE_AT, a.REGIST_DT,
+				a.ADIT_CNTNTS_CN,
+				a.TABLE_NM, a.PREV_NEXT_POSBL_AT, a.CM_POSBL_AT,
+				a.PAGE_UNIT, a.PAGE_SIZE
+			FROM
+				TB_BBS_MASTR a
+			LEFT OUTER JOIN
+				(SELECT CD_ID, CD, CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'COM004' AND USE_AT='Y') b
+				ON a.BBS_TY_CD = b.CD
+			LEFT OUTER JOIN TB_ATTRB_INFO c
+				ON a.BBS_ATTRB_CD = c.ATTRB_CD
+			LEFT OUTER JOIN TC_TMPLAT_INFO d
+				ON a.TMPLAT_ID = d.TMPLAT_ID
+			WHERE a.BBS_ID = #{bbsId}
+		]]>
+	</select>
+
+	<select id="findOneBbsMastr" parameterType="zvl"  resultType="zvl" >
+		<![CDATA[
+			SELECT
+				a.BBS_ID, a.BBS_TY_CD, b.CD_NM as BBS_TY_NM, a.BBS_DC,
+				a.BBS_ATTRB_CD, c.ATTRB_NM AS BBS_ATTRB_NM, a.BBS_NM,
+				a.TMPLAT_ID, d.TMPLAT_NM, d.TMPLAT_COURS, a.FILE_ATCH_POSBL_AT,
+				a.REPLY_POSBL_AT,
+				a.USE_AT, a.REGIST_DT,
+				a.ADIT_CNTNTS_CN,
+				a.TABLE_NM, a.PREV_NEXT_POSBL_AT, a.CM_POSBL_AT,
+				a.PAGE_UNIT, a.PAGE_SIZE
+			FROM
+				TB_BBS_MASTR a
+			LEFT OUTER JOIN
+				(SELECT CD_ID, CD, CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'COM004' AND USE_AT='Y') b
+				ON a.BBS_TY_CD = b.CD
+			LEFT OUTER JOIN TB_ATTRB_INFO c
+				ON a.BBS_ATTRB_CD = c.ATTRB_CD
+			LEFT OUTER JOIN TC_TMPLAT_INFO d
+				ON a.TMPLAT_ID = d.TMPLAT_ID
+			WHERE a.BBS_ID = #{bbsId}
+		]]>
+	</select>
+
+ 	<update id="updateBbsMastr" parameterType="zvl">
+ 		<![CDATA[
+			UPDATE TB_BBS_MASTR SET
+				BBS_TY_CD = #{bbsTyCd},
+				BBS_ATTRB_CD = #{bbsAttrbCd},
+				BBS_NM = #{bbsNm},
+				REPLY_POSBL_AT = #{replyPosblAt},
+				FILE_ATCH_POSBL_AT = #{fileAtchPosblAt},
+				ATCH_POSBL_FILE_SIZE = #{atchPosblFileSize},
+				ATCH_POSBL_FILE_CO = #{atchPosblFileCo},
+				CM_POSBL_AT = #{cmPosblAt},
+				UPDT_ID = #{updtId},
+				UPDT_DT = GETDATE(),
+				NTCE_BGNDE = #{ntceBgnde},
+				NTCE_ENDDE = #{ntceEndde},
+				TABLE_NM = #{tableNm},
+				PREV_NEXT_POSBL_AT = #{prevNextPosblAt},
+				PAGE_UNIT = #{pageUnit},
+				PAGE_SIZE = #{pageSize},
+				ADIT_CNTNTS_CN = #{aditCntntsCn}
+			WHERE BBS_ID = #{bbsId}
+ 		]]>
+ 	</update>
+
+ 	<update id="deleteBbsMastr" parameterType="zvl">
+ 		<![CDATA[
+			UPDATE TB_BBS_MASTR SET
+				USE_AT = 'N',
+				UPDT_ID = #{lastUpdusrId},
+				UPDT_DT = GETDATE()
+			WHERE BBS_ID = #{bbsId}
+ 		]]>
+ 	</update>
+
+	<select id="findAllBbsMastrDesc" resultType="zvl" >
+		<![CDATA[
+			SELECT
+				a.BBS_ID, a.BBS_TY_CD, b.CD_NM as BBS_TY_NM, a.BBS_DC,
+				a.BBS_ATTRB_CD, c.ATTRB_NM AS BBS_ATTRB_NM, a.BBS_NM,
+				a.TMPLAT_ID, d.TMPLAT_NM, d.TMPLAT_COURS, a.FILE_ATCH_POSBL_AT,
+				a.REPLY_POSBL_AT,
+				a.USE_AT, a.REGIST_DT,
+				a.ADIT_CNTNTS_CN,
+				a.TABLE_NM, a.PREV_NEXT_POSBL_AT, a.CM_POSBL_AT,
+				a.PAGE_UNIT, a.PAGE_SIZE
+			FROM
+				TB_BBS_MASTR a
+			LEFT OUTER JOIN
+				(SELECT CD_ID, CD, CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'COM004' AND USE_AT='Y') b
+				ON a.BBS_TY_CD = b.CD
+			LEFT OUTER JOIN TB_ATTRB_INFO c
+				ON a.BBS_ATTRB_CD = c.ATTRB_CD
+			LEFT OUTER JOIN TC_TMPLAT_INFO d
+				ON a.TMPLAT_ID = d.TMPLAT_ID
+			WHERE a.USE_AT = 'Y'
+ 		]]>
+	</select>
+
+	<delete id="deleteBoardMasterByBbsId" parameterType="string">
+		DELETE TB_BBS_MASTR where BBS_ID = #{bbsId}
+	</delete>
+
+	<!-- 메뉴에 사용되는 bbs존재여부 체크 -->
+	<select id="countBbsMastrMenuBbsIdExist" parameterType="zvl"  resultType="long" >
+		<![CDATA[
+			SELECT
+				count(*)
+			FROM TC_MENU_INFO A
+			WHERE A.BBS_ID = #{bbsId}
+			AND A.SITE_ID != 'bos'
+		]]>
+	</select>
+
+	<!-- 현재 게시판이 사용중인 메뉴 목록조회 -->
+	<select id="findAllBbsMastrMenuList" parameterType="zvl"  resultType="zvl" >
+		<![CDATA[
+			SELECT
+				A.SITE_ID,
+				A.MENU_NO,
+				A.MENU_NM,
+				REPLACE(A.RELATE_MENU_NM_LIST,'|',' > ') AS RELATE_MENU_NM_LIST
+			FROM TC_MENU_INFO A
+			WHERE A.BBS_ID = #{bbsId}
+			AND A.USE_AT = 'Y'
+			ORDER BY MENU_NO ASC
+		]]>
+	</select>
+
+</mapper>

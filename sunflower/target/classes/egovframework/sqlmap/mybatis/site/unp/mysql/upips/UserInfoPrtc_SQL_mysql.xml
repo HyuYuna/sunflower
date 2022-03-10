@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="upips.UserInfoPrtcDAO">
+	<insert id="saveUpipsUserInfoPrtc" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="mnno">
+			SELECT IFNULL(Max(MNNO),0)+1 FROM TM_USER_INFO_PRTC
+		</selectKey>
+		<![CDATA[
+		     INSERT INTO TM_USER_INFO_PRTC (
+                  MNNO
+                 , PAGE_NO
+                 , USER_ID
+                 , READNG_USER_ID
+                 , READNG_DT
+                 , READNG_IPAD
+                 , READNG_URLAD
+                 , READNG_PURPS_SE
+		     )
+			VALUES (
+				 #{mnno}
+				, #{pageNo}
+				, #{userId}
+				, #{readngUserId}
+				, NOW()
+				, #{readngIpad}
+				, #{readngUrlad}
+				, #{readngPurpsSe}
+			)
+		]]>
+	</insert>
+</mapper>

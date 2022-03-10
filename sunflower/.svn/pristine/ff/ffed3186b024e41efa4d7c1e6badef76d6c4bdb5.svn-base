@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.service.scheduler.StsfdgSm">
+
+	<insert id="saveStsfdgSm" parameterType="zvl" >
+		<![CDATA[
+			/* saveStsfdgSm */
+			INSERT INTO TS_STSFDG_SM(SM_NO, SM_DE, SITE_ID, MENU_NO, PRTCPNT_CO, STSFDG_1_CO, STSFDG_2_CO, STSFDG_3_CO, STSFDG_4_CO, STSFDG_5_CO)
+			SELECT
+			      (NVL((SELECT /*+ INDEX_DESC(A PK_TC_STSFDG_SM) */ SM_NO FROM TS_STSFDG_SM A WHERE ROWNUM=1),0) + ROWNUM) AS SM_NO
+			     , TB.SM_DE
+			     , TB.SITE_ID
+			     , TB.MENU_NO
+			     , TB.PRTCPNT_CO
+			     , TB.STSFDG_1_CO
+			     , TB.STSFDG_2_CO
+			     , TB.STSFDG_3_CO
+			     , TB.STSFDG_4_CO
+			     , TB.STSFDG_5_CO
+			  FROM
+			       (
+			        SELECT
+			               TO_CHAR(REGIST_DT,'YYYYMMDD') AS SM_DE
+			             , SITE_ID
+			             , MENU_NO
+			             , count(*) AS PRTCPNT_CO
+			             , SUM(CASE WHEN STSFDG_IDEX=1 THEN 1 ELSE 0 END) AS STSFDG_1_CO
+			             , SUM(CASE WHEN STSFDG_IDEX=2 THEN 1 ELSE 0 END) AS STSFDG_2_CO
+			             , SUM(CASE WHEN STSFDG_IDEX=3 THEN 1 ELSE 0 END) AS STSFDG_3_CO
+			             , SUM(CASE WHEN STSFDG_IDEX=4 THEN 1 ELSE 0 END) AS STSFDG_4_CO
+			             , SUM(CASE WHEN STSFDG_IDEX=5 THEN 1 ELSE 0 END) AS STSFDG_5_CO
+			          FROM TC_STSFDG
+			         WHERE TO_CHAR(REGIST_DT,'YYYYMMDD')>
+			               (
+			               SELECT NVL(MAX(SM_DE),TO_CHAR(SYSDATE-365,'YYYYMMDD'))
+			                 FROM ts_stsfdg_sm
+			               )
+			               AND TO_CHAR(REGIST_DT,'YYYYMMDD')< TO_CHAR(SYSDATE,'YYYYMMDD')
+			         GROUP BY TO_CHAR(REGIST_DT,'YYYYMMDD')
+			             , SITE_ID
+			             , MENU_NO
+			      ) TB
+		]]>
+	</insert>
+
+</mapper>

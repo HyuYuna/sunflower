@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+<![CDATA[
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="util" uri="http://www.unp.co.kr/util" %>
+
+<script src="/js/miya_validator.js"></script>
+<script>
+
+	function checkForm(form) {
+		var v = new MiyaValidator(form);
+	    v.add("nttSj", {
+	        required: true
+	    });
+]]>
+	<forEach>
+		<isEqual value="default" />
+		<isEqual value="ntcrTel">
+		<![CDATA[
+	    v.add("ntcrTel1", {
+	        span: 3,
+	        glue: "-",
+	        option: "phone"
+	    });
+		]]>
+		</isEqual>
+		<isEqual value="ntcrMobile">
+		<![CDATA[
+	    v.add("ntcrMobile1", {
+	        span: 3,
+	        glue: "-",
+	        option: "handphone"
+	    });
+		]]>
+		</isEqual>
+		<isEqual value="ntcrEmail">
+		<![CDATA[
+	    v.add("ntcrEmail1", {
+			span: 2,
+			glue: "@",
+			option: "email"
+	    });
+		]]>
+		</isEqual>
+		<isEqual value="ntcrZipcode">
+		<![CDATA[
+	    v.add("ntcrZipcode1", {
+	        span: 2,
+	        glue: "-",
+	        option: "zip"
+	    });
+		]]>
+		</isEqual>
+	</forEach>
+<![CDATA[
+	    v.add("nttCn", {
+	        required: true
+	    });
+		var result = v.validate();
+		if (!result) {
+			alert(v.getErrorMessage());
+			v.getErrorElement().focus();
+			return false;
+		}
+
+		if (!confirm('등록하시겠습니까?')) {
+			return false;
+		}
+		return true;
+	}
+
+</script>
+
+<!-- 추가컨텐츠 -->
+${masterVO.addCon}
+
+<c:if test="${empty result}">
+	<c:set var="action" value="/portal/bbs/${paramVO.bbsId}/insert.do" />
+</c:if>
+<c:if test="${not empty result}">
+	<c:set var="action" value="/portal/bbs/${paramVO.bbsId}/update.do" />
+</c:if>
+
+<div class="required_set">
+	<p>
+		<span class="required"><span class="thidden">별표(필수입력)</span></span> 표시 항목은 필수 입력항목입니다.
+	</p>
+</div>
+<form id="board" name="board" method="post" enctype="multipart/form-data" action="${action}" onsubmit="return checkForm(this);">
+	<input type="hidden" name="menuNo" value="${param.menuNo}" />
+	<input type="hidden" name="nttId" value="${empty result.nttId ? 0 : result.nttId }" />
+	<input type="hidden" name="bbsId" value="${masterVO.bbsId}" />
+	<input type="hidden" name="atchFileId" value="${result.atchFileId}" />
+	<input type="hidden" name="pageQueryString" value="${pageQueryString}" />
+
+<div class="board_view board_write">
+	<table cellpadding="0" cellspacing="0" class="viewTable" summary="이름,이메일,연락처,휴대전화,제목,내용,첨부파일 포함">
+		<caption>게시판 제목 - 쓰기</caption>
+		<colgroup>
+			<col width="15%" />
+			<col />
+		</colgroup>
+]]>
+	<forEach>
+		<isEqual value="default">
+		<![CDATA[
+			<tr>
+				<th scope="row"><label for="[fieldName]">[fieldText]</label></th>
+				<td colspan="3"><input type="text" class="w500" name="[fieldName]" id="[fieldName]" value="${result.[fieldName]}" /></td>
+			</tr>
+		]]>
+		</isEqual>
+		<isEqual value="default-checkbox">
+		<![CDATA[
+			<tr>
+				<th scope="row"><label for="[fieldName]">[fieldText]</label></th>
+				<td colspan="3">
+					<input type="checkbox" name="[fieldName]" id="[fieldName]" class="input_txt" value="01" <c:if test="${result.[fieldName] == '01'}"> checked</c:if> /> 옵션
+				</td>
+			</tr>
+		]]>
+		</isEqual>
+		<isEqual value="default-radio">
+		<![CDATA[
+			<tr>
+				<th scope="row"><label for="[fieldName]">[fieldText]</label></th>
+				<td colspan="3">
+					<input type="radio" name="[fieldName]" id="[fieldName]" class="input_txt" value="01" <c:if test="${result.[fieldName] == '01'}"> checked</c:if> /> 옵션
+				</td>
+			</tr>
+		]]>
+		</isEqual>
+		<isEqual value="default-select">
+		<![CDATA[
+			<tr>
+				<th scope="row"><label for="[fieldName]">[fieldText]</label></th>
+				<td colspan="3">
+					<select id="[fieldName]" name="[fieldName]" class="input_select w100" title="[fieldText]선택">
+					    <option value="">[fieldText]선택</option>
+					    <option value="01" <c:if test="${result.[fieldName] == '01'}">selected="selected"</c:if> >옵션</option>
+					</select>
+				</td>
+			</tr>
+		]]>
+		</isEqual>
+		<isEqual value="nttSj">
+		<![CDATA[
+          <tr>
+            <th scope="row" class="required"><span class="required">필수입력</span><label for="nttSj">[fieldText]</label></th>
+			<td colspan="3"><input type="text" id="nttSj" name="nttSj" value="${result.nttSj}" class="w500" /></td>
+          </tr>
+		]]>
+		</isEqual>
+		<isEqual value="ntcrNm">
+		<![CDATA[
+          <tr>
+            <th scope="row">[fieldText]</th>
+			<td colspan="3">${empty result ? user.userName : result.ntcrNm}</td>
+          </tr>
+		]]>
+		</isEqual>
+		<isEqual value="secret">
+		<![CDATA[
+			<tr>
+				<th scope="row"><label for="secret">[fieldText]</label></th>
+				<td colspan="3">
+					<input type="radio" name="secret" id="secret1" class="input_radio" value="N" <c:if test="${result.secret == 'N'}"> checked</c:if> /> <label for="secret1">공개</label>
+					<input type="radio" name="secret" id="secret2" class="input_radio" value="Y" <c:if test="${result.secret == 'Y'}"> checked</c:if> /> <label for="secret2">비공개</label>
+				</td>
+			</tr>
+		]]>
+		</isEqual>
+		<isEqual value="replyAt">
+		<![CDATA[
+			<tr>
+				<th scope="row"><label for="replyAt">[fieldText]</label></th>
+				<td colspan="3">
+					<input type="radio" name="replyAt" id="replyAt1" class="input_radio" value="Y" <c:if test="${result.replyAt == 'Y'}"> checked</c:if> /> <label for="replyAt1">답변요함</label>
+					<input type="radio" name="replyAt" id="replyAt2" class="input_radio" value="N" <c:if test="${result.replyAt == 'N'}"> checked</c:if> /> <label for="replyAt2">답변불필요(단순건의, 칭찬 등)</label>
+				</td>
+			</tr>
+		]]>
+		</isEqual>
+		<isEqual value="atchFileId">
+		<![CDATA[
+			<tr>
+				<th scope="row"><label for="file1">첨부파일</label></th>
+				<td colspan="3">
+				<jsp:include page="/WEB-INF/jsp/egovframework/bos/share/EgovFileList.jsp" flush="true" />
+					<input type="file" class="input_file" id="file1" name="file1" /><br/>
+					<input type="file" class="input_file" id="file2" name="file2" /><br/>
+					<input type="file" class="input_file" id="file3" name="file3" /><br/>
+				</td>
+			</tr>
+		]]>
+		</isEqual>
+		<isEqual value="ntcrTel">
+		<![CDATA[
+		   <tr>
+            <th scope="row"><label for="ntcrTel1">[fieldText]</label></th>
+            <td colspan="3">
+			<c:set var="data" value="${fn:split(result.ntcrTel,'-')}" />
+			<c:choose>
+			<c:when test="${fn:length(data) >= 3}">
+				<input type="text" id="ntcrTel1" name="ntcrTel1" value="${data[0]}" class="tel1" title="대표전화 처음자리" />
+				-
+				<input type="text" id="ntcrTel2" name="ntcrTel2" value="${data[1]}" class="tel" title="대표전화 중간4자리" />
+				-
+				<input type="text" id="ntcrTel3" name="ntcrTel3" value="${data[2]}" class="tel" title="대표전화 끝4자리" />
+			</c:when>
+			<c:otherwise>
+				<input type="text" id="ntcrTel1" name="ntcrTel1" class="tel1" title="대표전화 처음자리" />
+				-
+				<input type="text" id="ntcrTel2" name="ntcrTel2" class="tel" title="대표전화 중간4자리" />
+				-
+				<input type="text" id="ntcrTel3" name="ntcrTel3" class="tel" title="대표전화 끝4자리" />
+			</c:otherwise>
+			</c:choose>
+			</td>
+          </tr>
+		]]>
+		</isEqual>
+		<isEqual value="ntcrMobile">
+		<![CDATA[
+		   <tr>
+            <th scope="row"><label for="ntcrMobile1">[fieldText]</label></th>
+            <td colspan="3">
+			<c:set var="data" value="${fn:split(result.ntcrMobile,'-')}" />
+			<c:choose>
+			<c:when test="${fn:length(data) >= 3}">
+				<select name="ntcrMobile1" id="ntcrMobile1" title="지역 국번 앞 3자리" >
+					<option value="">선택</option>
+					<option value="010" <c:if test="${data[0] == '010'}">selected="selected"</c:if>>010</option>
+					<option value="011" <c:if test="${data[0] == '011'}">selected="selected"</c:if>>011</option>
+					<option value="016" <c:if test="${data[0] == '016'}">selected="selected"</c:if>>016</option>
+					<option value="017" <c:if test="${data[0] == '017'}">selected="selected"</c:if>>017</option>
+					<option value="018" <c:if test="${data[0] == '018'}">selected="selected"</c:if>>018</option>
+					<option value="019" <c:if test="${data[0] == '019'}">selected="selected"</c:if>>019</option>
+				</select>
+				-
+				<input type="text" id="ntcrMobile2" name="ntcrMobile2" value="${data[1]}" class="tel" title="대표전화 중간4자리" />
+				-
+				<input type="text" id="ntcrMobile3" name="ntcrMobile3" value="${data[2]}" class="tel" title="대표전화 끝4자리" />
+			</c:when>
+			<c:otherwise>
+				<select name="ntcrMobile1" id="ntcrMobile1" title="지역 국번 앞 3자리" >
+					<option value="">선택</option>
+					<option value="010">010</option>
+					<option value="011">011</option>
+					<option value="016">016</option>
+					<option value="017">017</option>
+					<option value="018">018</option>
+					<option value="019">019</option>
+				</select>
+				-
+				<input type="text" id="ntcrMobile2" name="ntcrMobile2" class="tel" title="대표전화 중간4자리" />
+				-
+				<input type="text" id="ntcrMobile3" name="ntcrMobile3" class="tel" title="대표전화 끝4자리" />
+			</c:otherwise>
+			</c:choose>
+			</td>
+          </tr>
+		]]>
+		</isEqual>
+		<isEqual value="ntcrEmail">
+		<![CDATA[
+		   <tr>
+            <th scope="row"><label for="ntcrEmail1">[fieldText]</label></th>
+            <td colspan="3">
+					<c:set var="data" value="${fn:split(result.ntcrEmail,'@')}" />
+			<c:choose>
+			<c:when test="${fn:length(data) >= 2}">
+					<input name="ntcrEmail1" type="text" title="이메일 아이디" value="${data[0]}" class="email_id"/>
+					@
+					<input name="ntcrEmail2" type="text" title="이메일 주소" value="${data[1]}" class="email_addr"/>
+			</c:when>
+			<c:otherwise>
+					<input name="ntcrEmail1" type="text" title="이메일 아이디" value="" class="email_id"/>
+					@
+					<input name="ntcrEmail2" type="text" title="이메일 주소" value="" class="email_addr"/>
+			</c:otherwise>
+			</c:choose>
+			</td>
+          </tr>
+		]]>
+		</isEqual>
+		<isEqual value="ntcrZipcode">
+		<![CDATA[
+		   <tr>
+            <th scope="row"><label for="ntcrZipcode1">[fieldText]</label></th>
+            <td colspan="3">
+				<c:set var="data" value="${fn:split(result.ntcrZipcode,'-')}" />
+			<c:choose>
+			<c:when test="${fn:length(data) >= 2}">
+				<input type="text" id="ntcrZipcode1" name="ntcrZipcode1" value="${data[0]}" title="우편번호 앞 3자리" class="post"/> -
+				<input type="text" id="ntcrZipcode2" name="ntcrZipcode2" value="${data[1]}" title="우편번호 뒷 3자리" class="post"/>
+			</c:when>
+			<c:otherwise>
+				<input type="text" value="" id="ntcrZipcode1" name="ntcrZipcode1" title="우편번호 앞 3자리" class="post"/> -
+				<input type="text" value="" id="ntcrZipcode2" name="ntcrZipcode2" title="우편번호 뒷 3자리" class="post"/>
+			</c:otherwise>
+			</c:choose>
+			</td>
+          </tr>
+		]]>
+		</isEqual>
+	</forEach>
+<![CDATA[
+        </tbody>
+      </table>
+	</div>
+
+<div class="box re_rbox_red">아래의 작성하시는 내용 (첨부파일 포함)중에 개인정보에 관한 내용이 있다면 개인정보가 타인에게 노출되어 침해 받을 수 있으므로 삭제 후 등록하여 주시기 바랍니다. (개인정보내용 : 주민등록번호, 계좌번호, 핸드폰번호 등)</div>
+<div class="re_rbox mt0">
+	<textarea name="nttCn" id="nttCn" cols="30" rows="5" class="h200" title="내용을 입력하세요"><util:out escapeXml="false">${result.nttCn}</util:out></textarea>
+</div>
+
+<div class="btn_set">
+	<input type="image" class="button write" value="확인" />
+	<a href="/portal/bbs/${paramVO.bbsId}/list.do?${pageQueryString}" class="button white"><span>목록</span></a>
+</div>
+</form>
+]]>
+</page>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>sublayout</title>
+<link rel="stylesheet" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" href="/static/commons/common.css">
+<link rel="stylesheet" href="/static/ucms/css/ucmsdefault.css">
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+<div class="skip">
+	<a href="#content">본문내용 바로가기</a>
+	<a href="#gnb">주메뉴 바로가기</a>
+</div>
+<div id="wrap">
+	<!-- header -->
+	<header id="header">
+		<p class="logo"><a href=""><img src="/static/ucms/img/logo.png" alt="unp"></a></p>
+		<ul class="global">
+			<li><a href="#">로그인</a></li>
+			<li><a href="#">회원가입</a></li>
+			<li><a href="#">사이트맵</a></li>
+		</ul>
+		<nav id="gnb">
+			<ul>
+				<li class="on"><a href="">COMPANY</a></li>
+				<li><a href="">BUSINESS</a></li>
+				<li><a href="">PR CENTER</a></li>
+				<li><a href="">CUSTOMER</a></li>
+				<li><a href="">CAREER</a></li>
+			</ul>
+		</nav>
+	</header>
+	<!-- //header -->
+	<!-- Container -->
+	<div id="container">
+		<nav class="lnb">
+			<h1>회원가입</h1>
+			<ul>
+				<li class="on"><a href="#">왼쪽메뉴 리스트</a></li>
+				<li><a href="#">왼쪽메뉴 리스트</a></li>
+				<li><a href="#">왼쪽메뉴 리스트</a></li>
+				<li><a href="#">왼쪽메뉴 리스트</a></li>
+			</ul>
+		</nav>
+		<main>
+			<div class="hgroup">
+				<h1>로그인</h1>
+				<p>HOME > 회원가입 > 로그인</p>
+			</div>
+			<div id="content">
+
+<div class="view">
+	<p class="subject">
+	<span class="survey-ing">진행중</span>
+	동작구청 홈페이지 개편에 따른 디자인 시안 선호도 조사
+	</p>
+	<dl class="deco">
+		<dt>자치행정과</dt>
+		<dd class="ico-tel">02-820-1111</dd>
+		<dt class="d">등록일</dt>
+		<dd class="d">2017-04-25</dd>
+	</dl>
+	<dl>
+		<dt>설문대상</dt>
+		<dd>회원</dd>
+		<dt>참여인원</dt>
+		<dd>25</dd>
+	</dl>
+	<dl>
+		<dt>조사기간</dt>
+		<dd>2017-02-17 09:00 ~ 2017-03-30 00:00</dd>
+	</dl>
+	<div class="dbData">
+		동작구 얼굴이 .....
+	</div>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+<h2>설문질의</h2>
+<div class="surbeyQ">
+	<dl>
+		<dt>1. 디자인 시안 중 선호하는 디자인은?</dt>
+		<dd>
+			<div class="row">
+				<div class="col-sm-6"><label><input type="radio" name=""> 1안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 2안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 3안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 4안</label></div>
+			</div>
+		</dd>
+		<dt>2. 디자인 시안 중 선호하는 디자인은?</dt>
+		<dd>
+			<div class="row">
+				<div class="col-sm-6"><label><input type="radio" name=""> 1안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 2안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 3안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 4안</label></div>
+			</div>
+		</dd>
+		<dt>3. 동작구 홈페이지에서 추가하고 싶은 분야나, 개선했으면 하는 점을 자유롭게 기재해 주시기 바랍니다.</dt>
+		<dd class="textarea">
+			<textarea name="" id="" cols="30" rows="10" title="3번 질의 답변"></textarea>
+		</dd>
+	</dl>
+</div>
+<div class="btnSet">
+	<button class="b-">설문참여</button>
+	<button class="b-">결과보기</button>
+</div>
+
+
+			</div>
+		</main>
+	</div>
+</div>
+</body>
+</html>

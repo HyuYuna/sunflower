@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.siteManage.visual">
+
+<sql id="visual-where">
+	<if test='searchKwd != null and searchKwd != ""'>
+			<![CDATA[ 		AND	VISUAL_NM LIKE CONCAT('%', TRIM(#{searchKwd}), '%') ]]>
+		</if>
+		<if test='siteIdSe != null and siteIdSe != ""'>
+			<![CDATA[ 		AND	SITE_ID_SE LIKE CONCAT('%', TRIM(#{siteIdSe}), '%') ]]>
+		</if>
+		<if test='searchUseAt != null and searchUseAt != ""'>
+			<![CDATA[ 		AND	USE_AT = #{searchUseAt} ]]>
+		</if>
+		<if test='pSiteId != null and pSiteId != ""'>
+			<![CDATA[ 		AND	SITE_ID = #{pSiteId} ]]>
+		</if>
+		<if test='pSiteId == null || pSiteId == ""'>
+			<![CDATA[ 		AND	SITE_ID = '']]>
+		</if>
+		<if test='pSiteId != "" and pSiteId == "bos"'>
+			<![CDATA[ 		AND	SITE_ID = 'bos']]>
+		</if>
+
+</sql>
+
+<!-- 비쥬얼 정률 순서 최대값 구하기  -->
+<select id="findVisualMaxSortOrdr" parameterType="zvl" resultType="string">
+		<![CDATA[
+		/* findVisualMaxSortOrdr */
+
+		SELECT IFNULL(MAX(SORT_ORDR),0)+1 AS SORT_ORDR
+		FROM TC_VISUAL
+
+		]]>
+</select>
+
+
+<select id="countVisual" parameterType="zvl" resultType="long">
+		<![CDATA[
+		/*  countVisual*/
+
+		SELECT COUNT(*) AS totcnt
+		  FROM TC_VISUAL
+		 WHERE 1 = 1
+		]]>
+		<include refid = "visual-where"/>
+</select>
+
+<!-- 비주얼 목록 -->
+	<select id="findAllVisual" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/*  findAllVisual */
+
+		SELECT AA.*
+		  FROM
+		       (
+		       SELECT @RN:=@RN+1 AS RNUM, ALL_LIST.*
+		         FROM
+		              (
+		              SELECT VISUAL_NO
+		                   , a.VISUAL_NM
+		                   , a.VISUAL_URLAD
+		                   , a.DEPT_ID
+		                   ,
+		                     (
+		                     SELECT USER_ID
+		                       FROM TM_USER_INFO B
+		                      WHERE A.DEPT_ID = '1'
+		                     ) AS USER_ID
+		                   , a.REGIST_DT
+		                   , a.REGIST_ID
+		                   , a.UPDT_DT
+		                   , a.UPDT_ID
+		                   , a.EXPSR_AT
+		                   , a.VISUAL_SE
+		                   , a.BGNDE
+		                   , a.ENDDE
+		                   , a.SORT_ORDR
+		                   , a.ATCH_FILE_ID
+		                   , a.SITE_ID_SE
+		                   , a.SITE_ID
+		                   ,
+		                     (
+		                     SELECT SITE_NM
+		                       FROM TC_SITE_INFO B
+		                      WHERE A.SITE_ID = B.SITE_ID
+		                     ) AS SITE_NM
+		                   , a.USE_AT
+		                FROM TC_VISUAL a
+		               WHERE (@RN:=0)=0
+		]]>
+		<include refid = "visual-where"/>
+		<![CDATA[
+		ORDER BY SORT_ORDR DESC
+		              ) ALL_LIST
+		       ) AA
+		 LIMIT ${firstIndex}, ${recordCountPerPage}
+		]]>
+	</select>
+
+
+	<!-- 비주얼  등록 -->
+	<insert id="saveVisual" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="visualNo">
+			SELECT IFNULL(MAX(VISUAL_NO),0)+1 AS VISUAL_NO  FROM TC_VISUAL
+		</selectKey>
+		<![CDATA[
+		/* saveVisual */
+
+		INSERT
+		  INTO TC_VISUAL
+		       (
+		           VISUAL_NO
+		         , VISUAL_NM
+		         , VISUAL_URLAD
+		         , DEPT_ID
+		         , REGIST_DT
+		         , REGIST_ID
+		         , UPDT_DT
+		         , UPDT_ID
+		         , EXPSR_AT
+		         , VISUAL_SE
+		         , BGNDE
+		         , ENDDE
+		         , SORT_ORDR
+		         , ATCH_FILE_ID
+		         , SITE_ID_SE
+		         , SITE_ID
+		         , USE_AT
+		       )
+		       VALUES
+		       (
+		           #{visualNo}
+		         , #{visualNm}
+		         , #{visualUrlad}
+		         , #{deptId}
+		         , NOW()
+		         , #{registId}
+		         , NOW()
+		         , #{updtId}
+		         , #{expsrAt}
+		         , #{visualSe}
+		         , #{bgnde}
+		         , #{endde}
+		         , #{sortOrdr}
+		         , #{atchFileId}
+		         , #{siteIdSe}
+		         , #{pSiteId}
+		         , #{useAt}
+		       )
+
+		]]>
+	</insert>
+
+	<!-- 비주얼 상세 보기 -->
+	<select id="findVisualDetail" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findVisualDetail */
+
+		SELECT a.VISUAL_NO
+		     , a.VISUAL_NM
+		     , a.VISUAL_URLAD
+		     , a.DEPT_ID
+		     , a.REGIST_DT
+		     , a.REGIST_ID
+		     , a.UPDT_DT
+		     , a.UPDT_ID
+		     , a.EXPSR_AT
+		     , a.VISUAL_SE
+		     , a.BGNDE
+		     , a.ENDDE
+		     , a.SORT_ORDR
+		     , a.ATCH_FILE_ID
+		     , a.SITE_ID_SE
+		     , a.SITE_ID
+		     , a.USE_AT
+		  FROM TC_VISUAL a
+		 WHERE 1=1
+
+		]]>
+		<if test='sortOrdr == null or sortOrdr == ""'>
+			<![CDATA[	AND a.VISUAL_NO = #{visualNo}	]]>
+		</if>
+		<if test='sortOrdr != null and sortOrdr != "" '>
+			<![CDATA[
+				AND a.VISUAL_NO = (
+					SELECT VISUAL_NO
+					FROM (
+						SELECT *
+						FROM TC_VISUAL
+						WHERE 1=1
+			]]>
+			<if test='option == "1"'><![CDATA[	ORDER BY SORT_ORDR DESC	]]></if>
+			<if test='option == "2"'><![CDATA[	AND SORT_ORDR > #{sortOrdr} ORDER BY SORT_ORDR	]]></if>
+			<if test='option == "3"'><![CDATA[	AND SORT_ORDR < #{sortOrdr} ORDER BY SORT_ORDR DESC	]]></if>
+			<if test='option == "4"'><![CDATA[	ORDER BY SORT_ORDR	]]></if>
+			<![CDATA[
+				) tb
+				LIMIT 1
+			)
+			]]>
+		</if>
+	</select>
+
+	<!-- 비주얼 수정  -->
+	<update id="modifyVisual" parameterType="zvl">
+		<![CDATA[
+		/* modifyVisual */
+
+		UPDATE TC_VISUAL
+			   SET VISUAL_NM = #{visualNm}
+			 , VISUAL_URLAD = #{visualUrlad}
+			 , VISUAL_SE = #{visualSe}
+			 , SORT_ORDR = #{sortOrdr}
+			 , EXPSR_AT = #{expsrAt}
+			 , DEPT_ID = #{deatId}
+			 , SITE_ID_SE = #{siteIdSe}
+			 , SITE_ID = #{pSiteId}
+			 , ATCH_FILE_ID = #{atchFileId}
+			 , BGNDE = #{bgnde}
+			 , ENDDE = #{endde}
+			 , USE_AT = #{useAt}
+			 , UPDT_ID = #{updtId}
+			 , UPDT_DT = NOW()
+		WHERE VISUAL_NO = #{visualNo}
+
+		]]>
+	</update>
+
+	<!-- 비쥬얼 노출 순서 수정 -->
+	<update id="modifyVisualSortOrdr" parameterType="zvl">
+		<![CDATA[
+		/* modifyVisualSortOrdr */
+
+		UPDATE TC_VISUAL
+		SET SORT_ORDR = #{sortOrdr}
+		WHERE VISUAL_NO = #{visualNo}
+		]]>
+	</update>
+
+	<!-- 비쥬얼 사용 여부 수정 -->
+	<update id="modifyVisualUseAt" parameterType="zvl">
+		<![CDATA[
+		/* modifyVisualUseAt */
+
+		UPDATE TC_VISUAL
+		SET USE_AT = #{useAt}, EXPSR_AT = #{expsrAt}
+		WHERE VISUAL_NO = #{visualNo}
+		]]>
+	</update>
+
+	<!-- 테스트 실행되는 것들 -->
+	<select id="findUserVisual" resultType="zvl">
+	 	<![CDATA[
+		/*  findUserVisual*/
+		SELECT A.*,
+			B.FILE_STRE_COURS,
+			B.STRE_FILE_NM
+		FROM TC_VISUAL A
+			LEFT OUTER JOIN TC_CMMN_FILE_DETAIL B ON A.ATCH_FILE_ID=B.ATCH_FILE_ID
+		WHERE USE_AT = 'Y'
+		AND EXPSR_AT = 'Y'
+	 	AND DATE_FORMAT(BGNDE,'%Y%m%d') <= DATE_FORMAT( NOW(), '%Y%m%d')
+      	AND DATE_FORMAT(ENDDE,'%Y%m%d') >= DATE_FORMAT( NOW(), '%Y%m%d')
+		]]>
+	 </select>
+
+	 <!-- 메인 비쥬얼 목록뽑기 -->
+	 <select id="findPublishListByVisualSe" parameterType="zvl" resultType="zvl">
+	 	<![CDATA[
+	 	/*findPublishListByVisualSe*/
+	 	SELECT VISUAL_NO
+	 		 , a.VISUAL_NM
+		     , a.VISUAL_URLAD
+		     , a.DEPT_ID
+		     , a.REGIST_DT
+		     , a.REGIST_ID
+		     , a.UPDT_DT
+		     , a.UPDT_ID
+		     , a.EXPSR_AT
+		     , a.VISUAL_SE
+		     , a.BGNDE
+		     , a.ENDDE
+		     , a.SORT_ORDR
+		     , a.ATCH_FILE_ID
+		     , a.SITE_ID_SE
+		     , a.SITE_ID
+		     , a.USE_AT
+		FROM TC_VISUAL a
+		WHERE USE_AT = 'Y'
+		AND EXPSR_AT = 'Y'
+	 	AND DATE_FORMAT(BGNDE,'%Y%m%d') <= DATE_FORMAT( NOW(), '%Y%m%d')
+      	AND DATE_FORMAT(ENDDE,'%Y%m%d') >= DATE_FORMAT( NOW(), '%Y%m%d')
+	 	]]>
+	 	<if test='visualSe != null and visualSe!= ""'>
+			<![CDATA[ AND a.VISUAL_SE = #{visualSe} ]]>
+		</if>
+	    <choose>
+	    <when test='siteIdSe != null and siteIdSe != ""'>
+			<![CDATA[ AND SITE_ID_SE LIKE '%' || #{siteIdSe} || '%' ]]>
+		</when>
+		<otherwise>
+			<![CDATA[ AND SITE_ID = #{pSiteId} ]]>
+		</otherwise>
+	    </choose>
+		ORDER BY SORT_ORDR DESC
+		     , REGIST_DT DESC
+	 </select>
+
+	<delete id="deleteVisual" parameterType="zvl">
+		<![CDATA[
+			/* deleteVisual */
+			DELETE
+			FROM TC_VISUAL
+			WHERE VISUAL_NO = #{visualNo}
+		]]>
+	</delete>
+
+
+
+</mapper>

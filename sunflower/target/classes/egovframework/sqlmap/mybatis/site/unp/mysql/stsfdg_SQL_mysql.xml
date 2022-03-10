@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.singl.StsfdgDAO">
+
+	<!-- 만족도 검색조건  -->
+	<sql id="findAllStsfdg-where">
+		<if test='sdate != null and sdate != ""'>
+			<![CDATA[	and	DATE_FORMAT(A.REGIST_DT,'%Y%m%d') >= REPLACE(#{sdate},'-','') 		]]>
+		</if>
+		<if test='edate != null and edate != ""'>
+			<![CDATA[	and DATE_FORMAT(A.REGIST_DT,'%Y%m%d') <= REPLACE(#{edate},'-','') 		]]>
+		</if>
+
+		<if test='searchWrd != null and searchWrd != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[	and A.STSFDG_NO LIKE CONCAT('%',#{searchWrd},'%')		]]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[	and A.USER_NM LIKE CONCAT('%',#{searchWrd},'%') 		]]>
+			</if>
+		</if>
+
+		<if test='sMenuNo != null and sMenuNo != ""'>
+			<![CDATA[	and A.MENU_NO = #{sMenuNo}		]]>
+		</if>
+		<if test='stsfdgIdex != null and stsfdgIdex != ""'>
+			<![CDATA[	and A.STSFDG_IDEX = #{stsfdgIdex}		]]>
+		</if>
+	</sql>
+
+	<!-- 만족도 전체count수 -->
+	<select id="countStsfdg" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countStsfdg */
+			SELECT COUNT(*)
+			FROM TC_STSFDG A
+			WHERE 1 = 1
+		]]>
+		<include refid="findAllStsfdg-where" />
+	</select>
+
+	<!-- 만족도 목록 -->
+	<select id="findAllStsfdg" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllStsfdg */
+			SELECT
+				A.STSFDG_NO,
+		       	A.SITE_ID,
+		       	A.MENU_NO,
+		       	A.STSFDG_IDEX,
+		       	A.OPINION_CN,
+		       	A.USER_ID,
+		       	A.USER_IPAD,
+		       	A.REGIST_DT,
+		       	(SELECT USER_NM FROM TM_USER_INFO WHERE USER_ID = A.USER_ID) AS USER_NM
+		  	FROM TC_STSFDG A
+		  	WHERE 1 = 1
+		]]>
+				<include refid="findAllStsfdg-where" />
+	    <![CDATA[
+   			ORDER BY A.REGIST_DT desc
+			limit #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 만족도 상세 -->
+	<select id="findOneStsfdg" parameterType="string" resultType="zvl">
+		<![CDATA[
+			/* findOneStsfdg */
+			SELECT
+				A.STSFDG_NO,
+		       	A.SITE_ID,
+		       	A.MENU_NO,
+		       	A.STSFDG_IDEX,
+		       	A.OPINION_CN,
+		       	A.USER_ID,
+		       	A.USER_IPAD,
+				TO_CHAR(A.REGIST_DT, 'YYYY-MM-DD HH24:MI:SS') AS REGIST_DT
+			FROM TC_STSFDG A
+			WHERE STSFDG_NO = #{stsfdgNo}
+		]]>
+	</select>
+
+
+	<!-- 만족도 중복카운트 -->
+	<select id="countStsfdgDuplicate" parameterType="zvl" resultType="long">
+		<![CDATA[
+			/* countStsfdgDuplicate */
+			SELECT
+				COUNT(*) AS CNT
+			FROM TC_STSFDG A
+			WHERE A.MENU_NO = #{menuNo}
+			AND A.USER_ID = #{userId}
+			AND A.SITE_ID = #{siteId}
+		]]>
+	</select>
+
+	<!-- 만족도 등록 -->
+	<insert id="saveStsfdg" parameterType="zvl">
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="stsfdgNo">
+			SELECT IFNULL(MAX(STSFDG_NO),0)+1 AS STSFDG_NO FROM TC_STSFDG
+		</selectKey>
+		<![CDATA[
+			/* saveStsfdg */
+			INSERT INTO TC_STSFDG (
+				STSFDG_NO,
+	           	SITE_ID,
+	           	MENU_NO,
+	           	STSFDG_IDEX,
+	           	OPINION_CN,
+	           	USER_ID,
+	           	USER_IPAD,
+	           	REGIST_DT
+	       	)
+	       	VALUES (
+				#{stsfdgNo},
+	           	#{siteId},
+	           	#{menuNo},
+	           	#{stsfdgIdex},
+	           	#{opinionCn},
+	           	#{userId},
+	           	#{userIpad},
+	           	NOW()
+	       )
+		]]>
+	</insert>
+
+
+	<!-- 만족도 삭제 -->
+	<delete id="deleteStsfdg" parameterType="zvl">
+		<![CDATA[
+			/* deleteStsfdg */
+			DELETE FROM TC_STSFDG
+			WHERE STSFDG_NO = #{stsfdgNo}
+		]]>
+	</delete>
+
+
+	<!-- 만족도 통계 -->
+ 	<select id="findStsfdgResult" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT A.*, ROUND(TOTAL/PRTCPNT_CO/5*100) AS PERCENT
+			FROM (
+				SELECT
+					A.*,
+					(A.STSFDG_1_CO*1 + A.STSFDG_2_CO*2 + A.STSFDG_3_CO*3 + A.STSFDG_4_CO*4 + A.STSFDG_5_CO*5) AS TOTAL
+				FROM (
+					SELECT
+						A.MENU_NO,
+						B.MENU_NM,
+						B.RELATE_MENU_NM_LIST,
+						SUM(A.PRTCPNT_CO) AS PRTCPNT_CO,
+						SUM(A.STSFDG_1_CO) AS STSFDG_1_CO,
+						SUM(A.STSFDG_2_CO) AS STSFDG_2_CO,
+						SUM(A.STSFDG_3_CO) AS STSFDG_3_CO,
+						SUM(A.STSFDG_4_CO) AS STSFDG_4_CO,
+						SUM(A.STSFDG_5_CO) AS STSFDG_5_CO
+					FROM TS_STSFDG_SM A
+					INNER JOIN TC_MENU_INFO B ON A.MENU_NO = B.MENU_NO AND B.SITE_ID = #{pSiteId}
+					WHERE 1=1
+		]]>
+		<if test='sdate != null and sdate != ""'>
+			<![CDATA[	AND	A.SM_DE >= REPLACE(#{sdate},'-','')	]]>
+		</if>
+		<if test='edate != null and edate != ""'>
+			<![CDATA[	AND A.SM_DE <= REPLACE(#{edate},'-','')	]]>
+		</if>
+		<if test='deptId1 != null and deptId1 != ""'>
+			<if test='deptId2 != null and deptId2 != ""'>
+				<![CDATA[	AND B.DEPT_ID = #{deptId2}	]]>
+			</if>
+			<if test='deptId2 == null or deptId2 == ""'>
+				<![CDATA[	AND B.DEPT_ID = #{deptId1}	]]>
+			</if>
+		</if>
+		<if test='menuNo1 != null and menuNo1 != ""'>
+			<if test='menuNo2 != null and menuNo2 != ""'>
+				<![CDATA[	AND B.MENU_NO = #{menuNo2}	]]>
+			</if>
+			<if test='menuNo2 == null or menuNo2 == ""'>
+				<![CDATA[	AND B.UPPER_MENU_NO = #{menuNo1}	]]>
+			</if>
+		</if>
+		<if test='sMenuNo != null and sMenuNo != ""'>
+			<![CDATA[	AND A.MENU_NO = #{sMenuNo}	]]>
+		</if>
+		<if test='sMenuNo == null or sMenuNo == ""'>
+			<![CDATA[	GROUP BY A.MENU_NO WITH ROLLUP	]]>
+		</if>
+		<![CDATA[
+				) A
+				ORDER BY TOTAL DESC
+				LIMIT 21
+			) A
+			ORDER BY A.MENU_NO
+		]]>
+	</select>
+</mapper>

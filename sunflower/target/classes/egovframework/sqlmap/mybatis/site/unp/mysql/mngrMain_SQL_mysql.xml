@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.main.MngrMainDAO">
+
+	<!-- 오늘자 방문자수 -->
+	<select id="countVisitCntByToday" parameterType="zvl"  resultType="long" >
+		<![CDATA[
+			/* countVisitCntByToday */
+			SELECT COUNT(*) FROM (
+			  SELECT SESION_ID FROM TC_SITE_CONECT_STATS
+			  WHERE DATE_FORMAT(REGIST_DT,'%Y%m%d') = DATE_FORMAT(NOW(),'%Y%m%d')
+			  AND SITE_ID = #{pSiteId}
+			  GROUP BY SESION_ID
+			)  TB
+		]]>
+	</select>
+
+	<!-- 오늘자 페이지조회건수 -->
+	<select id="countPageViewCntByToday" parameterType="zvl"  resultType="long" >
+		<![CDATA[
+			/* findOneMngrMainTodayPageViewCnt */
+		  SELECT COUNT(*) FROM TC_SITE_CONECT_STATS
+		  WHERE DATE_FORMAT(REGIST_DT,'%Y%m%d') = DATE_FORMAT(NOW(),'%Y%m%d')
+		  AND SITE_ID = #{pSiteId}
+		]]>
+	</select>
+
+	<!-- 오늘자 회원가입수 -->
+	<select id="countUserMberByToday" parameterType="zvl"  resultType="long" >
+		<![CDATA[
+			/* countUserMberByToday */
+			SELECT COUNT(*) FROM TM_USER_INFO
+			WHERE DATE_FORMAT(REGIST_DT,'%Y%m%d') = DATE_FORMAT(NOW(),'%Y%m%d')
+			AND USE_AT = 'Y' AND DELETE_CD = '0'
+		]]>
+	</select>
+
+	<!-- 전체 회원가입수 -->
+	<select id="countUserMberAll" parameterType="zvl"  resultType="long" >
+		<![CDATA[
+			/* countUserMberAll */
+			SELECT COUNT(*) FROM TM_USER_INFO
+			WHERE USE_AT = 'Y' AND DELETE_CD = '0'
+		]]>
+	</select>
+
+	<!-- 오늘자 게시물수 -->
+	<select id="countBbsNttCntByToday" parameterType="zvl"  resultType="long" >
+		<![CDATA[
+			/* countBbsNttCntByToday */
+			SELECT COUNT(*) FROM TB_BBS_ESTN
+			WHERE DATE_FORMAT(REGIST_DT,'%Y%m%d') = DATE_FORMAT(NOW(),'%Y%m%d')
+			AND USE_AT = 'Y' AND DELETE_CD = '0'
+		]]>
+	</select>
+
+	<!-- 전체 게시물수 -->
+	<select id="countBbsNttCntAll" parameterType="zvl"  resultType="long" >
+		<![CDATA[
+			/* countBbsNttCntAll */
+			SELECT COUNT(*) FROM TB_BBS_ESTN
+			WHERE USE_AT = 'Y' AND DELETE_CD = '0'
+		]]>
+	</select>
+
+	<!-- 최근 게시판 등록글 -->
+	<select id="findAllBbsByMngrMain" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.NTT_ID
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.BBS_ID
+				, A.OPTN1
+				, A.REGIST_DT as REG_DATE
+				, DATE_FORMAT(A.REGIST_DT,'%Y-%m-%d') as REGIST_DT
+				, A.ATCH_FILE_ID
+				, A.ANSWER_AT
+				, B.BBS_NM
+				, C.MENU_NM
+				, C.MENU_NO
+				, C.SITE_ID
+			FROM TB_BBS_ESTN A
+			INNER JOIN TB_BBS_MASTR B ON A.BBS_ID = B.BBS_ID
+			INNER JOIN TC_MENU_INFO C ON A.BBS_ID = C.BBS_ID AND C.SITE_ID = 'bos'
+		]]>
+			<if test='authorities != null'>
+			INNER JOIN TC_MENU_AUTHOR D ON C.MENU_NO = D.MENU_NO
+			</if>
+		<![CDATA[
+			WHERE A.DELETE_CD = '0' AND A.USE_AT = 'Y' AND IFNULL(C.USE_AT,'N') = 'Y'
+
+		]]>
+
+			<if test='authorities != null'>
+				AND D.AUTHOR_CD IN
+			<foreach item="item" index="index" collection="authorities" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			</if>
+		<choose>
+		<when test='recentAt == "Y"'>
+			<choose>
+			<when test='qnaAt == "Y"'>
+				<![CDATA[	AND	B.BBS_ATTRB_CD = #{bbsAttrbCd} 		]]>
+			</when>
+			<otherwise>
+				<![CDATA[	AND	B.BBS_ATTRB_CD != #{bbsAttrbCd} 		]]>
+			</otherwise>
+			</choose>
+		</when>
+		<otherwise>
+			<if test='menuNo != null and menuNo != ""'>
+				<![CDATA[	AND	C.MENU_NO = #{menuNo} 		]]>
+			</if>
+		</otherwise>
+		</choose>
+		<![CDATA[
+			ORDER BY REG_DATE DESC
+			limit 0, 5
+		]]>
+	</select>
+
+
+	<!-- 최다 조회 게시글 목록 -->
+	<select id="findAllBbsManyReadNttByMngrMain" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.NTT_ID
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.BBS_ID
+				, A.OPTN1
+				, A.REGIST_DT as REG_DATE
+				, DATE_FORMAT(A.REGIST_DT,'%Y-%m-%d') as REGIST_DT
+				, A.ATCH_FILE_ID
+				, A.ANSWER_AT
+				, A.INQIRE_CO
+				, B.BBS_NM
+				, C.MENU_NM
+				, C.MENU_NO
+				, C.SITE_ID
+			FROM TB_BBS_ESTN A
+			INNER JOIN TB_BBS_MASTR B ON A.BBS_ID = B.BBS_ID
+			INNER JOIN TC_MENU_INFO C ON A.BBS_ID = C.BBS_ID AND C.SITE_ID = 'bos'
+		]]>
+			<if test='authorities != null'>
+			INNER JOIN TC_MENU_AUTHOR D ON C.MENU_NO = D.MENU_NO
+			</if>
+		<![CDATA[
+			WHERE A.DELETE_CD = '0' AND A.USE_AT = 'Y' AND IFNULL(C.USE_AT,'N') = 'Y'
+
+		]]>
+
+			<if test='authorities != null'>
+				AND D.AUTHOR_CD IN
+			<foreach item="item" index="index" collection="authorities" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			</if>
+
+			<if test='dateSe == "WEEK"'>
+				AND A.REGIST_DT BETWEEN DATE_ADD(NOW(), INTERVAL -7 DAY) AND NOW()
+			</if>
+
+			<if test='dateSe == "MONTH"'>
+				AND A.REGIST_DT BETWEEN DATE_ADD(NOW(), INTERVAL -1 MONTH) AND NOW()
+			</if>
+
+		<![CDATA[
+			ORDER BY INQIRE_CO DESC, REG_DATE DESC
+			limit 0, 5
+		]]>
+	</select>
+
+	<!-- 최근 조회 게시글 댓글 목록 -->
+	<select id="findAllbBbsCommentByMngrMain" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.CM_ID
+				, A.NTT_ID
+				, A.BBS_ID
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.REGIST_DT as REG_DATE
+				, DATE_FORMAT(A.REGIST_DT,'%Y-%m-%d') as REGIST_DT
+				, B.BBS_NM
+				, C.MENU_NM
+				, C.MENU_NO
+				, C.SITE_ID
+			FROM TB_BBS_CM A
+			INNER JOIN TB_BBS_ESTN D ON A.BBS_ID = D.BBS_ID AND A.NTT_ID = D.NTT_ID AND D.DELETE_CD = '0' AND D.USE_AT = 'Y'
+			INNER JOIN TB_BBS_MASTR B ON A.BBS_ID = B.BBS_ID AND B.CM_POSBL_AT = 'Y' AND B.DELETE_CD = '0' AND B.USE_AT = 'Y'
+			INNER JOIN TC_MENU_INFO C ON A.BBS_ID = C.BBS_ID AND C.SITE_ID = 'bos'
+		]]>
+			<if test='authorities != null'>
+			INNER JOIN TC_MENU_AUTHOR E ON C.MENU_NO = E.MENU_NO
+			</if>
+		<![CDATA[
+			WHERE A.DELETE_CD = '0' AND A.USE_AT = 'Y' AND IFNULL(C.USE_AT,'N') = 'Y'
+
+		]]>
+
+			<if test='authorities != null'>
+				AND E.AUTHOR_CD IN
+			<foreach item="item" index="index" collection="authorities" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			</if>
+
+		<![CDATA[
+			ORDER BY REG_DATE DESC
+			limit 0, 5
+		]]>
+	</select>
+
+	<!-- 페이지만족도 조회 -->
+	<select id="findAllbStsfdg" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+		SELECT
+		  TB1.STSFDG_IDEX,
+		  TB1.STSFDG_IDEX_NM,
+		  IFNULL(TB1.CNT,0) AS CNT,
+		  IFNULL(ROUND((TB1.CNT/TB2.sum_cnt)*100,1),0) AS RATE
+		FROM (
+		  SELECT
+		    A.STSFDG_IDEX,
+		    A.STSFDG_IDEX_NM,
+		    B.CNT
+		  FROM
+		  (
+		    select
+		      STSFDG_IDEX, STSFDG_IDEX_NM
+		    FROM (
+		      SELECT 5 AS STSFDG_IDEX, '매우만족' AS STSFDG_IDEX_NM
+		      UNION ALL SELECT 4 AS STSFDG_IDEX, '만족' AS STSFDG_IDEX_NM
+		      UNION ALL SELECT 3 AS STSFDG_IDEX, '보통' AS STSFDG_IDEX_NM
+		      UNION ALL SELECT 2 AS STSFDG_IDEX, '불만' AS STSFDG_IDEX_NM
+		      UNION ALL SELECT 1 AS STSFDG_IDEX, '매우불만' AS STSFDG_IDEX_NM
+		    ) USM
+		  ) A
+		  LEFT OUTER JOIN (
+		    select
+		      STSFDG_IDEX,
+		      CASE
+		      WHEN STSFDG_IDEX=5 THEN '매우만족'
+		      WHEN STSFDG_IDEX=4 THEN '만족'
+		      WHEN STSFDG_IDEX=3 THEN '보통'
+		      WHEN STSFDG_IDEX=2 THEN '불만'
+		      WHEN STSFDG_IDEX=1 THEN '매우불만'
+		      END AS STSFDG_IDEX_NM,
+		      COUNT(*) AS CNT
+		    FROM TC_STSFDG
+		    WHERE SITE_ID = #{pSiteId}
+		    GROUP BY STSFDG_IDEX
+		) B ON A.STSFDG_IDEX = B.STSFDG_IDEX
+		) TB1, (select count(*) as sum_cnt from tc_stsfdg) TB2
+	]]>
+	</select>
+
+
+	<!-- 관리자메인 게시판 권한체크 -->
+	<select id="findAllChkAuthorByBbsAttrbCd" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.BBS_ID,
+				C.MENU_NM,
+				C.MENU_NO
+			FROM TB_BBS_MASTR A
+			INNER JOIN TC_MENU_INFO C ON A.BBS_ID = C.BBS_ID AND C.SITE_ID = 'bos'
+		]]>
+			<if test='authorities != null'>
+			INNER JOIN TC_MENU_AUTHOR D ON C.MENU_NO = D.MENU_NO
+			</if>
+		<![CDATA[
+			WHERE A.USE_AT = 'Y' AND A.BBS_ATTRB_CD = #{bbsAttrbCd}
+
+		]]>
+
+		<if test='authorities != null'>
+				AND D.AUTHOR_CD IN
+			<foreach item="item" index="index" collection="authorities" open="(" close=")" separator=",">
+				#{item}
+			</foreach>		</if>
+		<if test='menuNo != null and menuNo != ""'>
+			<![CDATA[	AND	C.MENU_NO = #{menuNo} 		]]>
+		</if>
+		LIMIT 0, 1
+	</select>
+
+	<!-- 관리자메인 URL권한 체크 -->
+	<select id="findAllChkAuthorByUrl" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.MENU_NO,
+				A.MENU_LINK
+			FROM TC_MENU_INFO A
+		]]>
+			<if test='authorities != null'>
+			INNER JOIN TC_MENU_AUTHOR D ON A.MENU_NO = D.MENU_NO
+			</if>
+		<![CDATA[
+			WHERE A.USE_AT = 'Y'
+			AND A.SITE_ID = 'bos'
+			AND A.MENU_LINK LIKE CONCAT(#{menuLink},'%')
+
+		]]>
+
+			<if test='authorities != null'>
+				AND D.AUTHOR_CD IN
+			<foreach item="item" index="index" collection="authorities" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+			</if>
+			LIMIT 0, 1
+	</select>
+	
+	<!-- 메인 공지사항 -->
+	<select id="findAllBbsByMngrMainBid7" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	  BOIDX
+	 			, BOID
+	 			, BOTITLE
+	 			, BONAME
+	 			, date_format(BOCREATEDATE, '%Y-%m-%d') BOCREATEDATE
+	 			, BOREADNUMBER
+	 			, DATEDIFF(NOW(), BOCREATEDATE) dayDiff
+	 	FROM	EDU_BOARD
+	 	WHERE	BOABCBOARDCODE = 'bid_7'
+	 	ORDER BY BOCREATEDATE DESC
+	 	LIMIT	0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 자료실 -->
+	<select id="findAllBbsByMngrMainBid11" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	  BOIDX
+	 			, BOID
+	 			, BOTITLE
+	 			, BONAME
+	 			, date_format(BOCREATEDATE, '%Y-%m-%d') BOCREATEDATE
+	 			, BOREADNUMBER
+	 			, DATEDIFF(NOW(), BOCREATEDATE) dayDiff
+	 	FROM	EDU_BOARD
+	 	WHERE	BOABCBOARDCODE = 'bid_11'
+	 	ORDER BY BOCREATEDATE DESC
+	 	LIMIT	0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 문서 수신함 -->
+	<select id="findAllBbsByMngrMainBoard" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		  SELECT BDD_SEQ
+		  		, BDS_SEQ
+		  		, BDD_USER
+		  		, BDD_TITLE
+		  		, BDD_WRITER
+		  		, date_format(BDD_CDATE, '%Y-%m-%d') BDD_CDATE
+		  		, DATEDIFF(NOW(), BDD_CDATE) dayDiff
+			FROM TB_BOARD_DATA A
+			WHERE BDS_SEQ = 'demand'
+			  AND BDD_STATE = 'C'
+			  AND CONCAT(BDD_TARGET,',') REGEXP #{bddcCenter}
+			ORDER BY BDD_CDATE DESC
+			limit 0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 메일 수신함 -->
+	<select id="findAllBbsByMngrMainMessage" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	A.SEQ, A.TITLE, date_format(A.WDATE, '%Y-%m-%d') WDATE
+			, DATEDIFF(NOW(), WDATE) dayDiff
+			FROM SUN_MESSAGE A
+			WHERE	1=1
+			  AND SEQ IN (
+			  			SELECT SEQ FROM SUN_MESSAGE_TGT
+						 WHERE RECEIVER = #{userId}
+			 			 ) 
+			ORDER BY A.WDATE DESC
+			LIMIT 0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 최근 등록사례 -->
+	<select id="findAllBbsByMngrMainCase" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT CASE_SEQ, CASE_NUMBER, FN_GET_CODE_NAME('CSAB', CASE_TYPE) AS CASE_TYPE_NM, CASE_DATE, VICTIM_NAME
+		, DATEDIFF(NOW(), CASE_DATE) dayDiff
+		FROM TA_CASE
+		WHERE MEMBER_ID = #{userId}
+	 ORDER BY CASE_DATE DESC
+		LIMIT 0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 최근 지원서비스 -->
+	<select id="findAllBbsByMngrMainPass" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT CASE_SEQ, ECL_DECRYPT(USER_NAME) AS USER_NAME, PASS_DATE, FN_GET_CODE_NAME('CS25G', USER_REL_GRP) AS USER_REL_GRP_NM
+				, FN_GET_CODE_NAME('CS21', PASS_WAY) AS PASS_WAY_NM, PASS_NAME
+				, DATEDIFF(NOW(), PASS_DATE) dayDiff
+            FROM TA_PASS
+            WHERE PASS_MANAGER = #{userId}
+            ORDER BY PASS_DATE DESC
+            limit 0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 상담직군 게시판 -->
+	<select id="findAllBbsByMngrMainBid1" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	  BOIDX
+	 			, BOID
+	 			, BOTITLE
+	 			, BONAME
+	 			, date_format(BOCREATEDATE, '%Y-%m-%d') BOCREATEDATE
+	 			, BOREADNUMBER
+	 			, DATEDIFF(NOW(), BOCREATEDATE) dayDiff
+	 	FROM	EDU_BOARD
+	 	WHERE	BOABCBOARDCODE = 'bid_1'
+	 	ORDER BY BOCREATEDATE DESC
+	 	LIMIT	0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 간호직군 게시판 -->
+	<select id="findAllBbsByMngrMainBid2" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	  BOIDX
+	 			, BOID
+	 			, BOTITLE
+	 			, BONAME
+	 			, date_format(BOCREATEDATE, '%Y-%m-%d') BOCREATEDATE
+	 			, BOREADNUMBER
+	 			, DATEDIFF(NOW(), BOCREATEDATE) dayDiff
+	 	FROM	EDU_BOARD
+	 	WHERE	BOABCBOARDCODE = 'bid_2'
+	 	ORDER BY BOCREATEDATE DESC
+	 	LIMIT	0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 행정직군 게시판 -->
+	<select id="findAllBbsByMngrMainBid4" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	  BOIDX
+	 			, BOID
+	 			, BOTITLE
+	 			, BONAME
+	 			, date_format(BOCREATEDATE, '%Y-%m-%d') BOCREATEDATE
+	 			, BOREADNUMBER
+	 			, DATEDIFF(NOW(), BOCREATEDATE) dayDiff
+	 	FROM	EDU_BOARD
+	 	WHERE	BOABCBOARDCODE = 'bid_4'
+	 	ORDER BY BOCREATEDATE DESC
+	 	LIMIT	0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 동행직군 게시판 -->
+	<select id="findAllBbsByMngrMainBid5" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	  BOIDX
+	 			, BOID
+	 			, BOTITLE
+	 			, BONAME
+	 			, date_format(BOCREATEDATE, '%Y-%m-%d') BOCREATEDATE
+	 			, BOREADNUMBER
+	 			, DATEDIFF(NOW(), BOCREATEDATE) dayDiff
+	 	FROM	EDU_BOARD
+	 	WHERE	BOABCBOARDCODE = 'bid_5'
+	 	ORDER BY BOCREATEDATE DESC
+	 	LIMIT	0, 5
+		]]>
+	</select>
+	
+	<!-- 메인 부소장직군 게시판 -->
+	<select id="findAllBbsByMngrMainBid6" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	  BOIDX
+	 			, BOID
+	 			, BOTITLE
+	 			, BONAME
+	 			, date_format(BOCREATEDATE, '%Y-%m-%d') BOCREATEDATE
+	 			, BOREADNUMBER
+	 			, DATEDIFF(NOW(), BOCREATEDATE) dayDiff
+	 	FROM	EDU_BOARD
+	 	WHERE	BOABCBOARDCODE = 'bid_6'
+	 	ORDER BY BOCREATEDATE DESC
+	 	LIMIT	0, 5
+		]]>
+	</select>
+	
+	<!-- 메인페이지 설정 -->
+	<select id="findMainMypage" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	MYPAGE_SN
+			, LOGIN_ID
+			, MENU_CHOISE
+			, REGIST_DT
+	 	FROM  TB_MAIN_MYPAGE
+	 	WHERE LOGIN_ID = #{userId}
+	 	LIMIT 1
+		]]>
+	</select>
+	
+</mapper>

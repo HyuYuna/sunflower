@@ -1,0 +1,48 @@
+@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+body, h1, h2, h3, div, p, ul, dl, ol, li, dt, dd, input, textarea, blockquote, table, th, td, img {margin:0;padding:0;font-family:'Noto Sans KR',Arial,sans-serif;font-size:13px;color:#666}
+body {height:100%;background:#63747d}
+li {list-style:none;}
+img {border:0; vertical-align:middle;}
+input, textarea{padding:2px 5px;border:1px solid #d7dbde;vertical-align:middle}
+
+/* link */
+a {border:0; text-decoration:none; color:#555;}
+
+/* align */
+.al {text-align:left !important;}
+.ar {text-align:right !important;}
+.ac {text-align:center !important;}
+.vt {vertical-align:top; !important;}
+.vm {vertical-align:middle; !important;}
+.vb {vertical-align:bottom; !important;}
+
+/* float */
+.fl {float:left;}
+.fr {float:right;}
+.c_both {clear:both;}
+
+/* font */
+.f_blue {color:#3378b3;}
+.f_red {color:#ff7100;}
+.f_bold {font-weight:bold;}
+
+
+.board_srch {width:100%;height:24px;margin-bottom:8px;}
+.board_srch span{float:left; vertical-align:bottom;}
+.board_srch p {float:right;font-weight:normal;}
+.board_srch p input {	vertical-align:middle;}
+.board_srch p label {margin-right:10px; vertical-align:middle;}
+
+#wrap {width:100%;min-width:700px;padding:35px 15px;box-sizing:border-box;}
+#wrap h2{margin:10px 0;color:#fff;font-size:30px;font-weight:bold;text-align:center}
+#wrap #sms_send{width:100%;background:#fff;padding:25px;border-radius:20px;box-sizing:border-box}
+#wrap #sms_send input{margin-right:5px;}
+#wrap #sms_send ul > li{margin-bottom:10px}
+#wrap #sms_send ul > li > strong.send_title{display:inline-block;width:80px;margin-right:5px;padding:5px; background:#83afd4;border-radius:20px;box-sizing:border-box;color:#fff;font-weight:normal;text-align:center}
+#wrap #sms_send ul > li > span.ex{color:#888;font-size:12px;}
+#wrap #sms_send dl {margin-top:40px; padding-top:15px;border-top:1px dotted #999;}
+#wrap #sms_send dt{margin-bottom:8px;color:#ff7200;font-size:14px;font-weight:bold;}
+#wrap .btn_group{margin-top:20px;text-align:center;}
+
+#wrap #sms_list{width:100%;background:#fff;padding:25px;border-radius:20px;box-sizing:border-box}

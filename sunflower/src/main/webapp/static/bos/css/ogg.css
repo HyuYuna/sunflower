@@ -1,0 +1,41 @@
+/* line 1, static/bos/scss/ogg.scss */ .ogg { background-color: #ffffff; }
+
+/* line 5, static/bos/scss/ogg.scss */ .ogg .item { position: relative; margin-bottom: 30px; }
+
+/* line 8, static/bos/scss/ogg.scss */ .ogg .item::before { content: ''; height: 30px; left: 50%; bottom: -30px; position: absolute; border-left: 1px solid #ddd; }
+
+/* line 15, static/bos/scss/ogg.scss */ .ogg .item dl { border-radius: 4px; overflow: hidden; text-align: center; font-size: 15px; width: 200px; margin: 0 auto; }
+
+/* line 22, static/bos/scss/ogg.scss */ .ogg .item dl > * { padding: 10px; }
+
+/* line 26, static/bos/scss/ogg.scss */ .ogg .item dt { background-color: #2a7dff; color: #ffffff; }
+
+/* line 30, static/bos/scss/ogg.scss */ .ogg .item dd { background-color: #e3e9eb; }
+
+/* line 34, static/bos/scss/ogg.scss */ .ogg .team-title { position: relative; border-radius: 4px; text-align: center; font-size: 15px; width: 200px; margin: 0 auto; background-color: #2680fc; color: #ffffff; padding: 10px 0; margin-bottom: 60px; }
+
+/* line 45, static/bos/scss/ogg.scss */ .ogg .team-title::before { content: ''; height: 30px; left: 50%; bottom: -30px; position: absolute; border-left: 1px solid #ddd; }
+
+/* line 53, static/bos/scss/ogg.scss */ .ogg .team-list { text-align: center; position: relative; }
+
+/* line 56, static/bos/scss/ogg.scss */ .ogg .team-list .item2 { display: inline-block; position: relative; margin-bottom: 30px; }
+
+/* line 60, static/bos/scss/ogg.scss */ .ogg .team-list .item2::before { content: ''; height: 30px; left: 50%; top: -30px; position: absolute; border-left: 1px solid #ddd; }
+
+/* line 67, static/bos/scss/ogg.scss */ .ogg .team-list .item2::after { content: ''; position: absolute; top: -30px; left: 0; border-top: 1px solid #ddd; width: calc(100% + 8px); }
+
+/* line 75, static/bos/scss/ogg.scss */ .ogg .team-list .item2:first-child::after { content: ''; position: absolute; left: 50%; top: -30px; border-top: 1px solid #ddd; width: calc(50% + 4px); }
+
+/* line 84, static/bos/scss/ogg.scss */ .ogg .team-list .item2:last-child::after { content: ''; position: absolute; top: -30px; left: -4px; border-top: 1px solid #ddd; width: calc(50% + 4px); }
+
+/* line 93, static/bos/scss/ogg.scss */ .ogg .team-list .item2.one::after { display: none; }
+
+/* line 97, static/bos/scss/ogg.scss */ .ogg .team-list .item2 dl { border-radius: 4px; overflow: hidden; text-align: center; font-size: 15px; width: 230px; margin: 0 auto; }
+
+/* line 104, static/bos/scss/ogg.scss */ .ogg .team-list .item2 dl > * { padding: 10px; }
+
+/* line 108, static/bos/scss/ogg.scss */ .ogg .team-list .item2 dt { background-color: #467ddc; color: #ffffff; }
+
+/* line 112, static/bos/scss/ogg.scss */ .ogg .team-list .item2 dd { background-color: #e3e9eb; font-size: 13px; }
+
+/*# sourceMappingURL=ogg.css.map */

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>대쉬보드</title>
+<link rel="stylesheet" href="/static/jslibrary/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/static/commons/common.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+</head>
+<body>
+<table class="table">
+	<thead>
+		<tr class="tac">
+			<th scope="col" width="70">사용여부</th>
+			<th scope="col" width="120">명칭</th>
+			<th scope="col">설정</th>
+			<th scope="col">설명</th>
+			<th scope="col">미리보기</th>
+		</tr>
+	</thead>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>회원수</td>
+		<td>
+		<label><input type="radio" name=""> 크게 보기</label>
+		<label><input type="radio" name=""> 작게보기</label>
+		<label><input type="radio" name=""> 넓게 보기</label> 
+		</td>
+		<td>가입회원 수의 정보를 보여줌</td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>접속통계</td>
+		<td>구글 분석기 API 연결    소스코드를 등록해주세요</td>
+		<td>구글 로그분석기(Analytics)의    접속 기록을 표시합니다. </td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>최근게시물표시</td>
+		<td>게시물 중 최근게시물을 표시하려는 게시판 코드를 입력해주세요 </td>
+		<td>통합게시판에 등록된 최신 게시물을 표시합니다. (등록일 5일 기준)</td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>바로가기</td>
+		<td>
+			<table class="table table-bordered mb0">
+				<thead>
+					<tr>
+						<th scope="col">바로가기명</th>
+						<th scope="col">아이콘</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+						<div class="row">
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="바로가기명"></div>
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="URL"></div>
+						</div>
+						</td>
+						<td>
+						<input type="hidden" id="classname1" >
+						<span class="fa fa-address-card fa-3x vm"></span>
+						<button type="button" data-id="classname1" class="b-open iconSelect">아이콘선택</button>
+						<label><input type="checkbox" name=""> 새창</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<div class="row">
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="바로가기명"></div>
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="URL"></div>
+						</div>
+						</td>
+						<td>
+						<input type="text" id="classname2">
+						<button type="button" data-id="classname2" class="b-open iconSelect">아이콘선택</button>
+						<label><input type="checkbox" name=""> 새창</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<div class="row">
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="바로가기명"></div>
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="URL"></div>
+						</div>
+						</td>
+						<td>
+						<input type="text" id="classname3">
+						<button type="button" data-id="classname3" class="b-open iconSelect">아이콘선택</button>
+						<label><input type="checkbox" name=""> 새창</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<div class="row">
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="바로가기명"></div>
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="URL"></div>
+						</div>
+						</td>
+						<td>
+						<input type="text" id="classname4">
+						<button type="button" data-id="classname4" class="b-open iconSelect">아이콘선택</button>
+						<label><input type="checkbox" name=""> 새창</label>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						<div class="row">
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="바로가기명"></div>
+						<div class="col-sm-6"><input type="text" class="w100p" placeholder="URL"></div>
+						</div>
+						</td>
+						<td>
+						<input type="text" id="classname5">
+						<button type="button" data-id="classname5" class="b-open iconSelect">아이콘선택</button>
+						<label><input type="checkbox" name=""> 새창</label>
+						</td>
+					</tr>
+					
+					
+					
+				</tbody>
+			</table>
+			<script>
+				$('.iconSelect').each(function(index, el) {
+					$(this).click(function(event) {
+						popupW('iconselectList.html', $(this).data().id, 1200, 800, 0, 1, 3)
+					});
+				});
+			</script>
+		</td>
+		<td>바로가기 버튼을 4개까지 설정할 수 있습니다. </td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>오늘날씨</td>
+		<td>
+		<label><input type="radio" name=""> 크게 보기</label>
+		<label><input type="radio" name=""> 작게보기</label>
+		<label><input type="radio" name=""> 넓게 보기</label> 
+		</td>
+		<td>오늘의 날씨를 보여줍니다. 단, 외부연동이 안될 시    서비스가 안될 수 있음</td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>캘린더</td>
+		<td>
+		<label><input type="radio" name=""> 크게 보기</label>
+		<label><input type="radio" name=""> 작게보기</label>
+		<label><input type="radio" name=""> 넓게 보기</label> 
+		</td>
+		<td>오늘의 날짜 캘린더를 볼 수 있습니다. </td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>관리자공지</td>
+		<td>
+		<input type="text" placeholder="코드" class="tac"> 관리자공지게시판의 코드를 입력해주세요<br>
+		<label><input type="radio" name=""> 크게 보기</label>
+		<label><input type="radio" name=""> 작게보기</label>
+		<label><input type="radio" name=""> 넓게 보기</label> 
+		</td>
+		<td>관리자공지를 볼 수 있습니다. 단    생성되지 않았을 경우에는 표시되지 않을 수 있습니다.</td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>게시판현황</td>
+		<td>
+		<label><input type="radio" name=""> 크게 보기</label>
+		<label><input type="radio" name=""> 작게보기</label>
+		<label><input type="radio" name=""> 넓게 보기</label> 
+		</td>
+		<td>생성된 전체 게시판 현황을 보여줍니다.</td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>시스템정보</td>
+		<td>
+		<label><input type="radio" name=""> 크게 보기</label>
+		<label><input type="radio" name=""> 작게보기</label>
+		<label><input type="radio" name=""> 넓게 보기</label> 
+		</td>
+		<td>하드공간, 메모리사용량 등을    표시합니다.</td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+	<tr>
+		<td class="tac"><input type="checkbox" name=""></td>
+		<td>개별 게시판</td>
+		<td></td>
+		<td>개별 게시판은 등록된 게시판에 대해서 &quot;크게보기&quot;로    게시판 각각 표시됩니다. </td>
+		<td><button type="button" class="b-view btn-sm">미리보기</button></td>
+	</tr>
+</table>
+</body>
+</html>

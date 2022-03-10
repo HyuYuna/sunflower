@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.service.scheduler.CmmnFileDwldSm">
+
+	<insert id="saveCmmnFileDwldSm" parameterType="zvl" >
+		<![CDATA[
+			/* saveCmmnFileDwldSm */
+
+			INSERT INTO
+	        	TS_CMMN_FILE_DWLD_SM(SM_NO, SM_DE, ATCH_FILE_ID, FILE_SN, MENU_NO, DWLD_CO, SITE_ID)
+	        SELECT
+	               (NVL((SELECT /*+ INDEX_DESC(A PK_TC_CMMN_FILE_DWLD_SM) */ SM_NO FROM TS_CMMN_FILE_DWLD_SM A WHERE ROWNUM=1),0) + ROWNUM) AS SM_NO
+	             , SM_DE
+	             , ATCH_FILE_ID
+	             , FILE_SN
+	             , MENU_NO
+	             , DWLD_CO
+	             , SITE_ID
+	          FROM
+	               (
+	               SELECT TO_CHAR(REGIST_DT,'YYYYMMDD') AS SM_DE
+	                    , ATCH_FILE_ID
+	                    , FILE_SN
+	                    , MAX(MENU_NO) AS MENU_NO
+	                    , count(*) AS DWLD_CO
+	                    , SITE_ID
+	                 FROM TC_CMMN_FILE_DWLD_HIST
+	                WHERE TO_CHAR(REGIST_DT,'YYYYMMDD')>
+	                      (
+	                      SELECT NVL(MAX(SM_DE), TO_CHAR(SYSDATE-365,'YYYYMMDD'))
+	                        FROM TS_CMMN_FILE_DWLD_SM
+	                      )
+	                      AND TO_CHAR(REGIST_DT,'YYYYMMDD')<TO_CHAR(SYSDATE,'YYYYMMDD')
+	                GROUP BY TO_CHAR(REGIST_DT,'YYYYMMDD')
+	                    , ATCH_FILE_ID
+	                    , FILE_SN
+	                    , SITE_ID
+	               )
+		]]>
+	</insert>
+
+
+
+</mapper>

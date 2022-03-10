@@ -1,0 +1,84 @@
+/*bdViewNav*/
+.bdViewNav{
+	margin-top:20px;
+	overflow:hidden;
+	display:table;
+	width:100%;
+	border-top:2px solid $bdcolor;
+	border-bottom:1px solid $bdcolor;
+	dl{
+		display:table-row;
+		>*{
+			display:table-cell;
+			vertical-align:middle;
+		}
+		dt{
+			width:15%;
+			width:195px;
+			text-align:center;
+			font-weight:bold;
+			font-size:15px;
+			padding:18px 0;
+			position:relative;
+			&:after {
+				content: '';
+				width:20px;
+				height:7px;
+				display:inline-block;
+				background: url(/static/ucms/img/ico-up.png) right 0 no-repeat;
+			}
+			&.n:after{
+				transform:rotate(180deg);
+				background-position:left 0;
+			}
+		}
+		dd{
+			position:relative;
+			>span{
+				display:block;
+				padding:18px 20px;
+			}
+			&:after{
+				content: '';
+				position:absolute;
+				height:13px;
+				border-right:1px solid #b3b3b3;
+				left:0;
+				top:21px;
+			}
+		}
+	}
+	dl:first-child>*{
+		border-bottom:1px solid $bdcolor;
+	}
+	a,
+	dd>span{
+		overflow:hidden;
+		display:block;
+		padding:18px 0 18px 20px;
+		font-size:15px;
+	}
+	a span{
+		float:right;
+		width:17%;
+		position:relative;
+		text-align:center;
+		&:after{
+			content: '|';
+			position:absolute;
+			left:0;
+			top:-1px;
+			color:#d8d8d8;
+			font-size:9px;
+		}
+	}
+	// 날자가 들어가는 경우
+	a span:first-child{
+		float:left;
+		width:83%;
+		text-align:left;
+	}
+	a span:first-child:after{
+		display:none;
+	}
+}

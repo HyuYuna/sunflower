@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<title>photoBlock</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=3, minimum-scale=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="stylesheet" href="/static/jslibrary/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/static/commons/common.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/jslibrary/bootstrap/js/bootstrap.js"></script>
+<script src="/static/jslibrary/bootstrap/respond.min.js"></script>
+<script src="/static/jslibrary/jquery-ui/jquery-ui.js"></script>
+<!-- <script src="/static/jslibrary/jquery.highlight-4.js"></script> -->
+<script src="/static/jslibrary/jquery.maskedinput.min.js"></script>
+<!-- <script src="/static/jslibrary/base64.js"></script> -->
+<script src="/static/jslibrary/miya_validator.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+<style>
+body {
+	padding: 50px;
+}
+</style>
+</head>
+<body>
+
+	<dl id="faqList" class="callFaq">
+		<dt id="no-data">검색 결과가 없습니다.</dt>
+	</dl>
+
+
+	<dl id="faqList" class="callFaq">
+		<dt class="on open">
+			<button type="button" title="답변 열기">
+				<span class="qna_img"><span class="sr-only">질문</span></span> <span> 자주하는 질문 베스트 1 </span>
+			</button>
+		</dt>
+		<dd>
+			<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+		</dd>
+		<dt>
+			<button type="button" title="답변 열기">
+				<span class="qna_img"><span class="sr-only">질문</span></span> <span> 자주하는 질문 베스트 2 </span>
+			</button>
+		</dt>
+		<dd>
+			<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+		</dd>
+		<dt>
+			<button type="button" title="답변 열기">
+				<span class="qna_img"><span class="sr-only">질문</span></span> <span> 자주하는 질문 베스트 3 </span>
+			</button>
+		</dt>
+		<dd>
+			<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+		</dd>
+		<dt>
+			<button type="button" title="답변 열기">
+				<span class="qna_img"><span class="sr-only">질문</span></span> <span> 자주하는 질문 베스트 4 </span>
+			</button>
+		</dt>
+		<dd>
+			<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+		</dd>
+	</dl>
+	<!-- faqList -->
+
+
+
+	<script>
+		jQuery(function($) {
+			var article = $('.callFaq dt>button');
+			article.each(function(index, el) {
+				$(this).click(function(event) {
+					if ($(this).parent().hasClass('open')) {
+						$(this).parent().removeClass('open').next().hide();
+						$(this).attr('title', '답변 열기')
+					} else {
+						$(this).parent().addClass('open').next().show();
+						$(this).attr('title', '답변 닫기')
+					}
+				});
+				$(this).parent().removeClass('open').next().hide();
+			});
+			article.eq(0).trigger('click')
+		});
+	</script>
+</body>
+</html>

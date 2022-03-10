@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.cms.service.auth.authorHist">
+
+	<sql id="authorHist-where">
+		<if test="sdate != null and sdate != ''">
+			<![CDATA[	AND CONVERT(char(8), REGIST_DT, 112) >= REPLACE(#{sdate},'-','') 		]]>
+		</if>
+		<if test="edate != null and edate != ''">
+			<![CDATA[	AND CONVERT(char(8), REGIST_DT, 112) <= REPLACE(#{edate},'-','') 		]]>
+		</if>
+		<if test='searchKwd != null and searchKwd != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[ 	AND USER_ID LIKE '%' + #{searchKwd} + '%' ]]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[ 	AND USER_NM LIKE '%' + #{searchKwd} + '%' ]]>
+			</if>
+		</if>
+	</sql>
+
+	<select id="countAuthorHist" parameterType="zvl" resultType="long">
+		<![CDATA[
+		/* countAuthorHist */
+
+		SELECT COUNT(*) TOTCNT
+		  FROM TM_MNGR_AUTHOR_HIST A
+		 WHERE 1=1
+		 ]]>
+		<include refid="authorHist-where" />
+	</select>
+
+	<select id="findAllAuthorHist" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAllAuthorHist */
+		SELECT  AA.*
+			   FROM
+			   (
+			    SELECT  ROW_NUMBER() OVER(ORDER BY ALL_LIST.HIST_NO DESC) RNUM, ALL_LIST.*
+			      FROM  (
+
+
+					SELECT
+					   HIST_NO,
+			           USER_ID,
+			           USER_SN,
+			           USER_NM,
+			           AUTHOR_CD,
+			           ISNULL((SELECT AUTHOR_NM FROM TC_AUTHOR_INFO WHERE AUTHOR_CD = A.AUTHOR_CD), '') AS AUTHOR_NM,
+			           USER_CPNO,
+			           USER_TELNO,
+			           USER_EMAD,
+			           STTUS_CD,
+			           STTUS_SUMRY,
+			           REGIST_ID,
+			           REGIST_DT,
+			           REGIST_IPAD
+					FROM
+						tm_mngr_author_hist a
+					WHERE
+						1=1
+					]]>
+					<include refid="authorHist-where" />
+
+		<![CDATA[
+
+						) ALL_LIST
+			  	) AA
+			WHERE  AA.RNUM > #{firstIndex}
+			AND AA.RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+
+</mapper>

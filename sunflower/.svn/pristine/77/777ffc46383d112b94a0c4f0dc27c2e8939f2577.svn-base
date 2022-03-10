@@ -1,0 +1,125 @@
+
+
+<p>유앤피플의 다양한 행사들을 사진으로 만나보세요</p>
+<div class="plist">
+	<p><p>유앤피플은 워크샵, 세미나 등 다양한 행사를 통한 사내 단합을 도모하고 있습니다.</p></p>
+</div>
+<div class="view">
+	<h2 class="subject">
+		게시물제목
+	</h2>
+	<dl>
+		<dt>작성일</dt>
+		<dd>2016-01-01</dd>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<div class="photoView">
+		 <div class="sliderMc">
+			<div class="thumbs" id="vsThumbs">
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4" width="596" alt="" /></a></div>
+			</div>
+			<div class="thumbsList" id="thumbsList">
+				<ul>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5"  alt="" /></a></li>
+				</ul>
+			</div>
+			<div class="sliderMcCtrl">
+				<a href="#self" class="prevVs"><span class="hidden">이전 배너 보기</span></a>
+				<a href="#self" class="nextVs"><span class="hidden">다음 배너 보기</span></a>
+			</div>
+			<script src="http://unpl.co.kr/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+			<script>
+			$(function() {
+				 $('#thumbsList ul').find( 'li:eq(0)' ).addClass( 'on' );
+
+				 $('#thumbsList ul').carouFredSel({
+				 	width:596,
+					items		:{
+						visible : 4
+					},
+					direction: 'up',
+					scroll      :{
+						items		:1,
+						pauseOnHover	: true
+					},
+					auto: {
+						play: false,
+						duration: 750,
+						timeoutDuration: 8000,
+						easing: 'quadratic',
+						onBefore: function() {
+							var index = $(this).triggerHandler( 'currentPosition' );
+							if ( index == 0 ) {
+								index = $(this).children().length;
+							}
+							$('#vsThumbs').trigger('slideTo', [ index, {
+								fx: 'directscroll'
+							}, 'prev' ]);
+							 $('#thumbsList ul').find( 'li' ).removeClass( 'on' );
+							 $('#thumbsList ul').find( 'li:eq(1)' ).addClass( 'on' );
+							 //console.log("index : "+index);
+						},
+						onAfter:function(){
+						},
+					},
+					next : ".nextVs",
+					prev : ".prevVs"
+				 });
+				var thumbsList = $('#thumbsList ul li');
+				thumbsList.bind("click", function(){
+					var index =  thumbsList.index(this);
+					var directStr = "prev";
+					if (index%2 == 0) directStr = "next";
+					$('#vsThumbs').trigger('slideTo', [ index, {
+						fx: 'directscroll'
+					}, directStr ]);
+
+
+					 $('#thumbsList ul').find( 'li' ).removeClass( 'on' );
+					 $(this).addClass( 'on' );
+					
+					 //console.log("index : "+index);
+
+				});
+				 $('#vsThumbs').carouFredSel({
+					items: 1,
+					direction: 'left',
+					width:596,
+					height:533,
+					scroll :{
+						items : 1
+					},
+					auto: {
+						play: false,
+						duration: 750,
+						easing: 'directscroll'
+					}
+				 });
+			});
+			</script>
+
+	</div>
+	<div class="dbData">
+		전략사업부에서는 2017년 2월 2일 강원도 횡성에서 2017년 전략사업부 워크샵을 개최하였습니다.  금번 워크샵에서는 성공적인 프로젝트완료를 위한 PM의 역할이라는 주제로 워크샵이 진행되었으며 이외 프로젝트 산출물에 대한 표준화에 대한 논의가 진행되었습니다....
+	</div>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>

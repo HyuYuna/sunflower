@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.cms.conf.DaoExceptionResolver">
+
+	<insert id="saveErrorLog" parameterType="zvl">
+		<selectKey resultType="long" order="BEFORE" keyProperty="logNo">
+			SELECT ISNULL(MAX(LOG_NO),0)+1 AS LOG_NO FROM TC_ERROR_LOG
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TC_ERROR_LOG (
+				LOG_NO,ERROR_SJ,USER_ID,USER_IPAD,ERROR_DT,BEFORE_URLAD,ERROR_URLAD,ERROR_CN
+			)
+			VALUES (
+				#{logNo},#{errorSj},#{userId},#{userIpad},GETDATE(),#{beforeUrlad},#{errorUrlad},#{msg}
+			)
+		]]>
+	</insert>
+
+
+	<sql id="ErrorLogStats-where">
+		<if test='sdate != null and sdate != ""'>
+			<![CDATA[	AND CONVERT(char(10), ERROR_DT, 23) >= #{sdate} 		]]>
+		</if>
+		<if test='edate != null and edate != ""'>
+			<![CDATA[	AND CONVERT(char(10), ERROR_DT, 23) <= #{edate} 		]]>
+		</if>
+
+		<if test='searchWrd != null and searchWrd != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[	AND ERROR_SJ LIKE '%' + #{searchWrd} + '%' 		]]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[	AND ERROR_URLAD LIKE '%' + #{searchWrd} + '%' 		]]>
+			</if>
+			<if test='searchCnd == "3"'>
+				<![CDATA[	AND USER_ID LIKE '%' + #{searchWrd} + '%' 	]]>
+			</if>
+			<if test='searchCnd == "4"'>
+				<![CDATA[	AND USER_IPAD LIKE '%' + #{searchWrd} + '%' 		]]>
+			</if>
+		</if>
+	</sql>
+
+	<sql id="ErrorLogDateStats-where">
+		<if test='sdate != null and sdate != ""'>
+			<![CDATA[	AND A.CONECT_DE >= #{sdate} 		]]>
+		</if>
+		<if test='edate != null and edate != ""'>
+			<![CDATA[	AND A.CONECT_DE <= #{edate} 		]]>
+		</if>
+	</sql>
+
+	<select id="countErrorLog" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT
+				   COUNT(LOG_NO)
+			FROM
+				   TC_ERROR_LOG
+			WHERE 1=1
+		]]>
+		<include refid="ErrorLogStats-where" />
+	</select>
+
+	<select id="findAllErrorLog" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT AA.*  FROM (
+		SELECT ROW_NUMBER() OVER(ORDER BY ALL_LIST.ERROR_DT DESC) RNUM , ALL_LIST.*  FROM(
+
+				SELECT LOG_NO,
+							ERROR_SJ,
+					        USER_ID,
+					        USER_IPAD,
+					        ERROR_DT,
+					        BEFORE_URLAD,
+					        ERROR_URLAD
+					  FROM TC_ERROR_LOG
+					  WHERE 1=1
+		]]>
+				<include refid="ErrorLogStats-where" />
+		<![CDATA[
+
+		 ) ALL_LIST   )AA
+		 WHERE AA.RNUM > #{firstIndex}
+		   AND AA.RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="findOneErrorLog" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			 SELECT LOG_NO,
+					ERROR_SJ,
+			        USER_ID,
+			        USER_IPAD,
+			        ERROR_DT,
+			        BEFORE_URLAD,
+			        ERROR_URLAD,
+			        ERROR_CN
+			  FROM TC_ERROR_LOG
+			 WHERE LOG_NO = #{logNo}
+		]]>
+	</select>
+
+<select id="findAllErrorDateLogCount" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+			SELECT P.CONECT_DE, ISNULL(V.CNT,0) AS CNT
+			FROM
+				(
+				SELECT A.CONECT_DE
+				FROM (
+   					SELECT
+   						DATEADD(day, -(A.A + (10 * B.A) + (100 * C.A)), GETDATE()) AS CONECT_DE
+   					FROM (
+   						SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+   						UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+   					) AS A
+   					CROSS JOIN (
+   						SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+   						UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+   					) AS B
+   					CROSS JOIN (
+   						SELECT 0 AS A UNION ALL SELECT 1 UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4
+   						UNION ALL SELECT 5 UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+   					) AS C
+				) A
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<include refid="ErrorLogDateStats-where" />
+		</trim>
+	<![CDATA[
+		)P
+		LEFT JOIN
+		(
+			SELECT
+				CONCAT(SUBSTRING(CONVERT(char(10), ERROR_DT, 23), 1, 4), SUBSTRING(CONVERT(char(10), ERROR_DT, 23), 5, 7)) AS CONECT_DE,
+				COUNT(*) AS CNT
+			FROM TC_ERROR_LOG
+
+	]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<include refid="ErrorLogStats-where" />
+		</trim>
+	<![CDATA[
+			GROUP BY CONVERT(char(10), ERROR_DT, 23) HAVING COUNT(*) >= 1
+	]]>
+
+	<![CDATA[
+	)V	ON P.CONECT_DE = V.CONECT_DE
+	ORDER BY P.CONECT_DE ASC
+	]]>
+	</select>
+
+	<select id="findAllErrorTypeLogCount" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				ERROR_SJ,
+				ERROR_URLAD,
+				COUNT(*) AS CNT
+			FROM TC_ERROR_LOG
+		]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<include refid="ErrorLogStats-where" />
+		</trim>
+	<![CDATA[
+			GROUP BY ERROR_URLAD, ERROR_SJ HAVING COUNT(*) >= 1
+			ORDER BY CNT DESC
+	]]>
+	</select>
+
+
+	<select id="findAllErrorUrlAdLogCount" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+		SELECT
+			ERROR_SJ,
+			ERROR_URLAD,
+			COUNT(*) AS CNT
+		FROM TC_ERROR_LOG
+
+	]]>
+	<trim prefix="WHERE" prefixOverrides="AND|OR">
+		<include refid="ErrorLogStats-where" />
+	</trim>
+	<![CDATA[
+		GROUP BY ERROR_URLAD, ERROR_SJ HAVING COUNT(*) >= 1
+		ORDER BY CNT DESC
+	]]>
+	</select>
+
+</mapper>

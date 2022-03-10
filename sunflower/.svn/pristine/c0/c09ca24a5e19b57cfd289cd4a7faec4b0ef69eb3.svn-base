@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.dicary.wordDicary">
+
+	<sql id="wordDicary-where">
+		<if test='wordSeCd != null and wordSeCd != ""'>
+			<![CDATA[	AND N.WORD_SE_CD = #{wordSeCd} 		]]>
+		</if>
+		<if test='searchWrd != null and searchWrd != ""'>
+			<![CDATA[
+				AND (
+					N.WORD_NM LIKE '%' || UPPER(#{searchWrd}) || '%'
+					OR N.WORD_ENG_NM LIKE UPPER(#{searchWrd}) || '%'
+					OR N.WORD_ENG_ABRV_NM LIKE UPPER(#{searchWrd}) || '%'
+					)
+			]]>
+		</if>
+	</sql>
+
+	<select id="countWordDicary" parameterType="zvl" resultType="Long" >
+		<![CDATA[
+			/* countWordDicary */
+			SELECT SUM(RECORD_CO)
+			  FROM
+			       (
+			       SELECT
+			       		1 AS  RECORD_CO
+			            , A.WORD_SE
+			            , CASE
+			                  WHEN A.WORD_SE='도메인' THEN 2
+			                  ELSE 1
+			              END WORD_SE_CD
+			            , A.WORD_NM
+			            , A.WORD_ENG_NM
+			            , A.WORD_ENG_ABRV_NM
+			         FROM TC_WORD_DICARY A
+			        WHERE USE_AT = 'Y'
+
+			           UNION ALL
+
+                   SELECT
+                   		1 AS  RECORD_CO
+			            , '항목사전' AS WORD_SE
+			            , 3 AS WORD_SE_CD
+			            , LOGIC_NM AS WORD_NM
+			            , PHYSICL_NM AS WORD_ENG_NM
+			            , PHYSICL_NM AS WORD_ENG_ABRV_NM
+                     FROM
+                          (
+                          SELECT A.COLUMN_COMMENT AS LOGIC_NM
+                               , A.COLUMN_NAME AS PHYSICL_NM
+                               ,
+                                 (
+                                 SELECT WORD_NM
+                                   FROM TC_WORD_DICARY
+                                  WHERE WORD_SE='도메인'
+                                        AND WORD_ENG_NM
+                                             = replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(
+                                             SUBSTR(A.COLUMN_NAME,(length(A.COLUMN_NAME)-length(SUBSTRING_INDEX(A.COLUMN_NAME, '_', -1)))+1,LENGTH(A.COLUMN_NAME))
+                                             ,'0',''),'1',''),'2',''),'3',''),'4',''),'5',''),'6',''),'7',''),'8',''),'9','')
+                                        AND ROWNUM =  1
+                                 ) AS DOMAIN_NM
+                               , SUBSTR(A.COLUMN_NAME,(length(A.COLUMN_NAME)-length(SUBSTRING_INDEX(A.COLUMN_NAME, '_', -1)))+1,LENGTH(A.COLUMN_NAME)) AS DOMAIN
+                               , CASE
+                                     WHEN A.DATA_TYPE='text' OR A.DATA_TYPE='longtext' THEN A.DATA_TYPE
+                                     ELSE concat(A.DATA_TYPE , '(' , A.CHARACTER_MAXIMUM_LENGTH , ')')
+                                 END AS DATA_TY
+                               , A.TABLE_NAME
+                            FROM INFORMATION_SCHEMA.COLUMNS A
+                           WHERE
+                                 A.TABLE_NAME LIKE 'T%'
+                                    AND TABLE_SCHEMA=DATABASE()
+                          ) M
+                    GROUP BY LOGIC_NM
+                        , PHYSICL_NM
+                        , DOMAIN
+                        , DOMAIN_NM
+                        , DATA_TY
+			       ) N
+			 WHERE 1=1
+		]]>
+		<include refid="wordDicary-where" />
+	</select>
+
+	<resultMap id="wordDicaryMap" type="zvl">
+		<result property="wordDfn" column="WORD_DFN" jdbcType="CLOB" javaType="string" />
+		<result property="dataTy" column="DATA_TY" jdbcType="CLOB" javaType="string" />
+	</resultMap>
+
+	<select id="findAllWordDicary" parameterType="zvl" resultMap="wordDicaryMap" >
+		<![CDATA[
+			/* findAllWordDicary */
+		       SELECT
+					O.*
+		         FROM
+		              (
+		              SELECT N.MNNO
+		                   , N.WORD_SE
+		                   , N.WORD_SE_CD
+		                   , N.WORD_DOMN
+		                   , N.WORD_NM
+		                   , N.WORD_ENG_NM
+		                   , N.WORD_ENG_ABRV_NM
+		                   , N.WORD_DFN
+		                   , N.THEMA_AREA_SE
+		                   , N.DATA_TY
+		                   , N.CREAT_DE
+		                   , N.USE_AT
+		                   , N.REGIST_DT
+		                   , N.UPDT_DT
+		                FROM
+		                     (
+		                     SELECT A.MNNO
+		                          , A.WORD_SE
+		                          , CASE
+		                                WHEN A.WORD_SE='도메인' THEN 2
+		                                ELSE 1
+		                            END WORD_SE_CD
+		                          , CASE
+		                                WHEN A.WORD_SE='도메인' THEN A.THEMA_AREA_SE || '>' || A.WORD_NM
+		                                ELSE ''
+		                            END WORD_DOMN
+		                          , A.WORD_NM
+		                          , A.WORD_ENG_NM
+		                          , A.WORD_ENG_ABRV_NM
+		                          , A.WORD_DFN
+		                          , A.THEMA_AREA_SE
+		                          , CASE
+		                                WHEN A.WORD_SE='도메인' THEN B.DATA_TY
+		                                ELSE ''
+		                            END DATA_TY
+		                          , A.CREAT_DE
+		                          , A.USE_AT
+		                          , A.REGIST_DT
+		                          , A.UPDT_DT
+		                       FROM TC_WORD_DICARY A
+		                       		LEFT OUTER JOIN
+                                  		(
+                                         SELECT
+                                             DOMN, group_concat(DATA_TY) AS DATA_TY
+                                         FROM (
+                                           SELECT
+                                               DISTINCT
+                                               replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(DOMN,'0',''),'1',''),'2',''),'3',''),'4',''),'5',''),'6',''),'7',''),'8',''),'9','') AS DOMN
+                                               , CONVERT(DATA_TY, CHAR) AS DATA_TY
+                                           FROM (
+                                             SELECT
+                                                 SUBSTR(X.COLUMN_NAME,(length(X.COLUMN_NAME)-length(SUBSTRING_INDEX(X.COLUMN_NAME, '_', -1)))+1,LENGTH(X.COLUMN_NAME)) AS DOMN
+                                                 , NVL(CONCAT(DATA_TYPE , '(' , CHARACTER_MAXIMUM_LENGTH , ')'),'')  AS DATA_TY
+                                             FROM INFORMATION_SCHEMA.COLUMNS X
+                                             WHERE TABLE_SCHEMA=DATABASE()
+                                           ) Y
+                                         ) Z GROUP BY DOMN
+                                       ) B
+                                  ON A.WORD_ENG_ABRV_NM=B.DOMN
+		                      WHERE USE_AT = 'Y'
+		                         UNION ALL
+		                     SELECT 0 AS MNNO
+		                          , '항목사전' AS WORD_SE
+		                          , 3 AS WORD_SE_CD
+		                          , concat(DOMAIN_NM , '(' , DOMAIN , ')') AS WORD_DOMN
+		                          , LOGIC_NM AS WORD_NM
+		                          , PHYSICL_NM AS WORD_ENG_NM
+		                          , PHYSICL_NM AS WORD_ENG_ABRV_NM
+		                          , concat(LOGIC_NM , '(' , GROUP_CONCAT(TABLE_NAME,' ') , ')') AS WORD_DFN
+		                          , '컬럼' AS THEMA_AREA_SE
+		                          , CONCAT(DATA_TY) AS DATA_TY
+		                          , LAST_ANALYZED AS CREAT_DE
+		                          , 'Y' AS USE_AT
+		                          , '' AS REGIST_DT
+		                          , '' AS UPDT_DT
+		                       FROM
+		                            (
+		                            SELECT A.COLUMN_COMMENT AS LOGIC_NM
+		                                 , A.COLUMN_NAME AS PHYSICL_NM
+		                                 ,
+		                                   (
+		                                   SELECT WORD_NM
+		                                     FROM TC_WORD_DICARY
+		                                    WHERE WORD_SE='도메인'
+		                                          AND WORD_ENG_ABRV_NM
+                                                 = replace(replace(replace(replace(replace(replace(replace(replace(replace(replace(
+                                                 SUBSTR(A.COLUMN_NAME,(length(A.COLUMN_NAME)-length(SUBSTRING_INDEX(A.COLUMN_NAME, '_', -1)))+1,LENGTH(A.COLUMN_NAME))
+                                                 ,'0',''),'1',''),'2',''),'3',''),'4',''),'5',''),'6',''),'7',''),'8',''),'9','')
+		                                          AND ROWNUM = 1
+		                                   ) AS DOMAIN_NM
+		                                 , SUBSTR(A.COLUMN_NAME,(length(A.COLUMN_NAME)-length(SUBSTRING_INDEX(A.COLUMN_NAME, '_', -1)))+1,LENGTH(A.COLUMN_NAME)) AS DOMAIN
+		                                 , CASE
+		                                       WHEN A.DATA_TYPE='text' OR A.DATA_TYPE='longtext' THEN A.DATA_TYPE
+		                                       ELSE concat(A.DATA_TYPE , '(' , A.CHARACTER_MAXIMUM_LENGTH , ')')
+		                                   END AS DATA_TY
+		                                 , '' as LAST_ANALYZED
+		                                 , A.TABLE_NAME
+		                              FROM INFORMATION_SCHEMA.COLUMNS A
+		                             WHERE
+		                                   A.TABLE_NAME LIKE 'T%'
+                                        AND TABLE_SCHEMA=DATABASE()
+		                            ) M
+		                      GROUP BY LOGIC_NM
+		                          , PHYSICL_NM
+		                          , DOMAIN
+		                          , DOMAIN_NM
+		                          , DATA_TY
+		                     ) N
+		               WHERE 1=1
+		]]>
+		<include refid="wordDicary-where" />
+		<![CDATA[
+		            ORDER BY WORD_SE_CD DESC
+		                   , MNNO DESC
+		                   , WORD_NM ASC
+		              ) O
+		        WHERE 1=1 LIMIT #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="findOneWordDicary" parameterType="zvl" resultType="zvl" >
+		/* findOneWordDicary */
+		<![CDATA[
+			SELECT
+				   A.MNNO ,
+			       A.WORD_SE ,
+			       A.WORD_NM ,
+			       A.WORD_ENG_NM ,
+			       A.WORD_ENG_ABRV_NM ,
+			       A.WORD_DFN ,
+			       A.THEMA_AREA_SE ,
+			       A.USE_AT ,
+			       A.CREAT_DE,
+			       A.REGIST_DT ,
+			       A.UPDT_DT
+			  FROM TC_WORD_DICARY A
+			WHERE
+				A.MNNO = #{mnno} AND USE_AT = 'Y'
+		]]>
+	</select>
+
+	<insert id="saveWordDicary" parameterType="zvl" >
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="mnno">
+			SELECT NVL(MAX(MNNO),0)+1 AS mnno  FROM TC_WORD_DICARY
+		</selectKey>
+		<![CDATA[
+			/* saveWordDicary */
+			INSERT INTO TC_WORD_DICARY (
+				MNNO ,
+				WORD_SE ,
+				WORD_NM ,
+				WORD_ENG_NM ,
+				WORD_ENG_ABRV_NM,
+				WORD_DFN ,
+				THEMA_AREA_SE ,
+				CREAT_DE,
+				REGIST_DT
+			)
+			VALUES (
+				#{mnno} ,
+				#{wordSe} ,
+				#{wordNm} ,
+				#{wordEngNm} ,
+				#{wordEngAbrvNm} ,
+				#{wordDfn} ,
+				#{themaAreaSe} ,
+				DATE_FORMAT(now(), '%Y-%m-%d'),
+				SYSDATETIME
+			)
+
+		]]>
+	</insert>
+
+	<update id="updateWordDicary" parameterType="zvl">
+ 		<![CDATA[
+ 			/* updateWordDicary */
+			UPDATE TC_WORD_DICARY
+				SET
+					WORD_SE = #{wordSe},
+					WORD_NM = #{wordNm},
+					WORD_ENG_NM = #{wordEngNm},
+					WORD_ENG_ABRV_NM = #{wordEngAbrvNm},
+					WORD_DFN = #{wordDfn},
+					THEMA_AREA_SE = #{themaAreaSe},
+					UPDT_DT = SYSDATETIME
+			WHERE
+				MNNO = #{mnno}
+ 		]]>
+ 	</update>
+
+
+	<delete id="deleteWordDicary" parameterType="zvl">
+	<![CDATA[
+			/* deleteWordDicary */
+			DELETE FROM TC_WORD_DICARY
+			WHERE MNNO = #{mnno}
+	 		]]>
+	</delete>
+
+</mapper>

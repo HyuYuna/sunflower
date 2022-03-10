@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util" xmlns:cps="http://www.unpl.co.kr/schema/common-service"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.unpl.co.kr/schema/common-service http://www.unpl.co.kr/schema/common-service-1.0.xsd">
+
+	<!-- 공통코드 리스너 정의
+	코드아이디로 설정하면 아래와 같은방식으로 여러개 설정됨
+	코드아이디가 STTUS_CD이면 'sttusCdListener'인 리스너명
+	<bean id="sttusCdListener" class="site.unp.cms.listener.cmmnCd.CmmnCdViewDepthListener">
+		<constructor-arg index="0" value="STTUS_CD" />
+		<constructor-arg index="1" value="sttusCd" />
+		<constructor-arg index="2" value="sttusCdNm" />
+	</bean>
+	-->
+	<bean id="cmmCdRegistConfigurer" class="site.unp.cms.conf.CmmCdListenerRegistConfigurer">
+		<property name="cdIdData">
+			<list>
+				<value>STTUS_CD</value>
+				<value>USER_TY_CD</value>
+				<value>CRTFC_SE_CD</value>
+				<value>SEX_CD</value>
+				<value>TELNO1_CD</value>
+				<value>CPNO1_CD</value>
+				<value>EMAD_CD</value>
+				<value>TRGET_CD</value>
+				<value>QESITM_TY_CD</value>
+				<value>MAIN_CNTNTS_CD</value>
+				<value>MENU_CNTNTS_CD</value>
+				<value>QUSTNR_TRGET_CD</value>
+				<value>SITE_SE_CD</value>
+				<value>SITE_ALARM_CYCLE_CD</value>
+				<value>SITE_SKIN_CD</value>
+				<value>CLIENT_REL_GRP</value>
+				<value>CASE_ROUTE_GRP</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean id="cmmMultiCdRegistConfigurer" class="site.unp.cms.conf.CmmMultiCdListenerRegistConfigurer">
+		<property name="cdIdData">
+			<list>
+				<value>STTUS_CD-bbsId-nttSn</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

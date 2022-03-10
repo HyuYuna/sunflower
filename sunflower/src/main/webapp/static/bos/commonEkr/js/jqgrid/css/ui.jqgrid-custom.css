@@ -1,0 +1,14 @@
+/* 테이블 제목부분 */
+.ui-jqgrid .ui-jqgrid-htable th {
+  height:30px;
+}
+
+/* 테이블 내용부분 */
+.ui-jqgrid tr.jqgrow td {
+  height:30px;
+}
+
+/* 테이블 아래정보 부분 */
+.ui-jqgrid .ui-jqgrid-pager {
+  height:30px;
+}

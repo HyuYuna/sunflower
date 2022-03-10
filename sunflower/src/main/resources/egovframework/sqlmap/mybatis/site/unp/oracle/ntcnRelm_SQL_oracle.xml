@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.service.siteManage.ntcnRelm">
+
+	<!-- ntcnRelm 조건 -->
+	<sql id="ntcnRelm-where">
+		<if test='siteIdSe != null and siteIdSe != ""'>
+			<![CDATA[ 		AND	SITE_ID_SE LIKE '%'||#{siteIdSe}||'%' ]]>
+		</if>
+		<if test='ntcnTyCd != null and ntcnTyCd != ""'>
+			<![CDATA[		AND NTCN_TY_CD = #{ntcnTyCd}	]]>
+		</if>
+		<if test='searchKwd != null and searchKwd != ""'>
+			<![CDATA[	AND NTCN_NM LIKE '%'||#{searchKwd}||'%'	]]>
+		</if>
+		<if test='searchUseAt != null and searchUseAt != ""'>
+			<if test='searchUseAt == "Y"'>
+				<![CDATA[	AND USE_AT = 'Y' ]]>
+			</if>
+			<if test='searchUseAt == "N"'>
+				<![CDATA[	AND USE_AT = 'N' ]]>
+			</if>
+		</if>
+		<if test='pSiteId != null and pSiteId != ""'>
+			<![CDATA[ 		AND SITE_ID LIKE '%'||#{pSiteId}||'%' ]]>
+		</if>
+		<if test='pSiteId == null || pSiteId == ""'>
+			<![CDATA[ 		AND	SITE_ID = '']]>
+		</if>
+	</sql>
+
+	<!-- 알림영역 전체 개수 -->
+	<select id="countNtcnRelm" parameterType="zvl" resultType="long">
+		<![CDATA[
+		/* countNtcnRelm */
+
+		SELECT COUNT(*) AS totcnt
+		  FROM TC_NTCN_RELM
+		 WHERE 1=1
+
+		]]>
+		<include refid="ntcnRelm-where" />
+	</select>
+
+	<!-- 알림영역 목록 -->
+	<select id="findAllNtcnRelm" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAllNtcnRelm */
+
+		SELECT AA.*
+		  FROM
+		       (
+		       SELECT ROWNUM RNUM, ALL_LIST.*
+		         FROM
+		              (
+		              SELECT NTCN_NO
+		                   , NTCN_NM
+		                   , NTCN_URLAD
+		                   , USE_AT
+		                   , POPUP_AT
+		                   , CASE
+		                         WHEN SYSDATE > ENDDE
+		                         THEN '1'
+		                         WHEN SYSDATE BETWEEN BGNDE AND ENDDE
+		                         THEN '2'
+		                         ELSE '3'
+		                     END AS STATUS
+		                   , SITE_ID_SE
+		                   , SITE_ID
+		                   , SORT_ORDR
+		                   , REGIST_DT
+		                   , REGIST_ID
+		                   , UPDT_DT
+		                   , UPDT_ID
+		                   , NTCN_TY_CD
+		                   , ATCH_FILE_ID
+		                   , MAP_USE_AT
+		                   , LINK_SE
+		                   , CASE
+		                         WHEN
+		                             (
+		                                 SYSDATE > ENDDE AND USE_AT = 'Y'
+		                             )
+		                         THEN 2
+		                         WHEN
+		                             (
+		                                 SYSDATE BETWEEN BGNDE AND ENDDE AND USE_AT = 'Y'
+		                             )
+		                         THEN 1
+		                         ELSE 3
+		                     END AS USE_AT_ORDR
+		                   , BGNDE
+		                   , ENDDE
+		                FROM TC_NTCN_RELM a
+		               WHERE 1=1
+		]]>
+		<include refid="ntcnRelm-where" />
+		<![CDATA[
+					ORDER BY USE_AT_ORDR
+		                   , SORT_ORDR DESC
+		              ) ALL_LIST
+		       )  AA
+		 WHERE RNUM > #{firstIndex}
+		       AND RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+
+	<!-- 알림영역 목록 -->
+	<select id="findAllMainList" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAllMainList */
+
+		SELECT NTCN_NO
+		     , NTCN_NM
+		     , NTCN_URLAD
+		     , USE_AT
+		     , POPUP_AT
+		     , SITE_ID_SE
+		     , SITE_ID
+		     , REGIST_ID
+		     , UPDT_ID
+		     , REGIST_DT
+		     , UPDT_DT
+		     , SORT_ORDR
+		     , NTCN_TY_CD
+		     , ATCH_FILE_ID
+		     , MAP_USE_AT
+		     , NTCN_CN
+		     , LINK_SE
+		  FROM TC_NTCN_RELM a
+		 WHERE USE_AT = 'Y'
+       	AND TO_CHAR(BGNDE, 'YYYY-MM-DD') <= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+       AND TO_CHAR(ENDDE, 'YYYY-MM-DD') >= TO_CHAR(SYSDATE, 'YYYY-MM-DD')
+       	]]>
+       	<if test='ntcnTyCd != null and ntcnTyCd != ""'>
+			<![CDATA[	AND NTCN_TY_CD = #{ntcnTyCd}	]]>
+		</if>
+		<choose>
+		    <when test='siteIdSe != null and siteIdSe != ""'>
+				<![CDATA[ AND	SITE_ID_SE LIKE '%' || #{siteIdSe} ||'%' ]]>
+			</when>
+			<otherwise>
+				<![CDATA[ AND SITE_ID = #{siteId} ]]>
+			</otherwise>
+	    </choose>
+	    <![CDATA[
+			ORDER BY SORT_ORDR DESC
+		]]>
+
+	</select>
+
+	<resultMap id="findNtcnRelmDetailMap" type="zvl">
+		<result property="ntcnNo" 		column="NTCN_NO" />
+		<result property="ntcnNm" 		column="NTCN_NM" />
+		<result property="ntcnUrlad" 	column="NTCN_URLAD" />
+		<result property="useAt"		column="USE_AT" />
+		<result property="popupAt" 		column="POPUP_AT" />
+		<result property="registId" 	column="REGIST_ID" />
+		<result property="updtId" 		column="UPDT_ID" />
+		<result property="registDt" 	column="REGIST_DT" />
+		<result property="updtDt" 		column="UPDT_DT" />
+		<result property="sortOrdr" 	column="SORT_ORDR" />
+		<result property="siteIdSe" 	column="SITE_ID_SE" />
+		<result property="siteId" 		column="SITE_ID" />
+		<result property="ntcnTyCd" 	column="NTCN_TY_CD" />
+		<result property="atchFileId" 	column="ATCH_FILE_ID" />
+		<result property="bgnde" 		column="BGNDE" />
+		<result property="endde" 		column="ENDDE" />
+		<result property="mapUseAt" 	column="MAP_USE_AT" />
+		<result property="ntcnCn" 		column="NTCN_CN"  jdbcType="CLOB" javaType="java.lang.String"/>
+	</resultMap>
+
+	<!-- 알림영역 상세 -->
+	<select id="findNtcnRelmDetail" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findNtcnRelmDetail */
+
+		SELECT NTCN_NO
+		     , NTCN_NM
+		     , NTCN_CN
+		     , NTCN_URLAD
+		     , USE_AT
+		     , POPUP_AT
+		     , BGNDE
+		     , ENDDE
+		     , SITE_ID_SE
+		     , SITE_ID
+		     , REGIST_ID
+		     , UPDT_ID
+		     , REGIST_DT
+		     , UPDT_DT
+		     , SORT_ORDR
+		     , NTCN_TY_CD
+		     , ATCH_FILE_ID
+		     , MAP_USE_AT
+		     , NTCN_CN
+		     , LINK_SE
+		  FROM TC_NTCN_RELM
+		 WHERE 1=1
+
+		]]>
+		<if test='sortOrdr == null or sortOrdr == ""'>
+			<![CDATA[	AND NTCN_NO = #{ntcnNo}	]]>
+		</if>
+		<if test='sortOrdr != null and sortOrdr != ""'>
+			<![CDATA[
+			AND NTCN_NO = (
+				SELECT NTCN_NO
+				FROM (
+					SELECT *
+					FROM TC_NTCN_RELM
+					WHERE 1=1
+			]]>
+			<include refid="ntcnRelm-where" />
+			<if test='option == "1"'><![CDATA[	ORDER BY SORT_ORDR DESC	]]></if>
+			<if test='option == "2"'><![CDATA[	AND SORT_ORDR > #{sortOrdr} ORDER BY SORT_ORDR	]]></if>
+			<if test='option == "3"'><![CDATA[	AND SORT_ORDR < #{sortOrdr}	ORDER BY SORT_ORDR DESC	]]></if>
+			<if test='option == "4"'><![CDATA[	ORDER BY SORT_ORDR	]]></if>
+			<![CDATA[
+				) tb
+				WHERE ROWNUM=1
+			)
+			]]>
+		</if>
+	</select>
+
+	<!-- 알림영역 등록 -->
+	<insert id="saveNtcnRelm" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="ntcnNo">
+			SELECT NVL(MAX(NTCN_NO),0)+1 AS NTCN_NO  FROM TC_NTCN_RELM
+		</selectKey>
+		<![CDATA[
+		/* saveNtcnRelm */
+
+		INSERT
+		  INTO TC_NTCN_RELM
+		       (
+		           NTCN_NO
+		         , NTCN_NM
+		         , NTCN_URLAD
+		         , USE_AT
+		         , POPUP_AT
+		         , BGNDE
+		         , ENDDE
+		         , SITE_ID_SE
+		         , SITE_ID
+		         , REGIST_ID
+		         , UPDT_ID
+		         , REGIST_DT
+		         , UPDT_DT
+		         , SORT_ORDR
+		         , NTCN_TY_CD
+		         , ATCH_FILE_ID
+		         , MAP_USE_AT
+		         , NTCN_CN
+		         , LINK_SE
+		       )
+		       VALUES
+		       (
+		           #{ntcnNo
+		         , jdbcType=INTEGER}
+		         , #{ntcnNm}
+		         , #{ntcnUrlad}
+		         , #{useAt}
+		         , #{popupAt}
+		         , TO_DATE(#{bgnde},'YYYY-MM-DD')
+		         , TO_DATE(#{endde},'YYYY-MM-DD')
+		         , #{siteIdSe}
+		         , #{pSiteId}
+		         , #{registId}
+		         , #{updtId}
+		         , SYSDATE
+		         , SYSDATE
+		         , #{sortOrdr}
+		         , #{ntcnTyCd}
+		         , #{atchFileId}
+		         , #{mapUseAt, jdbcType=VARCHAR}
+		         , #{ntcnCn}
+		         , #{linkSe}
+		       )
+
+		]]>
+	</insert>
+
+	<!-- 알림영역 수정 -->
+	<update id="modifyNtcnRelm" parameterType="zvl">
+		<![CDATA[
+		/* modifyNtcnRelm */
+
+		UPDATE TC_NTCN_RELM
+		       SET NTCN_NM = #{ntcnNm}
+		     , NTCN_URLAD = #{ntcnUrlad}
+		     , USE_AT = #{useAt}
+		     , POPUP_AT = #{popupAt}
+		     , BGNDE = #{bgnde}
+		     , ENDDE = #{endde}
+		     , SORT_ORDR = #{sortOrdr}
+		     , SITE_ID_SE = #{siteIdSe}
+		     , SITE_ID = #{pSiteId}
+		     , UPDT_DT = SYSDATE
+		     , UPDT_ID = #{updtId}
+		     , ATCH_FILE_ID = #{atchFileId}
+		     , MAP_USE_AT = #{mapUseAt}
+		     , NTCN_TY_CD = #{ntcnTyCd}
+		     , NTCN_CN = #{ntcnCn}
+		     , LINK_SE = #{linkSe}
+		 WHERE NTCN_NO = #{ntcnNo}
+		]]>
+	</update>
+
+	<!-- 알림영역 노출순서 수정 -->
+	<update id="modifyNtcnRelmSortOrdr" parameterType="zvl">
+		<![CDATA[
+		/* modifyNtcnRelmSortOrdr */
+
+		UPDATE TC_NTCN_RELM
+		SET SORT_ORDR = #{sortOrdr}
+		WHERE NTCN_NO = #{ntcnNo}
+		]]>
+	</update>
+
+	<!-- 알림영역 사용여부 수정 -->
+	<update id="modifyNtcnRelmUseAt" parameterType="zvl">
+		<![CDATA[
+		/* modifyNtcnRelmUseAt */
+
+		UPDATE TC_NTCN_RELM
+		SET USE_AT = #{useAt}
+		WHERE NTCN_NO = #{ntcnNo}
+		]]>
+	</update>
+
+	<!-- 알림영역 삭제 -->
+	<delete id="deleteNtcnRelm" parameterType="zvl">
+		<![CDATA[
+		/* deleteNtcnRelm */
+
+		DELETE
+		  FROM TC_NTCN_RELM
+		 WHERE NTCN_NO = #{ntcnNo}
+		]]>
+	</delete>
+
+	<!-- 알림영역 정렬순서 최대값 -->
+	<select id="findNtcnRelmMaxSortOrdr" parameterType="zvl" resultType="string">
+		<![CDATA[
+		/* findNtcnRelmMaxSortOrdr */
+
+		SELECT NVL(MAX(SORT_ORDR),0)+1 AS SORT_ORDR
+		FROM TC_NTCN_RELM
+
+		]]>
+	</select>
+</mapper>

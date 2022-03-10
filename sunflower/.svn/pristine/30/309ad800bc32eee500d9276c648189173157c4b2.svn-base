@@ -1,0 +1,78 @@
+/* 테이블정의서 조회 */
+SELECT
+	a.table_name AS "Table Name",
+	(SELECT description FROM _cub_schema_comments WHERE table_name = a.table_name AND column_name = '*') AS "한글 테이블명",
+	a.column_name AS "Column Name",
+	a.description AS "한글컬럼명",
+	a.data_type AS "Column Datatype",
+	a.prec AS "Type Length",
+	DECODE(b.key_attr_name, NULL, ' ', 'PK') AS "Column is PK",
+	DECODE(c.key_attr_name, NULL, ' ', 'FK') AS "Column is FK",
+	DECODE(a.null_at,'NO','Not null', '') AS "Column Null Option",
+	a.[default] AS "Data Default"
+FROM
+	(
+		SELECT
+			a.class_name AS TABLE_NAME,
+			b.attr_name AS COLUMN_NAME,
+			c.description,
+			b.DEF_ORDER,
+			CASE
+				WHEN b.data_type = 'STRING' THEN 'VARCHAR'
+				ELSE b.data_type
+			END DATA_TYPE,
+			b.prec AS PREC,
+			b.is_nullable AS NULL_AT,
+			NVL(b.default_value, ' ') AS [DEFAULT]
+		FROM db_class a
+		INNER JOIN db_attribute b ON a.class_name = b.class_name
+		LEFT OUTER JOIN _cub_schema_comments c ON a.class_name = c.table_name AND b.attr_name = c.column_name
+		WHERE a.owner_name <> 'DBA'
+			AND a.class_type = 'CLASS'
+		ORDER BY
+			a.class_name,
+			b.def_order
+	) a
+	LEFT OUTER JOIN (
+		SELECT
+			*
+		FROM
+			db_index_key
+		WHERE
+			index_name IN (
+				SELECT
+					index_name
+				FROM
+					db_index
+				WHERE
+					is_primary_key = 'YES'
+			)
+	) b ON A.TABLE_NAME = B.CLASS_NAME
+	AND a.COLUMN_NAME = b.key_attr_name
+	LEFT OUTER JOIN (
+		SELECT
+			*
+		FROM
+			db_index_key
+		WHERE
+			index_name IN (
+				SELECT
+					index_name
+				FROM
+					db_index
+				WHERE
+					is_foreign_key = 'YES'
+			)
+	) C ON A.TABLE_NAME = C.CLASS_NAME AND A.COLUMN_NAME = C.key_attr_name
+WHERE a.table_name not in ('_cub_schema_comments','tb_bbs_basic','tc_stsfdg','tc_tmplatinfo','tb_snd_email','tc_word_dicary','acl_class','acl_entry','acl_object_identity','acl_page','acl_sid')
+ORDER BY	table_name, a.def_order;
+
+
+
+/* 테이블 목록조회 */
+SELECT
+	table_name, description
+FROM _cub_schema_comments
+WHERE column_name = '*'
+AND table_name not in ('_cub_schema_comments','tb_bbs_basic','tc_stsfdg','tc_tmplatinfo','tb_snd_email','tc_word_dicary','acl_class','acl_entry','acl_object_identity','acl_page','acl_sid')
+ORDER BY table_name ASC;

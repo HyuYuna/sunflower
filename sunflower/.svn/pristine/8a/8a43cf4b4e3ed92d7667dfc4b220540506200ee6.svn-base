@@ -1,0 +1,80 @@
+/* 설문조사뷰 */
+.ico-tel{color:red;}
+.ico-tel:before{
+	content: '\f095';
+	font-size:18px;
+	display:inline-block;width:19px;
+	font-family:FontAwesome;
+}
+.view>dl.deco{background-color:#f5f4f2;}
+.view>dl.deco>dt{position:relative;}
+.view>dl.deco>dt:after {
+	content: '';
+	height:17px;
+	position:absolute;right:0;top:50%;
+	margin-top:-9px;
+	border-right:1px solid #dadada;
+}
+.view>dl.deco>dd{}
+.view>dl.deco>.d{width:110px;}
+/* 설문조사 질의목록 */
+.surbeyQ{}
+.surbeyQ dl{}
+.surbeyQ dt{font-size:16px;padding:16px 0 20px 27px;background-color:#f5f4f2;border:1px solid #dadada;border-top:2px solid #47413e;}
+.surbeyQ dt:before{
+	content: '\f164';
+	color:#1f9ed9;
+	font-size:24px;
+	display:inline-block;width:30px;
+	font-family:FontAwesome;
+}
+.surbeyQ dd{border:1px solid #dadada;border-width:0 1px 0 1px;margin-bottom:40px;overflow:hidden;}
+.surbeyQ dt,
+.surbeyQ dd{display:block;}
+.surbeyQ dd .row>div{border:1px solid #dadada;border-width:0 1px 1px 0;}
+.surbeyQ dd label{display:block;padding:20px;}
+.surbeyQ dd label input{}
+.surbeyQ dd.textarea{padding:20px;border-bottom:1px solid #dadada;}
+.surbeyQ dd.textarea textarea{width:100%;height:96px;}
+.surbeyQ dd.etctype {
+  margin-top: -40px;
+}
+/* 설문조사 결과 */
+.table.table-survey{border-top:none;overflow:visible;}
+.table-survey caption{display:table-caption;visibility:visible;width:auto;height:auto;clip:inherit;margin:0;position:static;opacity:1;line-height:1;
+	font-size:16px;padding:16px 0 20px 27px;background-color:#f5f4f2;border:1px solid #dadada;border-top:2px solid #47413e;
+	color:red;
+}
+.table-survey caption::before {
+	content: '\f0a6';
+	font-size:24px;
+	width:30px;
+	display:inline-block;
+	font-family:FontAwesome;
+}
+.table-survey caption details{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);border:0}
+.table-survey tr>*{border:1px solid #dadada;}
+.table-survey td.graph{padding:10px 0;}
+.table-survey td.graph span{display:block;height:38px;background-color:#6dc0e6;}
+.graph1{background-image:url(/static/portal/images/pattern/survey_pt1.png);}
+.graph2{background-image:url(/static/portal/images/pattern/survey_pt2.png);}
+.graph3{background-image:url(/static/portal/images/pattern/survey_pt3.png);}
+.graph4{background-image:url(/static/portal/images/pattern/survey_pt4.png);}
+
+.bdList+.surveyRsult{border-top:none;}
+.surveyRsult{clear:both;border-top:2px solid #47413e;margin-bottom:30px;}
+.surveyRsult .sh{margin:0;border:1px solid #dadada;border-bottom:none;background-color:#f5f4f2;padding:16px;}
+.surveyRsult p{font-size:16px;padding:16px 0 20px 27px;background-color:#f5f4f2;border:1px solid #dadada;color:red;margin:0 !important;}
+.surveyRsult p::before {
+	content: '\f0a6';
+	font-size:24px;
+	width:30px;
+	display:inline-block;
+	font-family:FontAwesome;
+}
+.surveyRsult ol{}
+.surveyRsult ol li{padding:18px 28px;font-size:14px;border:1px solid #dadada;border-top:none;}
+.surveyRsult table{float:none;margin:0;border-top:none;}
+.surveyRsult tr>*{border:1px solid #dadada;}
+.surveyRsult .table{border-top:1px solid #dadada;}
+.surveyRsult .table>thead>tr>th{border-bottom:none;}

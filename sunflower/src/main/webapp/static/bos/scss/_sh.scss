@@ -1,0 +1,36 @@
+@charset "utf-8";
+.sh{
+	background:#f4f4f4 no-repeat 0 0;
+	// border:1px solid $bdColor;
+	padding:22px 26px 22px 10px;
+	margin-bottom:10px;
+	text-align:left;
+	line-height:34px;
+	.btn,
+	input[type=text],
+	select{vertical-align:top}
+	.input_txt {width:200px}
+	.inpKeyword {width:300px}
+	.title,
+	label{
+		line-height:34px;
+		text-align:left;
+		font-size:16px;
+		padding:0 10px 0 15px;
+		margin-bottom:0;
+		background:url(/static/bos/img/shLabelBg.png) 0 center no-repeat;
+		&.nobu{
+			padding-left:0;
+			background:none;
+		}
+	}
+	.title{white-space:nowrap;}
+	.nav+&{margin-top:20px;}
+	.shDate{display:inline-block;line-height:34px;
+		input{background-color:#fff !important;
+			border:1px solid #cdcdcd !important;
+			cursor: not-allowed;
+		}
+	}
+	*{vertical-align:top;}
+}

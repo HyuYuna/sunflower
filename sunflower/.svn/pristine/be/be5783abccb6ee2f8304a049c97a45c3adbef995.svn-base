@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.web.FileDwldController">
+
+	<insert id="saveCommFileDwldHist" parameterType="zvl" >
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="mnno">
+			SELECT IFNULL(MAX(MNNO),0)+1 AS MNNO  FROM TC_CMMN_FILE_DWLD_HIST
+		</selectKey>
+		<![CDATA[
+		/* saveCommFileDwldHist */
+
+		INSERT
+		  INTO TC_CMMN_FILE_DWLD_HIST
+		       (
+		           MNNO
+		         ,ATCH_FILE_ID
+		         ,FILE_SN
+		         ,MENU_NO
+		         ,REGIST_ID
+		         ,REGIST_DT
+		         ,SITE_ID
+		       )
+		       VALUES
+		       (
+		          #{mnno}
+		         ,#{atchFileId}
+		         ,#{fileSn}
+		         ,#{menuNo}
+		         ,#{userId}
+		         ,NOW()
+		         ,#{siteId}
+		       )
+		]]>
+	</insert>
+
+</mapper>

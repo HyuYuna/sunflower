@@ -1,0 +1,89 @@
+
+<p class="infor">회원님들이 자주 묻는 질문들을 확인하세요</p>
+
+<!-- <div class="sh">
+	<input type="text" title="검색어">
+	<button class="b-sh">검색</button>
+</div> -->
+
+
+<!-- 
+<dl id="faqList" class="callFaq">
+	<dt class="no-data">검색 결과가 없습니다.</dt>
+</dl>
+ -->
+
+
+<dl id="faqList" class="callFaq">
+	<dt class="on open">
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span>UNP는 어떤 의미인가요?</span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+	</dd>
+	<dt>
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span>유앤피플은 주로 무슨일을 하시나요?</span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> 
+		유앤피플은 공공기관 시스템을 주로 구축하는 전문SI업체입니다
+	</dd>
+	<dt>
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span>유앤피플은 워크샵을 왜 자주 가시나요?</span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+	</dd>
+	<dt>
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span> 자주하는 질문 베스트 4 </span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+	</dd>
+</dl>
+<!-- faqList -->
+
+
+
+<script>
+	jQuery(function($) {
+		var article = $('.callFaq dt>button');
+		article.each(function(index, el) {
+			$(this).click(function(event) {
+				if ($(this).parent().hasClass('open')) {
+					$(this).parent().removeClass('open').next().hide();
+					$(this).attr('title', '답변 열기')
+				} else {
+					$(this).parent().addClass('open').next().show();
+					$(this).attr('title', '답변 닫기')
+				}
+			});
+			$(this).parent().removeClass('open').next().hide();
+		});
+		article.eq(0).trigger('click')
+	});
+</script>
+
+<div class="paginationSet">
+	<ul class="pagination pagination-centered">
+		<li class="i first disabled"><span class="s"><span>처음 <span class="t">목록으로 이동</span></span></span></li>
+		<li class="i prev disabled"><span class="s"><span>이전 <span class="t">목록으로 이동</span></span></span></li>
+		<li><a href=""><span>104</span></a></li>
+		<li><a href=""><span>105</span></a></li>
+		<li><a href=""><span>106</span></a></li>
+		<li class="active"><a href="#"><span>110</span></a></li>
+		<li><a href=""><span>107</span></a></li>
+		<li><a href=""><span>108</span></a></li>
+		<li><a href=""><span>109</span></a></li>
+		<li class="i next"><a href=""><span class="s"><span>다음 <span class="t">목록으로 이동</span></span></span></a></li>
+		<li class="i end"><a href=""><span class="s"><span>마지막 <span class="t">목록으로 이동</span></span></span></a></li>
+	</ul>
+</div>

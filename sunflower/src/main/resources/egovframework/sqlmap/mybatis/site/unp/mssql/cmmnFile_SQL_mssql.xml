@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.cms.service.file.FileMng">
+
+ 	<select id="findAllFileMngByAtchFileId" parameterType="string" resultType="zvl" >
+ 		<![CDATA[
+		/* findAllFileMngByAtchFileId */
+
+		SELECT a.ATCH_FILE_ID
+		     , b.FILE_CN
+		     , b.FILE_SN
+		     , b.FILE_STRE_COURS
+		     , b.STRE_FILE_NM
+		     , b.FILE_EXTSN_NM
+		     , b.ORIGNL_FILE_NM
+		     , b.FILE_SIZE
+		     , a.REGIST_DT
+		     , b.FILE_FIELD_NM
+		  FROM TC_CMMN_FILE a
+		     , TC_CMMN_FILE_DETAIL b
+		 WHERE a.ATCH_FILE_ID = #{atchFileId}
+		       AND a.ATCH_FILE_ID = b.ATCH_FILE_ID
+		       AND a.USE_AT = 'Y'
+		ORDER BY b.FILE_SN
+ 		]]>
+ 	</select>
+
+ 	<select id="countCmmnFileDetailByAtchFileId" parameterType="string" resultType="long" >
+ 		<![CDATA[
+ 		/* countCmmnFileDetailByAtchFileId */
+
+		SELECT COUNT(*)
+		  FROM TC_CMMN_FILE a
+		     , TC_CMMN_FILE_DETAIL b
+		 WHERE a.ATCH_FILE_ID = #{atchFileId}
+		       AND a.ATCH_FILE_ID = b.ATCH_FILE_ID
+		       AND a.USE_AT = 'Y'
+		ORDER BY b.FILE_SN
+ 		]]>
+ 	</select>
+
+ 	<select id="findAllCmmnFileDetailByIds" resultType="zvl" >
+ 		<![CDATA[
+ 		/* findAllCmmnFileDetailByIds */
+
+		SELECT a.ATCH_FILE_ID
+		     , b.FILE_CN
+		     , b.FILE_SN
+		     , b.FILE_STRE_COURS
+		     , b.STRE_FILE_NM
+		     , b.FILE_EXTSN_NM
+		     , b.ORIGNL_FILE_NM
+		     , b.FILE_SIZE
+		     , a.REGIST_DT
+		     , b.FILE_FIELD_NM
+		  FROM TC_CMMN_FILE a
+		     , TC_CMMN_FILE_DETAIL b
+		 WHERE a.ATCH_FILE_ID = b.ATCH_FILE_ID
+		       AND a.USE_AT = 'Y'
+		       AND a.ATCH_FILE_ID IN
+ 		]]>
+		<foreach item="item" index="index" collection="list" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+			ORDER BY b.FILE_SN
+ 	</select>
+
+	<insert id="saveCmmnFile" parameterType="zvl" >
+		<![CDATA[
+		/* saveCmmnFile */
+
+		INSERT INTO TC_CMMN_FILE
+		(
+           ATCH_FILE_ID
+         , REGIST_DT
+         , USE_AT
+         , REGIST_ID
+         , OTHBC_AT
+         , PROGRM_ID
+        )
+        VALUES
+        (
+           #{atchFileId}
+         , GETDATE()
+         , 'Y'
+         , #{registId}
+         , #{othbcAt}
+         , #{programId}
+        )
+		]]>
+	</insert>
+
+	<update id="updateCmmnFile" parameterType="zvl" >
+	<![CDATA[
+		/* updateCmmnFile */
+		UPDATE TC_CMMN_FILE SET
+		OTHBC_AT = #{othbcAt}
+		WHERE ATCH_FILE_ID = #{atchFileId}
+
+	]]>
+	</update>
+
+	<insert id="saveCmmnFileDetail" parameterType="zvl" >
+		<selectKey resultType="int" order="BEFORE" keyProperty="fileSn">
+			SELECT ISNULL(MAX(FILE_SN),0)+1 AS FILE_SN  FROM TC_CMMN_FILE_DETAIL WHERE ATCH_FILE_ID = #{atchFileId}
+		</selectKey>
+		<![CDATA[
+		/* saveCmmnFileDetail */
+
+		INSERT
+		  INTO TC_CMMN_FILE_DETAIL
+		       (
+		          ATCH_FILE_ID
+		         ,FILE_SN
+		         ,FILE_STRE_COURS
+		         ,STRE_FILE_NM
+		         ,ORIGNL_FILE_NM
+		         ,FILE_EXTSN_NM
+		         ,FILE_SIZE
+		         ,FILE_CN
+		         ,FILE_FIELD_NM
+		       )
+		       VALUES
+		       (
+		          #{atchFileId}
+		         ,#{fileSn}
+		         ,#{fileStreCours}
+		         ,#{streFileNm}
+		         ,#{orignlFileNm}
+		         ,#{fileExtsnNm}
+		         ,#{fileSize}
+		         ,#{fileCn:CLOB}
+		         ,#{fileFieldNm}
+		       )
+		]]>
+	</insert>
+
+	<delete id="deleteCmmnFileByAtchFileId" parameterType="string" >
+		<![CDATA[
+		/* deleteCmmnFileByAtchFileId */
+
+		DELETE
+		  FROM TC_CMMN_FILE
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		]]>
+	</delete>
+
+	<delete id="deleteCmmnFileDetailByAtchFileId" parameterType="string" >
+		<![CDATA[
+		/* deleteCmmnFileDetailByAtchFileId */
+
+		DELETE
+		  FROM TC_CMMN_FILE_DETAIL
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		]]>
+	</delete>
+
+	<delete id="deleteCmmnFileDetail" parameterType="zvl" >
+		<![CDATA[
+		/* deleteCmmnFileDetail */
+
+		DELETE FROM TC_CMMN_FILE_DETAIL
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		   AND FILE_SN = #{fileSn}
+		]]>
+	</delete>
+
+	<delete id="deleteCmmnFileDetailByFileFieldNm" parameterType="zvl" >
+		<![CDATA[
+		/* deleteCmmnFileDetailByFileFieldNm */
+
+		DELETE FROM TC_CMMN_FILE_DETAIL
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		   AND FILE_FIELD_NM = #{fileFieldNm}
+		]]>
+	</delete>
+
+	<select id="getMaxFileSN" parameterType="zvl" resultType="int">
+		<![CDATA[
+		/* getMaxFileSN */
+
+		SELECT ISNULL(MAX(FILE_SN),0)+1 AS FILE_SN
+		  FROM TC_CMMN_FILE_DETAIL
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+		]]>
+	</select>
+
+ 	<select id="findOneCommnFileDetail" parameterType="zvl" resultType="zvl" >
+ 		<![CDATA[
+ 		/* findOneCommnFileDetail */
+
+		SELECT a.ATCH_FILE_ID
+		     , b.FILE_CN
+		     , b.FILE_SN
+		     , b.FILE_STRE_COURS
+		     , b.STRE_FILE_NM
+		     , b.FILE_EXTSN_NM
+		     , b.ORIGNL_FILE_NM
+		     , b.FILE_SIZE
+		     , a.REGIST_DT
+		     , b.FILE_FIELD_NM
+		  FROM TC_CMMN_FILE a
+		     , TC_CMMN_FILE_DETAIL b
+		 WHERE a.ATCH_FILE_ID = b.ATCH_FILE_ID
+		   AND b.ATCH_FILE_ID = #{atchFileId}
+		]]>
+		<choose>
+			<when test='fileFieldName != null and fileFieldName != ""'>
+	   		<![CDATA[ AND b.FILE_FIELD_NM = #{fileFieldName} ]]>
+			</when>
+			<otherwise>
+		    <![CDATA[ AND b.FILE_SN = #{fileSn} ]]>
+			</otherwise>
+		</choose>
+ 	</select>
+
+ 	<select id="findCommnFileDetail" parameterType="zvl" resultType="zvl" >
+ 		<![CDATA[
+ 		/* findCommnFileDetail */
+
+		SELECT a.ATCH_FILE_ID
+		     , b.FILE_CN
+		     , b.FILE_SN
+		     , b.FILE_STRE_COURS
+		     , b.STRE_FILE_NM
+		     , b.FILE_EXTSN_NM
+		     , b.ORIGNL_FILE_NM
+		     , b.FILE_SIZE
+		     , a.REGIST_DT
+		     , b.FILE_FIELD_NM
+		  FROM TC_CMMN_FILE a
+		     , TC_CMMN_FILE_DETAIL b
+		 WHERE a.ATCH_FILE_ID = b.ATCH_FILE_ID
+		       AND a.ATCH_FILE_ID = #{atchFileId}
+ 		]]>
+		<choose>
+			<when test='fileFieldName != null and fileFieldName != ""'>
+	   		<![CDATA[ AND b.FILE_FIELD_NM = #{fileFieldName} ]]>
+			</when>
+			<otherwise>
+		    <![CDATA[ AND b.FILE_SN = #{fileSn} ]]>
+			</otherwise>
+		</choose>
+
+ 	</select>
+
+ 	<select id="selectFileListByAtchFileIdData" parameterType="zvl" resultType="zvl" >
+ 		<![CDATA[
+ 		/* selectFileListByAtchFileIdData */
+
+		SELECT a.ATCH_FILE_ID
+		     , b.FILE_CN
+		     , b.FILE_SN
+		     , b.FILE_STRE_COURS
+		     , b.STRE_FILE_NM
+		     , b.FILE_EXTSN_NM
+		     , b.ORIGNL_FILE_NM
+		     , b.FILE_SIZE
+		     , a.REGIST_DT
+		     , b.FILE_FIELD_NM
+		  FROM TC_CMMN_FILE a
+		     , TC_CMMN_FILE_DETAIL b
+		 WHERE a.ATCH_FILE_ID = b.ATCH_FILE_ID
+		       AND a.USE_AT = 'Y'
+		       AND a.ATCH_FILE_ID IN
+ 		]]>
+			<foreach item="item" index="index" collection="atchFileIdData" open="(" close=")" separator=",">
+				<if test="item != null">
+				#{item, jdbcType=VARCHAR}
+				</if>
+			</foreach>
+		<if test="fileFieldNm != null and fileFieldNm != ''">
+			   AND b.FILE_FIELD_NM = #{fileFieldNm}
+		</if>
+ 		<![CDATA[
+			ORDER BY b.FILE_SN
+ 		]]>
+ 	</select>
+
+
+ 	<update id="updateFileCn" parameterType="zvl">
+ 		UPDATE TC_CMMN_FILE_DETAIL
+ 		  SET FILE_CN=#{fileCn}
+ 		WHERE ATCH_FILE_ID = #{nowAtchFileId}
+ 		  AND FILE_SN = #{nowFileSn}
+ 	</update>
+
+ 	<select id="findOneCmmnFile" parameterType="zvl" resultType="zvl" >
+ 	<![CDATA[
+		SELECT USE_AT, REGIST_DT, REGIST_ID, PROGRM_ID, OTHBC_AT
+		  FROM tc_cmmn_file
+		 WHERE ATCH_FILE_ID = #{atchFileId}
+ 	]]>
+ 	</select>
+
+
+ 	<select id="selectFileListByFileSnArr" parameterType="zvl" resultType="zvl" >
+ 		<![CDATA[
+ 		/* selectFileListByFileSnArr */
+
+		SELECT a.ATCH_FILE_ID
+		     , b.FILE_CN
+		     , b.FILE_SN
+		     , b.FILE_STRE_COURS
+		     , b.STRE_FILE_NM
+		     , b.FILE_EXTSN_NM
+		     , b.ORIGNL_FILE_NM
+		     , b.FILE_SIZE
+		     , a.REGIST_DT
+		     , b.FILE_FIELD_NM
+		  FROM TC_CMMN_FILE a
+		     , TC_CMMN_FILE_DETAIL b
+		 WHERE a.ATCH_FILE_ID = b.ATCH_FILE_ID
+		       AND a.USE_AT = 'Y'
+		       AND a.ATCH_FILE_ID = #{atchFileId}
+		       AND b.FILE_SN IN
+ 		]]>
+			<foreach item="item" index="index" collection="fileSnArr" open="(" close=")" separator=",">
+				<if test="item != null">
+				#{item}
+				</if>
+			</foreach>
+
+ 		<![CDATA[
+			ORDER BY b.FILE_SN
+ 		]]>
+ 	</select>
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.auth.auth">
+
+	<!-- 권한 전체count수 -->
+    <select id="countAuth" parameterType="zvl" resultType="Long">
+            SELECT COUNT(*) totcnt
+            FROM TC_AUTHOR_INFO
+            WHERE 1=1
+				AND AUTHOR_CD!='ROLE_SUPER'
+            <if test='searchKwd != null and searchKwd != ""'>
+            	<if test='searchCnd == 1'>
+					<![CDATA[	AND AUTHOR_CD LIKE '%'||#{searchKwd}||'%'		]]>
+				</if>
+
+				<if test='searchCnd == 2'>
+					<![CDATA[	AND AUTHOR_NM LIKE '%'||#{searchKwd}||'%'		]]>
+				</if>
+
+			</if>
+    </select>
+
+	<!-- 권한 목록 -->
+	<select id="findAllAuth" parameterType="zvl" resultType="zvl">
+        <![CDATA[
+            SELECT  AA.*
+            FROM  (
+            	SELECT ROWNUM RNUM, ALL_LIST.*
+              	FROM  (
+            		SELECT 	  AUTHOR_CD
+            				, AUTHOR_NM, AUTHOR_DC
+            				, REGIST_DT
+            				, (SELECT COUNT(B.AUTHOR_CD) FROM TC_MENU_AUTHOR B WHERE B.AUTHOR_CD = A.AUTHOR_CD ) AS CHK_YEO_BU
+              		FROM TC_AUTHOR_INFO A
+             		WHERE 1=1
+             			AND AUTHOR_CD!='ROLE_SUPER'
+        ]]>
+       	<if test='searchKwd != null and searchKwd != ""'>
+       	   	<if test='searchCnd == 1'>
+				<![CDATA[	AND AUTHOR_CD LIKE '%'||#{searchKwd}||'%'		]]>
+			</if>
+			<if test='searchCnd == 2'>
+				<![CDATA[	AND AUTHOR_NM LIKE '%'||#{searchKwd}||'%'		]]>
+			</if>
+
+		</if>
+        <![CDATA[
+            		ORDER BY A.REGIST_DT DESC
+				) ALL_LIST
+			) AA
+			WHERE  RNUM  > #{firstIndex}
+              AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+	<!-- 권한 조회 by 권한코드 -->
+    <select id="findOneAuth" resultType="zvl">
+        <![CDATA[
+            SELECT 	  AUTHOR_CD
+            		, AUTHOR_NM
+            		, AUTHOR_DC
+            		, REGIST_DT
+			FROM TC_AUTHOR_INFO
+            WHERE AUTHOR_CD = #{authorCd}
+        ]]>
+    </select>
+
+	<!-- 권한 등록 -->
+    <insert id="saveAuth" parameterType="zvl">
+        <![CDATA[
+			INSERT INTO TC_AUTHOR_INFO
+                  ( AUTHOR_CD
+                  , AUTHOR_NM
+                  , AUTHOR_DC
+                  , REGIST_DT )
+           	VALUES ( #{authorCd}
+                   , #{authorNm}
+                   , #{authorDc}
+                   , SYSDATE)
+        ]]>
+    </insert>
+
+	<!-- 권한 수정 -->
+    <update id="modifyAuth" parameterType="zvl">
+        <![CDATA[
+            UPDATE TC_AUTHOR_INFO
+               SET AUTHOR_NM = #{authorNm}
+                 , AUTHOR_DC = #{authorDc}
+             WHERE AUTHOR_CD = #{authorCd}
+        ]]>
+    </update>
+
+	<!-- 권한 삭제 -->
+    <delete id="deleteAuth" parameterType="zvl">
+        <![CDATA[
+            DELETE
+            FROM TC_AUTHOR_INFO
+            WHERE AUTHOR_CD = #{authorCd}
+        ]]>
+    </delete>
+
+	<!-- 권한 리스트 -->
+    <select id="findAllAuthList" resultType="zvl">
+            SELECT   AUTHOR_CD
+                   , AUTHOR_NM
+                   , AUTHOR_DC
+                   , REGIST_DT
+              FROM TC_AUTHOR_INFO
+    </select>
+
+
+    <!-- 권한 중복count수 -->
+    <select id="countAuthDuplicate" parameterType="zvl" resultType="Long">
+            SELECT COUNT(*) totcnt
+            FROM TC_AUTHOR_INFO
+            WHERE AUTHOR_CD = #{authorCd}
+    </select>
+</mapper>

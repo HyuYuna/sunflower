@@ -1,0 +1,3360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>sublayout</title>
+<link rel="stylesheet" href="/static/ucms/css/default.css">
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+<div class="skip">
+	<a href="#content">본문내용 바로가기</a>
+	<a href="#gnb">주메뉴 바로가기</a>
+</div>
+<div id="wrap">
+	<!-- header -->
+	<header id="header">
+		<p class="logo"><a href=""><img src="/static/ucms/img/logo.png" alt="unp"></a></p>
+		<div class="global">
+			<a href="">로그인</a>
+			<a href="">회원가입</a>
+		</div>
+		<nav id="gnb">
+			<ul>
+				<li class="on"><a href="">회사소개</a></li>
+				<li><a href="">서비스</a></li>
+				<li><a href="">CAREER</a></li>
+				<li><a href="">고객센터</a></li>
+				<li><a href="">회원</a></li>
+				<li><a href="">이용안내</a></li>
+			</ul>
+		</nav>
+	</header>
+	<!-- //header -->
+	<div id="visual">
+		고객센터
+	</div>
+
+	<div class="lnb">
+		<nav>
+			<ul>
+				<li class="on"><a href="">회사정보</a></li>
+				<li><a href="">파트너</a></li>
+				<li><a href="">워크샵</a></li>
+				<li><a href="">찾아오시는길</a></li>
+			</ul>
+		</nav>
+	</div>
+
+	<div class="rocation">
+		<div class="set">
+			<nav>
+				<a href="" class="home"><span class="sr-only">home</span></a>
+				<a href="" class="depth1">고객센터</a>
+				<ul class="depth1-more">
+					<li><a href="">menu</a></li>
+					<li><a href="">menu</a></li>
+					<li><a href="">menu</a></li>
+					<li><a href="">menu</a></li>
+				</ul>
+				<a href="" class="depth2">고객센터</a>
+				<ul class="depth2-more">
+					<li><a href="">menu</a></li>
+					<li><a href="">menu</a></li>
+					<li><a href="">menu</a></li>
+					<li><a href="">menu</a></li>
+				</ul>
+			</nav>
+			<div class="r">
+				<a href=""><span>담당자에게 메일보내기</span></a>
+				<a href=""><span>회사자료소개</span></a>
+			</div>
+		</div>
+	</div>
+	<!-- Container -->
+	<div id="container">
+		
+		
+		<main>
+			<div class="hgroup">
+				<h1>로그인</h1>
+			</div>
+			<div id="content">
+<p>고객의 소리에 늘 귀기울이는 UNP가 되겠습니다.</p>
+<fieldset class="sh">
+	<legend>000 목록 검색</legend>
+	<div>
+		<!-- <label for="sdate">검색기간</label> -->
+		<input id="sdate" name="sdate" class="sdate" title="검색기간 시작일" value="" type="text">
+		<span class="spacer"> ~ </span>
+		<input id="edate" name="edate" class="edate" title="검색기간 종료일" value="" type="text">
+	<!-- </div>
+	<div> -->
+		<label for="SHWD">검색조건</label>
+		<select name="SHTG" id="SHWD" title="검색조건을 선택해 주세요.">
+			<option>제목</option>
+		</select>
+		<input name="" id="" value="" class="keyword" type="text" title="검색어를 입력해 주세요." placeholder="검색어를 입력해 주세요.">
+		<button type="submit" class="b-sh">검색</button>
+		<a href="#self" class="b-total">전체보기</a>
+	</div>
+</fieldset>
+
+<div class="bdList">
+	<table class="table">
+		<caption>
+		000 목록
+		</caption>
+		<colgroup>
+		<col>
+		<col>
+		<col>
+		<col>
+		<col>
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col">번호</th>
+				<th scope="col">설문주제</th>
+				<th scope="col">담당부서</th>
+				<th scope="col">조사기간</th>
+				<th scope="col">설문대상</th>
+				<th scope="col">참여인원</th>
+				<th scope="col">상태</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>10</td>
+				<td class="title">2017겨울방학 대학생 아르바이트 설문</td>
+				<td>자치행정과</td>
+				<td>2017-02-17 09:00 ~ 2017-03-30 00:00</td>
+				<td>회원</td>
+				<td>12</td>
+				<td>진행중</td>
+			</tr>
+			<tr>
+				<td>10</td>
+				<td class="title">2017겨울방학 대학생 아르바이트 설문</td>
+				<td>자치행정과</td>
+				<td>2017-02-17 09:00 ~ 2017-03-30 00:00</td>
+				<td>회원</td>
+				<td>12</td>
+				<td><span class="colEnd">종료</span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+페이징
+
+
+<div class="view">
+	<p class="subject">
+	<span class="survey-ing">진행중</span>
+	동작구청 홈페이지 개편에 따른 디자인 시안 선호도 조사
+	</p>
+	<dl class="deco">
+		<dt>자치행정과</dt>
+		<dd class="ico-tel">02-820-1111</dd>
+		<dt class="d">등록일</dt>
+		<dd class="d">2017-04-25</dd>
+	</dl>
+	<dl>
+		<dt>설문대상</dt>
+		<dd>회원</dd>
+		<dt>참여인원</dt>
+		<dd>25</dd>
+	</dl>
+	<dl>
+		<dt>조사기간</dt>
+		<dd>2017-02-17 09:00 ~ 2017-03-30 00:00</dd>
+	</dl>
+	<div class="dbData">
+		동작구 얼굴이 .....
+	</div>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+<h2>설문질의</h2>
+<div class="surbeyQ">
+	<dl>
+		<dt>1. 디자인 시안 중 선호하는 디자인은?</dt>
+		<dd>
+			<div class="row">
+				<div class="col-sm-6"><label><input type="radio" name=""> 1안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 2안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 3안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 4안</label></div>
+			</div>
+		</dd>
+		<dt>2. 디자인 시안 중 선호하는 디자인은?</dt>
+		<dd>
+			<div class="row">
+				<div class="col-sm-6"><label><input type="radio" name=""> 1안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 2안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 3안</label></div>
+				<div class="col-sm-6"><label><input type="radio" name=""> 4안</label></div>
+			</div>
+		</dd>
+		<dt>3. 동작구 홈페이지에서 추가하고 싶은 분야나, 개선했으면 하는 점을 자유롭게 기재해 주시기 바랍니다.</dt>
+		<dd class="textarea">
+			<textarea name="" id="" cols="30" rows="10" title="3번 질의 답변"></textarea>
+		</dd>
+	</dl>
+</div>
+<div class="btnSet">
+	<button class="b-">설문참여</button>
+	<button class="b-">결과보기</button>
+</div>
+
+
+
+
+<div class="view">
+	<p class="subject">
+	<span class="survey-ing">진행중</span>
+	동작구청 홈페이지 개편에 따른 디자인 시안 선호도 조사
+	</p>
+	<dl class="deco">
+		<dt>자치행정과</dt>
+		<dd class="ico-tel">02-820-1111</dd>
+		<dt class="d">등록일</dt>
+		<dd class="d">2017-04-25</dd>
+	</dl>
+	<dl>
+		<dt>설문대상</dt>
+		<dd>회원</dd>
+		<dt>참여인원</dt>
+		<dd>25</dd>
+	</dl>
+	<dl>
+		<dt>조사기간</dt>
+		<dd>2017-02-17 09:00 ~ 2017-03-30 00:00</dd>
+	</dl>
+	<div class="dbData">
+		동작구 얼굴이 .....
+	</div>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+<h2>설문결과</h2>
+<div class="bdList">
+	<table class="table table-survey">
+		<caption>1. 디자인 시안중 선호하는 디자인은?</caption>
+		<thead>
+			<tr>
+				<th scope="col">응답항목</th>
+				<th scope="col" style="width:12%">사례수(건)</th>
+				<th scope="col" style="width:12%">비율(%)</th>
+				<th scope="col" style="width:40%">그래프</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="tal">1안</td>
+				<td>50/105</td>
+				<td>47%</td>
+				<td class="graph"><span class="graph1" style="width:47%"></span></td>
+			</tr>
+			<tr>
+				<td class="tal">1안</td>
+				<td>50/105</td>
+				<td>47%</td>
+				<td class="graph"><span class="graph2" style="width:47%"></span></td>
+			</tr>
+			<tr>
+				<td class="tal">1안</td>
+				<td>50/105</td>
+				<td>47%</td>
+				<td class="graph"><span class="graph3" style="width:47%"></span></td>
+			</tr>
+			<tr>
+				<td class="tal">1안</td>
+				<td>50/105</td>
+				<td>47%</td>
+				<td class="graph"><span class="graph4" style="width:47%"></span></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="surveyRsult">
+	<div class="sh">
+		<input type="text" title="현재 페이지 및 이동할 페이지" value="1" class="w40 tac"> / <span>5</span>
+		<button type="button" class="b-move">이동</button>
+		<select name="" title="페이지 표시 개수">
+			<option value="10">10</option>
+		</select>
+		<button type="button" class="b-ok">확인</button>
+	</div>
+	<p>3.동작구 홈페이지에서 추가하고 싶은 분야나, 개선했으면 하는 점을 자유롭게 기재해 주시기 바랍니다.</p>
+	<ol>
+		<li>1. 메인화면에 중요 정책이 제시되어 있으면 좋겠씁니다.</li>
+		<li>2. 메인화면에 중요 정책이 제시되어 있으면 좋겠씁니다.</li>
+		<li>3. 메인화면에 중요 정책이 제시되어 있으면 좋겠씁니다.</li>
+		<li>4. 메인화면에 중요 정책이 제시되어 있으면 좋겠씁니다.</li>
+	</ol>
+</div>
+
+
+<p>유앤피플은 2007년 설립 이후 공공기관 중심의 IT 컨설팅 진행 및 시스템구축사업과 유지보수사업을 진행하고 있습니다.</p>
+<div class="c0101Top">
+	<h2 class="bu_t1">회사개요</h2>
+	<p>유앤피플 (UNPEOPLE)</p>
+	<dl>
+		<dt>대표이사 </dt><dd>: 유재욱</dd>
+		<dt>설립일자 </dt><dd>: 2007년 1월</dd>
+		<dt>주        소 </dt><dd>: 서울시 구로구 가마산로25길 9-9(구로동, KM타워 3층,9층)</dd>
+		<dt>전화번호 </dt><dd>: 02-855-7471(FAX. 070-8650-0110)</dd>
+		<dt>사업분야 </dt><dd>: SI(System Integration,시스템통합),컨설팅, IT Outsourcing,소프트웨어 개발 ,데이터베이스 구축</dd>
+	</dl>
+</div>
+<h2 class="bu_t1">주요 연혁</h2>
+<img src="/static/ucms/img/01_01_03.png" alt="">
+<h2 class="bu_t1 mt80">주요 인증현황</h2>
+<img src="/static/ucms/img/01_01_07.png" alt="">
+
+<p>유앤피플은 SI, Solution, Consulting 등 다양한 사업분야에 대한 사업수행경험을 보유하고 있습니다. </p>
+<img src="/static/ucms/img/02_01_03.png" alt="">
+<p class="infor">유앤피플의 다양한 행사들을 사진으로 만나보세요</p>
+<div class="boxinfor">
+	<p>유앤피플은 워크샵, 세미나 등 다양한 행사를 통한 사내 단합을 도모하고 있습니다.</p>
+</div>
+
+<div class="photoListTop">
+	<form name="frm" action="" method="post" class="shSet">
+		<fieldset class="sh">
+			<legend>검색</legend>
+			<div class="bbsSchArea">
+				<select id="stributary" name="searchCnd" class="inpSel" title="검색조건">
+					<option value="1">제목</option>
+					<option value="2">내용</option>
+					<option value="3">사업부명</option>
+				</select>
+				<input title="검색어" class="searchWrd" name="searchWrd" type="text">
+				<button class="b-sh">검색</button>
+			</div>
+		</fieldset>
+	</form>
+	<div class="photoType">
+		<button type="button" class="imgType active"><span class="sr-only">이미지보기</span></button>
+		<button type="button" class="textType"><span class="sr-only">텍스트보기</span></button>
+	</div>
+</div>
+<script>
+	$('.photoType .imgType').click(function(event) {
+		$('.photoList').addClass('photoListTypeText');
+		$(this).addClass('active').siblings().removeClass('active');
+	});
+	$('.photoType .textType').click(function(event) {
+		$('.photoList').removeClass('photoListTypeText')
+		$(this).addClass('active').siblings().removeClass('active');
+	});
+</script>
+<div class="photoList photoListTypeText">
+	<ul>
+		<li>
+			<a href="" class="img">
+				<img src="/images/img.png" alt="" height="169" width="230">
+			</a>
+			<dl>
+				<dt>
+				<span class="date">2015-12-10</span>
+				사랑의 연탄나눔 봉사활동
+				</dt>
+				<dd>
+					회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp;
+					금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp;
+					홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp;
+					특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다.
+					매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp;
+					가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다.
+				</dd>
+			</dl>
+		</li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+		<li> <a href="" class="img"> <img src="/images/img.png" alt="" height="169" width="230"> </a> <dl> <dt> <span class="date">2015-12-10</span> 사랑의 연탄나눔 봉사활동 </dt> <dd> 회사에서는 매년 저소득 소외계층의 따뜻한 겨울나기를 위한 사랑의 연탄을 기부하고 있습니다.&nbsp; 금년에는 서울,경기지역 저소득 가정 50가구를 위한 연탄 15,000여장을 기부하였으며, 이중 연탄 12,00여장을&nbsp; 홍제동 개미마을을 방문하여 6개 가구에 직접 연탄배달 봉사활동을 지난 11월 12일(목)에 가졌습니다.&nbsp; 특히, 이번 봉사활동에는 임원 및 직책자분들이 중심이 되어 연탄을 배달하며 이웃사랑 실천에 솔선수범 하였습니다. 매년 우리와 함께 이사업을 하고 있는 (사)따뜻한 한반도 사랑의 연탄나눔운동본부 관계자께서는 10년이 넘게 지속적으로 후원해 오고 있다는 것에 감사의 말씀을 전하셨습니다.&nbsp; 가파른 골목 언덕길을 오르내리며 상의가 다 젖을 정도로 열심히 봉사활동 해주신 모든 분들 감사드립니다. </dd> </dl> </li>
+	</ul>
+</div>
+페이징
+
+
+<p>유앤피플의 다양한 행사들을 사진으로 만나보세요</p>
+<div class="plist">
+	<p><p>유앤피플은 워크샵, 세미나 등 다양한 행사를 통한 사내 단합을 도모하고 있습니다.</p></p>
+</div>
+<div class="view">
+	<h2 class="subject">
+		게시물제목
+	</h2>
+	<dl>
+		<dt>작성일</dt>
+		<dd>2016-01-01</dd>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<div class="photoView">
+		 <div class="sliderMc">
+			<div class="thumbs" id="vsThumbs">
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3" width="596" alt="" /></a></div>
+					<div> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4" width="596" alt="" /></a></div>
+			</div>
+			<div class="thumbsList" id="thumbsList">
+				<ul>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=2"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=3"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=4"  alt="" /></a></li>
+						<li> <a href="#self"><img src="http://unpl.co.kr/cmm/fms/getImage.do?atchFileId=FILE_000000000000483&amp;fileSn=5"  alt="" /></a></li>
+				</ul>
+			</div>
+			<div class="sliderMcCtrl">
+				<a href="#self" class="prevVs"><span class="hidden">이전 배너 보기</span></a>
+				<a href="#self" class="nextVs"><span class="hidden">다음 배너 보기</span></a>
+			</div>
+			<script src="http://unpl.co.kr/js/jquery.carouFredSel-6.2.1-packed.js"></script>
+			<script>
+			$(function() {
+				 $('#thumbsList ul').find( 'li:eq(0)' ).addClass( 'on' );
+
+				 $('#thumbsList ul').carouFredSel({
+				 	width:596,
+					items		:{
+						visible : 4
+					},
+					direction: 'up',
+					scroll      :{
+						items		:1,
+						pauseOnHover	: true
+					},
+					auto: {
+						play: false,
+						duration: 750,
+						timeoutDuration: 8000,
+						easing: 'quadratic',
+						onBefore: function() {
+							var index = $(this).triggerHandler( 'currentPosition' );
+							if ( index == 0 ) {
+								index = $(this).children().length;
+							}
+							$('#vsThumbs').trigger('slideTo', [ index, {
+								fx: 'directscroll'
+							}, 'prev' ]);
+							 $('#thumbsList ul').find( 'li' ).removeClass( 'on' );
+							 $('#thumbsList ul').find( 'li:eq(1)' ).addClass( 'on' );
+							 //console.log("index : "+index);
+						},
+						onAfter:function(){
+						},
+					},
+					next : ".nextVs",
+					prev : ".prevVs"
+				 });
+				var thumbsList = $('#thumbsList ul li');
+				thumbsList.bind("click", function(){
+					var index =  thumbsList.index(this);
+					var directStr = "prev";
+					if (index%2 == 0) directStr = "next";
+					$('#vsThumbs').trigger('slideTo', [ index, {
+						fx: 'directscroll'
+					}, directStr ]);
+
+
+					 $('#thumbsList ul').find( 'li' ).removeClass( 'on' );
+					 $(this).addClass( 'on' );
+					
+					 //console.log("index : "+index);
+
+				});
+				 $('#vsThumbs').carouFredSel({
+					items: 1,
+					direction: 'left',
+					width:596,
+					height:533,
+					scroll :{
+						items : 1
+					},
+					auto: {
+						play: false,
+						duration: 750,
+						easing: 'directscroll'
+					}
+				 });
+			});
+			</script>
+
+	</div>
+	<div class="dbData">
+		전략사업부에서는 2017년 2월 2일 강원도 횡성에서 2017년 전략사업부 워크샵을 개최하였습니다.  금번 워크샵에서는 성공적인 프로젝트완료를 위한 PM의 역할이라는 주제로 워크샵이 진행되었으며 이외 프로젝트 산출물에 대한 표준화에 대한 논의가 진행되었습니다....
+	</div>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+
+<p>유앤피플의 주요 고객사들입니다</p>
+<div class="plist">
+	<p>유앤피플은 행정 및 공공기관, 지자체, 공기업 등과 다양한 사업을 통해 파트너쉽을 맺고 있습니다.</p>
+</div>
+<h2 class="bu_t1">공공부문</h2>
+<ul class="partner">
+	<li><img src="/static/ucms/img/partner/partner_01.png" alt="EPIS 농립수산식품교육문화정보원"></li>
+	<li><img src="/static/ucms/img/partner/partner_02.png" alt="중앙선거관리위원회"></li>
+	<li><img src="/static/ucms/img/partner/partner_03.png" alt="동북아역사재단"></li>
+	<li><img src="/static/ucms/img/partner/partner_04.png" alt="국가보훈처"></li>
+	<li><img src="/static/ucms/img/partner/partner_05.png" alt="행복도시 중랑구청"></li>
+	<li><img src="/static/ucms/img/partner/partner_06.png" alt="동작구청"></li>
+	<li><img src="/static/ucms/img/partner/partner_07.png" alt="강남구청"></li>
+	<li><img src="/static/ucms/img/partner/partner_08.png" alt="사이버경찰청"></li>
+	<li><img src="/static/ucms/img/partner/partner_09.png" alt="국민체육진흥공단"></li>
+	<li><img src="/static/ucms/img/partner/partner_10.png" alt="고용노동부"></li>
+	<li><img src="/static/ucms/img/partner/partner_11.png" alt="한국인터넷진흥원"></li>
+	<li><img src="/static/ucms/img/partner/partner_12.png" alt="한국문화정보원"></li>
+	<li><img src="/static/ucms/img/partner/partner_13.png" alt="문화체육관광부"></li>
+	<li><img src="/static/ucms/img/partner/partner_14.png" alt="한국문화예술위원회"></li>
+	<li><img src="/static/ucms/img/partner/partner_15.png" alt="국립생물자원관"></li>
+	<li><img src="/static/ucms/img/partner/partner_16.png" alt="한국에너지공단"></li>
+	<li><img src="/static/ucms/img/partner/partner_17.png" alt="은평구청"></li>
+	<li><img src="/static/ucms/img/partner/partner_18.png" alt="성남시청"></li>
+	<li><img src="/static/ucms/img/partner/partner_19.png" alt="국토교통과학기술진흥원"></li>
+</ul>
+<h2 class="bu_t1">민간부문</h2>
+<ul class="partner">
+	<li><img src="/static/ucms/img/partner/partner_20.png" alt="웹와치"></li>
+	<li><img src="/static/ucms/img/partner/partner_21.png" alt="KCC정보통신"></li>
+	<li><img src="/static/ucms/img/partner/partner_22.png" alt="LG CNS"></li>
+	<li><img src="/static/ucms/img/partner/partner_23.png" alt="대우정보시스템"></li>
+	<li><img src="/static/ucms/img/partner/partner_24.png" alt="diquest"></li>
+	<li><img src="/static/ucms/img/partner/partner_25.png" alt="자이트"></li>
+	<li><img src="/static/ucms/img/partner/partner_26.png" alt="한국특허정보원"></li>
+	<li><img src="/static/ucms/img/partner/partner_27.png" alt="KBS"></li>
+	<li><img src="/static/ucms/img/partner/partner_28.png" alt="대웅제약"></li>
+</ul>
+<script>
+	$('.depth1,.depth2').click(function(event) {
+		$(this).next().toggleClass('active')
+		event.preventDefault();
+	});
+
+</script>
+<p class="infor">유앤피플의 새로운 소식들을 알려드립니다.</p>
+<div class="totalCount"><em>총 <em>70</em>건</em> | <em>1/12</em> Page</div>
+<div class="sh">
+	<select name="" id="" title="검색어구분">
+		<option value=""></option>
+	</select>
+	<input type="text" title="검색어">
+	<button class="b-sh">검색</button>
+</div> 
+<div class="bdList">
+<table>
+	<caption>000 목록</caption>
+	<thead>
+		<tr>
+			<th scope="col" class="no">번호</th>
+			<th scope="col">제목</th>
+			<th scope="col" class="file">첨부</th>
+			<th scope="col" class="name">작성자</th>
+			<th scope="col" class="date">등록일</th>
+			<th scope="col" class="count">조회</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>1</td>
+			<td class="tit"><a href="">스토리 요청 글 등록시 이용안내 및 유의사항</a></td>
+			<td><a href="" class="ico-download"><span class="sr-only">다운로드</span></a></td>
+			<td>관리자</td>
+			<td>2016-04-30</td>
+			<td>67</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+<div class="paginationSet">
+	<ul class="pagination pagination-centered">
+		<li class="i first "><span class="s"><span>처음 <span class="t">목록으로 이동</span></span></span></li>
+		<li class="i prev "><span class="s"><span>이전 <span class="t">목록으로 이동</span></span></span></li>
+		<li><a href=""><span>104</span></a></li>
+		<li><a href=""><span>105</span></a></li>
+		<li><a href=""><span>106</span></a></li>
+		<li class="active"><a href="#"><span>110</span></a></li>
+		<li><a href=""><span>107</span></a></li>
+		<li><a href=""><span>108</span></a></li>
+		<li><a href=""><span>109</span></a></li>
+		<li class="i next"><a href=""><span class="s"><span>마지막 <span class="t">목록으로 이동</span></span></span></a></li>
+		<li class="i end"><span class="s"><span>마지막 <span class="t">목록으로 이동</span></span></span></li>
+	</ul>
+</div>
+<p class="infor">유앤피플의 새로운 소식들을 알려드립니다.</p>
+<div style="line-height: 1.5">
+	
+	<p style="font-size:13px"> 13 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:14px"> 14 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:15px"> 15 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:16px"> 16 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:17px"> 17 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:18px"> 18 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:19px"> 19 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:20px"> 20 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:21px"> 21 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:22px"> 22 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:23px"> 23 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:24px"> 24 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:25px"> 25 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:26px"> 26 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+
+	<p style="font-size:13px;font-weight:bold"> 13 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:14px;font-weight:bold"> 14 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:15px;font-weight:bold"> 15 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:16px;font-weight:bold"> 16 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:17px;font-weight:bold"> 17 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:18px;font-weight:bold"> 18 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:19px;font-weight:bold"> 19 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:20px;font-weight:bold"> 20 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:21px;font-weight:bold"> 21 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:22px;font-weight:bold"> 22 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:23px;font-weight:bold"> 23 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:24px;font-weight:bold"> 24 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:25px;font-weight:bold"> 25 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+	<p style="font-size:26px;font-weight:bold"> 26 normal 유앤피플의 새로운 소식들을 알려드립. 을를병갑뵑 0123456789 abcd AB</p>
+
+</div>
+<div class="view">
+	<h2 class="subject">
+		게시물제목
+	</h2>
+	<dl>
+		<dt>작성일</dt>
+		<dd>2016-01-01</dd>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+			<ul class="fileList">
+				<li><a href="" class="ico-download">test.xls</a></li>
+				<li><a href="" class="ico-download">test.xls</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+</div>
+<div class="recomentList">
+		<fieldset class="set">
+			<legend class="hidden">댓글 작성</legend>
+			<div class="i">
+				<textarea class="characterLen" data-lensize="1980" cols="100" rows="10" title="댓글입력" placeholder="댓글입력"></textarea>
+				<p class="characterLenDeco"></p>
+				<button type="submit" class="b-submit">등록</button>
+			</div>
+			<script>
+			$(function() {
+				$('.characterLen').each(function(index, el) {
+					$(this).keyup(function (e){
+						var selfintroduction = $(this).val();
+						var str = $(this).val();
+						var limit = $(this).data().lensize;
+						$(this).next().html(selfintroduction.length + '/'+limit+'자 이내 입력');
+						if(selfintroduction.length >= 2000){
+							alert("글자수는 "+limit+"자를 초과할수 없습니다.");
+							$(this).val(str.substring(0,limit))
+						}
+					})
+					.next().html($(this).data().lensize+'자 이내 입력')
+				});
+			});
+			</script>
+		</fieldset>
+	<strong class="screen_out">전체 댓글</strong>
+	<ul>
+		<li>
+			<div class="cmtBody">
+				<span class="infoAppend">
+					<span class="name">글쓴이</span>
+					<span class="vline">|</span>
+					<span class="time">2013.01.01 14:22</span>
+				</span>
+				<p class="txtDesc">
+					댓글 내용이 나오는 곳...댓글댓글 내용이 나오는 곳...댓글 내용이 나오는 곳...댓글 내용이 나오는 곳...
+				</p>
+			</div>
+			<div class="cmtFoot">
+				<a href="#none">수정</a>
+				<span class="vline">|</span>
+				<a href="#none">삭제</a>
+				<span class="vline">|</span>
+				<a href="#none">신고</a>
+			</div>
+			
+		</li>
+	</ul>
+</div>
+
+
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd><a href=""> 창창한 대화-융합편 with 와디즈, 이연택 디자인연구소 </a></dd>
+	</dl>
+	<dl>
+		<dt class="n">아랫글</dt>
+		<dd><a href=""> 2016 아이디어 융합팩토리 6기 창작자 모집공고 </a></dd>
+	</dl>
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd><a href=""><span> 창창한 대화-융합편 with 와디즈, 이연택 디자인연구소 </span><span class="date">2018-05-09</span></a></dd>
+	</dl>
+	<dl>
+		<dt class="n">아랫글</dt>
+		<dd><a href=""> <span>2016 아이디어 융합팩토리 6기 창작자 모집공고</span><span class="date">2018-05-09</span></a></dd>
+	</dl>
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd><span>게시물이 없습니다.</span></dd>
+	</dl>
+	<dl>
+		<dt class="n">아랫글</dt>
+		<dd><span>게시물이 없습니다.</span></dd>
+	</dl>
+</div>
+
+<p>유앤피플에서 제공하는 다양한 자료들을 만나보실 수 있습니다</p>
+<div class="plist">
+	<p>유앤피플에서 제공하는 자료실은 로그인 후 다운로드가 가능합니다</p>
+</div>
+공지사항 동일
+
+<p>유앤피플에서 제공하는 다양한 자료들을 만나보실 수 있습니다</p>
+<div class="plist">
+	<p>유앤피플에서 제공하는 자료실은 로그인 후 다운로드가 가능합니다</p>
+</div>
+공지사항 동일
+
+<p class="infor">회원님들이 자주 묻는 질문들을 확인하세요</p>
+
+<!-- <div class="sh">
+	<input type="text" title="검색어">
+	<button class="b-sh">검색</button>
+</div> -->
+
+
+<!-- 
+<dl id="faqList" class="callFaq">
+	<dt class="no-data">검색 결과가 없습니다.</dt>
+</dl>
+ -->
+
+
+<dl id="faqList" class="callFaq">
+	<dt class="on open">
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span>UNP는 어떤 의미인가요?</span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+	</dd>
+	<dt>
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span>유앤피플은 주로 무슨일을 하시나요?</span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> 
+		유앤피플은 공공기관 시스템을 주로 구축하는 전문SI업체입니다
+	</dd>
+	<dt>
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span>유앤피플은 워크샵을 왜 자주 가시나요?</span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+	</dd>
+	<dt>
+		<button type="button" title="답변 열기">
+			<span class="qna_img"><span class="sr-only">질문</span></span> <span> 자주하는 질문 베스트 4 </span>
+		</button>
+	</dt>
+	<dd>
+		<span class="qna_img"><span class="sr-only">답변</span></span> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quis tenetur explicabo sequi pariatur, perferendis voluptates suscipit odit ipsa dicta perspiciatis, totam quasi autem dolorem. Sed earum dolore quasi quisquam sit.
+	</dd>
+</dl>
+<!-- faqList -->
+
+
+
+<script>
+	jQuery(function($) {
+		var article = $('.callFaq dt>button');
+		article.each(function(index, el) {
+			$(this).click(function(event) {
+				if ($(this).parent().hasClass('open')) {
+					$(this).parent().removeClass('open').next().hide();
+					$(this).attr('title', '답변 열기')
+				} else {
+					$(this).parent().addClass('open').next().show();
+					$(this).attr('title', '답변 닫기')
+				}
+			});
+			$(this).parent().removeClass('open').next().hide();
+		});
+		article.eq(0).trigger('click')
+	});
+</script>
+
+<div class="paginationSet">
+	<ul class="pagination pagination-centered">
+		<li class="i first disabled"><span class="s"><span>처음 <span class="t">목록으로 이동</span></span></span></li>
+		<li class="i prev disabled"><span class="s"><span>이전 <span class="t">목록으로 이동</span></span></span></li>
+		<li><a href=""><span>104</span></a></li>
+		<li><a href=""><span>105</span></a></li>
+		<li><a href=""><span>106</span></a></li>
+		<li class="active"><a href="#"><span>110</span></a></li>
+		<li><a href=""><span>107</span></a></li>
+		<li><a href=""><span>108</span></a></li>
+		<li><a href=""><span>109</span></a></li>
+		<li class="i next"><a href=""><span class="s"><span>다음 <span class="t">목록으로 이동</span></span></span></a></li>
+		<li class="i end"><a href=""><span class="s"><span>마지막 <span class="t">목록으로 이동</span></span></span></a></li>
+	</ul>
+</div>
+
+<div class="plist">
+	<p>비방용글이나 상업성글의 경우 별도 공지없이 삭제될 수 있음을 알려드립니다.</p>
+</div>
+<div class="totalCount"><em>총 <em>70</em>건</em> | <em>1/12</em> Page</div>
+<div class="sh">
+	<select name="" id="">
+		<option value=""></option>
+	</select>
+	<input type="text">
+	<button class="b-sh">검색</button>
+</div>
+	<table class="table">
+		<caption>000 목록</caption>
+		<thead>
+			<tr>
+				<th scope="col" class="no">번호</th>
+				<th scope="col">제목</th>
+				<th scope="col">진행상태</th>
+				<th scope="col" class="name">작성자</th>
+				<th scope="col" class="date">등록일</th>
+				<th scope="col" class="count">조회</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td class="tit"><a href="">스토리 요청 글 등록시 이용안내 및 유의사항</a></td>
+				<td><span class="ico-reply-ing">답변대기</span></td>
+				<td>관리자</td>
+				<td>2016-04-30</td>
+				<td>67</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td class="tit"><a href="">스토리 요청 글 등록시 이용안내 및 유의사항</a></td>
+				<td><span class="ico-reply-end">답변완료</span></td>
+				<td>관리자</td>
+				<td>2016-04-30</td>
+				<td>67</td>
+			</tr>
+		</tbody>
+	</table>
+페이징
+<div class="btnSet">
+	<a href="" class="b-reg">글쓰기</a>
+</div>
+
+<p>궁금하신 내용이 있으시면 글을 남겨 주세요.</p>
+<div class="plist">
+	<p>비방용글이나 상업성글의 경우 별도 공지없이 삭제될 수 있음을 알려드립니다.</p>
+</div>
+<div class="view">
+	<h2 class="subject">
+		<div class="row">
+			<div class="col-sm-2">No.111</div>
+			<div class="col-sm-8 tac">게시물제목</div>
+			<div class="col-sm-2"></div>
+		</div>
+	</h2>
+	<dl>
+		<dt>작성일</dt>
+		<dd>2016-01-01</dd>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>진행상태</dt>
+		<dd><span class="ico-reply-ing">진행중</span></dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+
+			<ul class="fileList">
+				<li><a href="">파일이름.pdf</a></li>
+				<li><a href="">파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름 파일 이 름 .pdf</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+</div>
+<h2 class="bu_t1">답변내용</h2>
+<div class="view">
+	<dl>
+		<dt>작성일</dt>
+		<dd>2014-10-10</dd>
+		<dt>작성자</dt>
+		<dd>운영자</dd>
+	</dl>
+	<div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd><a href=""> 창창한 대화-융합편 with 와디즈, 이연택 디자인연구소 </a></dd>
+	</dl>
+	<dl>
+		<dt>아랫글</dt>
+		<dd><a href=""> 2016 아이디어 융합팩토리 6기 창작자 모집공고 </a></dd>
+	</dl>
+</div>
+
+<p>궁금하신 내용이 있으시면 글을 남겨 주세요.</p>
+<div class="plist">
+	<p>비방용글이나 상업성글의 경우 별도 공지없이 삭제될 수 있음을 알려드립니다.</p>
+</div>
+<div class="view viewType2">
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+	</dl>
+	<dl>
+		<dt>제목</dt>
+		<dd><input type="text" class="w100p"></dd>
+	</dl>
+	<dl>
+		<dt>내용</dt>
+		<dd>
+		<textarea name="" id="" cols="30" rows="10" class="w100p"></textarea>
+		</dd>
+	</dl>
+</div>
+<div class="btnSet">
+	<button class="b-save">등록</button>
+	<a href="" class="b-cancel">취소</a>
+</div>
+<div class="btnSet">
+	<button class="b-edit">수정</button>
+	<a href="" class="b-cancel">취소</a>
+</div>
+<p class="infor">홈페이지 회원으로 가입하시면 다양하고 유익한 정보를 확인하실 수 있습니다.</p>
+<div class="join2">
+	<ol class="sr-only">
+		<li class="i1 active" title="현재단계">
+			<div class="set">
+			<div class="s">STEP 01</div>
+			<span class="t">약관 및 개인정보수집 동의</span>
+			</div>
+		</li>
+		<li class="i2">
+			<div class="set">
+			<div class="s">STEP 02</div>
+			<span class="t">본인확인</span>
+			</div>
+		</li>
+		<li class="i3">
+		<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<div class="s">STEP 03</div>
+			<span class="t">정보입력</span>
+			</div>
+		</li>
+		<li class="i4 last">
+		<div class="set">
+			<div class="s">STEP 04</div>
+			<span class="t">가입완료</span>
+		</div>
+		</li>
+	</ol>
+</div>
+<div class="plist">
+	<p>본사이트는는 회원의 개인정보보호문제를 신중하게 취급합니다.</p>
+	<p>가입하신 정보는 회원님의 동의 없이 공개되지 않으며, 개인정보보호정책에 의해 보호를 받습니다.</p>
+</div>
+
+<div class="agg-set"><div class="set scroll">약관</div></div>
+<div class="tar"><input type="checkbox" id="aggr1" name="" value="" class="mr10" /> <label for="aggr1">이용약관에 동의 합니다. (동의해야만 회원가입 가능)</label></div>
+
+<h2 class="bu_t1">개인정보 수집∙이용 동의</h2>
+<div class="agg-set"><div class="set scroll">약관</div></div>
+<div class="tar"><input type="checkbox" id="aggr2" name="" value="" class="mr10" /> <label for="aggr2">개인정보 수집·이용에 동의합니다. (동의해야만 회원가입 가능)</label></div>
+
+<h2 class="bu_t1">수집한 개인정보의 제3자 제공 동의</h2>
+<div class="agg-set"><div class="set scroll">
+	약관
+</div></div>
+<div class="tar"><input type="checkbox" id="aggr3" name="" value="" class="mr10" /> <label for="aggr3">수집한 개인정보의 제3자 제공에 동의합니다. (동의해야만 회원가입 가능) </label></div>
+
+<div class="btnSet c">
+	<button class="b-join">회원가입</button>
+	<a href="" class="b-cancel b-lg">취소</a>
+</div>
+
+<p>홈페이지 회원으로 가입하시면 다양하고 유익한 정보를 확인하실 수 있습니다.</p>
+<div class="join2">
+	<ol >
+		<li class="i1">
+			<div class="set">
+			<div class="s">STEP 01</div>
+			<span class="t">약관 및 개인정보수집 동의</span>
+			</div>
+		</li>
+		<li class="i2 active" title="현재단계">
+			<div class="set">
+			<div class="s">STEP 02</div>
+			<span class="t">본인확인</span>
+			</div>
+		</li>
+		<li class="i3">
+		<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<div class="s">STEP 03</div>
+			<span class="t">정보입력</span>
+			</div>
+		</li>
+		<li class="i4 last">
+		<div class="set">
+			<div class="s">STEP 04</div>
+			<span class="t">가입완료</span>
+		</div>
+		</li>
+	</ol>
+</div>
+<div class="plist">
+	<p>
+		2006년 9월 25일부터 개정된 '주민등록법'에 의해 타인의 주민등록번호를 도용하여 온라인 회원가입을 하는 등 다른 사람의 주민등록번호를
+		부정사용하는자는 3년 이하의 징역 또는 1천만원 이하의 벌금이 부과될 수 있습니다. 
+		- 관련 법률 : 주민등록법 제21조(벌칙)제2항9호(시행일 2006. 9. 24) - 
+	</p>
+</div>
+
+<div class="row certify">
+	<div class="col-xs-6">
+		<h2 class="bu_t1">아이핀 인증</h2>
+		<div class="s">
+			<p>
+				공공아이핀(I-PIN)은 인터넷상의 개인식별번호를 의미하며, 
+				대면확인이 어려운 인터넷에서 <strong>주민등록번호를 사용하지 않고도
+					본인임을 확인할 수 있는 수단</strong>입니다
+			</p>
+			<a href="" class="b-">아이핀인증</a>
+		</div>
+	</div>
+	<div class="col-xs-6">
+		<h2 class="bu_t1">휴대전화인증</h2>
+		<div class="s">
+			<p>
+				휴대전화인증이란 주민등록번호 대체수단으로 회원님의 휴대전화를
+				통해 본인확인을 하는 서비스입니다
+			</p>
+			<a href="" class="b-">휴대전화인증</a>
+		</div>
+	</div>
+</div>
+
+<p>홈페이지 회원으로 가입하시면 다양하고 유익한 정보를 확인하실 수 있습니다.</p>
+<div class="join2">
+	<ol >
+		<li class="i1">
+			<div class="set">
+			<div class="s">STEP 01</div>
+			<span class="t">약관 및 개인정보수집 동의</span>
+			</div>
+		</li>
+		<li class="i2">
+			<div class="set">
+			<div class="s">STEP 02</div>
+			<span class="t">본인확인</span>
+			</div>
+		</li>
+		<li class="i3 active" title="현재단계">
+		<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<div class="s">STEP 03</div>
+			<span class="t">정보입력</span>
+			</div>
+		</li>
+		<li class="i4 last">
+		<div class="set">
+			<div class="s">STEP 04</div>
+			<span class="t">가입완료</span>
+		</div>
+		</li>
+	</ol>
+</div>
+<div class="plist">
+	<p>본 사이트는 회원의 개인정보보호문제를 신중하게 취급합니다.</p>
+	<p>가입하신 정보는 회원님의 동의 없이 공개되지 않으며, 개인정보보호정책에 의해 보호를 받습니다.</p>
+</div>
+
+<h2 class="bu_t1">아이디(ID)정보</h2>
+<div class="reqInfor"><span class="req"><span>필수입력</span></span>표시 항목은 필수 입력 항목입니다.</div>
+<div class="view">
+	<dl>
+		<dt><label for="id"><span class="req"><span>필수입력</span></span> 아이디</label></dt>
+		<dd>
+			<input type="text" id="id" name="" value="">
+			<a href="#" class="b-ok btn-sm btn btn-default btn-info"><span>중복확인</span></a>
+			<span class="fs"><span class="ico_point">!</span>8자~14자 이하 영문 소문자, 숫자 조합</span>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="pass"><span class="req"><span>필수입력</span></span> 비밀번호</label></dt>
+		<dd>
+			<input type="password" id="pass" name="" value=""> 
+			<span class="fs"><span class="ico_point">!</span> 8자~14자 이하 영문 소문자, 숫자 조합</span>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="pass_re"><span class="req"><span>필수입력</span></span> 비밀번호 확인</label></dt>
+		<dd>
+			<input type="password" id="pass_re" name="" value=""> 
+			<span class="fs"><span class="ico_point">!</span> 비밀번호를 한번 더 입력하세요</span>
+		</dd>
+	</dl>
+</div>
+<h2 class="bu_t1">개인정보</h2>
+<div class="view">
+	<dl>
+		<dt>사용자 이름</dt>
+		<dd>강태희</dd>
+		</dl>
+		<dl>
+		<dt>전화번호</dt>
+		<dd>
+				<select id="ntcrTel1" name="ntcrTel1" class="input_select" title="전화번호 지역번호">
+					<option value="02" selected="selected">02</option>
+					<option value="051">051</option>
+					<option value="053">053</option>
+					<option value="032">032</option>
+					<option value="062">062</option>
+					<option value="042">042</option>
+					<option value="052">052</option>
+					<option value="044">044</option>
+					<option value="031">031</option>
+					<option value="033">033</option>
+					<option value="043">043</option>
+					<option value="041">041</option>
+					<option value="063">063</option>
+					<option value="061">061</option>
+					<option value="054">054</option>
+					<option value="055">055</option>
+					<option value="064">064</option>
+				</select>
+				-
+				<input type="text" id="ntcrTel2" name="ntcrTel2" value="" class="tel" title="전화번호 중간 4자리">
+				-
+				<input type="text" id="ntcrTel3" name="ntcrTel3" value="" class="tel" title="전화번호 끝 4자리">
+		</dd>
+		</dl>
+		<dl>
+		<dt><span class="req"><span>필수입력</span></span>휴대전화</dt>
+		<dd>
+			<select id="ntcrMobile1" name="ntcrMobile1" class="input_select" title="휴대전화 앞 세자리">
+					<option value="010" selected="selected">010</option>
+					<option value="011">011</option>
+					<option value="016">016</option>
+					<option value="017">017</option>
+					<option value="018">018</option>
+					<option value="019">019</option>
+				</select>
+				-
+				<input type="text" id="ntcrMobile2" name="ntcrMobile2" value="" class="tel">
+				<label for="ntcrMobile2" class="hidden">휴대전화 중간 4자리</label>
+				-
+				<input type="text" id="ntcrMobile3" name="ntcrMobile3" value="" class="tel">
+				<label for="ntcrMobile3" class="hidden">휴대전화 끝 4자리</label>
+		</dd>
+			</dl>
+			<dl>
+			<dt><span class="l"><span class="req"><span>필수입력</span></span>주소</span></dt>
+			<dd>
+				<div class="postSet">
+					<span>
+					<input type="text" name="" value="" class="post" title="우편번호">
+					<a href="#" class="b-sh btn btn-default" title="새창열림">주소 찾기</a>
+					</span>
+					<span><input type="text" name="" value="" class="w100p" title="주소"></span>
+					<span><input type="text" name="" value="" class="w100p" title="상세주소"></span>
+				</div>
+			</dd>
+
+		</dl>
+		<dl>
+		<dt><label for="ntcrEmail1"><span class="req"><span>필수입력</span></span>이메일</label></dt>
+		<dd>
+			<input name="ntcrEmail1" id="ntcrEmail1" type="text" title="이메일 아이디" value="" class="emailId">
+			@
+			<input name="ntcrEmail2" id="ntcrEmail2" type="text" title="이메일 주소" value="" readonly="readonly" class="emailAddr emailDomainForm">
+			<label for="sr_email_more" class="hidden">이메일 도메인 선택</label>
+			<select id="sr_email_more" name="" class="input_select select_email_js" title="직접입력 선택시 자동활성화&amp;포커스 이동">
+				<option selected="">메일주소선택</option>
+				<option value="gmail.com">gmail.com</option>
+				<option value="naver.com">naver.com</option>
+				<option value="hanmail.net">hanmail.net</option>
+				<option value="daum.net">daum.net</option>
+				<option value="hotmail.com">hotmail.com</option>
+				<option value="nate.com">nate.com</option>
+				<option value="yahoo.co.kr">yahoo.co.kr</option>
+				<option value="emaildomain_false">직접입력</option>
+			</select>
+			<script>
+			jQuery(function(){
+				jQuery('select.select_email_js').change(function() {
+					if (jQuery(this).val()=='emaildomain_false') {
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+						jQuery('.emailDomainForm').attr('readonly',false).focus();
+					}else{
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val(jQuery(this).val());
+						jQuery('.emailDomainForm').attr('readonly',true)
+					}
+				});
+			});
+			</script>
+		</dd>
+
+	</dl>
+</div>
+<div class="tac mt20">
+	<button class="b-ok">가입하기</button>
+	<a href="" class="b-joincancel"><span>가입취소</span></a>
+</div>
+
+<p>홈페이지 회원으로 가입하시면 다양하고 유익한 정보를 확인하실 수 있습니다.</p>
+<div class="join2">
+	<ol >
+		<li class="i1">
+			<div class="set">
+			<div class="s">STEP 01</div>
+			<span class="t">약관 및 개인정보수집 동의</span>
+			</div>
+		</li>
+		<li class="i2">
+			<div class="set">
+			<div class="s">STEP 02</div>
+			<span class="t">본인확인</span>
+			</div>
+		</li>
+		<li class="i3">
+		<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<div class="s">STEP 03</div>
+			<span class="t">정보입력</span>
+			</div>
+		</li>
+		<li class="i4 last active" title="현재단계">
+		<div class="set">
+			<div class="s">STEP 04</div>
+			<span class="t">가입완료</span>
+		</div>
+		</li>
+	</ol>
+</div>
+<h2 class="bu_t1">회원가입완료</h2>
+<div class="box">
+	<div class="s">
+		<p class="t">회원가입이 정상적으로 완료되었습니다</p>
+		<p>로그인 후 홈페이지에서 제공하는 콘텐츠들을 이용하실 수 있습니다</p>
+	</div>
+	<div class="tac">
+		<a href="" class="b-">로그인하기</a>
+		<a href="" class="b-">메인화면</a>
+	</div>
+</div>
+
+<p>접속정보를 잊어버리셨나요? 회원님의 접속정보를 알려드립니다</p>
+<div class="plist">
+	<p>비밀번호의 경우 회원가입 시 등록하셨던 메일주소로 임시비밀번호를 전송해 드리오니, 로그인 후 반드시 비밀번호를 변경하여 주시기 바랍니다.</p>
+</div>
+
+<div class="row certify">
+	<div class="col-xs-6">
+		<h2 class="bu_t1">아이디 찾기</h2>
+		<div class="s">
+			<p class="pt40">
+				<label class="fieldW"><span>이름</span> <input type="text"></label>
+			</p>
+			<a href="" class="b-">아이디찾기</a>
+		</div>
+	</div>
+	<div class="col-xs-6">
+		<h2 class="bu_t1">비밀번호찾기</h2>
+		<div class="s">
+			<p>
+				<label class="fieldW"><span>이름</span> <input type="text"></label>
+				<label class="fieldW"><span>아이디</span> <input type="text"></label>
+			</p>
+			<a href="" class="b-">비밀번호찾기</a>
+		</div>
+	</div>
+</div>
+
+<p>회원님의 회원정보를 수정하실 수 있습니다.</p>
+
+<div class="plist">
+	<p>본 사이트는 회원의 개인정보보호문제를 신중하게 취급합니다.</p>
+	<p>가입하신 정보는 회원님의 동의 없이 공개되지 않으며, 개인정보보호정책에 의해 보호를 받습니다.</p>
+</div>
+
+<h2 class="bu_t1">아이디(ID)정보</h2>
+<div class="reqInfor"><span class="req"><span>필수입력</span></span>표시 항목은 필수 입력 항목입니다.</div>
+<div class="view">
+	<dl>
+		<dt>아이디</dt>
+		<dd>a1234567890</dd>
+	</dl>
+	<dl>
+		<dt><label for="pass"><span class="req"><span>필수입력</span></span> 비밀번호</label></dt>
+		<dd>
+			<input type="password" id="pass" name="" value=""> 
+			<span class="fs"><span class="ico_point">!</span> 8자~14자 이하 영문 소문자, 숫자 조합</span>
+		</dd>
+	</dl>
+	<dl>
+		<dt><label for="pass_re"><span class="req"><span>필수입력</span></span> 비밀번호 확인</label></dt>
+		<dd>
+			<input type="password" id="pass_re" name="" value=""> 
+			<span class="fs"><span class="ico_point">!</span> 비밀번호를 한번 더 입력하세요</span>
+		</dd>
+	</dl>
+</div>
+<h2 class="bu_t1">개인정보</h2>
+<div class="view">
+	<dl>
+		<dt>사용자 이름</dt>
+		<dd>강태희</dd>
+		</dl>
+		<dl>
+		<dt>전화번호</dt>
+		<dd>
+				<select id="ntcrTel1" name="ntcrTel1" class="input_select" title="전화번호 지역번호">
+					<option value="02" selected="selected">02</option>
+					<option value="051">051</option>
+					<option value="053">053</option>
+					<option value="032">032</option>
+					<option value="062">062</option>
+					<option value="042">042</option>
+					<option value="052">052</option>
+					<option value="044">044</option>
+					<option value="031">031</option>
+					<option value="033">033</option>
+					<option value="043">043</option>
+					<option value="041">041</option>
+					<option value="063">063</option>
+					<option value="061">061</option>
+					<option value="054">054</option>
+					<option value="055">055</option>
+					<option value="064">064</option>
+				</select>
+				-
+				<input type="text" id="ntcrTel2" name="ntcrTel2" value="" class="tel" title="전화번호 중간 4자리">
+				-
+				<input type="text" id="ntcrTel3" name="ntcrTel3" value="" class="tel" title="전화번호 끝 4자리">
+		</dd>
+		</dl>
+		<dl>
+		<dt><span class="req"><span>필수입력</span></span>휴대전화</dt>
+		<dd>
+			<select id="ntcrMobile1" name="ntcrMobile1" class="input_select" title="휴대전화 앞 세자리">
+					<option value="010" selected="selected">010</option>
+					<option value="011">011</option>
+					<option value="016">016</option>
+					<option value="017">017</option>
+					<option value="018">018</option>
+					<option value="019">019</option>
+				</select>
+				-
+				<input type="text" id="ntcrMobile2" name="ntcrMobile2" value="" class="tel">
+				<label for="ntcrMobile2" class="hidden">휴대전화 중간 4자리</label>
+				-
+				<input type="text" id="ntcrMobile3" name="ntcrMobile3" value="" class="tel">
+				<label for="ntcrMobile3" class="hidden">휴대전화 끝 4자리</label>
+		</dd>
+			</dl>
+			<dl>
+			<dt><span class="l"><span class="req"><span>필수입력</span></span>주소</span></dt>
+			<dd>
+				<div class="postSet">
+					<span>
+					<input type="text" name="" value="" class="post" title="우편번호">
+					<a href="#" class="b-sh btn btn-default" title="새창열림">주소 찾기</a>
+					</span>
+					<span><input type="text" name="" value="" class="w100p" title="주소"></span>
+					<span><input type="text" name="" value="" class="w100p" title="상세주소"></span>
+				</div>
+			</dd>
+
+		</dl>
+		<dl>
+		<dt><label for="ntcrEmail1"><span class="req"><span>필수입력</span></span>이메일</label></dt>
+		<dd>
+			<input name="ntcrEmail1" id="ntcrEmail1" type="text" title="이메일 아이디" value="" class="emailId">
+			@
+			<input name="ntcrEmail2" id="ntcrEmail2" type="text" title="이메일 주소" value="" readonly="readonly" class="emailAddr emailDomainForm">
+			<label for="sr_email_more" class="hidden">이메일 도메인 선택</label>
+			<select id="sr_email_more" name="" class="input_select select_email_js" title="직접입력 선택시 자동활성화&amp;포커스 이동">
+				<option selected="">메일주소선택</option>
+				<option value="gmail.com">gmail.com</option>
+				<option value="naver.com">naver.com</option>
+				<option value="hanmail.net">hanmail.net</option>
+				<option value="daum.net">daum.net</option>
+				<option value="hotmail.com">hotmail.com</option>
+				<option value="nate.com">nate.com</option>
+				<option value="yahoo.co.kr">yahoo.co.kr</option>
+				<option value="emaildomain_false">직접입력</option>
+			</select>
+			<script>
+			jQuery(function(){
+				jQuery('select.select_email_js').change(function() {
+					if (jQuery(this).val()=='emaildomain_false') {
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+						jQuery('.emailDomainForm').attr('readonly',false).focus();
+					}else{
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val(jQuery(this).val());
+						jQuery('.emailDomainForm').attr('readonly',true)
+					}
+				});
+			});
+			</script>
+		</dd>
+
+	</dl>
+</div>
+<div class="tac mt20">
+	<button class="b-ok btn btn-default btn-info">수정하기</button>
+	<a href="" class="b-cancel btn btn-default"><span>수정취소</span></a>
+</div>
+
+<p>홈페이지 전체 메뉴를 한 눈에 확인하실 수 있습니다.</p>
+<script>
+$(function() {
+	var maxH=0
+	$('.sm>ul>li').each(function(index, el) {
+		maxH=maxH<$(this).height()?$(this).height():maxH
+		console.log($(this).height())
+	}).find('.set').height(maxH);
+});
+</script>
+<div class="sm">
+<ul>
+	<li>
+		<div class="set">
+			<span class="num">01</span>
+			<span class="title">COMPANY</span>
+			<ul>
+				<li><a href="">회사소개</a></li>
+			</ul>
+		</div>
+	</li>
+	<li>
+		<div class="set">
+			<span class="num">02</span>
+			<span class="title">BUSINESS</span>
+			<ul>
+				<li><a href="">사업분야</a></li>
+				<li><a href="">공지사항</a></li>
+				<li><a href="">자료실</a></li>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Q&A</a></li>
+			</ul>
+		</div>
+	</li>
+	<li>
+		<div class="set">
+			<span class="num">03</span>
+			<span class="title">BUSINESS</span>
+			<ul>
+				<li><a href="">사업분야</a></li>
+				<li><a href="">공지사항</a></li>
+				<li><a href="">자료실</a></li>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Q&A</a></li>
+			</ul>
+		</div>
+	</li>
+	<li>
+		<div class="set">
+			<span class="num">04</span>
+			<span class="title">BUSINESS</span>
+			<ul>
+				<li><a href="">사업분야</a></li>
+				<li><a href="">공지사항</a></li>
+				<li><a href="">자료실</a></li>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Q&A</a></li>
+			</ul>
+		</div>
+	</li>
+	<li>
+		<div class="set">
+			<span class="num">05</span>
+			<span class="title">BUSINESS</span>
+			<ul>
+				<li><a href="">사업분야</a></li>
+				<li><a href="">공지사항</a></li>
+				<li><a href="">자료실</a></li>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Q&A</a></li>
+			</ul>
+		</div>
+	</li>
+	<li>
+		<div class="set">
+			<span class="num">06</span>
+			<span class="title">BUSINESS</span>
+			<ul>
+				<li><a href="">사업분야</a></li>
+				<li><a href="">공지사항</a></li>
+				<li><a href="">자료실</a></li>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Q&A</a></li>
+			</ul>
+		</div>
+	</li>
+	<li>
+		<div class="set">
+			<span class="num">07</span>
+			<span class="title">BUSINESS</span>
+			<ul>
+				<li><a href="">사업분야</a></li>
+				<li><a href="">공지사항</a></li>
+				<li><a href="">자료실</a></li>
+				<li><a href="">FAQ</a></li>
+				<li><a href="">Q&A</a></li>
+			</ul>
+		</div>
+	</li>
+</ul>
+</div>
+<p>유앤피플에서는 이용자 개인정보 보호를 위해 최선을 다하고 있습니다.</p>
+<ul class="olnum">
+	<li><a href="#mark1">1. 개인정보의 처리목적</a></li>
+	<li><a href="#mark2">2. 개인정보의 처리 및 보유기간</a></li>
+	<li><a href="#mark3">3. 개인정보 수집항목</a></li>
+	<li><a href="#mark4">4. 개인정보 제3자 제공에 관한 사항</a></li>
+	<li><a href="#mark5">5. 개인정보처리 위탁에 관한 사항</a></li>
+	<li><a href="#mark6">6. 정보주체의 권리,의무 및 그 행사방법</a></li>
+	<li><a href="#mark7">7. 개인정보의 파기절차 및 방법</a></li>
+	<li><a href="#mark8">8. 개인정보의 안정성 확보조치</a></li>
+	<li><a href="#mark9">9. 개인정보의 처리방침의 변경</a></li>
+	<li><a href="#mark10">10. 권익침해 구제방법</a></li>
+	<li><a href="#mark11">11. 개인정보보호 책임자 및 담당자 연락처</a></li>
+	<li><a href="#mark12">12. 개인정보 처리방침 변경</a></li>
+</ul>
+<div class="clear"></div>
+<div class="privatetxt">
+	
+	<h2 class="bu_t1" id="mark1">제1조. 개인정보의 처리목적</h2>
+	<ol class="list">
+		<li>본 홈페이지는 게시글 등록 목적으로 필요에 의한 최소한으로 개인정보를 수집하고 있습니다.</li>
+		<li>이에 유앤피플은 아래 내용과 같이 개인정보를 수집 &#8226; 이용하고자 합니다. 처리한 개인정보는 다음의 목적 이외의 용도로는 사용되지 않으며 이용 목적이 변경될 시에는 사전 동의를 구할 예정입니다.</li>
+	</ol>
+	
+	<h2 class="bu_t1" id="mark2">제2조. 개인정보의 처리 및 보유기간</h2>
+	<ol class="list">
+		<li>본 홈페이지는 이용자의 개인정보는 원칙적으로 개인정보의 처리목적이 달성되거나 해당 서비스가 폐지되는 경우, 해당 개인정보를 지체 없이 파기하는 것을 원칙으로 합니다.</li>
+		<li>개인정보 보유기간은 정보주체가 홈페이지에서 회원 가입 및 아이핀 인증을 통해 제공되는 서비스가 폐지 될 때 까지이며 서비스 폐지 시 개인정보는 제7조. 개인정보의 파기 절차 및 방법에 따라 안전하게 폐기될 예정입니다.</li>
+		<li>단, 회원의 경우 1년(12개월) 동안 로그인 접속기록이 없는 경우 휴먼계정으로 처리하고, 1년(12개월)이 되는 시점에서 아이디와 비밀번호를 제외한 일체의 개인정보를 삭제합니다. 이 때 휴면계정으로 처리된 출원인의 경우 로그인 접속 시 아이디와 비밀번호를 통한 로그인은 가능하며, 비밀번호를 잊어 버렸을 경우 담당자에게 문의하여 임시비밀번호를 재발급 받을 수 있습니다.</li>
+	</ol>
+	
+	<h2 class="bu_t1" id="mark3">제3조. 개인정보 수집항목</h2>
+	<ol class="list">
+		<li>본 홈페이지는 회원의 기본적 인권 침해의 우려가 있는 민감한 개인정보(인종 및 민족, 사상 및 신조, 출신지 및 본적지, 정치적 성향 및 범죄기록, 건강상태 및 성생활 등)는 수집하지 않습니다.</li>
+		<li>홈페이지는 이용자의 정보를 저장하고 수시로 불러오는 '쿠키(cookie)'사용을 통한 개인정보 자동수집을 제공하지 않습니다.</li>
+	</ol>
+
+	
+	<h2 class="bu_t1" id="mark4">제4조. 개인정보 제3자 제공에 관한 사항</h2>
+	<ol class="list">
+		<li>본 홈페이지는 원칙적으로 정보주체의 개인정보를 수집, 이용 목적으로 명시한 범위 내에서 처리하며, 다음의 경우를 제외하고는 정보주체의 사전 동의 없이는 본래의 목적 범위를 초과하여 처리하거나 제3자에게 제공하지 않습니다.
+			<ol>
+				<li>       가. 정보주체로부터 별도의 동의를 받는 경우</li>
+				<li>       나. 법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위하여 불가피한 경우</li>
+				<li>       다. 정보주체가 의사표시를 할 수 없는 상태에 있거나 주소불명 등으로 사전동의를 받을 수 없는 경우로서 명백히 정보주체 또는 제3자의 급박한 생명, 신체, 재산의 이익을 위하여 필요하다고 인정되는 경우</li>
+				<li>       라. 통계작성 및 학술연구 등의 목적을 위하여 필요한 경우로서 특정 개인을 알아 볼 수 없는 형태로 개인정보를 제공하는 경우</li>
+				<li>       마. 동의를 거부할 권리가 있다는 사실 및 동의 거부에 따른 불이익이 있는 경우에는 그 불이익의 내용</li>
+			</ol>
+		</li>
+	</ol>
+	
+	<h2 class="bu_t1" id="mark5">제5조. 개인정보처리 위탁에 관한 사항</h2>
+	<ol class="list">
+		<li>본 홈페이지는 이용자의 동의 없이 해당 개인정보를 타인에게 위탁하지 않습니다.</li>
+		<li>보유 및 이용기간
+			<p>   - 서비스 가입일 ~ 해지일</p>
+		</li>
+		<li>동의거부 권리알림
+			<p>   - 누구나 동의거부 의사를 표시할 수 있으며 동의 거부시 회원으로써의 기본활동을 위한 정보부족으로 회원가입을 할 수 없으며, 이에따라 홈페이지를 통한 회원 로그인, 회원용 서비스 이용은 제한이 됩니다.</p>
+		</li>
+	</ol>
+	
+	<h2 class="bu_t1" id="mark6">제6조. 정보주체의 권리, 의무 및 그 행사방법</h2>
+	<ol class="list">
+		<li>정보주체는 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.
+			<ul class="list4">
+				<li>개인정보 열람요구</li>
+				<li>오류 등이 있을 경우 정정요구</li>
+				<li>처리정지 요구</li>
+			</ul>
+		</li>
+		<li>제1항에 따른 권리 행사는 개인정보보호법 시행규칙 별지 제8호 서식에 따라 작성 후 서면, 전자우편, 모사전송(FAX) 등을 통하여 하실 수 있으며, 기관은 이에 대해 지체 없이 조치하겠습니다.</li>
+		<li>정보주체가 개인정보의 오류 등에 대한 정정을 요구한 경우에는 정정이 완료할 때까지 당해 개인정보를 이용하거나 제공하지 않습니다.</li>
+		<li>출원인의 개인정보 열람 및 처리정지 요구는 개인정보보호법 제35조 제5항, 제37조 제2항에 의하여 정보주체의 권리가 제한 될 수 있습니다.</li>
+		<li>출원인의 경우 정보주체 권리에 따라 개인정보에 대한 열람 및 정정 필요 시 아이핀 인증을 통해 &quot;신품종 연구성과 > 내 정보수정&quot; 화면에서 직접 열람 및 정정이 가능합니다.</li>
+		<li>&quot;BRIS&quot;  홈페이지에서는 만 14세 미만의 아동의 경우 회원가입을 받지 않습니다.</li>
+	</ol>
+	
+	<h2 class="bu_t1" id="mark7">제7조. 개인정보의 파기 절차 및 방법</h2>
+	<p>BRIS 홈페이지는 원칙적으로 개인정보 처리목적이 달성된 개인정보는 지체 없이 파기합니다. 다만, 다른 법령에 따라 보존하여야 하는 경우에는 그러하지 않을 수 있습니다. <br />
+	파기의 절차, 기한 및 방법은 다음과 같습니다.</p>
+	<ol class="list pl20">
+		<li><strong>파기절차</strong>
+			<p>불필요한 개인정보 및 개인정보파일은 개인정보책임자의 책임 하에 내부방침 절차에 따라 다음과 같이 처리하고 있습니다.</p>
+			<ul>
+				<li>개인정보의 파기<br />
+					보유기간이 경과한 개인정보는 종료일로부터 지체 없이 파기합니다.
+				</li>
+				<li>개인정보파일의 파기<br />
+					개인정보파일의 처리 목적 달성, 해당 서비스의 폐지, 사업의 종료 등 그 개인정보파일이 불필요하게 되었을 때에는 개인정보의 처리가 불필요한 것으로 인정되는 날로부터 지체없이 그 개인정보파일을 파기합니다.
+				</li>
+			</ul>
+		</li>
+		<li><strong>파기방법</strong><br />
+			<ul>
+				<li>전자적 형태의 정보는 기록을 재생할 수 없는 기술적 방법을 사용합니다.</li>
+				<li>종이에 출력된 개인정보는 파쇄기로 파쇄하거나 소각을 통하여 파기합니다.</li>
+			</ul>
+		</li>
+	</ol>
+	
+	<h2 class="bu_t1" id="mark8">제8조. 개인정보의 안정성 확보조치</h2>
+	<p>개인정보의 안전성 확보를 위해 기관은 다음과 같은 조치를 취하고 있습니다.</p>
+	<ol class="list">
+		<li>개인정보 취급직원의 최소화 및 교육<br />
+		개인정보를 취급하는 직원은 반드시 필요한 인원에 한하여 지정,관리하고 있으며 취급직원을 대상으로 안전한 관리를 위한 교육을 실시하고 있습니다.</li>
+		<li>개인정보에 대한 접근제한<br />
+		개인정보를 처리하는 개인정보처리시스템에 대한 접근 권한의 부여,변경,말소를 통하여 개인정보에 대한 접근통제를 위한 필요한 조치를 하고 있으며 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있습니다.</li>
+		<li>접속기록의 보관<br />
+		개인정보처리시스템에 접속한 기록을 최소 6개월 이상 보관, 관리하고 있습니다. </li>
+		<li>개인정보의 암호화<br />
+		개인정보는 암호화 등을 통해 안전하게 저장 및 관리되고 있습니다. 또한 중요한 데이터는 저장 및 전송 시 암호화하여 사용하는 등의 별도 보안기능을 사용하고 있습니다.</li>
+		<li>보안프로그램 설치 및 주기적 점검, 갱신<br />
+		해킹이나 컴퓨터 바이러스 등에 의한 개인정보 유출 및 훼손을 막기 위하여 보안프로그램을 설치하고 주기적으로 갱신, 점검하고 있습니다.</li>
+		<li>비인가자에 대한 출입 통제 <br />
+		개인정보를 보관하고 있는 개인정보처리시스템의 물리적 보관장소를 별도로 두고 이에 대해 출입통제 절차를 수립, 운영하고 있습니다.</li>
+	</ol>
+	
+	<h2 class="bu_t1" id="mark9">제9조. 개인정보 처리방침의 변경</h2>
+	<p>개인정보 처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용은 추가, 삭제 및 정정이 있는 경우에는 변경사항 시행 7일 전부터 공지사항을 통하여 고지할 계획입니다.</p>
+	
+	<h2 class="bu_t1" id="mark10">제10조. 권익침해 구제방법</h2>
+	<div>
+		<p>개인정보 주체는 개인정보침해로 인한 구제를 받기 위하여 개인정보분쟁조정위원회, 한국인터넷진흥원 개인정보침해신고센터 등에 분쟁해결이나 상담 등을 신청할 수 있습니다.</p>
+		<ol class="list4 ml20">
+			<li>개인정보 침해신고센터 : (국번없이)118 <a href="www.kopico.or.kr" target="_blank"  title="개인정보 침해신고센터 홈페이지 바로가기(새창열림)">(www.kopico.or.kr <span class="newwin"></span></a>)</li>
+			<li>정보보호마크인증위원회 : 02-550-9531~2 (<a href="http://eprivacy.or.kr" target="_blank"  title="정보보호마크인증위원회 홈페이지 바로가기(새창열림)">http://eprivacy.or.kr <span class="newwin"></span></a>)</li>
+			<li>대검찰청 사이버범죄수사단 : 02-3480-3571 (<a href="http://www.spo.go.kr" target="_blank"  title="대검찰청 사이버범죄수사단 홈페이지 바로가기(새창열림)">http://www.spo.go.kr <span class="newwin"></span></a>/)</li>
+			<li>경찰청 사이버테러대응센터 : 1566-0112(<a href="http://www.netan.go.kr" target="_blank"  title="경찰청 사이버테러대응센터 홈페이지 바로가기(새창열림)">http://www.netan.go.kr <span class="newwin"></span></a>)</li>
+		</ol>
+		<p>「개인정보보호법」제35조(개인정보의 열람), 제36조(개인정보의 정정·삭제), 제37조(개인정보의 처리정지 등)의 규정에 의한 요구에 대하여 공공기관의 장이 행한 처분 또는 부작위로 인하여 권리 또는 이익의 침해를 받은 자는 행정심판법이 정하는 바에 따라 행정심판을 청구할 수 있습니다.</p>
+	</div>
+
+	
+	<h2 class="bu_t1" id="mark11">제11조. 개인정보보호 책임자 및 담당자 연락처</h2>
+	<div>
+		<p>농림수산식품교육문화정보원은 개인정보를 보호하고 개인정보와 관련된 사항을 처리하기 위하여 아래와 같이 개인정보 보호책임자 및 실무담당자를 지정하고 있습니다.</p>
+		<ul>
+			<li>
+				<dl>
+					<dt>가. 개인정보 보호책임자 : </dt>
+					<dd>- 성명 : 이경훈</dd>
+					<dd>- 소속 및 직위 : 전산팀 팀장</dd>
+					<dd>- 전화번호 : 02-855-7471</dd>
+				</dl>
+			</li>
+			<li>
+				<dl>
+					<dt>나. 개인정보 보호담당자 : </dt>
+					<dd>- 성명 : 김준모</dd>
+					<dd>- 소속 및 직위 : 전산팀 차장 </dd>
+					<dd>- 전화번호 : : 02-855-7471</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+	
+	<h2 class="bu_t1" id="mark12">제12조. 개인정보 처리방침 변경</h2>
+	<p> 이 개인정보처리방침은 2017. 2. 28 목요일 부터 적용됩니다.</p>
+</div>
+<p class="infor">
+	유앤피플은 2007년 설립 이후 공공기관 중심의  <br>
+	IT 컨설팅 진행 및 시스템구축사업과 유지보수사업을 진행하고 있습니다.
+</p>
+
+<div class="plist">
+<p>유앤피플 (UNPEOPLE)</p>
+<p>대표이사 : 유재욱</p>
+<p>설립일자 : 2007년 1월</p>
+<p>주 소 : 서울시 구로구 가마산로25길 9-9(구로동, KM타워 3층,9층)</p>
+<p>전화번호 : 02-855-7471(FAX. 070-8650-0110)</p>
+</div>
+
+<div class="c300002">
+	<dl class="i1">
+		<dt>SI(System Integration,시스템통합)</dt>
+		<dd>
+			기업이 필요로 하는 정보시스템에 관한 기획에서부터 <br>
+			개발과 구축, 나아가서는 운영까지의 모든 서비스를 <br>
+			제공하는 일.
+		</dd>
+	</dl>
+
+	<dl class="i2">
+		<dt>컨설팅</dt>
+		<dd>
+			전문적인 지식을 가진 사람이 고객을  <br>
+			상대로 상세하게 상담하고 도와주는 <br>
+			업무를 말한다.
+		</dd>
+	</dl>
+
+	<dl class="i3">
+		<dt>IT Outsourcing</dt>
+		<dd>
+			기업ㆍ금융기관 등에서 비핵심 IT 부문을  <br>
+			위탁관리하거나 운용해주는  <br>
+			업무를 말한다.
+		</dd>
+	</dl>
+
+	<dl class="i4">
+		<dt>소프트웨어 개발</dt>
+		<dd>
+			소프트웨어 기반 솔루션을 위한  <br>
+			요구 사항 수집 계획 및 디자인 수립 등 <br>
+			업무를 말한다.
+		</dd>
+	</dl>
+
+	<dl class="i5">
+		<dt>데이터베이스 구축</dt>
+		<dd>
+			다종 다양한 데이터가 일원 관리되고 있는  <br>
+			데이터베이스의 기능을 통합적으로  <br>
+			실현 관리하는 시스템
+		</dd>
+	</dl>
+</div>
+
+
+
+<h2 class="bu1">HISTORY</h2>
+<img src="/static/ucms/img/history.png" alt="">
+<h2 class="bu1">주요인증 현항</h2>
+<div class="certifi-list">
+	<img src="/static/ucms/img/certifi1.jpg" alt="벤처기업확인서">
+	<img src="/static/ucms/img/certifi2.jpg" alt="기술혁신형 중소기업(Inno-Biz) 확인서">
+	<img src="/static/ucms/img/certifi3.jpg" alt="전자정부 표준프레임워크 호환성 확인서">
+	<img src="/static/ucms/img/certifi4.jpg" alt="소프트웨어 접근성 인증서">
+</div>
+<p class="infor">유앤피플의 주요 고객사들입니다.</p>
+<div class="boxinfor">
+	<p>유앤피플은 행정 및 공공기관, 지자체, 공기업 등과 다양한 사업을 통해 파트너쉽을 맺고 있습니다.</p>
+</div>
+<h2 class="bu2">공공부문</h2>
+<ul class="partner">
+	<li><img src="/static/ucms/img/partner/partner_1.png" alt="한국은행"></li>
+	<li><img src="/static/ucms/img/partner/partner_2.png" alt="EPIS"></li>
+	<li><img src="/static/ucms/img/partner/partner_3.png" alt="중앙선거관리위원회"></li>
+	<li><img src="/static/ucms/img/partner/partner_4.png" alt="KSPO"></li>
+	<li><img src="/static/ucms/img/partner/partner_5.png" alt="국가보훈처"></li>
+	<li><img src="/static/ucms/img/partner/partner_6.png" alt="사이버결찰청"></li>
+	<li><img src="/static/ucms/img/partner/partner_7.png" alt="한국저작권위원회"></li>
+	<li><img src="/static/ucms/img/partner/partner_8.png" alt="동작구"></li>
+	<li><img src="/static/ucms/img/partner/partner_9.png" alt="서울 중랑구"></li>
+	<li><img src="/static/ucms/img/partner/partner_10.png" alt="동두천시"></li>
+	<li><img src="/static/ucms/img/partner/partner_11.png" alt="대한민국시도지사협의회"></li>
+	<li><img src="/static/ucms/img/partner/partner_12.png" alt="강서구시설관리공단"></li>
+	<li><img src="/static/ucms/img/partner/partner_13.png" alt="서울주얼리지원센터"></li>
+	<li><img src="/static/ucms/img/partner/partner_14.png" alt="동북아역사재단"></li>
+	<li><img src="/static/ucms/img/partner/partner_15.png" alt="강남구"></li>
+	<li><img src="/static/ucms/img/partner/partner_16.png" alt="한국인터넷진흥원"></li>
+	<li><img src="/static/ucms/img/partner/partner_17.png" alt="고용노동부"></li>
+	<li><img src="/static/ucms/img/partner/partner_18.png" alt="한국문화정보원"></li>
+	<li><img src="/static/ucms/img/partner/partner_19.png" alt="한국문화예술위원회"></li>
+	<li><img src="/static/ucms/img/partner/partner_20.png" alt="한국에너지공단"></li>
+	<li><img src="/static/ucms/img/partner/partner_21.png" alt="북한산큰숲,은평"></li>
+	<li><img src="/static/ucms/img/partner/partner_22.png" alt="성남시"></li>
+	<li><img src="/static/ucms/img/partner/partner_23.png" alt="국토교통과학기술진흥원"></li>
+</ul>
+<h2 class="bu2">민간부문</h2>
+<ul class="partner">
+	<li><img src="/static/ucms/img/partner/partner_24.png" alt="여성기업 일자리허브"></li>
+	<li><img src="/static/ucms/img/partner/partner_25.png" alt="자본시장IT파트너KOSCOM"></li>
+	<li><img src="/static/ucms/img/partner/partner_26.png" alt="정동국증"></li>
+	<li><img src="/static/ucms/img/partner/partner_27.png" alt="한국과학기술연구원"></li>
+	<li><img src="/static/ucms/img/partner/partner_28.png" alt="관악서울대학교치과병원"></li>
+	<li><img src="/static/ucms/img/partner/partner_29.png" alt="WebWatch"></li>
+	<li><img src="/static/ucms/img/partner/partner_30.png" alt="KCC정보통신"></li>
+	<li><img src="/static/ucms/img/partner/partner_31.png" alt="LG CNS"></li>
+	<li><img src="/static/ucms/img/partner/partner_32.png" alt="대우정보시스템"></li>
+	<li><img src="/static/ucms/img/partner/partner_33.png" alt="diquest"></li>
+	<li><img src="/static/ucms/img/partner/partner_34.png" alt="자이트"></li>
+	<li><img src="/static/ucms/img/partner/partner_35.png" alt="한국특허정보원"></li>
+	<li><img src="/static/ucms/img/partner/partner_36.png" alt="KBS"></li>
+</ul>
+<p class="infor">
+	유앤피플은 잠재적인 능력을 발휘하여 함께 특별해지고 싶은 당신을 초대합니다.
+</p>
+<div class="ptbox">
+	<dl class="i1">
+		<dt>모집방법</dt>
+		<dd>정시채용, 수시채용</dd>
+	</dl>
+	<dl class="i2">
+		<dt>복리후생</dt>
+		<dd>주5일 근무, 경조사지원, 4대보험, <br>자기계발비지원, 해외연수지원</dd>
+	</dl>
+	<dl class="i3">
+		<dt>채용절차</dt>
+		<dd>채용공고 → 실무면접 → 임원면접 → 최종합격</dd>
+	</dl>
+	<dl class="i4">
+		<dt>지원방법</dt>
+		<dd>이메일(unpl@unpl.co.kr) 및 온라인 채용사이트</dd>
+	</dl>
+</div>
+<h2 class="bu1">모집분야</h2>
+<div class="c300016">
+	<dl class="i1">
+		<dt>PM (사업관리 및 전략수립)</dt>
+		<dd>
+			공공 및 금융 PM / PL 유경험자 / 정보시스템 <br>
+			표준 및 품질관리 이해 PMP, 감리사, 기술사 등 <br>
+			관련 자격증 소지자 우대
+		</dd>
+	</dl>
+	<dl class="i2">
+		<dt>기획 (웹 및 UI/UX 기획)</dt>
+		<dd>
+			공공 및 금융, 웹에이전시 웹기획 경력자 우대 <br>
+			HTML, XML, Webservice, Database 등에 <br>
+			대한 기술이해
+		</dd>
+	</dl>
+	<dl class="i3">
+		<dt>시스템 개발 (SI/SM 개발 및 솔루션)</dt>
+		<dd>
+			응용시스템 개발 및 시스템 구축/운영 유경험자/Java, JSP, <br>
+			오픈소스 프레임워크 유경험자, 전자정부표준프레임워크 <br>
+			(eGovframework) 유경험자/관련 자격증 소지자 우대
+		</dd>
+	</dl>
+	<dl class="i4">
+		<dt>UI/UX 디자인 (웹디자인, 퍼블리싱)</dt>
+		<dd>
+			메인 급 / 디렉터급 디자이너 / 웹&모바일 디자인, <br>
+			UX·UI디자인, 브랜드 디자인, 공공 및 금융, 웹에이전시 <br>
+			디자인 경력자 우대 웹접근성 및 표준 퍼블리싱 <br>
+			유경험자 / CSS설계, HTML, Javascript 하드코딩
+		</dd>
+	</dl>
+</div>
+<p class="infor">유앤피플에서는 이용자 개인정보 보호를 위해 최선을 다하고 있습니다.</p>
+<ul class="olnum">
+	<li><a href="#mark1">1. 개인정보의 처리목적</a></li>
+	<li><a href="#mark2">2. 개인정보의 처리 및 보유기간</a></li>
+	<li><a href="#mark3">3. 개인정보 수집항목</a></li>
+	<li><a href="#mark4">4. 개인정보 제3자 제공에 관한 사항</a></li>
+	<li><a href="#mark5">5. 개인정보처리 위탁에 관한 사항</a></li>
+	<li><a href="#mark6">6. 정보주체의 권리,의무 및 그 행사방법</a></li>
+	<li><a href="#mark7">7. 개인정보의 파기절차 및 방법</a></li>
+	<li><a href="#mark8">8. 개인정보의 안정성 확보조치</a></li>
+	<li><a href="#mark9">9. 개인정보의 처리방침의 변경</a></li>
+	<li><a href="#mark10">10. 권익침해 구제방법</a></li>
+	<li><a href="#mark11">11. 개인정보보호 책임자 및 담당자 연락처</a></li>
+	<li><a href="#mark12">12. 개인정보 처리방침 변경</a></li>
+</ul>
+<div class="clear"></div>
+<div class="privatetxt">
+
+	<h2 id="mark1">제1조. 개인정보의 처리목적</h2>
+	<ol>
+		<li>본 홈페이지는 게시글 등록 목적으로 필요에 의한 최소한으로 개인정보를 수집하고 있습니다.</li>
+		<li>이에 유앤피플은 아래 내용과 같이 개인정보를 수집 &#8226; 이용하고자 합니다. 처리한 개인정보는 다음의 목적 이외의 용도로는 사용되지 않으며 이용 목적이 변경될 시에는 사전 동의를 구할 예정입니다.</li>
+	</ol>
+
+	<h2 id="mark2">제2조. 개인정보의 처리 및 보유기간</h2>
+	<ol>
+		<li>본 홈페이지는 이용자의 개인정보는 원칙적으로 개인정보의 처리목적이 달성되거나 해당 서비스가 폐지되는 경우, 해당 개인정보를 지체 없이 파기하는 것을 원칙으로 합니다.</li>
+		<li>개인정보 보유기간은 정보주체가 홈페이지에서 회원 가입 및 아이핀 인증을 통해 제공되는 서비스가 폐지 될 때 까지이며 서비스 폐지 시 개인정보는 제7조. 개인정보의 파기 절차 및 방법에 따라 안전하게 폐기될 예정입니다.</li>
+		<li>단, 회원의 경우 1년(12개월) 동안 로그인 접속기록이 없는 경우 휴먼계정으로 처리하고, 1년(12개월)이 되는 시점에서 아이디와 비밀번호를 제외한 일체의 개인정보를 삭제합니다. 이 때 휴면계정으로 처리된 출원인의 경우 로그인 접속 시 아이디와 비밀번호를 통한 로그인은 가능하며, 비밀번호를 잊어 버렸을 경우 담당자에게 문의하여 임시비밀번호를 재발급 받을 수 있습니다.</li>
+	</ol>
+
+	<h2 id="mark3">제3조. 개인정보 수집항목</h2>
+	<ol>
+		<li>본 홈페이지는 회원의 기본적 인권 침해의 우려가 있는 민감한 개인정보(인종 및 민족, 사상 및 신조, 출신지 및 본적지, 정치적 성향 및 범죄기록, 건강상태 및 성생활 등)는 수집하지 않습니다.</li>
+		<li>홈페이지는 이용자의 정보를 저장하고 수시로 불러오는 '쿠키(cookie)'사용을 통한 개인정보 자동수집을 제공하지 않습니다.</li>
+		<li class="bu-dot"><strong>수집항목</strong> : 아이디, 이름, 성별, 비밀번호, 전화번호, 이메일주소, D.I 정보</li>
+	</ol>
+
+
+	<h2 id="mark4">제4조. 개인정보 제3자 제공에 관한 사항</h2>
+	<ol>
+		<li>본 홈페이지는 원칙적으로 정보주체의 개인정보를 수집, 이용 목적으로 명시한 범위 내에서 처리하며, 다음의 경우를 제외하고는 정보주체의 사전 동의 없이는 본래의 목적 범위를 초과하여 처리하거나 제3자에게 제공하지 않습니다.
+			<ol>
+				<li>가. 정보주체로부터 별도의 동의를 받는 경우</li>
+				<li>나. 법률에 특별한 규정이 있거나 법령상 의무를 준수하기 위하여 불가피한 경우</li>
+				<li>다. 정보주체가 의사표시를 할 수 없는 상태에 있거나 주소불명 등으로 사전동의를 받을 수 없는 경우로서 명백히 정보주체 또는 제3자의 급박한 생명, 신체, 재산의 이익을 위하여 필요하다고 인정되는 경우</li>
+				<li>라. 통계작성 및 학술연구 등의 목적을 위하여 필요한 경우로서 특정 개인을 알아 볼 수 없는 형태로 개인정보를 제공하는 경우</li>
+				<li>마. 동의를 거부할 권리가 있다는 사실 및 동의 거부에 따른 불이익이 있는 경우에는 그 불이익의 내용</li>
+			</ol>
+		</li>
+	</ol>
+
+	<h2 id="mark5">제5조. 개인정보처리 위탁에 관한 사항</h2>
+	<ol>
+		<li>본 홈페이지는 이용자의 동의 없이 해당 개인정보를 타인에게 위탁하지 않습니다.</li>
+		<li>보유 및 이용기간
+			<p>- 서비스 가입일 ~ 해지일</p>
+		</li>
+		<li>동의거부 권리알림
+			<p>- 누구나 동의거부 의사를 표시할 수 있으며 동의 거부시 회원으로써의 기본활동을 위한 정보부족으로 회원가입을 할 수 없으며, 이에따라 홈페이지를 통한 회원 로그인, 회원용 서비스 이용은 제한이 됩니다.</p>
+		</li>
+	</ol>
+
+	<h2 id="mark6">제6조. 정보주체의 권리, 의무 및 그 행사방법</h2>
+	<ol>
+		<li>정보주체는 언제든지 다음 각 호의 개인정보 보호 관련 권리를 행사할 수 있습니다.
+			<ul class="list4">
+				<li>개인정보 열람요구</li>
+				<li>오류 등이 있을 경우 정정요구</li>
+				<li>처리정지 요구</li>
+			</ul>
+		</li>
+		<li>제1항에 따른 권리 행사는 개인정보보호법 시행규칙 별지 제8호 서식에 따라 작성 후 서면, 전자우편, 모사전송(FAX) 등을 통하여 하실 수 있으며, 기관은 이에 대해 지체 없이 조치하겠습니다.</li>
+		<li>정보주체가 개인정보의 오류 등에 대한 정정을 요구한 경우에는 정정이 완료할 때까지 당해 개인정보를 이용하거나 제공하지 않습니다.</li>
+		<li>출원인의 개인정보 열람 및 처리정지 요구는 개인정보보호법 제35조 제5항, 제37조 제2항에 의하여 정보주체의 권리가 제한 될 수 있습니다.</li>
+		<li>출원인의 경우 정보주체 권리에 따라 개인정보에 대한 열람 및 정정 필요 시 아이핀 인증을 통해 "신품종 연구성과 > 내 정보수정" 화면에서 직접 열람 및 정정이 가능합니다.</li>
+		<li>"BRIS"  홈페이지에서는 만 14세 미만의 아동의 경우 회원가입을 받지 않습니다.</li>
+	</ol>
+
+	<h2 id="mark7">제7조. 개인정보의 파기 절차 및 방법</h2>
+	<p>BRIS 홈페이지는 원칙적으로 개인정보 처리목적이 달성된 개인정보는 지체 없이 파기합니다. 다만, 다른 법령에 따라 보존하여야 하는 경우에는 그러하지 않을 수 있습니다. <br />
+	파기의 절차, 기한 및 방법은 다음과 같습니다.</p>
+	<ol class="list">
+		<li><strong>파기절차</strong>
+			<p>불필요한 개인정보 및 개인정보파일은 개인정보책임자의 책임 하에 내부방침 절차에 따라 다음과 같이 처리하고 있습니다.</p>
+			<ul>
+				<li>개인정보의 파기<br />
+					보유기간이 경과한 개인정보는 종료일로부터 지체 없이 파기합니다.
+				</li>
+				<li>개인정보파일의 파기<br />
+					개인정보파일의 처리 목적 달성, 해당 서비스의 폐지, 사업의 종료 등 그 개인정보파일이 불필요하게 되었을 때에는 개인정보의 처리가 불필요한 것으로 인정되는 날로부터 지체없이 그 개인정보파일을 파기합니다.
+				</li>
+			</ul>
+		</li>
+		<li><strong>파기방법</strong><br />
+			<ul>
+				<li>전자적 형태의 정보는 기록을 재생할 수 없는 기술적 방법을 사용합니다.</li>
+				<li>종이에 출력된 개인정보는 파쇄기로 파쇄하거나 소각을 통하여 파기합니다.</li>
+			</ul>
+		</li>
+	</ol>
+
+	<h2 id="mark8">제8조. 개인정보의 안정성 확보조치</h2>
+	<p>개인정보의 안전성 확보를 위해 기관은 다음과 같은 조치를 취하고 있습니다.</p>
+	<ol class="list">
+		<li>개인정보 취급직원의 최소화 및 교육<br />
+		개인정보를 취급하는 직원은 반드시 필요한 인원에 한하여 지정,관리하고 있으며 취급직원을 대상으로 안전한 관리를 위한 교육을 실시하고 있습니다.</li>
+		<li>개인정보에 대한 접근제한<br />
+		개인정보를 처리하는 개인정보처리시스템에 대한 접근 권한의 부여,변경,말소를 통하여 개인정보에 대한 접근통제를 위한 필요한 조치를 하고 있으며 침입차단시스템을 이용하여 외부로부터의 무단 접근을 통제하고 있습니다.</li>
+		<li>접속기록의 보관<br />
+		개인정보처리시스템에 접속한 기록을 최소 6개월 이상 보관, 관리하고 있습니다. </li>
+		<li>개인정보의 암호화<br />
+		개인정보는 암호화 등을 통해 안전하게 저장 및 관리되고 있습니다. 또한 중요한 데이터는 저장 및 전송 시 암호화하여 사용하는 등의 별도 보안기능을 사용하고 있습니다.</li>
+		<li>보안프로그램 설치 및 주기적 점검, 갱신<br />
+		해킹이나 컴퓨터 바이러스 등에 의한 개인정보 유출 및 훼손을 막기 위하여 보안프로그램을 설치하고 주기적으로 갱신, 점검하고 있습니다.</li>
+		<li>비인가자에 대한 출입 통제 <br />
+		개인정보를 보관하고 있는 개인정보처리시스템의 물리적 보관장소를 별도로 두고 이에 대해 출입통제 절차를 수립, 운영하고 있습니다.</li>
+	</ol>
+
+	<h2 id="mark9">제9조. 개인정보 처리방침의 변경</h2>
+	<p>개인정보 처리방침은 시행일로부터 적용되며, 법령 및 방침에 따른 변경내용은 추가, 삭제 및 정정이 있는 경우에는 변경사항 시행 7일 전부터 공지사항을 통하여 고지할 계획입니다.</p>
+
+	<h2 id="mark10">제10조. 권익침해 구제방법</h2>
+	<div>
+		<p>개인정보 주체는 개인정보침해로 인한 구제를 받기 위하여 개인정보분쟁조정위원회, 한국인터넷진흥원 개인정보침해신고센터 등에 분쟁해결이나 상담 등을 신청할 수 있습니다.</p>
+		<ol>
+			<li>- 개인정보 침해신고센터 : (국번없이)118 <a href="www.kopico.or.kr" target="_blank"  title="개인정보 침해신고센터 홈페이지 바로가기(새창열림)">(www.kopico.or.kr <span class="newwin"></span></a>)</li>
+			<li>- 정보보호마크인증위원회 : 02-550-9531~2 (<a href="http://eprivacy.or.kr" target="_blank"  title="정보보호마크인증위원회 홈페이지 바로가기(새창열림)">http://eprivacy.or.kr <span class="newwin"></span></a>)</li>
+			<li>- 대검찰청 사이버범죄수사단 : 02-3480-3571 (<a href="http://www.spo.go.kr" target="_blank"  title="대검찰청 사이버범죄수사단 홈페이지 바로가기(새창열림)">http://www.spo.go.kr <span class="newwin"></span></a>/)</li>
+			<li>- 경찰청 사이버테러대응센터 : 1566-0112(<a href="http://www.netan.go.kr" target="_blank"  title="경찰청 사이버테러대응센터 홈페이지 바로가기(새창열림)">http://www.netan.go.kr <span class="newwin"></span></a>)</li>
+		</ol>
+		<p>「개인정보보호법」제35조(개인정보의 열람), 제36조(개인정보의 정정·삭제), 제37조(개인정보의 처리정지 등)의 규정에 의한 요구에 대하여 공공기관의 장이 행한 처분 또는 부작위로 인하여 권리 또는 이익의 침해를 받은 자는 행정심판법이 정하는 바에 따라 행정심판을 청구할 수 있습니다.</p>
+	</div>
+
+
+	<h2 id="mark11">제11조. 개인정보보호 책임자 및 담당자 연락처</h2>
+	<div>
+		<p>농림수산식품교육문화정보원은 개인정보를 보호하고 개인정보와 관련된 사항을 처리하기 위하여 아래와 같이 개인정보 보호책임자 및 실무담당자를 지정하고 있습니다.</p>
+		<ul>
+			<li>
+				<dl>
+					<dt>가. 개인정보 보호책임자 : </dt>
+					<dd>- 성명 : 이경훈</dd>
+					<dd>- 소속 및 직위 : 전산팀 팀장</dd>
+					<dd>- 전화번호 : 02-855-7471</dd>
+				</dl>
+			</li>
+			<li>
+				<dl>
+					<dt>나. 개인정보 보호담당자 : </dt>
+					<dd>- 성명 : 김준모</dd>
+					<dd>- 소속 및 직위 : 전산팀 차장 </dd>
+					<dd>- 전화번호 : : 02-855-7471</dd>
+				</dl>
+			</li>
+		</ul>
+	</div>
+
+	<h2 id="mark12">제12조. 개인정보 처리방침 변경</h2>
+	<p> 이 개인정보처리방침은 2017. 2. 28 목요일 부터 적용됩니다.</p>
+</div>
+<p class="infor">회원탈퇴를 하시기전에 다음 내용을 꼭 확인해주시기 바랍니다.</p>
+<ul class="plist">
+	<li>회원탈퇴 시 회원정보는 즉시 삭제됩니다.</li>
+	<li>탈퇴 시 현재 아이디로는 재가입을 하실 수 없습니다.</li>
+	<li>탈퇴하셔도 회원님께서 작성하신 게시글 / 문의 / 신청 글은 삭제되지 않습니다.</li>
+</ul>
+
+
+
+
+<form action="">
+	<div class="ptbox secede">
+		<p>회원탈퇴</p>
+		
+		<label>
+			<span class="title">아이디</span>
+			<span>idasdf</span>
+		</label>
+		<label>
+			<span class="title">비밀번호</span>
+			<input type="password" name="" id="" title="비밀번호">
+			<input type="submit" value="회원탈퇴" class="b-lg ">
+			<a href="" class="b-lg">취소</a>
+		</label>
+
+	</div>
+</form>
+	<style>
+body{padding:50px;}
+.join1{margin: 30px 0 50px 17px}
+.join1 .btn{}
+.join1 .btn ul{overflow:hidden;}
+.join1 .btn ul li{position: relative;float:left;width: 163px;padding: 0 11px 0 10px;background: url(/portal/images/join/0100_vline.gif) repeat-y right 0;}
+.join1 .btn ul li a{display:block;padding: 116px 0 0 0;background: url(/portal/images/join/0100_btn1.gif) no-repeat 0 0;text-align: center;cursor: pointer;zoom:1; }
+.join1 .btn ul li a.ico_2{background-image: url(/portal/images/join/0100_btn2.gif);}
+.join1 .btn ul li a.ico_3{background-image: url(/portal/images/join/0100_btn3.gif);}
+.join1 .btn ul li a.ico_4{background-image: url(/portal/images/join/0100_btn4.gif);}
+
+.join1 .btn ul li a .ico_chk{display: none; width: 36px;height: 28px;position: absolute;left:10px;top:0;background:#0089cc url(/portal/images/join/0100_chk.png) no-repeat 0 0;}
+.join1 .btn ul li a .txt{display:block;margin-bottom: 18px;font-size: 11px;}
+.join1 .btn ul li a .t{display:block;font-weight: bold;color: #0089cc;zoom:1; }
+.join1 .btn ul li a:focus .ico_chk,
+.join1 .btn ul li a:hover .ico_chk{display:block;}
+.join1 .btn ul li a:hover.ico_1{}
+.join1 .btn ul li a.ico_2 .ico_chk{background-color: #419f02;}
+.join1 .btn ul li a.ico_3 .ico_chk{background-color: #f56e00;}
+.join1 .btn ul li a.ico_4 .ico_chk{background-color: #505050;}
+.join1 .btn ul li a.ico_1 .t{}
+.join1 .btn ul li a.ico_2 .t{color: #4b9719;}
+.join1 .btn ul li a.ico_3 .t{color: #cc5802;}
+.join1 .btn ul li a.ico_4 .t{color: #474747;padding: 9px 0 27px;}
+.join1 .btn ul li a.ico_1 .t{}
+.join1 .btn ul li a.ico_2 .t{}
+.join1 .btn ul li a.ico_3 .t{}
+.join1 .btn ul li a.ico_4 .t{}
+.join1 .btn ul li.last{background-image:none;padding-right: 0px;}
+.join-box{}
+.join-box dt{margin-bottom: 12px;}
+.join-box li{margin: 4px 0;}
+
+.join2{}
+.join2 ol{overflow:hidden;}
+.join2 ol li{position: relative;float:left;width: 159px;padding-right: 35px;background: url(/portal/images/join/0101_arr.gif) no-repeat right 76px;text-align: center;}
+.join2 ol li .set{height: 152px;background: url(/portal/images/join/0101_stepbg.gif) no-repeat 0 0;}
+.join2 ol li .chk{width: 36px;height: 28px;position: absolute;left:65px;top:0;background: url(/portal/images/join/0101_chk.gif) no-repeat 0 0;}
+.join2 ol li .t{display:block;padding: 87px 0 5px 0;font-weight: bold;font-size: 14px;}
+.join2 ol li .txt{font-size: 11px;color: #5d5d5d;}
+.join2 ol li.i1 .t{background: url(/portal/images/join/0101_ico_1.gif) no-repeat center 35px;}
+.join2 ol li.i2 .t{background: url(/portal/images/join/0101_ico_2.gif) no-repeat center 35px;}
+.join2 ol li.i3 .t{background: url(/portal/images/join/0101_ico_3.gif) no-repeat center 35px;}
+.join2 ol li.i4 .t{background: url(/portal/images/join/0101_ico_4.gif) no-repeat center 35px;}
+.join2 ol li.i1 .t{}
+.join2 ol li.i2 .t{}
+.join2 ol li.i3 .t{}
+.join2 ol li.i4 .t{}
+.join2 ol li.current .set{background: url(/portal/images/join/0101_stepbg-on.gif) no-repeat 0 0;}
+.join2 ol li.current .t{color: #2574b6;text-decoration:underline;}
+.join2 ol li.last{padding-right: 0;background-image:none;}
+.agg-set{margin: 0 0 10px;padding: 9px 12px;border:1px solid #e1e1e1;background-color: #fcfcfc;}
+.agg-set .set{height: 242px;overflow: scroll;overflow-x:hidden ;padding-left: 12px;}
+.agg-set .set h3{margin: 0 0 14px -12px;font-size: 14px;color: #2574b6;}
+.agg-set .set h4{}
+
+.w30{width: 30px;}
+.w20{width: 20px;}
+.w50{width: 50px;}
+.join3 .form_set{}
+.join3 .form_set .tac{margin-bottom: 10px;}
+.join3 .form_set dl{float:none;width:auto;border-top: 2px solid #0089cc;border-bottom: 1px solid #0089cc;overflow:hidden;line-height: 34px;margin-bottom: 20px;}
+.join3 .form_set dl dt{border:none;float:left;width: 125px;border-right: 1px solid #d4d4d4;border-bottom: 1px solid #d4d4d4;height: 34px;}
+.join3 .form_set dl dd{border:none;float:left;width: 197px;padding: 0 0 0 11px;height: auto;border-bottom: 1px solid #d4d4d4;height: 34px;}
+.join3 .form_set dl dt label{padding-left: 23px;background: url(/portal/images/common/list_style4_bu.gif) no-repeat 11px 8px;}
+.join3{overflow:hidden;}
+.join3 dl{float:left;width: 367px;}
+.join3 dl dt{border:1px solid #91b5c6;background-color: #deebf1;border-bottom: 0;}
+.join3 dl dt .l,
+.join3 dl dt a{display:block;overflow:hidden;padding: 14px 12px 12px 9px;}
+.join3 dl dt a{cursor: pointer;}
+.join3 dl dt .bu{padding-left: 17px;background: url(/portal/images/join/0102_bu.gif) no-repeat 0 center;}
+.join3 dl dt a .fl{padding-left: 17px;background: url(/portal/images/join/0102_bu.gif) no-repeat 0 center;}
+.join3 dl dt a .fr{}
+.join3 dl dd{padding: 38px 15px 0;height:240px;border:1px solid #d7d7d7;}
+.join3 dl dd .i{padding-bottom: 30px;text-align: center;}
+.join3 dl dd img{}
+.join3 dl.r dt{border-left: 0;}
+.join3 dl.r dd{border-left: 0;}
+
+.join3_compay dl dd{height: 355px;}
+
+.join_step3_infor{border-top: 3px solid #0089cc;border-bottom: 1px solid #0089cc;}
+.join_step3_infor dl{overflow:hidden;background-color: #f8f8f8;}
+.join_step3_infor dl dt,
+.join_step3_infor dl dd{padding: 5px 0 5px 10px;line-height: 25px;}
+.join_step3_infor dl dt{margin-top: -1px;padding-left: 0px;float:left;clear: both;width: 177px;border-top: 1px solid #d4d4d4;}
+.join_step3_infor dl dt .l,
+.join_step3_infor dl dt label{margin-left: 10px;}
+.join_step3_infor dl dd{float:left;width: 562px;margin-top: -1px;border-top: 1px solid #d4d4d4;border-left: 1px solid #d4d4d4;background-color: #fff;}
+.join_step3_infor a{vertical-align: middle;}
+.join_step3_infor .fs{font-size: 11px;color: #5d5d5d;}
+.join_step3_infor .pass_val{width: 300px;}
+.ico_rq{background: url(/portal/images/join/ico_rq.gif) no-repeat 0 center;text-indent: -999em;width: 13px;height: 22px;display:inline-block;vertical-align: middle;text-align: left;}
+.ico_point{background: url(/portal/images/common/list_style4_spot.gif) no-repeat 0 center;text-indent: -999em;width: 10px;height: 22px;display:inline-block;vertical-align: middle;text-align: left;}
+
+.join4{}
+.join4 .t{margin: 50px 0 30px;text-align: center;}
+.join4 .coninforbox{padding: 15px 18px;margin-bottom: 20px;}
+.join4 .coninforbox .fl{}
+.join4 .coninforbox .fr{width: 260px;height: 31px;background: url(/portal/images/join/0104_box.gif) no-repeat 0 0;}
+.join4 .coninforbox .fr dl{overflow:hidden;padding: 7px 14px;font-weight: bold;font-size: 14px;}
+.join4 .coninforbox .fr dl dt{float:left;padding: 0 12px 0 15px;background: url(/portal/images/common/listType_bu1.gif) no-repeat 0 center;}
+.join4 .coninforbox .fr dl dd{color: #e73100;}
+.join4 .tac{margin: 65px 0 0 0;}
+.blueblock_txt{background-color: #2574b6;font-weight: bold;color: #fff;padding: 4px 2px;}
+
+	</style>
+	
+
+<p>홈페이지의 회원가입을 환영합니다</p>
+<h2 class="bu_t1">회원가입 방식을 선택하여 주십시오.</h2>
+<p class="m1">회원구분에 따라 가입절차에 차이가 있습니다. <strong class="col_blue line">반드시 본인에 해당하는 경우</strong>를 선택하여 주시기 바랍니다.</p>
+<div class="join1">
+	<div class="btn">
+		<ul>
+			<li>
+				<a href="" class="ico_1">
+					<span class="ico_chk"></span>
+					<span class="t">일반회원</span>
+					<span class="txt">( 14세 이상 내국인 )</span>
+					가입하기
+				</a>
+			</li>
+			<li>
+				<a href="" class="ico_2">
+					<span class="ico_chk"></span>
+					<span class="t">어린이회원</span>
+					<span class="txt">( 14세 미만 내국인 )</span>
+					가입하기
+				</a>
+			</li>
+			<li>
+				<a href="" class="ico_3">
+					<span class="ico_chk"></span>
+					<span class="t">외국인회원</span>
+					<span class="txt">( 14세 이상 내국인 )</span>
+					가입하기
+				</a>
+			</li>
+			<li class="last">
+				<a href="" class="ico_4">
+					<span class="ico_chk"></span>
+					<span class="t">기업회원</span>
+					가입하기
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="box join-box">
+	<dl class="boxtxt">
+		<dt><span class="ico_spot2">※</span>꼭 읽어보세요!</dt>
+		<dd>
+<ul class="list_chk">
+	<li><em>어린이회원</em>은 부모의 가입동의절차를 거쳐야 합니다.</li>
+	<li>○○○에서는 ○○○홈페이지의 서비스를 이용함에 있어 온라인상에서 ○○○에 제공한 개인정보가 보호 받을 수 있도록 최선을 다하고 있습니다.</li>
+	<li>귀하의 개인정보는 사전동의 없이 공개되지 않으며, <em>개인정보보호정책</em>에 의해 보호받고 있습니다.</li>
+	<li>입력하신 주민번호는 본인 실명확인 목적으로만 사용되며 저희 ○○○에서는 <em>주민번호 정보를 가지고 있지 않습니다.</em></li>
+	<li>단, 민원게시판 등 본인확인 여부가 필요한 경우를 대비하여 <em>암호화 된 코드의 정보</em>만을 가지고 있습니다.</li>
+</ul>
+		</dd>
+	</dl>
+</div>
+
+<hr>
+
+<div class="join2">
+	<ol >
+		<li class="i1 ">
+			<div class="set">
+			<span class="t">약관동의</span>
+			<span class="txt">회원가입을 위해서 아래<br/>약관에 동의해 주세요.</span>
+			</div>
+		</li>
+		<li class="i2">
+			<div class="set">
+			<span class="t">본인확인</span>
+			<span class="txt">본인확인을 위한 개인정보는<br/>따로 저장되지 않습니다.</span>
+			</div>
+		</li>
+		<li class="i3 current">
+		<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<span class="t">정보입력</span>
+			<span class="txt">회원가입을 위해서 아래<br/>정보를 입력 해 주세요.</span>
+			</div>
+		</li>
+		<li class="i4 last">
+		<div class="set">
+			<span class="t">가입완료</span>
+			<span class="txt">회원가입이 정상적으로<br/>이루어졌습니다.</span>
+		</div>
+		</li>
+	</ol>
+</div>
+<p class="mt15">
+	○○○ 홈페이지는 회원의 개인정보보호문제를 신중하게 취급합니다. <br />
+	가입하신 정보는 회원님의 동의 없이 공개되지 않으며, 개인정보보호정책에 의해 보호를 받습니다.
+</p>
+<h2 class="bu_t1">아이디(ID) 정보</h2>
+<p class="table_top_right_deco"><span class="req"><span>필수입력</span></span>표시는 필수적으로 입력하셔야 합니다.</p>
+<div class="join_step3_infor">
+	<dl >
+		<dt><label for="id"><span class="req"><span>필수입력</span></span> 아이디</label></dt>
+		<dd>
+			<input type="text" id="id" name="" value="" />
+			<a href="#" class="b-ok btn-sm"><span>중복확인</span></a>
+			<span class="fs"><span class="ico_point">!</span>8자~14자 이하 영문 소문자, 숫자 조합</span>
+		</dd>
+		<dt><label for="pass"><span class="req"><span>필수입력</span></span> 비밀번호</label></dt>
+		<dd>
+			<input type="password" id="pass" name="" value="" /> 
+			<span class="fs"><span class="ico_point">!</span> 8자~14자 이하 영문 소문자, 숫자 조합</span>
+		</dd>
+		<dt><label for="pass_re"><span class="req"><span>필수입력</span></span> 비밀번호 확인</label></dt>
+		<dd>
+			<input type="password" id="pass_re" name="" value="" /> 
+			<span class="fs"><span class="ico_point">!</span> 비밀번호를 한번 더 입력하세요</span>
+		</dd>
+		<dt><label for="pass_quest"><span class="req"><span>필수입력</span></span> 비밀번호 변경열쇠 질문</label></dt>
+		<dd>
+			<select id="pass_quest" name="" class="input_select pass_val">
+				<option selected="selected">질문을 선택하세요</option>
+				<option value="">아버지의 고향은 어디인가?</option>
+				<option value="">본인의 핸드폰 번호는?</option>
+				<option value="">어릴적 별명은?</option>
+				<option value="">본인이 태어난 곳은?</option>
+				<option value="">가고 싶은 장소는?</option>
+				<option value="">즐겨부르는 노래는?</option>
+				<option value="">감명깊게 본 영화는?</option>
+				<option value="">좋아하는 색깔은?</option>
+				<option value="">가장 좋아하는 연예인은?</option>
+				<option value="">부모님이 좋아하는 음식은?</option>
+				<option value="">가장 기억에 남는 선생님은?</option>
+				<option value="">좋아하는 애완동물은?</option>
+				<option value="">어머니의 성함은?</option>
+				<option value="">아버지의 성함은?</option>
+				<option value="">자신의 인상깊었던 별명은?</option>
+				<option value="">기억에 남는 추억의 장소는?</option>
+				<option value="">가장 여행하고 싶은 나라는?</option>
+				<option value="">자신의 보물 제1호는?</option>
+				<option value="">배우자의 생년월일은?</option>
+				<option value="">출신초등학교 이름은?</option>
+			</select> &nbsp;
+		</dd>
+		<dt><label for="pass_val"><span class="req"><span>필수입력</span></span>변경열쇠 답 입력</label></dt>
+		<dd><input type="text" id="pass_val" name="" value="" class="pass_val" /> &nbsp;</dd>
+	</dl>
+</div>
+
+<!-- 기업정보 S -->
+<h2 class="bu_t1">기업정보</h2>
+<div class="join_step3_infor">
+<dl>
+	<dt><label for="companyNmae"><span class="req"><span>필수입력</span></span>기업명</label></dt>
+	<dd><input type="text" id="companyNmae" name="" value="" /></dd>
+	<dt><span class="l">대표자 성명</span></dt>
+	<dd>홍길동</dd>
+	<dt><label for="companyCode"><span class="req"><span>필수입력</span></span>사업자 등록번호</label></dt>
+	<dd><input type="text" id="companyCode" name="" value="" /></dd>
+	<dt><label for="companyJob"><span class="req"><span>필수입력</span></span>업종/업태</label></dt>
+	<dd><input type="text" id="companyJob" name="" value="" /></dd>
+	<dt><label for="companyLiaison"><span class="req"><span>필수입력</span></span>담당자 성명</label></dt>
+	<dd><input type="text" id="companyLiaison" name="" value="" /></dd>
+	<dt><label for="companyTel"><span class="req"><span>필수입력</span></span>대표전화</label></dt>
+	<dd>
+		<select id="ntcrTel1" name="ntcrTel1" class="input_select" title="대표전화 지역번호" >
+			<option value="02" selected="selected">02</option>
+			<option value="051">051</option>
+			<option value="053">053</option>
+			<option value="032">032</option>
+			<option value="062">062</option>
+			<option value="042">042</option>
+			<option value="052">052</option>
+			<option value="044">044</option>
+			<option value="031">031</option>
+			<option value="033">033</option>
+			<option value="043">043</option>
+			<option value="041">041</option>
+			<option value="063">063</option>
+			<option value="061">061</option>
+			<option value="054">054</option>
+			<option value="055">055</option>
+			<option value="064">064</option>
+		</select>
+		-
+		<input type="text" id="ntcrTel2" name="ntcrTel2" value="" class="tel" title="대표전화 중간 4자리" >
+		-
+		<input type="text" id="ntcrTel3" name="ntcrTel3" value="" class="tel" title="대표전화 끝 4자리" >
+	</dd>
+	<dt><label for="companyPhone"><span class="req"><span>필수입력</span></span>휴대전화</label></dt>
+	<dd>
+		<select id="companyPhone" name="" class="input_select" title="기업 휴대전화 지역번호" >
+			<option value="02" selected="selected">02</option>
+			<option value="051">051</option>
+			<option value="053">053</option>
+			<option value="032">032</option>
+			<option value="062">062</option>
+			<option value="042">042</option>
+			<option value="052">052</option>
+			<option value="044">044</option>
+			<option value="031">031</option>
+			<option value="033">033</option>
+			<option value="043">043</option>
+			<option value="041">041</option>
+			<option value="063">063</option>
+			<option value="061">061</option>
+			<option value="054">054</option>
+			<option value="055">055</option>
+			<option value="064">064</option>
+		</select>
+		-
+		<input type="text" id="" name="" value="" class="tel" title="기업 휴대전화 중간 4자리" >
+		-
+		<input type="text" id="" name="" value="" class="tel" title="기업 휴대전화 끝 4자리" >
+	</dd>
+	<dt><span class="l"><span class="req"><span>필수입력</span></span>사업장 소재지</span></dt>
+	<dd>
+		<div class="postSet">
+			<span>
+			<input type="text" name="" value="" class="post" title="사업장 우편번호" />
+			<a href="#" class="b-sh" title="새창열림">사업장 주소 찾기</a>
+			</span>
+			<span><input type="text" name="" value="" class="w100p" title="사업장 주소" /></span>
+			<span><input type="text" name="" value="" class="w100p" title="사업장 상세주소" /></span>
+		</div>
+	</dd>
+	<dt><label for="companyEmail"><span class="req"><span>필수입력</span></span>대표 이메일</label></dt>
+	<dd>
+		<input name="ntcrEmail1" id="ntcrEmail1" type="text" title="대표 이메일 아이디" value="" class="emailId" />
+		@
+		<input name="ntcrEmail2" id="ntcrEmail2" type="text" title="대표 이메일 주소" value="" readonly="readonly" class="emailAddr emailDomainForm" />
+		<label for="sr_email_more" class="hidden">대표 이메일 도메인 선택</label>
+		<select id="sr_email_more" name="" class="input_select select_email_js" title="직접입력 선택시 자동활성화&amp;포커스 이동">
+			<option selected>메일주소선택</option>
+			<option value   ="gmail.com">gmail.com</option>
+			<option value   ="naver.com">naver.com</option>
+			<option value   ="hanmail.net">hanmail.net</option>
+			<option value   ="daum.net">daum.net</option>
+			<option value   ="hotmail.com">hotmail.com</option>
+			<option value   ="nate.com">nate.com</option>
+			<option value   ="yahoo.co.kr">yahoo.co.kr</option>
+			<option value   ="emaildomain_false">직접입력</option>
+		</select>
+		<script>
+		jQuery(function(){
+			jQuery('select.select_email_js').change(function() {
+				if (jQuery(this).val()=='emaildomain_false') {
+					jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+					jQuery('.emailDomainForm').attr('readonly',false).focus();
+				}else{
+					jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+					jQuery('.emailDomainForm:text[name=ntcrEmail2]').val(jQuery(this).val());
+					jQuery('.emailDomainForm').attr('readonly',true)
+				}
+			});
+		});
+		</script>
+	</dd>
+	</dl>
+</div>
+<!-- 기업정보 End-->
+
+<hr>
+
+<!-- 개인정보 S -->
+<h2 class="bu_t1">개인정보</h2>
+<div class="join_step3_infor">
+	<dl >
+		<dt ><label for="userName"><span class="req"><span>필수입력</span></span>사용자 이름</label></dt>
+		<dd ><input type="text" id="userName" name="" value="" /></dd>
+		<dt ><label for="ntcrTel1"><span class="req"><span>필수입력</span></span>자택전화</label></dt>
+		<dd >
+				<select id="ntcrTel1" name="ntcrTel1" class="input_select" title="자택전화 지역번호" >
+					<option value="02" selected="selected">02</option>
+					<option value="051">051</option>
+					<option value="053">053</option>
+					<option value="032">032</option>
+					<option value="062">062</option>
+					<option value="042">042</option>
+					<option value="052">052</option>
+					<option value="044">044</option>
+					<option value="031">031</option>
+					<option value="033">033</option>
+					<option value="043">043</option>
+					<option value="041">041</option>
+					<option value="063">063</option>
+					<option value="061">061</option>
+					<option value="054">054</option>
+					<option value="055">055</option>
+					<option value="064">064</option>
+				</select>
+				-
+				<input type="text" id="ntcrTel2" name="ntcrTel2" value="" class="tel" title="자택전화 중간 4자리" >
+				-
+				<input type="text" id="ntcrTel3" name="ntcrTel3" value="" class="tel" title="자택전화 끝 4자리" >
+		</dd>
+		<dt><label for="ntcrMobile1"><span class="req"><span>필수입력</span></span>휴대전화</label></dt>
+		<dd>
+			<select id="ntcrMobile1" name="ntcrMobile1" class="input_select" title="휴대전화 앞 세자리">
+					<option value="010" selected="selected">010</option>
+					<option value="011">011</option>
+					<option value="016">016</option>
+					<option value="017">017</option>
+					<option value="018">018</option>
+					<option value="019">019</option>
+				</select>
+				-
+				<input type="text" id="ntcrMobile2" name="ntcrMobile2" value="" class="tel">
+				<label for="ntcrMobile2" class="hidden">휴대전화 중간 4자리</label>
+				-
+				<input type="text" id="ntcrMobile3" name="ntcrMobile3" value="" class="tel">
+				<label for="ntcrMobile3" class="hidden">휴대전화 끝 4자리</label></td>
+		</dd>
+			<dt><span class="l"><span class="req"><span>필수입력</span></span>주소</span></dt>
+			<dd>
+				<div class="postSet">
+					<span>
+					<input type="text" name="" value="" class="post" title="우편번호" />
+					<a href="#" class="b-sh" title="새창열림">주소 찾기</a>
+					</span>
+					<span><input type="text" name="" value="" class="w100p" title="주소" /></span>
+					<span><input type="text" name="" value="" class="w100p" title="상세주소" /></span>
+				</div>
+			</dd>
+
+		<dt ><label for="email"><span class="req"><span>필수입력</span></span>이메일</label></dt>
+		<dd >
+			<input name="ntcrEmail1" id="ntcrEmail1" type="text" title="이메일 아이디" value="" class="emailId" />
+			@
+			<input name="ntcrEmail2" id="ntcrEmail2" type="text" title="이메일 주소" value="" readonly="readonly" class="emailAddr emailDomainForm" />
+			<label for="sr_email_more" class="hidden">이메일 도메인 선택</label>
+			<select id="sr_email_more" name="" class="input_select select_email_js" title="직접입력 선택시 자동활성화&amp;포커스 이동">
+				<option selected>메일주소선택</option>
+				<option value   ="gmail.com">gmail.com</option>
+				<option value   ="naver.com">naver.com</option>
+				<option value   ="hanmail.net">hanmail.net</option>
+				<option value   ="daum.net">daum.net</option>
+				<option value   ="hotmail.com">hotmail.com</option>
+				<option value   ="nate.com">nate.com</option>
+				<option value   ="yahoo.co.kr">yahoo.co.kr</option>
+				<option value   ="emaildomain_false">직접입력</option>
+			</select>
+			<script>
+			jQuery(function(){
+				jQuery('select.select_email_js').change(function() {
+					if (jQuery(this).val()=='emaildomain_false') {
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+						jQuery('.emailDomainForm').attr('readonly',false).focus();
+					}else{
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val('');
+						jQuery('.emailDomainForm:text[name=ntcrEmail2]').val(jQuery(this).val());
+						jQuery('.emailDomainForm').attr('readonly',true)
+					}
+				});
+			});
+			</script>
+		</dd>
+
+	</dl>
+</div>
+<h2 class="bu_t1">○○○ 알림서비스</h2>
+<div class="join_step3_infor">
+	<dl >
+		<dt ><label for="newsLetter_1"><span class="req"><span>필수입력</span></span>뉴스레터 수신여부</label></dt>
+		<dd >
+			<p> ○○○에서 발간하는 각종 소식을 받아보시겠습니까?</p>
+			<p>
+				<input type="radio" id="newsLetter_1" name="newsLetter" value="" class="input_radio" /> <label for="newsLetter_1">예</label>
+				<input type="radio" id="newsLetter_2" name="newsLetter" value="" class="input_radio" /> <label for="newsLetter_2">아니오</label>
+			</p>
+
+		</dd>
+		<dt><label for="sms_1"><span class="req"><span>필수입력</span></span>SMS수신여부</label></dt>
+		<dd>
+			<p>
+				 ○○○ SMS서비스를 신청하시겠습니까?<br/>
+				 * ○○○ SMS는 개인정보 연락처란에 휴대폰 번호의 등록이 필요하며, 등록된 휴대폰 번호로 서비스 됩니다
+			</p>
+			<p>
+				<input type="radio" id="sms_1" name="sms" value="" class="input_radio" /> <label for="sms_1">예</label>
+				<input type="radio" id="sms_2" name="sms" value="" class="input_radio" /> <label for="sms_2">아니오</label>
+			</p>
+		</dd>
+	</dl>
+</div>
+<div class="tac mt20">
+	<button class="b-ok">가입하기</button>
+	<a href="" class="b-cancel"><span>가입취소</span></a>
+</div>
+
+<hr>
+
+<div class="join2">
+	<ol >
+		<li class="i1 ">
+			<div class="set">
+			<span class="t">약관동의</span>
+			<span class="txt">회원가입을 위해서 아래<br/>약관에 동의해 주세요.</span>
+			</div>
+		</li>
+		<li class="i2 current">
+			<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<span class="t">본인확인</span>
+			<span class="txt">본인확인을 위한 개인정보는<br/>따로 저장되지 않습니다.</span>
+			</div>
+		</li>
+		<li class="i3">
+		<div class="set">
+			<span class="t">정보입력</span>
+			<span class="txt">회원가입을 위해서 아래<br/>정보를 입력 해 주세요.</span>
+			</div>
+		</li>
+		<li class="i4 last">
+		<div class="set">
+			<span class="t">가입완료</span>
+			<span class="txt">회원가입이 정상적으로<br/>이루어졌습니다.</span>
+		</div>
+		</li>
+	</ol>
+</div>
+<!-- 기업회원 -->
+<h2 class="bu_t1">기업회원 본인확인</h2>
+<p class="m1">○○○에서는 보다 많은 사용자들의 원활한 서비스 이용과 온라인 상에서의 익명 사용자로 인한 피해 등을 방지하기 위하여 회원 ID에 실명제를 시행하고 있습니다. 더욱 깨끗한 인터넷 세상을 만들기 위해 노력하겠습니다.</p>
+<br />
+<p class="m1"><span class="ico_spot">!</span>실명인증 또는 공공 I-PIN인증 중 하나를 선택하여 <strong class="col_red line">본인확인</strong>을 해 주시기 바랍니다.</p>
+<div class="join3 join3_compay m1">
+	<dl >
+		<dt >
+			<span class="l"><span class="bu">공공아이핀 인증</span></span>
+		</dt>
+		<dd >
+			
+			<div class="i">
+				<span>아이핀</span>
+			</div>
+				<div class="form_set">
+					<fieldset>
+						<legend>공공아이핀 인증</legend>
+							<dl >
+								<dt ><label for="gName">업체명</label></dt>
+								<dd ><input type="text" id="gName" name="" value="" />&nbsp;</dd>
+								<dt ><label for="companyCode">사업자 등록번호</label></dt>
+								<dd>
+									<input type="text" class="companyCode1" title="사업자등록번호 처음 구분"/> -
+									<input type="text" class="companyCode2" title="사업자등록번호 중간 구분"/> -
+									<input type="text" class="companyCode3" title="사업자등록번호 끝 구분"/>
+									<button type="button" class="b-ok companyCodeChk">중복확인</button>
+								</dd>
+							</dl>
+							<div class="tac">
+							<button type="button" class="b-open">공공아이핀 인증받기</button>
+							</div>
+					</fieldset>
+				</div>
+			<p>공공아이핀(I-PIN)은 인터넷상의 개인식별번호를 의미하며, 대면확인이 어려운 인터넷에서 주민등록번호를 사용하지 않고도 본인임을 확인할 수 있는 수단입니다.</p>
+			
+		</dd>
+	</dl>
+	<dl class="r">
+		<dt ><div class="l"><span class="bu">실명인증</span></div></dt>
+		<dd >
+			<div class="i"> <span>siren24</span> </div>
+			<div class="form_set">
+				<fieldset>
+					<legend>실명인증</legend>
+					<dl >
+						<dt ><label for="gName2">업체명</label></dt>
+						<dd ><input type="text" id="gName2" name="" value="" title="실명인증 업체명" />&nbsp;</dd>
+						<dt ><label for="companyCode2">사업자 등록번호</label></dt>
+						<dd>
+							<input type="text" class="companyCode1" title="사업자등록번호 처음 구분"/> -
+							<input type="text" class="companyCode2" title="사업자등록번호 중간 구분"/> -
+							<input type="text" class="companyCode3" title="사업자등록번호 끝 구분"/>
+							<button type="button" class="b-ok companyCodeChk">중복확인</button>
+						</dd>
+						<dt ><label for="gName2">대표자 성명</label></dt>
+						<dd ><input type="text" id="gName2" name="" value="" />&nbsp;</dd>
+					</dl>
+					<div class="tac">
+						<button type="button" class="b-open">실명인증 인증받기</button>
+					</div>
+				</fieldset>
+			</div>
+			<p>
+				사용자의 원활한 서비스이용과 온라인 상의 익명 사용자로 인한 피해를 방지하기 위하여 실명확인 절차가 필요하오니 고객님의 성명과 주민번호를 입력해 주시기 바랍니다.<br />
+				입력하신 주민등록번호는 저장되지 않고 실명확인절차를 위해서만 이용됩니다.
+			</p>
+		</dd>
+	</dl>
+</div>
+<!-- 일반회원 -->
+<h2 class="bu_t1">일반회원(14세 이상) 본인확인</h2>
+<p class="m1">○○○에서는 보다 많은 사용자들의 원활한 서비스 이용과 온라인 상에서의 익명 사용자로 인한 피해 등을 방지하기 위하여 회원 ID에 실명제를 시행하고 있습니다. 더욱 깨끗한 인터넷 세상을 만들기 위해 노력하겠습니다.</p>
+<br />
+<p class="m1"><span class="ico_spot">!</span>실명인증 또는 공공 I-PIN인증 중 하나를 선택하여 <strong class="col_red line">본인확인</strong>을 해 주시기 바랍니다.</p>
+<div class="join3 m1">
+	<dl >
+		<dt >
+			<a href="#" target="_blank" title="새창열림" >
+				<span class="fl">공공아이핀 인증</span>
+				<span class="fr">인증받기</span>
+			</a>
+		</dt>
+		<dd >
+		<div class="i">
+			<span>아이핀</span>
+		</div>
+		공공아이핀(I-PIN)은 인터넷상의 개인식별번호를 의미하며, 대면확인이 어려운 인터넷에서 주민등록번호를 사용하지 않고도 본인임을 확인할 수 있는 수단입니다.</dd>
+	</dl>
+	<dl class="r">
+		<dt >
+			<a href="#" target="_blank" title="새창열림" >
+				<span class="fl">실명인증</span>
+				<span class="fr">인증받기</span>
+			</a>
+		</dt>
+		<dd >
+			<div class="i">
+				siren24
+			</div>
+			<p>
+				사용자의 원활한 서비스이용과 온라인 상의 익명 사용자로 인한 피해를 방지하기 위하여 실명확인 절차가 필요하오니 고객님의 성명과 주민번호를 입력해 주시기 바랍니다.<br />
+				입력하신 주민등록번호는 저장되지 않고 실명확인절차를 위해서만 이용됩니다.
+			</p>
+		</dd>
+	</dl>
+</div>
+
+<hr>
+
+<div class="join2">
+	<ol >
+		<li class="i1 current">
+			<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<span class="t">약관동의</span>
+			<span class="txt">회원가입을 위해서 아래<br/>약관에 동의해 주세요.</span>
+			</div>
+		</li>
+		<li class="i2">
+			<div class="set">
+			<span class="t">본인확인</span>
+			<span class="txt">본인확인을 위한 개인정보는<br/>따로 저장되지 않습니다.</span>
+			</div>
+		</li>
+		<li class="i3">
+		<div class="set">
+			<span class="t">정보입력</span>
+			<span class="txt">회원가입을 위해서 아래<br/>정보를 입력 해 주세요.</span>
+			</div>
+		</li>
+		<li class="i4 last">
+		<div class="set">
+			<span class="t">가입완료</span>
+			<span class="txt">회원가입이 정상적으로<br/>이루어졌습니다.</span>
+		</div>
+		</li>
+	</ol>
+</div>
+
+<h2 class="bu_t1">○○○ 홈페이지 이용약관</h2>
+<div class="agg-set"><div class="set scroll">약관</div></div>
+<input type="checkbox" id="aggr1" name="" value="" class="input_check mr10" /> <label for="aggr1">이용약관에 동의 합니다. (동의해야만 회원가입 가능)</label>
+
+<h2 class="bu_t1">개인정보 수집∙이용 동의</h2>
+<div class="agg-set"><div class="set scroll">약관</div></div>
+<input type="checkbox" id="aggr2" name="" value="" class="input_check mr10" /> <label for="aggr2">개인정보 수집·이용에 동의합니다. (동의해야만 회원가입 가능)</label>
+
+<h2 class="bu_t1">수집한 개인정보의 제3자 제공 동의</h2>
+<div class="agg-set"><div class="set scroll">
+	약관
+</div></div>
+<input type="checkbox" id="aggr3" name="" value="" class="input_check mr10" /> <label for="aggr3">수집한 개인정보의 제3자 제공에 동의합니다. (동의해야만 회원가입 가능) </label>
+
+<div class="btnSet c">
+	<button class="b-join">회원가입</button>
+	<a href="" class="b-cancel">취소</a>
+</div>
+
+
+
+
+
+
+
+<hr>
+
+
+
+
+
+
+
+
+<div class="join2">
+	<ol >
+		<li class="i1 ">
+			<div class="set">
+			<span class="t">약관동의</span>
+			<span class="txt">회원가입을 위해서 아래<br/>약관에 동의해 주세요.</span>
+			</div>
+		</li>
+		<li class="i2">
+			<div class="set">
+			<span class="t">본인확인</span>
+			<span class="txt">본인확인을 위한 개인정보는<br/>따로 저장되지 않습니다.</span>
+			</div>
+		</li>
+		<li class="i3">
+		<div class="set">
+			<span class="t">정보입력</span>
+			<span class="txt">회원가입을 위해서 아래<br/>정보를 입력 해 주세요.</span>
+			</div>
+		</li>
+		<li class="i4 last current">
+		<div class="set">
+			<span class="chk"><span class="hidden">현재 페이지</span></span>
+			<span class="t">가입완료</span>
+			<span class="txt">회원가입이 정상적으로<br/>이루어졌습니다.</span>
+		</div>
+		</li>
+	</ol>
+</div>
+<div class="join4">
+	<p class="t">○○○ 홈페이지 회원이 되신 것을 환영합니다.</p>
+	<div class="coninforbox clearfix">
+		<div class="fl">
+			반갑습니다.<br />
+			<strong class="blueblock_txt">홍길동</strong> 님께서는 ○○○ 홈페이지에 <strong>정상적</strong>으로 <strong>가입</strong>되셨습니다.
+		</div>
+		<div class="fr">
+			<dl >
+				<dt >회원 ID :</dt>
+				<dd >test</dd>
+			</dl>
+		</div>
+		<span class="lt"></span><span class="rt"></span><span class="lb"></span><span class="rb"></span>
+	</div>
+	<ul class="bu1">
+		<li>○○○은 서비스 향상, 사이트 이용에 불편함이 없도록 최선을 다하겠습니다.</li>
+		<li>저희 ○○○에서는 알림 서비스SMS, 뉴스레터 등 다양한 ○○○ 정보를 제공 받으실 수 있습니다.</li>
+	</ul>
+	<div class="tac">
+		<a href="#" class="b-login">로그인</a>
+		<a href="#" class="b-go">메인화면이동</a>
+	</div>
+</div>
+
+
+<p class="infor">유앤피플의 다양한 서비스를 이용하실 수 있습니다.</p>
+<div class="loginSet">
+	<form name="memberLoginForm" id="memberLoginForm" action="/ucms/member/user/toLogin.do"  method="post" onsubmit="return actionLogin(this);">
+		<span>
+			<label for="userId">아이디</label>
+			<input type="text" id="userId" name="username">
+		</span>
+		<span>
+			<label for="password">비밀번호</label>
+			<input type="password" id="password" name="password" autocomplete="off"  onkeypress="return loginEnter(event);">
+		</span>
+		<input type="submit" value="로그인" />
+	</form>
+</div>
+<div class="row certify">
+	<div class="col-xs-6">
+		<div class="set">
+			<h3>휴대전화인증</h3>
+			<div class="s">
+				<p>
+					휴대전화인증이란 주민등록번호 <br>대체수단으로 회원님의 휴대전화를<br>
+					통해 본인확인을 하는 서비스입니다
+				</p>
+				<a href="#hpBtn" id="hpBtn" class="b-lg">휴대전화인증</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-xs-6 ipin">
+		<div class="set">
+			<h3>아이핀 인증</h3>
+			<div class="s">
+				<p>
+					아이핀(I-PIN)은 인터넷상의 개인식별번호를 의미하며,  <br>
+					대면확인이 어려운 인터넷에서 주민등록번호를 <br> 사용하지 않고도 
+					본인임을 확인할 수 있는 수단입니다
+				</p>
+				<a href="#ipinBtn" id="ipinBtn" class="b-lg">아이핀인증</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="snsLogin">
+	<h3>SNS 본인인증</h3>
+	<ul>
+		<li><a href="#google"	id="google"><span>구글</span></a></li>
+		<li><a href="#facebook"	id="facebook"><span>페이스북</span></a></li>
+		<li><a href="#naver"	id="naver"><span>네이버</span></a></li>
+		<li><a href="#kakao"	id="kakao"><span>카카오록</span></a></li>
+		<li><a href="#twitter"	id="twitter"><span>트위터</span></a></li>
+	</ul>
+</div>
+<div class="certifyInfor">
+	<h3>인증 안내</h3>
+	<ul>
+		<li>휴대전화인증, IPIN 인증과 SNS 인증은 서로 정보가 연동되지 않습니다.<br />
+			(※ 즉 휴대전화인증과 SNS 인증을 하시면 2개의 회원인증을 가지게 됩니다.)</li>
+		<li>휴대전화인증, 아이핀 인증 후에는 아이디, 비밀번호, 개인정보를 입력할 수 있습니다.</li>
+	</ul>
+</div>
+<div class="moreLink">
+	<div>
+		<p>아직 회원가입을 안하셨나요?</p>
+		<div class="r">
+			<a href="/ucms/member/user/joinAgre.do?menuNo=300020">회원가입</a>
+		</div>
+	</div>
+	<div>
+		<p>아이디 혹은 비밀번호를 잊으셨나요?</p>
+		<div class="r">
+			<a href="/ucms/member/user/idPwdSearch.do?menuNo=300021">ID찾기</a>
+			<a href="/ucms/member/user/idPwdSearch.do?menuNo=300021">PW찾기</a>
+		</div>
+	</div>
+</div>
+
+<div class="sh">
+	<select name="" title="검색어 구분">
+		<option value="">전체</option>
+	</select>
+	<input title="검색어" class="keyword" type="text">
+	<input value="검색" class="search" type="submit">
+</div>
+<div class="totalCount"><em>총 <em>70</em>건</em></div>
+<div class="bdList">
+	<table class="table">
+		<caption>000 목록</caption>
+		<thead>
+			<tr>
+				<th scope="col" class="no">번호</th>
+				<th scope="col" class="">제목</th>
+				<th scope="col" class="name">작성자</th>
+				<th scope="col" class="date">등록일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>9</td>
+				<td class="tit">
+					<a href="">
+						참신한 로맨스코미디 장르 스토리를 찾고 있습니다.
+					</a>
+				</td>
+				<td>남궁길동</td>
+				<td>2016-04-30</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<jsp:include page="paging.jsp" flush="true" />
+
+
+
+<div class="view2">
+	<h2 class="subject">참신한  로맨스코미디 장르 스토리를 찾고 있습니다.</h2>
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>등록된 첨부파일이 없습니다.</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+			<ul class="fileList">
+				<li><a href="">파일이름.pdf</a></li>
+			</ul>
+		</dd>
+	</dl>
+</div>
+<div class="dbData">
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd>
+			<a href="">
+			<span>이전글 게시물 제목</span>
+			<span>2016-01-01</span>
+			</a>
+		</dd>
+	</dl>
+	<dl>
+		<dt>아랫글</dt>
+		<dd>
+			<a href="">
+			<span>다음글 게시물 제목</span>
+			<span>2016-01-01</span>
+			</a>
+		</dd>
+	</dl>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+
+
+
+<p class="infor">회원님의 개인정보를 수정할 수 있는 공간입니다.</p>
+<form action="">
+	<div class="ptbox pwCheck">
+		<p>비밀번호를 입력해 주시기 바랍니다.</p>
+		<label>
+			<span class="title">비밀번호</span>
+			<input type="password" name="" id="" title="비밀번호">
+			<input type="submit" value="비밀번호확인" class="b-lg ">
+		</label>
+	</div>
+</form>
+
+<form action="">
+	<div class="sh">
+		<select name="" title="검색어 구분">
+			<option value="">전체</option>
+		</select>
+		<input title="검색어" class="keyword" type="text">
+		<input value="검색" class="search" type="submit">
+	</div>
+</form>
+
+<div class="totalCount"><em>총 <em>70</em>건</em></div>
+<div class="bdList">
+	<table>
+		<caption class="comment">Q&amp;A 목록</caption>
+		<thead>
+			<tr>
+				<th scope="col" class="no">번호</th>
+				<th scope="col" class="title">제목</th>
+				<th scope="col" class="writer">작성자</th>
+				<th scope="col" class="date">작성일</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td class="title">
+					<a href=""> 이벤트 문의 </a>
+				</td>
+				<td> 김민진 </td>
+				<td> 2016-10-06 </td>
+			</tr>
+			<tr class="re">
+				<td>2</td>
+				<td class="title">
+					<a href="" class="re"> <span>[답글]</span> 답변드립니다. </a>
+				</td>
+				<td> 관리자 </td>
+				<td> 2016-10-10 </td>
+			</tr>
+		
+
+			<tr>
+				<td>3</td>
+				<td class="title">
+					<a href=""> 이벤트 문의 </a>
+				</td>
+				<td> 김민진 </td>
+				<td> 2016-10-06 </td>
+			</tr>
+			<tr class="re">
+				<td>4</td>
+				<td class="title">
+					<a href="" class="re"> <span>[답글]</span> 답변드립니다. </a>
+				</td>
+				<td> 관리자 </td>
+				<td> 2016-10-10 </td>
+			</tr>
+		
+			<tr>
+				<td>5</td>
+				<td class="title">
+					<a href=""> 이벤트 문의 </a>
+				</td>
+				<td> 김민진 </td>
+				<td> 2016-10-06 </td>
+			</tr>
+			<tr class="re">
+				<td>6</td>
+				<td class="title">
+					<a href="" class="re"> <span>[답글]</span> 답변드립니다. </a>
+				</td>
+				<td> 관리자 </td>
+				<td> 2016-10-10 </td>
+			</tr>
+		
+			<tr>
+				<td>7</td>
+				<td class="title">
+					<a href=""> 이벤트 문의 </a>
+				</td>
+				<td> 김민진 </td>
+				<td> 2016-10-06 </td>
+			</tr>
+			<tr class="re">
+				<td>8</td>
+				<td class="title">
+					<a href="" class="re"> <span>[답글]</span> 답변드립니다. </a>
+				</td>
+				<td> 관리자 </td>
+				<td> 2016-10-10 </td>
+			</tr>
+		
+			<tr>
+				<td>9</td>
+				<td class="title">
+					<a href=""> 이벤트 문의 </a>
+				</td>
+				<td> 김민진 </td>
+				<td> 2016-10-06 </td>
+			</tr>
+			<tr class="re">
+				<td>10</td>
+				<td class="title">
+					<a href="" class="re"> <span>[답글]</span> 답변드립니다. </a>
+				</td>
+				<td> 관리자 </td>
+				<td> 2016-10-10 </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="btnSet">
+	<a href="" class="b-reg">등록</a>
+</div>
+<jsp:include page="paging.jsp" flush="true" />
+
+
+
+
+<form action="">
+	<div class="reqInfor"><span class="req"><span>필수입력</span></span>은 필수입력 항목입니다</div>
+	<div class="view2">
+		<dl>
+			<dt><label for="title"><span class="req"><span>필수입력</span></span>제목</label></dt>
+			<dd><input id="title" class="w100p" type="text"></dd>
+		</dl>
+		<dl>
+			<dt>첨부파일</dt>
+			<dd>
+				<input name="" title="첨부파일 1" type="file">
+				<input name="" title="첨부파일 2" type="file">
+			</dd>
+		</dl>
+		
+		<dl>
+			<dt><label for="contentArea"><span class="req"><span>필수입력</span></span>내용</label></dt>
+			<dd><textarea name="" id="contentArea" cols="30" rows="10" class="w100p"></textarea></dd>
+		</dl>
+		
+	</div>
+	<div class="btnSet">
+		<input value="저장" type="submit" class="b-save">
+		<a href="" class="b-cancel">취소</a>
+	</div>
+</form>
+
+
+<div class="view2">
+	<h2 class="subject">참신한  로맨스코미디 장르 스토리를 찾고 있습니다.</h2>
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>등록된 첨부파일이 없습니다.</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+			<ul class="fileList">
+				<li><a href="">파일이름.pdf</a></li>
+			</ul>
+		</dd>
+	</dl>
+</div>
+<div class="dbData">
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd>
+			<a href="">
+			<span>이전글 게시물 제목</span>
+			<span>2016-01-01</span>
+			</a>
+		</dd>
+	</dl>
+	<dl>
+		<dt>아랫글</dt>
+		<dd>
+			<a href="">
+			<span>다음글 게시물 제목</span>
+			<span>2016-01-01</span>
+			</a>
+		</dd>
+	</dl>
+</div>
+<div class="btnSet">
+	<button type="button" class="b-edit">수정</button>
+	<button type="button" class="b-del">삭제</button>
+	<a href="" class="b-list">목록</a>
+</div>
+
+
+<h2 class="bu_t1">ID찾기 완료</h2>
+<div class="box">
+	<div class="s">
+		<p class="t">회원님의 아이디 찾기가 완료 되었습니다.</p>
+		<p>로그인 후 홈페이지에서 제공하는 콘텐츠들을 이용하실 수 있습니다</p>
+	</div>
+	<div class="login_list">
+		<dl>
+			<dt>성명</dt>
+			<!--<dd>홍길동</dd>-->
+			<dd><input type="text" /></dd>
+		</dl>
+		<dl>
+			<dt>아이디</dt>
+			<!--<dd><span class="point">abcd</span></dd>-->
+			<dd><input type="text" /></dd>
+		</dl>
+	</div>
+	<div class="clear tac">
+		<a href="" class="b-">로그인하기</a>
+		<a href="" class="b-">비밀번호찾기</a>
+	</div>
+</div>
+		
+<p class="infor">홈페이지 전체 메뉴를 한 눈에 확인하실 수 있습니다.</p>
+<script>
+$(function() {
+	var maxH=0
+	$('.sm>ul>li').each(function(index, el) {
+		maxH=maxH<$(this).height()?$(this).height():maxH
+		console.log($(this).height())
+	}).find('.set').height(maxH);
+});
+</script>
+<div class="sm">
+	<ul>
+		<li>
+			<div class="set">
+				<span class="num">01</span>
+				<span class="title"><a href="/ucms/main/contents.do?menuNo=300002" >회사소개</a></span>
+				<ul>
+						<li><a href="/ucms/main/contents.do?menuNo=300002" >회사소개</a></li>
+						<li><a href="/ucms/main/contents.do?menuNo=300011" >파트너</a></li>
+						<li><a href="/ucms/bbs/B0000002/list.do?menuNo=300004" >워크샵</a></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="set">
+				<span class="num">02</span>
+				<span class="title"><a href="/ucms/main/contents.do?menuNo=300088" >서비스</a></span>
+				<ul>
+						<li><a href="/ucms/main/contents.do?menuNo=300088" >U-CMS v2.0이란?</a></li>
+						<li><a href="/ucms/main/contents.do?menuNo=300014" >비즈니스</a></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="set">
+				<span class="num">03</span>
+				<span class="title"><a href="/ucms/main/contents.do?menuNo=300016" >CAREER</a></span>
+				<ul>
+						<li><a href="/ucms/main/contents.do?menuNo=300016" >채용정보</a></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="set">
+				<span class="num">04</span>
+				<span class="title"><a href="/ucms/bbs/B0000001/list.do?menuNo=300017" >고객센터</a></span>
+				<ul>
+						<li><a href="/ucms/bbs/B0000001/list.do?menuNo=300017" >공지사항</a></li>
+						<li><a href="/ucms/bbs/B0000003/list.do?menuNo=300008" >자료실</a></li>
+						<li><a href="/ucms/bbs/B0000005/list.do?menuNo=300009" >Q&A</a></li>
+						<li><a href="/ucms/bbs/B0000004/list.do?menuNo=300045" >FAQ</a></li>
+						<li><a href="/ucms/bbs/B0000007/list.do?menuNo=300080" >보도자료</a></li>
+						<li><a href="/ucms/bbs/B0000001/list.do?menuNo=300081" >테스트게시판</a></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="set">
+				<span class="num">05</span>
+				<span class="title"><a href="/ucms/member/user/forLogin.do?menuNo=300019" >회원</a></span>
+				<ul>
+						<li><a href="/ucms/member/user/forLogin.do?menuNo=300019" >로그인</a></li>
+						<li><a href="/ucms/member/user/joinAgre.do?menuNo=300020" >회원가입</a></li>
+						<li><a href="/ucms/member/user/idSearch.do?menuNo=300021" >ID찾기</a></li>
+						<li><a href="/ucms/member/user/pwdSearch.do?menuNo=300082" >PW찾기</a></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<div class="set">
+				<span class="num">07</span>
+				<span class="title"><a href="/ucms/main/contents.do?menuNo=300033" >이용안내</a></span>
+				<ul>
+						<li><a href="/ucms/main/contents.do?menuNo=300033" >이용약관</a></li>
+						<li><a href="/ucms/main/contents.do?menuNo=300044" >개인정보 처리방침</a></li>
+						<li><a href="/ucms/singl/siteMap/list.do?menuNo=300023" >사이트맵</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</div>			</div>
+		</main>
+	</div>
+</div>
+<div id="footer">
+	<div class="set">
+		<nav>
+			<a href="">공지사항</a>
+			<a href="">이용약관</a>
+			<a href="">개인정보 처리방침</a>
+			<a href="">사이트맵</a>
+		</nav>
+		<address>
+			[08301] 서울 구로구 가마산로25길 9-9 (구로동) KM타워3층 유앤피플(주) , TEL : 02-855-7471 FAX. : 070-8650-0110 <br>
+			Copyright 2018. UNPEOPLE all rights reserved. 
+		</address>
+		<p class="markset">
+			<img src="/static/ucms/img/mark1.png" alt="소프트웨어 품질인증 1등급">
+			<img src="/static/ucms/img/mark2.png" alt="소프트웨어 접근성 인증">
+		</p>
+	</div>
+</div>
+</body>
+</html>

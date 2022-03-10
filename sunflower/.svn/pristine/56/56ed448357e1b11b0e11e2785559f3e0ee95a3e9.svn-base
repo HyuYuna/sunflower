@@ -1,0 +1,87 @@
+body, h1, h2, h3, div, p, ul, dl, ol, li, dt, dd, blockquote, table, th, td, img {margin:0; padding:0; font-family:Malgun Gothic,Shanti,NanumGothic,'Nanum Gothic',Arial;font-size:13px;color:#333}
+
+body {height:100%}
+table {border-collapse:collapse}
+caption {display:none}
+li {list-style:none}
+img {border:0; vertical-align:middle}
+input[type="text"] {border:1px solid #c6c6c6;}
+input[type="password"] {border:1px solid #c6c6c6;}
+textarea {border:1px solid #c6c6c6;}
+select {border:1px solid #c6c6c6;}
+input{vertical-align:middle}
+
+a {text-decoration:none; color:#555;}
+.skip{display:none;}
+
+/* position */
+.relative {position:relative;}
+
+/* width */
+.full {width:100%;}
+
+/* font */
+.f_gray {color:#686868;}
+.f_blue {color:#3378b3;}
+.f_red {color:#ff7100;}
+.f_bold {font-weight:bold !important;}
+
+/* align */
+.al {text-align:left !important;}
+.ar {text-align:right !important;}
+.ac {text-align:center !important;}
+
+/* float */
+.fl {float:left !important;}
+.fr {float:right !important;}
+.c_both {clear:both !important;}
+
+/* margin */
+.mt10{margin-top:10px;}
+
+/* padding */
+
+/* background */
+.none {background-image:none !important;}
+.clear {border:none !important; background:none !important;}
+
+
+/* 필수 입력 항목 */
+.essentialInputField {padding-right:8px;background:url('/static/bos/image/bul_star1.gif') right 3px no-repeat;color:#ff5a00;}
+/* 즐겨찾기 케이스 */
+.isBookmarkCase { }
+.isBxtFinishCase {color:skyblue;}
+.isUnselectText {text-decoration:line-through; color:#eeeeee;}
+.error { color:orange; }
+.unselectText { text-decoration:underline; }
+
+.topSelect { color:#68b08; }
+
+/*
+.ui-jqgrid tr.jqgrow {
+	height:auto;
+    overflow:hidden;
+    padding-right:2px;
+    padding-left:2px;
+    padding-top:4px;
+    padding-bottom:4px;
+    position:relative;
+    vertical-align:text-top;
+    white-space:normal !important;
+}
+*/
+
+ 
+/*-------------------------------------
+  레이아웃
+--------------------------------------*/
+#wrap {width:100%;}
+#header{position:relative;width:100%;min-width:1200px;height:90px; border-bottom:2px solid #363636;}
+#container{display:block;width:100%;}
+#leftmenu{width:220px; float:left;}
+#main{float:none;min-height:748px;margin-left:220px;padding:0 0 30px 0px;box-sizing:border-box;border-left:1px solid #dbdbdb;}
+#contents{float:none;min-height:820px;margin-left:220px;padding:30px 0 30px 40px;box-sizing:border-box;border-left:1px solid #dbdbdb;}
+#footer{width:100%;min-width:1200px;padding:20px 20px 40px; box-sizing:border-box;background:#ececec;clear:both;position:relative;bottom:0;}
+
+.ui-tabs .ui-tabs-panel { padding:0 }
+.ui-widget-content { background:#ffffff }

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="IndvdlinfoColctDAO">
+
+	<!-- 콘텐츠 상세 -->
+	<select id="findOneIndvdlinfoColct" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneIndvdlinfoColct */
+			SELECT
+				A.COLCT_SE,
+				A.COLCT_SJ,
+				A.COLCT_MNNO,
+				A.COLCT_MEMO,
+				A.COLCT_CN,
+				A.SITE_ID,
+				A.DELETE_CD,
+				A.USE_AT,
+				A.REGIST_ID,
+				A.REGIST_DT,
+				A.UPDT_ID,
+				A.UPDT_DT
+			FROM tc_indvdlinfo_colct a
+			LEFT OUTER JOIN tm_mngr_info b ON b.USER_ID = a.REGIST_ID
+			WHERE A.SITE_ID=#{pSiteId} AND a.COLCT_SE = #{colctSe} AND a.DELETE_CD = '0'
+      		ORDER BY
+				CASE WHEN #{colctMnno}=A.COLCT_MNNO THEN 1 ELSE 0 END DESC, a.COLCT_MNNO DESC
+			LIMIT 0, 1
+		]]>
+	</select>
+
+	<!-- 콘텐츠 History 목록count수 -->
+	<select id="countIndvdlinfoColctHist" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countIndvdlinfoColctHist */
+			SELECT count(*)
+			FROM tc_indvdlinfo_colct a
+			WHERE A.USE_AT=#{sSiteId} AND a.COLCT_SE = #{colctSe} AND a.DELETE_CD = '0'
+		]]>
+		<if test='useAt == "Y"'>
+			<![CDATA[	AND a.USE_AT='Y'		]]>
+		</if>
+	</select>
+
+	<!-- 콘텐츠 History 목록 -->
+	<select id="findAllIndvdlinfoColctHist" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllIndvdlinfoColctHist */
+			SELECT
+				A.COLCT_SE,
+				A.COLCT_MNNO,
+				A.COLCT_SJ,
+				A.COLCT_MEMO,
+				A.SITE_ID,
+				A.DELETE_CD,
+				A.USE_AT,
+				A.REGIST_ID,
+				A.REGIST_DT,
+				A.UPDT_ID,
+				A.UPDT_DT
+			FROM tc_indvdlinfo_colct a
+			LEFT OUTER JOIN TM_MNGR_INFO b ON b.USER_ID = a.REGIST_ID
+			WHERE a.COLCT_SE = #{colctSe} AND a.DELETE_CD = '0'
+      		ORDER BY a.COLCT_MNNO DESC
+      		LIMIT #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 콘텐츠 수정 -->
+	<update id="updateIndvdlinfoColctUseAtAllN" parameterType="zvl">
+		<![CDATA[
+			/* updateIndvdlinfoColctUseAtAllN */
+			UPDATE tc_indvdlinfo_colct
+			SET USE_AT = 'N'
+			WHERE SITE_ID=#{pSiteId} AND COLCT_SE = #{colctSe}
+		]]>
+	</update>
+
+	<!-- 콘텐츠 등록 -->
+	<insert id="saveIndvdlinfoColct" parameterType="zvl">
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="colctMnno">
+			SELECT IFNULL(MAX(COLCT_MNNO),0)+1 AS COLCT_MNNO FROM tc_indvdlinfo_colct WHERE COLCT_SE = #{colctSe}
+		</selectKey>
+		<![CDATA[
+			/* saveIndvdlinfoColct */
+			INSERT INTO tc_indvdlinfo_colct(
+			   COLCT_SE
+			  ,COLCT_MNNO
+			  ,COLCT_SJ
+			  ,COLCT_CN
+			  ,COLCT_MEMO
+			  ,SITE_ID
+			  ,DELETE_CD
+			  ,USE_AT
+			  ,REGIST_ID
+			  ,REGIST_DT
+			  ,UPDT_ID
+			  ,UPDT_DT
+			) VALUES (
+			   #{colctSe}
+			  ,#{colctMnno}
+			  ,#{colctSj}
+			  ,#{colctCn}
+			  ,#{colctMemo}
+			  ,#{pSiteId}
+			  ,'0'
+			  ,'Y'
+			  ,#{userId}
+			  ,NOW()
+			  ,#{userId}
+			  ,NOW()
+			)
+		]]>
+	</insert>
+
+	<!-- 사용여부 변경 -->
+	<update id="modifyIndvdlinfoColctUseAt" parameterType="zvl">
+		<![CDATA[
+			/* modifyIndvdlinfoColctUseAt */
+			UPDATE tc_indvdlinfo_colct
+			SET
+				USE_AT = IF(COLCT_MNNO=#{colctMnno},'Y','N')
+			WHERE SITE_ID = #{pSiteId} AND COLCT_SE = #{colctSe}
+		]]>
+	</update>
+
+	<update id="deleteIndvdlinfoColct" parameterType="zvl">
+		<![CDATA[
+			/* deleteIndvdlinfoColct */
+			UPDATE tc_indvdlinfo_colct
+			SET
+				DELETE_CD = '1'
+			WHERE SITE_ID = #{pSiteId} AND COLCT_SE = #{colctSe} AND COLCT_MNNO=#{colctMnno}
+		]]>
+	</update>
+
+
+</mapper>

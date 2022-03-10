@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>코딩 목록</title>
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap-theme.css" />
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/jquery-ui/jquery-ui.css">
+<style type="text/css">
+	.c1{background-color:darkred;color:#fff;}
+	body{width:auto;padding:0;}
+	ol {margin: 20px; list-style-type: decimal; }
+	li a {display: block;padding: 2px 6px}
+	td{height:100%;}
+	td a{display:block;display:-webkit-box;padding:2px 6px;}
+	td.e{background-color:#0f0;}
+	a:hover {background-color: red; color: #fff; }
+	a{-webkit-transition:all 0.2s linear; -moz-transition  :all 0.2s linear; -ms-transition  :all 0.2s linear; -o-transition  :all 0.2s linear; transition  :all 0.2s linear; }
+	.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{padding: 0 4px;}
+	td>p{margin: 0;}
+	tr:hover{background-color: #eee;}
+	caption{visibility: visible;width: auto;height: auto; position: static;  clip: rect(0, 0, 0, 0); border: 0; font-size: 16px; }
+	.leftnav{width:20%;float:left;height:100vh;overflow:auto;}
+	.frame{border:1px solid #000;overflow:hidden;}
+	.frame iframe{width:100%;height:99vh;}
+	a.active{font-weight:bold;color:darkorange;}
+	li.i{background-color:gray;}
+</style>
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script>
+jQuery(document).ready(function() {
+  frameTarget = jQuery('.frame iframe');
+	if (window.location.hash!="") {
+		frameTarget.attr({
+			'src': window.location.hash.substring(1)
+		});
+	}
+	var targetHref = window.location.hash.substring(1);
+	jQuery('a[href="'+targetHref+'"]').focus().addClass('active');
+  var randomLinks = jQuery('.leftnav a');
+  randomLinks.each(function(index, el) {
+	jQuery(this).click(function (e) {
+		e.preventDefault();
+		randomLinks.removeClass('active');
+		jQuery(this).addClass('active');
+		frameTarget.attr({
+			'src': jQuery(this).attr('href')
+		});
+		window.location.hash = jQuery(this).attr('href');
+	});
+  });
+});
+</script>
+</head>
+<body>
+<div class="leftnav">
+<ol>
+	<h1>대쉬보드</h1>
+	<li><a href="dashboard2-fix.html">대쉬보드 2017.04.17</a></li>
+
+	<li><a href="downloadstatistics.html">첨부파일 다운로드 통계</a></li>
+	<h1>메인관리</h1>
+	<li><a href="mainadmin-2.html">메인관리 목록-2</a></li>
+	<li><a href="mainadmin.html">메인관리 목록</a></li>
+	<li><a href="mainadmin1.html">메인관리 상세</a></li>
+	<h1>통계</h1>
+	<li><a href="statistics1.html">일간 통계</a></li>
+	<li><a href="statistics2.html">메뉴별 통계</a></li>
+	<li><a href="statistics3.html">운영체제별 통계</a></li>
+	<h1>댓글</h1>
+	<li><a href="noticeView.html">댓글</a></li>
+	<h1>만족도</h1>
+	<li><a href="satisfactionResult.html">목록</a></li>
+	<li><a href="satisfactionView.html">상세</a></li>
+	<li><a href="bosmain.html">대시보드</a></li>
+	<li><a data-key="1" href="g.html">관리자가이드 [1]</a></li>
+	<li><a data-key="2" href="dashboard.html">대시보드 [2]</a></li>
+	<li><a data-key="3" href="table-basic.html">테이블 스타일 [3]</a></li>
+	<li><a data-key="4" href="iconselectList.html">아이콘선택 [4]</a></li>
+	<li><a data-key="5" href="gallery.html">겔러리 타입 5</a></li>
+	<li><a data-key="6" href="reList.html">리스트목록 댓글, 답글 표시 [6]</a></li>
+	<li><a data-key="7" href="faq.html">FAQ</a></li>
+	<li><a data-key="8" href="survey2.html">설문조사 2017-02-21</a></li>
+	<li><a data-key="9" href="qna.html">qna</a></li>
+
+	<h1>회원가입</h1>
+	<li class="i"><a href="joinStep1.html">회원선택</a></li>
+	<li class="i"><a href="joinStep2.html">약관동의</a></li>
+	<li class="i"><a href="joinStep3.html">본인인증</a></li>
+	<li><a href="joinStep4.html" data-key="ctrl+k">정보입력 j</a></li>
+	<li class="i"><a href="joinStep5.html">우편번호찾기</a></li>
+	<li class="i"><a href="joinStep6.html">회원가입완료</a></li>
+	<li class="i"><a href="joinStep7.html">회원탈퇴</a></li>
+	<li class="i"><a href="joinStep8.html">아이디/pw찾기</a></li>
+	<li class="i"><a href="joinStep9.html">정보수정</a></li>
+	<li class="i"><a href="joinStep10.html">로그인 page</a></li>
+</ol>
+</div>
+<!-- <div class="infor">
+	<div class="panel panel-default" >
+		<div class="panel-heading">
+			<h3 class="panel-title">업데이트 정보</h3>
+		</div>
+		<div class="panel-body">
+			.
+			<a href="" class="btn panelClose">닫기</a>
+		</div>
+	</div>
+	<script>
+		jQuery('.panelClose').click(function(event) {
+			jQuery('.infor').slideUp()
+			event.preventDefault();
+		});
+	</script>
+	<style>
+		.infor{position:absolute;left:0;bottom:0;}
+	</style>
+</div> -->
+<div class="frame">
+	<iframe src="about:_blank"></iframe>
+</div>
+
+<script>
+/**
+ * http://www.openjs.com/scripts/events/keyboard_shortcuts/
+ * Version : 2.01.B
+ * By Binny V A
+ * License : BSD
+ */
+shortcut = {
+	'all_shortcuts':{},//All the shortcuts are stored in this array
+	'add': function(shortcut_combination,callback,opt) {
+		//Provide a set of default options
+		var default_options = {
+			'type':'keydown',
+			'propagate':false,
+			'disable_in_input':false,
+			'target':document,
+			'keycode':false
+		}
+		if(!opt) opt = default_options;
+		else {
+			for(var dfo in default_options) {
+				if(typeof opt[dfo] == 'undefined') opt[dfo] = default_options[dfo];
+			}
+		}
+
+		var ele = opt.target;
+		if(typeof opt.target == 'string') ele = document.getElementById(opt.target);
+		var ths = this;
+		shortcut_combination = shortcut_combination.toLowerCase();
+
+		//The function to be called at keypress
+		var func = function(e) {
+			e = e || window.event;
+			
+			if(opt['disable_in_input']) { //Don't enable shortcut keys in Input, Textarea fields
+				var element;
+				if(e.target) element=e.target;
+				else if(e.srcElement) element=e.srcElement;
+				if(element.nodeType==3) element=element.parentNode;
+
+				if(element.tagName == 'INPUT' || element.tagName == 'TEXTAREA') return;
+			}
+	
+			//Find Which key is pressed
+			if (e.keyCode) code = e.keyCode;
+			else if (e.which) code = e.which;
+			var character = String.fromCharCode(code).toLowerCase();
+			
+			if(code == 188) character=","; //If the user presses , when the type is onkeydown
+			if(code == 190) character="."; //If the user presses , when the type is onkeydown
+
+			var keys = shortcut_combination.split("+");
+			//Key Pressed - counts the number of valid keypresses - if it is same as the number of keys, the shortcut function is invoked
+			var kp = 0;
+			
+			//Work around for stupid Shift key bug created by using lowercase - as a result the shift+num combination was broken
+			var shift_nums = {
+				"`":"~",
+				"1":"!",
+				"2":"@",
+				"3":"#",
+				"4":"$",
+				"5":"%",
+				"6":"^",
+				"7":"&",
+				"8":"*",
+				"9":"(",
+				"0":")",
+				"-":"_",
+				"=":"+",
+				";":":",
+				"'":"\"",
+				",":"<",
+				".":">",
+				"/":"?",
+				"\\":"|"
+			}
+			//Special Keys - and their codes
+			var special_keys = {
+				'esc':27,
+				'escape':27,
+				'tab':9,
+				'space':32,
+				'return':13,
+				'enter':13,
+				'backspace':8,
+	
+				'scrolllock':145,
+				'scroll_lock':145,
+				'scroll':145,
+				'capslock':20,
+				'caps_lock':20,
+				'caps':20,
+				'numlock':144,
+				'num_lock':144,
+				'num':144,
+				
+				'pause':19,
+				'break':19,
+				
+				'insert':45,
+				'home':36,
+				'delete':46,
+				'end':35,
+				
+				'pageup':33,
+				'page_up':33,
+				'pu':33,
+	
+				'pagedown':34,
+				'page_down':34,
+				'pd':34,
+	
+				'left':37,
+				'up':38,
+				'right':39,
+				'down':40,
+	
+				'f1':112,
+				'f2':113,
+				'f3':114,
+				'f4':115,
+				'f5':116,
+				'f6':117,
+				'f7':118,
+				'f8':119,
+				'f9':120,
+				'f10':121,
+				'f11':122,
+				'f12':123
+			}
+	
+			var modifiers = { 
+				shift: { wanted:false, pressed:false},
+				ctrl : { wanted:false, pressed:false},
+				alt  : { wanted:false, pressed:false},
+				meta : { wanted:false, pressed:false}	//Meta is Mac specific
+			};
+                        
+			if(e.ctrlKey)	modifiers.ctrl.pressed = true;
+			if(e.shiftKey)	modifiers.shift.pressed = true;
+			if(e.altKey)	modifiers.alt.pressed = true;
+			if(e.metaKey)   modifiers.meta.pressed = true;
+                        
+			for(var i=0; k=keys[i],i<keys.length; i++) {
+				//Modifiers
+				if(k == 'ctrl' || k == 'control') {
+					kp++;
+					modifiers.ctrl.wanted = true;
+
+				} else if(k == 'shift') {
+					kp++;
+					modifiers.shift.wanted = true;
+
+				} else if(k == 'alt') {
+					kp++;
+					modifiers.alt.wanted = true;
+				} else if(k == 'meta') {
+					kp++;
+					modifiers.meta.wanted = true;
+				} else if(k.length > 1) { //If it is a special key
+					if(special_keys[k] == code) kp++;
+					
+				} else if(opt['keycode']) {
+					if(opt['keycode'] == code) kp++;
+
+				} else { //The special keys did not match
+					if(character == k) kp++;
+					else {
+						if(shift_nums[character] && e.shiftKey) { //Stupid Shift key bug created by using lowercase
+							character = shift_nums[character]; 
+							if(character == k) kp++;
+						}
+					}
+				}
+			}
+			
+			if(kp == keys.length && 
+						modifiers.ctrl.pressed == modifiers.ctrl.wanted &&
+						modifiers.shift.pressed == modifiers.shift.wanted &&
+						modifiers.alt.pressed == modifiers.alt.wanted &&
+						modifiers.meta.pressed == modifiers.meta.wanted) {
+				callback(e);
+	
+				if(!opt['propagate']) { //Stop the event
+					//e.cancelBubble is supported by IE - this will kill the bubbling process.
+					e.cancelBubble = true;
+					e.returnValue = false;
+	
+					//e.stopPropagation works in Firefox.
+					if (e.stopPropagation) {
+						e.stopPropagation();
+						e.preventDefault();
+					}
+					return false;
+				}
+			}
+		}
+		this.all_shortcuts[shortcut_combination] = {
+			'callback':func, 
+			'target':ele, 
+			'event': opt['type']
+		};
+		//Attach the function with the event
+		if(ele.addEventListener) ele.addEventListener(opt['type'], func, false);
+		else if(ele.attachEvent) ele.attachEvent('on'+opt['type'], func);
+		else ele['on'+opt['type']] = func;
+	},
+
+	//Remove the shortcut - just specify the shortcut and I will remove the binding
+	'remove':function(shortcut_combination) {
+		shortcut_combination = shortcut_combination.toLowerCase();
+		var binding = this.all_shortcuts[shortcut_combination];
+		delete(this.all_shortcuts[shortcut_combination])
+		if(!binding) return;
+		var type = binding['event'];
+		var ele = binding['target'];
+		var callback = binding['callback'];
+
+		if(ele.detachEvent) ele.detachEvent('on'+type, callback);
+		else if(ele.removeEventListener) ele.removeEventListener(type, callback, false);
+		else ele['on'+type] = false;
+	}
+}
+</script>
+<script>
+
+$('.leftnav a').each(function(index, el) {
+	// console.log($(this).data().key)
+	var a = $(this).data().key.toString();
+	console.log(typeof a)
+	shortcut.add(a,function() {
+		$('.leftnav a').eq(index).trigger('click')
+	});
+});
+</script>
+</body>
+</html>

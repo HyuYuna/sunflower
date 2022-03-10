@@ -1,0 +1,57 @@
+input[type=checkbox],
+input[type=radio]{
+	vertical-align:middle;
+	width:30px;
+	height:20px;
+	margin:3px 0 5px 0;
+	border-radius:5px;
+	.ce-ui-dialog &{
+		width:auto;
+		height:auto;
+		border-radius:0;
+	}
+}
+input[type=number],
+input[type=text],
+input[type=password],
+input[type=file],
+select,
+textarea
+{
+	border:1px solid #cdcdcd;
+	padding:4px 2px;
+	line-height:20px;
+	height:34px;
+	border-radius:4px;
+	vertical-align:middle;
+}
+textarea{
+height:auto;
+}
+input[readonly]{
+	border:0 none;
+	cursor:auto;
+	&#sdate,
+	&#edate,
+	&.sdate,
+	&.edate,
+	&.date,
+	&.month{
+		text-align:center;
+		background-color:#eee;
+	}
+}
+#sdate,
+#edate,
+.sdate,
+.edate,
+.date,
+.month{
+	text-align:center;
+	background-color:#eee;
+}
+
+input[type=file]{-moz-border:inherit;}
+label+label{margin-left:5px;}
+input[type=button]{margin:0 1px}
+.form-inline input[type="file"] {display:inline}

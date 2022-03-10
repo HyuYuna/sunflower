@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.board.board">
+
+	<sql id="findAllBoard-where">
+		<if test='srcCntrGbn != null and srcCntrGbn != ""'>
+			<![CDATA[ AND SUBSTR(BDD_CENTER, 1, 1) = #{srcCntrGbn}]]>
+		</if>
+		<if test='srcCntrCod != null and srcCntrCod != ""'>
+			<![CDATA[ AND BDD_CENTER = #{srcCntrCod}]]>
+		</if>
+		<if test='searchText != null and searchText != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[	AND BDD_TITLE LIKE CONCAT('%',#{searchText},'%') 		]]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[	AND BDD_WRITER LIKE CONCAT('%',#{searchText},'%') 		]]>
+			</if>
+		</if>
+	</sql>
+	
+	<sql id="findAllBoard-dataGroup">
+		<if test='bddcCenter != null and bddcCenter != ""'>
+			<if test="menuNo == 100185"><!-- 문서 발신함 -->
+				<![CDATA[AND	BDD_CENTER = #{bddcCenter}]]>
+			</if>
+			<if test="menuNo == 100184"><!-- 문서 수신함 -->
+				<![CDATA[AND	CONCAT(BDD_TARGET,',') REGEXP #{bddcCenter}]]>
+			</if>
+		</if>
+	</sql>
+
+	<sql id="findAllBoard-order">
+		<choose>
+			<when test='orderTitle == "ASC"'>
+				<![CDATA[ORDER BY BDD_TITLE ASC]]>
+			</when>
+			<when test='orderTitle == "DESC"'>
+				<![CDATA[ORDER BY BDD_TITLE DESC]]>
+			</when>
+			<when test='orderWriter == "ASC"'>
+				<![CDATA[ORDER BY BDD_WRITER ASC]]>
+			</when>
+			<when test='orderWriter == "DESC"'>
+				<![CDATA[ORDER BY BDD_WRITER DESC]]>
+			</when>
+			<when test='orderCdate == "ASC"'>
+				<![CDATA[ORDER BY BDD_CDATE ASC]]>
+			</when>
+			<when test='orderCdate == "DESC"'>
+				<![CDATA[ORDER BY BDD_CDATE DESC]]>
+			</when>
+			<otherwise>
+				<![CDATA[ORDER BY BDD_NOTICE DESC, BDD_SEQ DESC]]>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 문서수발신 목록 -->
+	<select id="findAllBoard" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllBoard */
+
+			SELECT 	BDD_SEQ, BDS_SEQ, BDD_USER, BDD_TITLE, BDD_WRITER, BDD_CONTENT, BDD_CDATE, BDD_IP, BDD_HIT, BDD_UPLOAD, BDD_DATE_MAGAM
+					,BDD_REPLY_COUNT, BDD_REPLY_LASTDATE, BDD_GROUP, BDD_NOTICE, BDD_INTRA, BDD_IMPORTANCE, BDD_DATE_WORKB, BDD_DATE_WORKE
+					,BDD_PROJECT, BDD_INCHARGE, BDD_CENTER, BDD_TARGET, BDD_DATA_TYPE, BDD_STATE, FN_GET_CODE_NAME('CM05', BDD_CENTER) AS BDD_CENTER_NAME
+					, (SELECT COUNT(BDDC_CENTER) FROM TB_BOARD_DATA_CENTER BDC WHERE BDC.BDD_SEQ=A.BDD_SEQ) AS BDD_CENTER_TOTAL
+					, (SELECT SUM(CASE WHEN TRIM(BDDC_CENTER_USER) is NULL THEN 0 WHEN TRIM(BDDC_CENTER_USER) = '' THEN 0 ELSE 1 END) 
+					   FROM TB_BOARD_DATA_CENTER BDC WHERE BDC.BDD_SEQ=A.BDD_SEQ) AS BDD_CENTER_READ
+					, (SELECT CASE FU_GETUSER_NM(BDDC_CENTER_USER) WHEN NULL THEN '미수신' ELSE CONCAT(FU_GETUSER_NM(BDDC_CENTER_USER),' (', date_format(BDDC_CENTER_DATE, '%m-%d %h:%i'), ')') END 
+					   FROM TB_BOARD_DATA_CENTER WHERE BDD_SEQ=A.BDD_SEQ AND BDDC_CENTER = #{bddcCenter}) AS BDD_GET_INFO
+					, (SELECT COUNT(BDDC_CENTER) FROM TB_BOARD_DATA_CENTER_FILE BDCF WHERE BDCF.BDD_SEQ=A.BDD_SEQ) AS BDD_CENTER_DONE
+					, (SELECT COUNT(*) FROM TB_BOARD_DATA_CENTER WHERE BDD_SEQ=A.BDD_SEQ AND BDDC_CENTER=#{bddcCenter} AND TRIM(BDDC_CENTER_USER) IS NOT NULL ) AS BDD_READ_COUNT
+					, CASE BDD_DATA_TYPE WHEN 'B' THEN '-' ELSE 
+						(SELECT CASE COUNT(*) WHEN 0 THEN '<b style="color:blue;">회신전</b>' ELSE '회신완료' END 
+						 FROM TB_BOARD_DATA_CENTER_FILE 
+						 WHERE BDD_SEQ=A.BDD_SEQ 
+							AND BDDC_CENTER=#{bddcCenter} 
+							AND TRIM(BDCF_WRITER_USER) IS NOT NULL ) END AS BDD_REPLY_YN
+					, (SELECT CONCAT(FU_GETUSER_NM(BDDR_CENTER_USER),' (', date_format(BDDR_CENTER_DATE, '%m-%d %H:%i'), ')')
+					   FROM TB_BOARD_DATA_CENTER_RCEPT WHERE BDD_SEQ=A.BDD_SEQ AND BDDR_CENTER = #{bddcCenter}) AS BDDR_GET_INFO
+			FROM	TB_BOARD_DATA A
+			WHERE	BDS_SEQ = 'demand'
+					AND BDD_STATE = 'C'
+		]]>
+		<include refid="findAllBoard-where" />
+		<include refid="findAllBoard-dataGroup" />
+		<include refid="findAllBoard-order" />
+		<![CDATA[
+			limit #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 문서수발신 전체count수 -->
+	<select id="countBoard" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countBoard  */
+			
+			SELECT	COUNT(BDD_SEQ) AS TOTCNT
+			FROM	TB_BOARD_DATA
+			WHERE	BDD_STATE = 'C'
+					AND BDS_SEQ = 'demand'
+		]]>
+		<include refid="findAllBoard-where" />
+		<include refid="findAllBoard-dataGroup" />
+	</select>
+
+	<!-- 문서수발신 상세 -->
+	<select id="findOneBoard" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneBoard  */
+			
+            SELECT 	BDD_SEQ, BDS_SEQ, BDD_USER, BDD_TITLE, BDD_WRITER, BDD_CONTENT, BDD_CDATE, BDD_IP, BDD_HIT, BDD_UPLOAD, BDD_DATE_MAGAM
+					, BDD_REPLY_COUNT, BDD_REPLY_LASTDATE, BDD_GROUP, BDD_NOTICE, BDD_INTRA, BDD_IMPORTANCE, BDD_DATE_WORKB, BDD_DATE_WORKE
+					, BDD_PROJECT, BDD_INCHARGE, BDD_CENTER, BDD_TARGET, BDD_DATA_TYPE, BDD_STATE, FN_GET_CODE_NAME('CM05', BDD_CENTER) AS BDD_CENTER_NAME
+					, IFNULL((SELECT CONCAT(FU_GETUSER_NM(BDCC_CENTER_USER), ' (처음열람일 : ', BDCC_CENTER_DATE, ')') 
+					  FROM TB_BOARD_DATA_CENTER_CHECK 
+					  WHERE BDD_SEQ=BD.BDD_SEQ AND BDCC_CENTER=#{bddcCenter} LIMIT 1 ), '-') AS THIS_READ_INFO
+					, (SELECT CASE FU_GETUSER_NM(BDDR_CENTER_USER) WHEN NULL THEN '미수신' ELSE CONCAT(FU_GETUSER_NM(BDDR_CENTER_USER),' (', BDDR_CENTER_DATE, ')') END 
+					   FROM TB_BOARD_DATA_CENTER_RCEPT WHERE BDD_SEQ=BD.BDD_SEQ AND BDDR_CENTER = #{bddcCenter}) AS BDDR_GET_INFO
+			FROM	TB_BOARD_DATA BD
+			WHERE	BDD_SEQ = #{bddSeq}
+		]]>
+	</select>
+
+	<!-- 문서수발신 등록 -->
+	<insert id="saveBoard" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="bddSeq">
+			SELECT IFNULL(MAX(BDD_SEQ),0)+1 AS BDD_SEQ  FROM TB_BOARD_DATA
+		</selectKey>
+		<![CDATA[
+			/* saveBoard  */
+			
+			INSERT INTO TB_BOARD_DATA (
+				BDD_SEQ, BDS_SEQ, BDD_USER, BDD_WRITER, BDD_TITLE, BDD_CONTENT, BDD_UPLOAD,
+				BDD_REPLY_LASTDATE, BDD_GROUP, BDD_NOTICE, BDD_DATE_WORKB, BDD_DATE_WORKE,
+				BDD_PROJECT, BDD_INCHARGE, BDD_CENTER, BDD_TARGET, BDD_DATA_TYPE, BDD_STATE, BDD_CDATE
+				) VALUES (
+		    	#{bddSeq}, #{bdsSeq}, #{bddUser}, #{bddWriter}, #{bddTitle}, #{bocontents}, #{bddUpload},
+				#{bddReplyLastdate}, #{bddGroup}, #{bddNotice}, #{bddDateWorkb}, #{bddDateWorke},
+				#{bddProject}, #{bddIncharge}, #{bddCenter}, #{bddTarget}, #{bddDataType}, #{bddState}, NOW()
+		    )
+		]]>
+	</insert>
+
+	<!-- 문서수발신 수정-->
+	<update id="updateBoard" parameterType="zvl">
+		<![CDATA[
+		/* updateBoard */
+		
+		UPDATE TB_BOARD_DATA SET
+			  BDD_TITLE = #{bddTitle}
+			, BDD_CONTENT = #{bocontents}
+			, BDD_DATE_MAGAM = #{bddDateMagam}
+			, BDD_GROUP = #{bddGroup}
+			, BDD_NOTICE = #{bddNotice}
+			, BDD_DATE_WORKB = #{bddDateWorkb}
+			, BDD_DATE_WORKE = #{bddDateWorke}
+			, BDD_TARGET = #{bddTarget}
+			, BDD_DATA_TYPE = #{bddDataType}
+		WHERE BDD_SEQ = #{bddSeq}
+		]]>
+	</update>
+
+	<!-- 문서수발신 삭제-->
+	<update id="deleteBoard" parameterType="zvl">
+		<![CDATA[
+		/* deleteBoard */
+		
+		UPDATE TB_BOARD_DATA SET 
+			BDD_STATE ='D'
+		WHERE BDD_SEQ = #{bddSeq}
+		]]>
+	</update>
+	
+	<!-- 문서수발신 파일 삭제 -->
+	<delete id="uploadfileDeleteBoard">
+		<![CDATA[
+		/* fileDeleteBoard */
+		
+		DELETE	TB_UPLOAD_FILE
+		WHERE	UFL_SEQ = #{seqnum} and UFL_FILESIZE = #{chknum}
+		]]>
+	</delete>
+	
+	<!-- 문서수발신 파일 삭제2 -->
+	<delete id="uploadfileDeleteCenterFileBoard">
+		<![CDATA[
+		/* uploadfileDeleteCenterFileBoard */
+		
+		DELETE	TB_BOARD_DATA_CENTER_FILE
+		WHERE	FILES_SEQ = #{seqnum} and BDDC_CENTER = #{bddcCenter}
+		]]>
+	</delete>
+	
+	<!-- 대상센터 체크박스 -->
+	<select id="searchCodeCheckbox" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT	CODE_CODE AS CD_NO, CODE_NAME AS CD_NM, CODE_SUBCODE AS CDSUB 
+		FROM	TB_CODE
+		WHERE	CODEG_CODE = #{sCode}
+				AND	CODE_USE_YN = 'Y'
+		]]>
+		<if test="sCode	== 'CM04'">
+			AND CODE_CODE IN ('1', '2', '3'
+				<if test="menuNo == '100201' or menuNo == '100184' or menuNo == '100185'">
+				, '7'
+				</if>
+			)
+		</if>
+		<if test="gCode != null and gCode != ''">
+			AND SUBSTR(CODE_CODE, 1, 1) = #{gCode}
+		</if>
+		<![CDATA[
+		ORDER BY CODE_SORT
+		]]>
+	</select>
+	
+	<!-- 문서수발신 문서 상태 수정-->
+	<update id="changeBoardDataState" parameterType="zvl">
+		<![CDATA[
+		/* changeBoardDataState */
+		
+		UPDATE TB_BOARD_DATA SET
+			BDD_STATE = #{bddState}
+			, BDD_IP = #{bddIp}
+		WHERE BDD_SEQ = #{bddSeq}
+		]]>
+	</update>
+	
+	<select id="isDataExist" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* isDataExist */
+		
+		SELECT	COUNT(*)
+		FROM	TB_BOARD_DATA
+		WHERE	BDD_SEQ = #{bddSeq}
+		]]>
+	</select>
+	
+	<!-- 포함되지 않은 센터 삭제 -->
+	<delete id="deleteBoardDataCenter" parameterType="zvl">
+		<![CDATA[
+		/* deleteBoardDataCenter */
+		
+		DELETE	
+		FROM	TB_BOARD_DATA_CENTER
+		WHERE	BDD_SEQ = #{bddSeq}
+		]]>
+		<if test="bddTarget != null and bddTarget != ''">
+			<![CDATA[ AND BDDC_CENTER NOT IN ]]>
+			<foreach collection="bddcCenterList" item="bddc" index="index" separator=", " open="(" close=")">
+				<![CDATA[#{bddc}]]>
+			</foreach>
+		</if>
+	</delete>
+	
+	<!-- 기존에 들어가있는 센터 추출 -->
+	<select id="selectBoardDataCenter" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* selectBoardDataCenter */
+		
+		SELECT BDDC_CENTER
+		FROM TB_BOARD_DATA_CENTER
+		WHERE BDD_SEQ = #{bddSeq}
+		AND BDDC_CENTER IN
+		]]>
+		<foreach collection="bddcCenterList" item="bddc" index="index" separator=", " open="(" close=")">
+			<![CDATA[#{bddc}]]>
+		</foreach>
+	</select>
+	
+	<!-- 신규로 추가된 업체가 추가 -->
+	<insert id="insertBoardDataCenter" parameterType="zvl">
+		<![CDATA[
+		/* insertBoardDataCenter */
+		
+		INSERT INTO TB_BOARD_DATA_CENTER (
+			BDD_SEQ, BDDC_CENTER
+		) VALUES (
+			#{bddSeq}, #{bddTarget})
+		]]>
+	</insert>
+	
+	<!-- 카운트 업데이트 : 내가 쓴 글은 업데이트 하지 않음 -->
+	<update id="boardDataHitUpdate" parameterType="zvl">
+		<![CDATA[
+		/* boardDataHitUpdate */
+		
+		UPDATE TB_BOARD_DATA SET
+			BDD_HIT = BDD_HIT+1
+		WHERE BDD_SEQ = #{bddSeq}
+		]]>
+	</update>
+	
+	<!-- 문서 수신함에서 읽었는지 조회 -->
+	<select id="BoardDataReadSelect" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* BoardDataReadSelect */
+		
+		SELECT COUNT(*) AS READ_COUNT
+		FROM TB_BOARD_DATA_CENTER 
+		WHERE BDD_SEQ = #{bddSeq} AND BDDC_CENTER = #{bddcCenter} AND ( BDDC_CENTER_USER IS NULL OR BDDC_CENTER_DATE IS NULL )
+		]]>
+	</select>
+	
+	<!-- 조회 후 없으면 데이터 입력 -->
+	<update id="BoardDataReadUpdate" parameterType="zvl">
+		<![CDATA[
+		/* BoardDataReadUpdate */
+		
+		UPDATE TB_BOARD_DATA_CENTER SET
+			BDDC_CENTER_USER = #{userId}
+			, BDDC_CENTER_DATE = now()
+		WHERE BDD_SEQ = #{bddSeq} 
+			AND BDDC_CENTER = #{bddcCenter}
+		]]>
+	</update>
+	
+	<!-- 임시저장 조회 -->
+	<select id="searchAutoSave" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* searchAutoSave */
+		
+		SELECT NVL((SELECT MAX(BDD_SEQ) FROM TB_BOARD_DATA WHERE BDD_STATE='A' AND BDD_USER=#{userId}), 0 ) AS BDD_SEQ
+		FROM DUAL
+		]]>
+	</select>
+	
+	<!-- 임시저장 삭제 -->
+	<delete id="deleteAutoSave" parameterType="zvl">
+		<![CDATA[
+		/* deleteAutoSave */
+		
+		DELETE	
+		FROM	TB_BOARD_DATA
+		WHERE	BDD_SEQ = #{bddSeq}
+				AND BDD_USER = #{userId}
+		]]>
+	</delete>
+	
+	<select id="boardUploadCenterList" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* boardUploadCenterList */
+		
+		SELECT	*
+		FROM	(
+			SELECT	BDC.BDD_SEQ, BDC.BDDC_CENTER, FN_GET_CODE_NAME('CM05', BDC.BDDC_CENTER) AS BDDC_CENTER_NAME, '' AS BDCF_ETC, FU_GETUSER_NM(BDCF_WRITER_USER) AS BDCF_WRITER_USER, BDCF_CDATE
+				, BDCF_CHECK_DATE, BDCF_CHECK_USER, FILES_SEQ, IFNULL((SELECT UFL_FILESIZE FROM TB_UPLOAD_FILE WHERE UFL_SEQ = FILES_SEQ), 0) AS FILES_SIZE
+				, CD.CODE_SORT, FU_GETUSER_NM(BDDC_CENTER_USER) AS BDDC_CENTER_USER, BDDC_CENTER_DATE
+				, BDCF_MEMO, CD.CODE_GROUP, CD.CODE_NAME, FN_GET_CODE_NAME('CM04', CD.CODE_GROUP) AS CGROUP_NM
+			FROM	TB_BOARD_DATA_CENTER BDC LEFT OUTER JOIN TB_BOARD_DATA_CENTER_FILE BDCF ON BDC.BDD_SEQ = BDCF.BDD_SEQ AND BDC.BDDC_CENTER = BDCF.BDDC_CENTER, TB_CODE CD
+			WHERE	BDC.BDDC_CENTER = CD.CODE_CODE 
+					AND CODEG_CODE = 'CM05'
+					AND BDC.BDD_SEQ = #{bddSeq}
+		]]>
+		<if test="bddCenter != bddcCenter">
+			<![CDATA[ AND BDC.BDDC_CENTER = #{bddcCenter} ]]>
+		</if>
+		<![CDATA[
+		) a
+		ORDER BY CODE_GROUP, CODE_SORT, CODE_NAME DESC
+		]]>
+	</select>
+	
+	<select id="boardReplyList" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* boardReplyList */
+		
+		SELECT	BDR_SEQ, BDR_USER, '작성자' as BDR_USER_NAME, BDR_CONTENT, BDR_CDATE, BDR_UPLOAD, '무명' as BDR_USER_CENTER
+		FROM	TB_BOARD_REPLY
+		WHERE	BDD_SEQ = #{bddSeq}
+		]]>
+	</select>
+	
+	<insert id="fileUploadAtBranch" parameterType="zvl">
+		<![CDATA[
+		/* fileUploadAtBranch */
+
+		INSERT INTO TB_BOARD_DATA_CENTER_FILE (
+			BDD_SEQ,
+			BDDC_CENTER,
+			BDCF_WRITER_USER,
+			FILES_SEQ,
+			BDCF_MEMO
+		) VALUES (
+			#{uflRelNumber},
+			#{uflRelNumber2},
+			#{userId},
+			#{filesSeq},
+			#{filesMemo}
+		)		
+		]]>
+	</insert>
+	
+	<delete id="fileDelete" parameterType="zvl">
+		<![CDATA[
+		/* fileDelete */
+		
+		DELETE	
+		FROM	TB_UPLOAD_FILE
+		WHERE	UFL_SEQ = #{seqnum}
+				AND UFL_FILESIZE = #{chknum}
+				AND UFL_REL_NUMBER = #{bddSeq}
+		]]>
+	</delete>
+	
+	<delete id="fileDeleteCenterFile" parameterType="zvl">
+		<![CDATA[
+		/* fileDeleteCenterFile */
+		
+		DELETE	
+		FROM	TB_BOARD_DATA_CENTER_FILE
+		WHERE	FILES_SEQ = #{seqnum}
+				AND BDDC_CENTER = #{bddcCenter}
+				AND BDD_SEQ = #{bddSeq}
+		]]>
+	</delete>
+	
+	<!-- 접수자 조회 -->
+	<select id="findOneReceiptUser" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findOneReceptUser */
+		
+		SELECT	BDD_SEQ, BDDR_CENTER, BDDR_CENTER_USER, BDDR_CENTER_DATE
+		FROM	TB_BOARD_DATA_CENTER_RCEPT
+		WHERE	BDD_SEQ = #{bddSeq}
+				AND BDDR_CENTER = #{bddcCenter}
+				AND BDDR_CENTER_USER = #{userId}
+		]]>
+	</select>
+	
+	<!-- 접수자 수정 -->
+	<update id="BoardDataReceiptUpdate" parameterType="zvl">
+		<![CDATA[
+		/* BoardDataReceiptUpdate */
+		
+		UPDATE	TB_BOARD_DATA_CENTER_RCEPT SET
+			BDDR_CENTER_USER = #{userId}
+			, BDDR_CENTER_DATE = now()
+		WHERE BDD_SEQ = #{bddSeq} 
+			AND BDDR_CENTER = #{bddcCenter}
+		]]>
+	</update>
+	
+	<!-- 포함되지 않은 센터 삭제 -->
+	<delete id="deleteBoardDataCenterRcept" parameterType="zvl">
+		<![CDATA[
+		/* deleteBoardDataCenterRcept */
+		
+		DELETE	
+		FROM	TB_BOARD_DATA_CENTER_RCEPT
+		WHERE	BDD_SEQ = #{bddSeq}
+		]]>
+		<if test="bddTarget != null and bddTarget != ''">
+			<![CDATA[ AND BDDR_CENTER NOT IN]]>
+			<foreach collection="bddcCenterList" item="bddc" index="index" separator=", " open="(" close=")">
+				<![CDATA[#{bddc}]]>
+			</foreach>
+		</if>
+	</delete>
+	
+	<!-- 신규로 추가된 업체가 추가 -->
+	<insert id="insertBoardDataCenterRcept" parameterType="zvl">
+		<![CDATA[
+		/* insertBoardDataCenterRcept */
+		
+		INSERT INTO TB_BOARD_DATA_CENTER_RCEPT (
+			BDD_SEQ, BDDR_CENTER
+		) VALUES (
+			#{bddSeq}, #{bddTarget})
+		]]>
+	</insert>
+</mapper>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>sublayout</title>
+<link rel="stylesheet" href="/static/ucms/css/default.css">
+<link rel="stylesheet" href="/static/ucms/css/main.css">
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+</head>
+<body>
+<div class="skip">
+	<a href="#content">본문내용 바로가기</a>
+	<a href="#gnb">주메뉴 바로가기</a>
+</div>
+<div id="wrap">
+	<!-- header -->
+	<header id="header">
+		<p class="logo"><a href=""><img src="/static/ucms/img/logo.png" alt="unp"></a></p>
+		<ul class="global">
+			<li><a href="#">로그인</a></li>
+			<li><a href="#">회원가입</a></li>
+			<li><a href="#">사이트맵</a></li>
+		</ul>
+		<nav id="gnb">
+			<ul>
+				<li class="on"><a href="">COMPANY</a></li>
+				<li><a href="">BUSINESS</a></li>
+				<li><a href="">PR CENTER</a></li>
+				<li><a href="">CUSTOMER</a></li>
+				<li><a href="">CAREER</a></li>
+			</ul>
+		</nav>
+	</header>
+	<!-- //header -->
+	<main>
+		<div class="mainvisual">
+			
+			<div class="area">
+				<ul>
+					<li>
+						<a href="#news-list_1" class="num"><span class="r"><span class="sr-only">1번 최근소식 보기</span></span></a>
+						<a style="display: block; background-image: url('/static/ucms/img/main/mainvisual1.png'); " href="" class="view" id="news-list_1">
+							<span class="sr-only">...</span>
+						</a>
+					</li>
+
+					
+					<li>
+						<a href="#news-list_2" class="num"><span class="r"><span class="sr-only">2번 최근소식 보기</span></span></a>
+						<a style="display: none;background-image: url(/static/ucms/img/main/mainvisual2.png)" href="" class="view" id="news-list_2">
+							<span class="sr-only">...</span>
+						</a>
+					</li>
+					<li>
+						<a href="#news-list_3" class="num"><span class="r"><span class="sr-only">3번 최근소식 보기</span></span></a>
+						<a style="display: none;background-image: url(/static/ucms/img/main/mainvisual3.jpg);" href="" class="view" id="news-list_3">
+							<span class="sr-only">...</span>
+						</a>
+					</li>
+				</ul>
+				<div class="ctrl">
+					<button type="button" class="play"><span class="sr-only">최근소식 재생</span></button>
+					<button type="button" class="stop"><span class="sr-only">최근소식 정지</span></button>
+					<!-- <button type="button" class="pre"><span class="sr-only">최근소식 이전보기</span></button> -->
+					<!-- <button type="button" class="next"><span class="sr-only">최근소식 다음보기</span></button> -->
+				</div>
+
+			</div>
+			<script src="/static/jslibrary/jquery.slideCtrl.js"></script>
+			<script>
+				$('.mainvisual li').eq(0).addClass('on').find('.view').css({
+					opacity: '1',
+					zIndex: '50'
+				});
+				jQuery(".mainvisual").slideCtrl({
+					photo_list    :jQuery('.mainvisual>.area li'),
+					// photo_list_right:jQuery('.mainvisual .next'),
+					// photo_list_left :jQuery('.mainvisual .pre'),
+					photo_list_play :jQuery(".mainvisual .play"),
+					photo_list_stop :jQuery(".mainvisual .stop"),
+					FXconfig    :true,
+					// d_time     :6000,
+					debug     :false
+				});
+			</script>
+		</div>
+		<div id="mainContent">
+			<div class="topSet">
+				<div id="notice">
+					<h2>공지사항</h2>
+					<ul>
+						<li><a href=""><span class="txt">회사 휴양소 사용 안내에 관한 공지사항회사 휴양소 사용 안내에 관한 공지사항회사 휴양소 사용 안내에 관한 공지사항회사 휴양소 사용 안내에 관한 공지사항</span><span class="date">2017-02-07</span></a></li>
+						<li><a href=""><span class="txt">회사 휴양소 사용 안내에 관한 공지사항</span><span class="date">2017-02-07</span></a></li>
+						<li><a href=""><span class="txt">2017년 UI/UX 워크샵 공지</span><span class="date">2017-02-07</span></a></li>
+						<li><a href=""><span class="txt">2017년 전략사업부 워크샵 공지</span><span class="date">2017-02-07</span></a></li>
+					</ul>
+					<a href="" class="btnMore"><span class="sr-only">더보기</span></a>
+				</div>
+				<div id="article">
+					<h2>보도자료</h2>
+					<a href="" class="link">
+						<span class="img"><img src="/static/ucms/img/main/@some.png" alt=""></span>
+						<span class="s">
+							<span class="title">
+								U-CMS v2.0 적용한
+								국민체육진흥공단 ...
+							</span>
+							<span class="txt">
+								[비즈트리뷴] (주)유앤피플(대표이사
+								유재욱)이 자사의 콘텐츠 관리솔루션인
+								U-CMS v2.0을 적용해 구축한 국민 ...
+							</span>
+							<span class="date">2018.03.21</span>
+						</span>
+					</a>
+					<a href="" class="btnMore"><span class="sr-only">더보기</span></a>
+				</div>
+			</div>
+			<div id="service">
+				<div class="set">
+					<h2>SERVICE</h2>
+					<p>
+						유앤피플은 SI, Solution, Consulting 등 다양한 사업분야에
+						대한 사업수행경험을 보유하고 있습니다.
+					</p>
+					<a href=""> 서비스 소개 </a>
+				</div>
+			</div>
+			<div id="quicklink">
+				<a href="">
+					<dl>
+						<dt>고객센터</dt>
+						<dd>
+							궁금하신 내용이 있을 경우, <br>
+							고객센터에 문의하시면 최선을 다해 <br>
+							상담해 드리겠습니다.
+						</dd>
+					</dl>
+				</a>
+				<a href="">
+					<dl>
+						<dt>워크샵</dt>
+						<dd>
+							유앤피플은 특별한 사람들이 <br>
+							함께하는 곳입니다.
+						</dd>
+					</dl>
+				</a>
+				<a href="">
+					<dl>
+						<dt>CAREER</dt>
+						<dd>
+							유앤피플은 잠재적인 능력을 <br>
+							발휘하여 함께 특별해지고 <br>
+							싶은 당신을 초대합니다.
+						</dd>
+					</dl>
+				</a>
+			</div>
+		</div>
+	</main>
+	<aside id="adSet">
+		<div class="set">
+			<div class="ctrl">
+				<button type="button" class="adLeft"></button>
+				<button type="button" class="adRight"></button>
+				<button type="button" class="adStop"></button>
+			</div>
+			<div class="listArea">
+				<ul>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad1.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad2.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad3.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad4.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad5.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad6.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad1.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad2.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad3.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad4.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad5.png);"></a></li>
+					<li><a href="" style="background-image:url(/static/ucms/img/main/ad6.png);"></a></li>
+				</ul>
+			</div>
+		</div>
+		<script src="/static/jslibrary/jquery.carouFredSel-6.2.1/jquery.carouFredSel-6.2.1-packed.js"></script>
+		<script>
+			var slideTarget = $("#adSet");
+			var slide_item	= slideTarget.find(".listArea ul");
+			slide_item.carouFredSel({
+					circular	: true,		//원형  예) 처음 > 두번째 세번째.... > 마지막 > 처음
+					infinite	: true,		//무한반복
+					padding		: null,          // Padding around the carousel (top, right, bottom and left). For example: [10, 20, 30, 40] (top, right, bottom, left) or [0, 50] (top/bottom, left/right).
+					synchronise	: null,      // Selector and options for the carousel to synchronise: [string selector, boolean inheritOptions, boolean sameDirection, number deviation] For example: ["#foo2", true, true, 0]
+					cookie		: false,          // Determines whether the carousel should start at its last viewed position. The cookie is stored until the browser is closed. Can be a string to set a specific name for the cookie to prevent multiple carousels from using the same cookie.
+					auto		: {
+						play:true,
+						delay   :5000,	//최초 페이지 로드후 재생되는 딜레이
+						timeoutDuration:2000 //슬라이드 지연 시간
+						},
+					align       : "left",
+					width		: '%', //전체 너비
+					height		: 60, //전체 높이
+					items		: {
+						visible : 4 //보여질 갯수
+						},
+					scroll      : {
+						// easing			:'easeInOutQuart',
+						items:1,
+						duration        : 1000, //시간
+						pauseOnHover	: true //마우스오버시 일시정지기능 마우스 아웃시 자동재생됨
+						},
+					prev:{
+						button	: '.adLeft',
+						wipe 	: true //로테이션 허용(리스트 처음에서 클릭시 마지막요소로 이동)
+					},
+					next: {
+						button :'.adRight',
+						wipe	: true
+					},
+					direction	: "left"
+				});
+			slide_item.find('a').each(function() {
+				 $(this).bind('focusin', function(event) {
+					slide_item.trigger("pause");
+				 });
+			});
+		</script>
+	</aside>
+</div>
+<div id="footer">
+	<div class="set">
+		<nav>
+			<a href="">공지사항</a>
+			<a href="">이용약관</a>
+			<a href="">개인정보 처리방침</a>
+			<a href="">사이트맵</a>
+		</nav>
+		<address>
+			[08301] 서울 구로구 가마산로25길 9-9 (구로동) KM타워3층 유앤피플(주) , TEL : 02-855-7471 FAX. : 070-8650-0110 <br>
+			Copyright 2018. UNPEOPLE all rights reserved.
+		</address>
+		<p class="markset">
+			<img src="/static/ucms/img/mark1.png" alt="소프트웨어 품질인증 1등급">
+			<img src="/static/ucms/img/mark2.png" alt="소프트웨어 접근성 인증">
+		</p>
+	</div>
+</div>
+</body>
+</html>

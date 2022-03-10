@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.main.UserMainCntntsDAO">
+
+	<!-- 사용자메인콘텐츠관리 목록 -->
+	<select id="findAllUserMainCntnts" resultType="zvl">
+	/* findAllUserMainCntnts */
+		SELECT
+			A.RELM_SE_CD,
+		  	A.MAIN_CNTNTS_CD,
+		  	(SELECT CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'MAIN_CNTNTS_CD' AND CD = A.MAIN_CNTNTS_CD) AS MAIN_CNTNTS_NM,
+		  	A.BBS_ID,
+		  	C.BBS_NM,
+		  	A.MENU_LINK,
+		  	A.POPUP_AT,
+		  	A.ATCH_FILE_ID,
+		  	A.USE_AT,
+		  	DATE_FORMAT(A.REGIST_DT,'%Y-%m-%d') AS REGIST_DT,
+            CASE MAIN_CNTNTS_CD
+            WHEN '01' THEN B.MENU_NM ELSE D.MENU_NM END AS MENU_NM,
+            CASE MAIN_CNTNTS_CD
+            WHEN '01' THEN B.MENU_NO ELSE D.MENU_NO END AS MENU_NO,
+		  	A.REGIST_ID,
+
+
+		  	C.BBS_ATTRB_CD
+		FROM TC_USER_MAIN_CNTNTS A
+		LEFT OUTER JOIN TC_MENU_INFO B ON A.BBS_ID = B.BBS_ID AND A.MENU_NO = B.MENU_NO
+		LEFT OUTER JOIN TC_MENU_INFO D ON A.MENU_NO = D.MENU_NO
+		LEFT OUTER JOIN TB_BBS_MASTR C ON A.BBS_ID = C.BBS_ID
+		ORDER BY RELM_SE_CD ASC
+	</select>
+
+	<!-- 사용자메인콘텐츠관리 저장 -->
+	<insert id="saveUserMainCntnts" parameterType="zvl">
+		<![CDATA[
+		/* saveUserMainCntnts */
+
+		INSERT INTO tc_user_main_cntnts(
+		   	RELM_SE_CD,
+		  	MAIN_CNTNTS_CD,
+		  	BBS_ID,
+		  	MENU_LINK,
+		  	POPUP_AT,
+		  	MENU_NO,
+		  	ATCH_FILE_ID,
+		  	REGIST_DT,
+		  	REGIST_ID,
+		  	USE_AT
+		)
+		VALUES (
+
+			#{relmSeCd},
+		  	#{mainCntntsCd},
+		  	#{bbsId},
+		  	#{menuLink},
+		  	#{popupAt},
+		  	IF(#{ctntsMenuNo} = '', NULL, #{ctntsMenuNo}),
+		  	#{atchFileId},
+		  	SYSDATETIME,
+		  	#{registId},
+		  	#{useAt}
+		)
+
+		]]>
+	</insert>
+
+	<!-- 사용자메인콘텐츠관리 수정 -->
+	<update id="updateUserMainCntnts" parameterType="zvl">
+		<![CDATA[
+		/* updateUserMainCntnts */
+		UPDATE TC_USER_MAIN_CNTNTS
+		SET
+			MAIN_CNTNTS_CD = #{mainCntntsCd},
+			BBS_ID = #{bbsId},
+			MENU_LINK = #{menuLink},
+			POPUP_AT = #{popupAt},
+			MENU_NO = NVL(#{ctntsMenuNo},''),
+			ATCH_FILE_ID = #{atchFileId},
+			UPDT_DT = SYSDATETIME,
+			UPDT_ID = #{updtId},
+			USE_AT = #{useAt}
+		WHERE RELM_SE_CD = #{relmSeCd}
+		]]>
+	</update>
+
+	<!-- 사용자메인콘텐츠관리 삭제 -->
+	<delete id="deleteUserMainCntnts" parameterType="string">
+		<![CDATA[
+		/* deleteUserMainCntnts */
+
+		DELETE
+		  FROM TC_USER_MAIN_CNTNTS
+		 WHERE RELM_SE_CD = #{relmSeCd}
+		]]>
+	</delete>
+
+	<!-- 사용자메인콘텐츠관리 세부내역 -->
+	<select id="findOneUserMainCntnts" parameterType="zvl" resultType="zvl">
+	<![CDATA[
+		/* findOneUserMainCntnts */
+		SELECT
+			A.RELM_SE_CD,
+		  	A.MAIN_CNTNTS_CD,
+		  	A.BBS_ID,
+		  	C.BBS_NM,
+		  	A.MENU_LINK,
+		  	A.POPUP_AT,
+		  	A.ATCH_FILE_ID,
+		  	DATE_FORMAT(A.REGIST_DT,'%Y-%m-%d') AS REGIST_DT,
+		  	A.REGIST_ID,
+		  	A.USE_AT,
+		  	B.MENU_NM,
+		  	B.MENU_NO
+		FROM TC_USER_MAIN_CNTNTS A
+		LEFT OUTER JOIN TC_MENU_INFO B ON A.BBS_ID = B.BBS_ID AND A.MENU_NO = B.MENU_NO
+		LEFT OUTER JOIN TB_BBS_MASTR C ON A.BBS_ID = C.BBS_ID
+
+		WHERE A.RELM_SE_CD = #{relmSeCd}
+
+	]]>
+	</select>
+
+	<!-- 사용자메인콘텐츠관리 게시판 목록 -->
+	<select id="findAllUserMainCntntsBbsMastr" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT  ALL_LIST2.*
+			  FROM  (
+				SELECT ROWNUM RNUM, ALL_LIST.*
+				  FROM  (
+					SELECT
+						A.BBS_ID,
+						A.BBS_ATTRB_CD,
+						B.MENU_NO,
+						B.MENU_NM,
+						C.ATTRB_NM AS BBS_ATTRB_NM,
+						A.BBS_NM,
+						A.REGIST_DT,
+						A.USE_AT
+					FROM TB_BBS_MASTR A
+					INNER JOIN TC_MENU_INFO B ON A.BBS_ID = B.BBS_ID
+					LEFT OUTER JOIN TB_ATTRB_INFO C ON A.BBS_ATTRB_CD = C.ATTRB_CD
+					WHERE A.USE_AT = 'Y'
+					AND B.SITE_ID = #{pSiteId}
+		]]>
+			<if test='bbsAttrbCd != null and bbsAttrbCd != ""'>
+				<![CDATA[	AND	A.BBS_ATTRB_CD = #{bbsAttrbCd}		]]>
+			</if>
+		<![CDATA[
+					ORDER BY A.BBS_ID DESC
+
+					) ALL_LIST
+				) ALL_LIST2
+			WHERE RNUM  > #{firstIndex}
+			  AND RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 사용자메인콘텐츠관리 게시판 카운트수 -->
+	<select id="countUserMainCntntsBbsMastr" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT
+				COUNT(a.BBS_ID)
+			FROM TB_BBS_MASTR A
+			INNER JOIN TC_MENU_INFO B ON A.BBS_ID = B.BBS_ID
+			WHERE A.USE_AT = 'Y'
+			AND B.SITE_ID = #{pSiteId}
+		]]>
+			<if test='bbsAttrbCd != null and bbsAttrbCd != ""'>
+				<![CDATA[	AND	A.BBS_ATTRB_CD = #{bbsAttrbCd}		]]>
+			</if>
+	</select>
+</mapper>

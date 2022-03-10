@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+
+<title>photoBlock</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, user-scalable=yes, initial-scale=1, maximum-scale=3, minimum-scale=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<link rel="stylesheet" href="/static/jslibrary/bootstrap/css/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="/static/commons/common.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/jslibrary/bootstrap/js/bootstrap.js"></script>
+<script src="/static/jslibrary/bootstrap/respond.min.js"></script>
+<script src="/static/jslibrary/jquery-ui/jquery-ui.js"></script>
+<!-- <script src="/static/jslibrary/jquery.highlight-4.js"></script> -->
+<script src="/static/jslibrary/jquery.maskedinput.min.js"></script>
+<!-- <script src="/static/jslibrary/base64.js"></script> -->
+<script src="/static/jslibrary/miya_validator.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+<style>
+body{padding:50px;}
+</style>
+
+</head>
+<body>
+<div id="content">
+<!-- contents S -->
+<div id="sm">
+	<ul>
+		<li class="a1">
+			<span>채용정보</span>
+			<ul>
+				<li>
+					<a href="/kfood/recruitment/list.do?menuNo=200102">상세검색</a>
+				</li>
+				<li>
+					<a href="/kfood/recruitment/list.do?schGropType=A&amp;menuNo=200103">직종별</a>
+				</li>
+				<li>
+					<a href="/kfood/recruitment/list.do?schGropType=B&amp;menuNo=200104">지역별</a>
+				</li>
+				<li>
+					<a href="/kfood/recruitment/list.do?schGropType=D&amp;menuNo=200106">경력별</a>
+				</li>
+				<li>
+					<a href="/kfood/recruitment/list.do?schGropType=E&amp;menuNo=200107">급여별</a>
+				</li>
+				<li>
+					<a href="/kfood/recruitment/list.do?schGropType=F&amp;menuNo=201303">고용형태별</a>
+				</li>
+			</ul>
+		</li>
+		<li class="a2">
+			<span>인재정보</span>
+			<ul>
+				<li>
+					<a href="/kfood/workerinfo/list.do?menuNo=200202">상세검색</a>
+				</li>
+				<li>
+					<a href="/kfood/workerinfo/list.do?schGropType=A&amp;menuNo=200203">직종별</a>
+				</li>
+				<li>
+					<a href="/kfood/workerinfo/list.do?schGropType=B&amp;menuNo=200204">지역별</a>
+				</li>
+				<li>
+					<a href="/kfood/workerinfo/list.do?schGropType=D&amp;menuNo=200205">경력별</a>
+				</li>
+				<li>
+					<a href="/kfood/workerinfo/list.do?schGropType=E&amp;menuNo=200206">급여별</a>
+				</li>
+				<li>
+					<a href="/kfood/workerinfo/list.do?schGropType=F&amp;menuNo=200207">고용형태별</a>
+				</li>
+				<li>
+					<a href="/kfood/workerinfo/list.do?schGropType=G&amp;menuNo=200208">전공계열별</a>
+				</li>
+			</ul>
+		</li>
+		<li class="a3">
+			<span>인·적성검사</span>
+			<ul>
+				<li>
+					<a href="/kfood/aptitude/charct/charctStep01.do?menuNo=200302">인성검사</a>
+				</li>
+				<li>
+					<a href="/kfood/aptitude/occp/occpPosbltyStep01.do?menuNo=200303">취업진단</a>
+						<ul>
+								<li><a href="/kfood/aptitude/occp/occpPosbltyStep01.do?menuNo=200304">취업가능성진단</a></li>
+								<li><a href="/kfood/aptitude/occp/occpPreferStep01.do?menuNo=200305">직업선호도검사</a></li>
+								<li><a href="/kfood/aptitude/occp/occpHopeStep01.do?menuNo=200306">희망직업역량진단</a></li>
+								<li><a href="/kfood/aptitude/occp/occpNcsStep01.do?menuNo=200307">NCS직업역량진단</a></li>
+						</ul>
+				</li>
+				<li>
+					<a href="/kfood/aptitude/fntn/fntnAptdStep01.do?menuNo=200308">창업진단</a>
+						<ul>
+								<li><a href="/kfood/aptitude/fntn/fntnAptdStep01.do?menuNo=200309">창업적성검사</a></li>
+								<li><a href="/kfood/aptitude/fntn/fntnAbilityStep01.do?menuNo=200310">창업역량진단</a></li>
+						</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="a4">
+			<span>취업교육</span>
+			<ul>
+				<li>
+					<a href="/kfood/onlineEdu/list.do?menuNo=200402">온라인교육</a>
+				</li>
+				<li>
+					<a href="/kfood/main/contents.do?menuNo=200403">오프라인교육</a>
+				</li>
+				<li>
+					<a href="/kfood/bbs/B0000005/list.do?menuNo=200404">직업정보</a>
+						<ul>
+								<li><a href="/kfood/bbs/B0000005/list.do?menuNo=201309">직업정보</a></li>
+								<li><a href="/kfood/main/contents.do?menuNo=201311">워크넷직업정보</a></li>
+								<li><a href="/kfood/main/contents.do?menuNo=201312">커리어넷직업정보</a></li>
+								<li><a href="/kfood/bbs/B0000011/list.do?menuNo=201308">신직업정보</a></li>
+						</ul>
+				</li>
+				<li>
+					<a href="/kfood/bbs/B0000006/list.do?menuNo=200405">창업정보</a>
+				</li>
+				<li>
+					<a href="/kfood/bbs/B0000007/list.do?menuNo=200406">자격증정보</a>
+				</li>
+				<li>
+					<a href="/kfood/bbs/B0000009/list.do?menuNo=200407">채용박람회정보</a>
+				</li>
+			</ul>
+		</li>
+		<li class="a5">
+			<span>국가식품클러스터</span>
+			<ul>
+				<li>
+					<a href="/kfood/cluster/mvCmyList.do?schNation=&amp;menuNo=201304">입주기업</a>
+				</li>
+				<li>
+					<a href="/kfood/cluster/mvCmyRecruitmentList.do?menuNo=201305">입주기업 채용정보</a>
+				</li>
+			</ul>
+		</li>
+		<li class="a6">
+			<span>고객센터</span>
+			<ul>
+				<li>
+					<a href="/kfood/bbs/B0000001/list.do?menuNo=200602">공지사항</a>
+				</li>
+				<li>
+					<a href="/kfood/bbs/B0000002/list.do?menuNo=200603">Q&amp;A</a>
+				</li>
+				<li>
+					<a href="/kfood/bbs/B0000008/list.do?menuNo=200604">홍보/이벤트</a>
+				</li>
+				<li>
+					<a href="/kfood/recruitment/openApi.do?viewType=CONTBODY" target="_blank">OPENAPI</a>
+				</li>
+			</ul>
+		</li>
+		<li class="a11">
+			<span>이용안내</span>
+			<ul>
+				<li>
+					<a href="/kfood/main/contents.do?menuNo=201202">서비스소개</a>
+				</li>
+				<li>
+					<a href="/kfood/main/contents.do?menuNo=201207">사업안내</a>
+				</li>
+				<li>
+					<a href="/kfood/main/contents.do?menuNo=201208">이용약관</a>
+				</li>
+				<li>
+					<a href="/kfood/main/contents.do?menuNo=201209">저작권정책</a>
+				</li>
+				<li>
+					<a href="/kfood/main/contents.do?menuNo=201210">개인정보처리방침</a>
+				</li>
+				<li>
+					<a href="/kfood/main/contents.do?menuNo=201211">사이트맵</a>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</div>
+					<!-- //contents S -->
+
+				</div>
+</body>
+</html>

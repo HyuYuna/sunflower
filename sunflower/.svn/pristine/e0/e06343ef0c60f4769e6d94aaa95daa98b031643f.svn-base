@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.service.siteManage.popup">
+
+	<sql id="popup-where">
+		<if test='siteIdSe != null and siteIdSe != ""'>
+			<![CDATA[ 		AND	SITE_ID_SE LIKE CONCAT('%', TRIM(#{siteIdSe}), '%') ]]>
+		</if>
+		<if test='pSiteId == null || pSiteId == ""'>
+			<![CDATA[ 		AND	SITE_ID = '']]>
+		</if>
+		<if test='pSiteId != null and pSiteId != ""'>
+			<![CDATA[ 		AND	SITE_ID LIKE CONCAT('%', TRIM(#{pSiteId}), '%') ]]>
+		</if>
+		<if test='searchKwd != null and searchKwd != ""'>
+			<![CDATA[	AND POPUP_SJ LIKE CONCAT('%', TRIM(#{searchKwd}), '%')		]]>
+		</if>
+		<if test='searchUseAt != null and searchUseAt != ""'>
+			<![CDATA[ 	AND	USE_AT = #{searchUseAt} ]]>
+		</if>
+	</sql>
+
+	<!-- 팝업 전체count수 -->
+	<select id="countPopup" parameterType="zvl" resultType="long">
+		<![CDATA[
+		/* countPopup */
+
+		SELECT COUNT(*) totcnt
+		  FROM TC_POPUP_MANAGE a
+		 WHERE 1=1
+		 ]]>
+		<include refid="popup-where" />
+	</select>
+
+	<!-- 팝업 목록 -->
+	<select id="findAllPopup" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAllPopup */
+
+		SELECT AA.*
+		  FROM
+		       (
+		       SELECT a.*
+		            , @RN AS totalRows
+		         FROM
+		              (
+		              SELECT @RN:=@RN+1 AS RNUM, a.*
+		                FROM
+		                     (
+		                     SELECT POPUP_NO
+		                          , POPUP_SJ
+		                          , POPUP_CN
+		                          , BGNDE
+		                          , ENDDE
+		                          , AR_VALUE
+		                          , HG_VALUE
+		                          , ATCH_FILE_ID
+		                          , REGIST_DT
+		                          , SITE_ID_SE
+		                          , CLOSE_USE_AT
+		                          , USE_AT
+		                          , LFT_CRDNT
+		                          , UPEND_CRDNT
+		                          , LINK_TY_CD
+		                          , URLAD
+		                          , MAP_CN
+		                          , SCRL_USE_AT
+		                          , UPDT_DT
+		                          , UPDT_ID
+		                          , REGIST_ID
+		                       FROM TC_POPUP_MANAGE a
+		                      WHERE (@RN:=0)=0
+		]]>
+		<include refid="popup-where" />
+		<![CDATA[
+		ORDER BY REGIST_DT DESC
+		                     ) a
+		            ORDER BY rnum DESC
+		              ) a
+		     ORDER BY rnum
+		       ) AA
+		 LIMIT #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="findPopupBySiteIdSe" parameterType="string" resultType="zvl">
+		<![CDATA[
+		/* findPopupBySiteIdSe */
+
+		SELECT POPUP_NO
+		     , POPUP_SJ
+		     , POPUP_CN
+		     , BGNDE
+		     , ENDDE
+		     , AR_VALUE
+		     , HG_VALUE
+		     , ATCH_FILE_ID
+		     , REGIST_DT
+		     , SITE_ID_SE
+		     , SITE_ID
+		     , CLOSE_USE_AT
+		     , USE_AT
+		     , LFT_CRDNT
+		     , UPEND_CRDNT
+		     , LINK_TY_CD
+		     , URLAD
+		     , MAP_CN
+		     , SCRL_USE_AT
+		     , UPDT_DT
+		     , UPDT_ID
+		     , REGIST_ID
+		  FROM TC_POPUP_MANAGE
+		 WHERE DATE_FORMAT(BGNDE,'%Y%m%d') <= DATE_FORMAT( NOW(), '%Y%m%d')
+		       AND DATE_FORMAT(ENDDE,'%Y%m%d') >= DATE_FORMAT( NOW(), '%Y%m%d')
+		       AND USE_AT = 'Y'
+	]]>
+		<choose>
+		<when test='siteIdSe != null and siteIdSe != ""'>
+			<![CDATA[ AND	SITE_ID_SE LIKE CONCAT('%',#{siteIdSe},'%') ]]>
+		</when>
+		<otherwise>
+			<![CDATA[ AND SITE_ID = #{siteId} ]]>
+		</otherwise>
+	    </choose>
+		ORDER BY REGIST_DT DESC
+
+
+	</select>
+
+	<select id="findPopupDetail" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findPopupDetail */
+
+		SELECT POPUP_NO
+		     , POPUP_SJ
+		     , POPUP_CN
+		     , BGNDE
+		     , ENDDE
+		     , AR_VALUE
+		     , HG_VALUE
+		     , ATCH_FILE_ID
+		     , REGIST_DT
+		     , SITE_ID_SE
+		     , CLOSE_USE_AT
+		     , USE_AT
+		     , LFT_CRDNT
+		     , UPEND_CRDNT
+		     , LINK_TY_CD
+		     , URLAD
+		     , MAP_CN
+		     , SCRL_USE_AT
+		     , UPDT_DT
+		     , UPDT_ID
+		     , REGIST_ID
+		  FROM TC_POPUP_MANAGE
+		 WHERE POPUP_NO = #{popupNo}
+
+		 ]]>
+	</select>
+
+	<!-- 팝업 추가 -->
+	<insert id="savePopup" parameterType="zvl">
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="popupNo">
+			SELECT IFNULL(MAX(POPUP_NO),0)+1 AS POPUP_NO  FROM TC_POPUP_MANAGE
+		</selectKey>
+		<![CDATA[
+		/* savePopup */
+
+		INSERT
+		  INTO TC_POPUP_MANAGE
+		       (
+		           POPUP_NO
+		         , POPUP_SJ
+		         , POPUP_CN
+		         , BGNDE
+		         , ENDDE
+		         , AR_VALUE
+		         , HG_VALUE
+		         , ATCH_FILE_ID
+		         , SITE_ID_SE
+		         , SITE_ID
+		         , CLOSE_USE_AT
+		         , USE_AT
+		         , LFT_CRDNT
+		         , UPEND_CRDNT
+		         , LINK_TY_CD
+		         , URLAD
+		         , MAP_CN
+		         , SCRL_USE_AT
+		         , REGIST_ID
+		         , REGIST_DT
+		         , UPDT_ID
+		         , UPDT_DT
+		       )
+		       VALUES
+		       (
+		           #{popupNo}
+		         , #{popupSj}
+		         , #{popupCn}
+		         , #{bgnde}
+		         , #{endde}
+		         , #{arValue}
+		         , #{hgValue}
+		         , #{atchFileId}
+		         , #{siteIdSe}
+		         , #{pSiteId}
+		         , #{closeUseAt}
+		         , #{useAt}
+		         , #{lftCrdnt}
+		         , #{upendCrdnt}
+		         , #{linkTyCd}
+		         , #{urlad}
+		         , #{mapCn}
+		         , #{scrlUseAt}
+		         , #{registId}
+		         ,  NOW()
+		         , #{updtId}
+		         ,  NOW()
+		       )
+
+		]]>
+	</insert>
+
+	<!-- 팝업 수정 -->
+	<update id="modifyPopup" parameterType="zvl">
+		<![CDATA[
+		/* modifyPopup */
+
+		UPDATE TC_POPUP_MANAGE
+		       SET POPUP_SJ = #{popupSj}
+		     , POPUP_CN = #{popupCn}
+		     , BGNDE = #{bgnde}
+		     , ENDDE = #{endde}
+		     , AR_VALUE = #{arValue}
+		     , HG_VALUE = #{hgValue}
+		     , ATCH_FILE_ID = #{atchFileId}
+		     , SITE_ID_SE = #{siteIdSe}
+		     , SITE_ID = #{pSiteId}
+		     , CLOSE_USE_AT = #{closeUseAt}
+		     , USE_AT = #{useAt}
+		     , LFT_CRDNT = #{lftCrdnt}
+		     , UPEND_CRDNT = #{upendCrdnt}
+		     , LINK_TY_CD = #{linkTyCd}
+		     , URLAD = #{urlad}
+		     , SCRL_USE_AT = #{scrlUseAt}
+		 WHERE POPUP_NO = #{popupNo}
+		]]>
+	</update>
+
+	<!-- 팝업 사용여부 수정 -->
+	<update id="modifyPopupUseAt" parameterType="zvl">
+		<![CDATA[
+		/* modifyPopupUseAt */
+
+		UPDATE TC_POPUP_MANAGE
+		SET USE_AT = #{useAt}
+		WHERE POPUP_NO = #{popupNo}
+		]]>
+	</update>
+
+	<!-- 팝업 삭제 -->
+	<delete id="deletePopup" parameterType="zvl">
+		<![CDATA[
+		/* deletePopup */
+		DELETE
+		FROM TC_POPUP_MANAGE
+		WHERE POPUP_NO = #{popupNo}
+		]]>
+	</delete>
+
+
+</mapper>

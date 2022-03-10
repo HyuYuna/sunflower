@@ -1,0 +1,345 @@
+//------------------------------------//
+//    # CHARTS
+//------------------------------------//
+.chart__container {
+    position: relative;
+    margin: 10px 0;
+    padding-right: 6px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.chart__axis-y {
+    position: relative;
+    top: -20px;
+    left: $axis-y-left-padding--sm;
+    z-index: 1;
+    padding: 40px 0 $axis-label-padding;
+    color: $axis-y-font-color;
+    text-align: left;
+    font-weight: 600;
+    font-size: $axis-y-font-size--sm;
+
+    .chart__container:not(.labels-above-bars) & {
+        @include min-screen($md) {
+            width: $axis-y-width - 50;
+            padding: $axis-label-padding 0;
+            text-align: right;
+            font: {
+                size: $axis-y-font-size;
+                weight: 700;
+            }
+            top: 0;
+            left: 0;
+        }
+
+        @include min-screen($lg) {
+            width: $axis-y-width;
+        }
+    }
+}
+
+.chart__axis-x {
+    width: 100%;
+    padding: {
+        top: 10px;
+        right: $axis-label-padding;
+        bottom: $axis-label-padding;
+        left: $bar-left-padding;
+    }
+    color: $axis-x-font-color;
+    box-sizing: border-box;
+    font-size: $axis-x-font-size--sm;
+
+    @include min-screen($md) {
+        padding-top: $axis-label-padding;
+        padding-left: $axis-y-width + $bar-left-padding - 40;
+        font-size: $axis-x-font-size--md;
+    }
+
+    @include min-screen($lg) {
+        padding-left: $axis-y-width + $bar-left-padding + 10;
+        font-size: $axis-x-font-size;
+    }
+}
+
+.chart__label-y {
+    display: block;
+    height: $bar-space;
+    position: relative;
+    padding: 0 (15px + $axis-label-padding) ($bar-space - $bar-height) 0;
+    box-sizing: border-box;
+    line-height: 1.1;
+
+    &:before {
+        content: '';
+        display: none;
+        width: $axis-division-size;
+        height: 1px;
+        position: absolute;
+        top: $axis-y-top-padding;
+        right: 0;
+        background-color: $axis-division-color;
+
+        @include min-screen($md) {
+            display: block;
+        }
+    }
+}
+
+.label-y__name {
+    position: absolute;
+    top: 0;
+
+    .chart__container:not(.labels-above-bars) & {
+        @include min-screen($md) {
+            position: absolute;
+            top: $axis-y-top-padding;
+            right: (15px + $axis-label-padding);
+            bottom: auto;
+            @include prefix(transform, translateY(-50%));
+        }
+    }
+}
+
+.chart__label-x {
+    display: inline-block;
+    width: 10%;
+    position: relative;
+    right: -10px;
+    padding-top: 10px;
+    text-align: right;
+
+    &:nth-child(odd) {
+        @include max-screen($xl - 1) {
+            opacity: 0;
+        }
+    }
+
+    &:before {
+        content: '';
+        height: $axis-division-size;
+        position: absolute;
+        top: -10px;
+        right: 10px;
+        width: 1px;
+        background-color: $axis-division-color;
+
+        @include min-screen($md) {
+            top: -$axis-label-padding;
+            right: 20px;
+        }
+    }
+
+    &:after {
+        content: '';
+        display: none;
+        width: 1px;
+        height: 2000px;
+        position: absolute;
+        bottom: 100%;
+        right: 10px;
+        z-index: -1;
+        margin-bottom: 10px;
+        background: repeating-linear-gradient(
+            to bottom,
+            $horizontal-line-color,
+            $horizontal-line-color $horizontal-line-size,
+            transparent $horizontal-line-size,
+            transparent $horizontal-line-space
+        );
+
+        @include min-screen($md) {
+            right: 20px;
+        }
+
+        .show-horizontal-lines & {
+            display: block;
+        }
+    }
+}
+
+.chart__box {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 $bar-left-padding;
+    border: {
+        left: $axis-line-border solid $axis-color;
+        bottom: $axis-line-border solid $axis-color;
+    }
+    box-sizing: border-box;
+
+    @include min-screen($md) {
+        padding: 0 ($axis-label-padding + 10) 0 $bar-left-padding;
+        width: calc(100% - #{$axis-y-width} + 50px);
+    }
+
+    @include min-screen($lg) {
+        width: calc(100% - #{$axis-y-width});
+    }
+}
+
+.chart--top {
+    position: relative;
+    padding-top: $chart-top-padding;
+}
+
+.chart--horizontal {
+    color: $value-color;
+    padding-top: 25px;
+
+    @include min-screen($md) {
+        padding-top: 0;
+    }
+
+    .chart__bars {
+        padding: $axis-label-padding + $chart-top-padding 0 $axis-line-border;
+    }
+
+    .bar__container {
+        width: 100%;
+        height: $bar-height;
+        position: relative;
+        margin: 0 0 ($bar-space - $bar-height);
+        padding-right: 10px;
+        box-sizing: border-box;
+        background-clip: content-box;
+
+        &:first-of-type {
+            margin-top: 5px;
+        }
+
+        &:last-of-type {
+            margin-bottom: ($bar-space - $bar-height - $axis-line-border * 2);
+        }
+
+        &:after {
+            content: attr(data-value)'%';
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            opacity: 0;
+            padding-left: 10px;
+            font-size: $value-font-size--sm;
+            @include prefix(transform, translateY(-50%));
+            @include prefix(transition, 'opacity 0s ease-in-out 0s');
+
+            @include min-screen($md) {
+                font-size: $value-font-size;
+            }
+
+            .show-values.visible & {
+                opacity: 1;
+                @include prefix(transition, 'opacity 0.5s ease-in-out ' + $animation-time);
+            }
+        }
+
+        &.max .bar {
+            background-color: $bar-max-color;
+        }
+
+        &.min .bar {
+            background-color: $bar-min-color;
+        }
+    }
+
+    .bar {
+        display: block;
+        height: $bar-height;
+        position: absolute;
+        top: 0;
+        right: 100%;
+        bottom: 0;
+        left: 0;
+        background-color: $bar-color;
+        @include prefix(transition, 'all 0s ease-in-out');
+
+        .chart__container.visible & {
+            @include prefix(transition, 'all ' + $animation-time + ' ease-in-out');
+            right: 0;
+        }
+    }
+}
+
+.show-arrows {
+    padding-left: $arrow-width;
+
+    .chart__box {
+        &:after {
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+            top: 0;
+            left: -$arrow-width;
+            border-style: solid;
+            border-width: 0 $arrow-width $arrow-height $arrow-width;
+            border-color: transparent transparent #000000 transparent;
+        }
+
+        &:before {
+            content: '';
+            width: 0;
+            height: 0;
+            position: absolute;
+            bottom: -$arrow-width;
+            right: -2px;
+            border-style: solid;
+            border-width: $arrow-width 0 $arrow-width $arrow-height;
+            border-color: transparent transparent transparent #000000;
+        }
+    }
+}
+
+.labels-above-bars {
+    .chart__axis-y {
+        position: relative;
+        top: -10px;
+        left: $axis-y-left-padding--sm;
+        z-index: 1;
+        padding: 40px 0 $axis-label-padding;
+        color: $axis-y-font-color;
+        text-align: left;
+        font-weight: 600;
+        font-size: $axis-y-font-size--sm;
+
+        @include min-screen($md) {
+            top: -10px;
+        }
+    }
+
+    .chart__axis-x {
+        padding-left: 0;
+
+        @include min-screen($md) {
+            padding-left: $bar-left-padding - 40;
+        }
+
+        @include min-screen($lg) {
+            padding-left: $bar-left-padding + 10;
+        }
+    }
+
+    .chart__box {
+        @include min-screen($md) {
+            padding: 0 ($axis-label-padding + 10) 0 $bar-left-padding;
+            width: 100%;
+        }
+
+        @include min-screen($lg) {
+            width: 100%;
+        }
+    }
+
+    .chart--horizontal {
+        padding-top: 17px;
+    }
+
+    .chart--top {
+        padding-top: 0;
+    }
+}

@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <security:http pattern="/files/**" security="none"/>
+    <security:http pattern="/upload/**" security="none"/>
+    <security:http pattern="/static/**" security="none"/>
+    <security:http pattern="/smarteditor/**" security="none"/>
+    <security:http pattern="/bos/member/admin/forLogin**" security="none"/>
+    <security:http pattern="/bos/member/admin/googleCrtfc**" security="none"/>
+
+    <!-- 관리자 security -->
+    <security:http pattern="/bos/**" auto-config="true" use-expressions="true" authentication-manager-ref="bosJdbcUserManager">
+    	<security:csrf disabled="true"/>
+        <security:intercept-url pattern="/bos/member/admin/toLogin**" access="permitAll"/>
+        <security:intercept-url pattern="/bos/member/admin/crtfcLogin**" access="permitAll"/>
+        <security:intercept-url pattern="/bos/**" access="hasRole('ROLE_ADMINKEY')"/>
+        <security:form-login login-page="/bos/member/admin/forLogin.do"
+                login-processing-url="/bos/login.do"
+                username-parameter="username"
+                password-parameter="password"
+                authentication-success-handler-ref="bosSessionSavedRequestAwareAuthenticationHandler"
+                authentication-failure-handler-ref="loginHistoryAuthenticationFailureHandler"
+                authentication-failure-url="/bos/member/admin/forLogin.do?flag=authFailure"
+                default-target-url="/bos/loginProcess.do"/>
+
+        <security:logout logout-url="/bos/member/admin/logout2.do"
+                logout-success-url="/bos/member/admin/forLogin.do"/>
+                <!-- logout2 는 security 지원 logout 안사용하고 직접 구현함(logout 메소드: 로그아웃 로그 기록을 위해 변경), security 태울경우에는 2를 제거해 주세요... -->
+
+        <security:session-management session-fixation-protection="migrateSession" invalid-session-url="/bos/member/admin/forLogin.do">
+			<security:concurrency-control max-sessions="1" expired-url="/bos/member/admin/forLogin.do"/> <!-- 중복 로그인 방지 -->
+		</security:session-management>
+
+    </security:http>
+
+
+
+	<!-- 사이트 사용자 security -->
+    <security:http pattern="/ucms/**" auto-config="true" use-expressions="true" authentication-manager-ref="userJdbcUserManager">
+    	<security:csrf disabled="true"/>
+        <security:intercept-url pattern="/ucms/member/*/loginForward**" access="permitAll"/>
+        <security:intercept-url pattern="/ucms/member/*/login**" access="permitAll"/>
+
+        <security:intercept-url pattern="/ucms/auth/**" access="hasRole('ROLE_USERKEY')"/>
+
+        <security:intercept-url pattern="/ucms/member/*/joinInput**" access="hasRole('ROLE_VNAME')"/>
+        <security:intercept-url pattern="/ucms/member/*/joinFinish**" access="hasRole('ROLE_VNAME')"/>
+        <security:intercept-url pattern="/ucms/member/*/insert**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/bbs/*/forInsert**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/bbs/*/insert**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/bbs/*/forUpdate**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/bbs/*/update**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/bbs/*/delete**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/bbs/*/listMy**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/bbs/*/listSec**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/comment/insert**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/comment/delete**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/comment/login**" access="hasRole('ROLE_VNAME')"/>
+        <security:intercept-url pattern="/ucms/bbs/myList/**" access="hasRole('ROLE_VNAME')"/>
+
+        <security:intercept-url pattern="/ucms/member/*/forUpdate**" access="hasRole('ROLE_USERKEY')"/>
+        <security:intercept-url pattern="/ucms/member/*/update**" access="hasRole('ROLE_USERKEY')"/>
+		<security:intercept-url pattern="/ucms/myPage/*/list**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/myPage/*/view**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/myPage/*/forUpdate**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/myPage/*/update**" access="hasRole('ROLE_VNAME')"/>
+		<security:intercept-url pattern="/ucms/myPage/*/delete**" access="hasRole('ROLE_VNAME')"/>
+
+        <security:intercept-url pattern="/ucms/member/*/pwdChange**" access="hasRole('ROLE_VNAME')"/>
+        <security:intercept-url pattern="/ucms/member/*/pwdNextChange**" access="hasRole('ROLE_USERKEY')"/>
+        <security:intercept-url pattern="/ucms/member/*/userPwdChangePopup**" access="hasRole('ROLE_USERKEY')"/>
+        <security:intercept-url pattern="/ucms/member/*/secsn**" access="hasRole('ROLE_USERKEY')"/>
+
+        <security:access-denied-handler ref="ucmsAccessDenied"/>
+        <security:form-login login-page="/ucms/member/user/forLogin.do?menuNo=300019"
+                login-processing-url="/ucms/login.do"
+                username-parameter="username"
+                password-parameter="password"
+                authentication-success-handler-ref="ucmsSessionSavedRequestAwareAuthenticationHandler"
+                authentication-failure-handler-ref="ucmsLoginHistoryAuthenticationFailureHandler"
+                authentication-failure-url="/ucms/member/user/forLogin.do?menuNo=300019"
+                default-target-url="/ucms/main/main.do"/>
+        <security:logout logout-url="/ucms/member/user/logout2.do"
+        		success-handler-ref="ucmsLogoutSuccessHandler"
+                />
+                <!-- logout2 는 security 지원 logout 안사용하고 직접 구현함(logout 메소드: 로그아웃 로그 기록을 위해 변경), security 태울경우에는 2를 제거해 주세요... -->
+
+       <!--  <security:session-management session-fixation-protection="migrateSession" invalid-session-url="/ucms/member/user/forLogin.do?menuNo=300019"> -->
+        <security:session-management session-fixation-protection="migrateSession">
+        	<security:concurrency-control max-sessions="1" expired-url="/ucms/main/main.do"/> <!-- 중복 로그인 방지 -->
+        <!--
+		    <concurrency-control max-sessions="100" error-if-maximum-exceeded="true" />
+		 -->
+		</security:session-management>
+
+    </security:http>
+
+    <!-- push security -->
+    <security:http pattern="/push/**" auto-config="true" use-expressions="true" authentication-manager-ref="pushJdbcUserManager">
+    	<security:csrf disabled="true"/>
+        <security:intercept-url pattern="/push/member/uwam/forLogin**" access="permitAll"/>
+        <security:intercept-url pattern="/push/**" access="hasRole('ROLE_PUSHKEY')"/>
+
+        <security:form-login login-page="/push/member/uwam/forLogin.do"
+                login-processing-url="/push/login.do"
+                username-parameter="username"
+                password-parameter="password"
+                authentication-success-handler-ref="pushSessionSavedRequestAwareAuthenticationHandler"
+                authentication-failure-handler-ref="pushLoginHistoryAuthenticationFailureHandler"
+                authentication-failure-url="/push/member/uwam/forLogin.do?flag=authFailure"
+                default-target-url="/push/main/main.do"/>
+        <security:logout logout-url="/push/member/uwam/logout.do"
+                logout-success-url="/push/member/uwam/forLogin.do"/>
+        <security:session-management session-fixation-protection="migrateSession" invalid-session-url="/push/member/uwam/forLogin.do">
+			<security:concurrency-control max-sessions="1" expired-url="/push/member/uwam/forLogin.do"/> <!-- 중복 로그인 방지 -->
+		</security:session-management>
+
+    </security:http>
+
+
+    <security:authentication-manager id="bosJdbcUserManager">
+        <security:authentication-provider user-service-ref="bosJdbcUserService">
+            <!-- <password-encoder ref="passwordEncoder"/> -->
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:authentication-manager id="userJdbcUserManager">
+        <security:authentication-provider user-service-ref="jdbcUserService">
+			<!-- <password-encoder ref="passwordEncoder"/>-->
+		</security:authentication-provider>
+    </security:authentication-manager>
+
+    <security:authentication-manager id="pushJdbcUserManager">
+        <!-- <security:authentication-provider user-service-ref="pushJdbcUserService">  -->
+            <!-- <password-encoder ref="passwordEncoder"/> -->
+        <!-- </security:authentication-provider>  -->
+    </security:authentication-manager>
+
+
+    <bean id="bosAccessDenied" class="site.unp.cms.service.member.sec.UnpAccessDeniedHandler">
+    	<property name="defaultErrorPage" value="/bos/member/admin/forLogin.do?flag=accessDenied" />
+    	<property name="siteId" value="bos" />
+    </bean>
+
+    <bean id="ucmsAccessDenied" class="site.unp.cms.service.member.sec.UnpAccessDeniedHandler">
+    	<property name="defaultErrorPage" value="/errors/403" />
+    	<property name="siteId" value="ucms" />
+    </bean>
+
+    <bean id="ucmsLogoutSuccessHandler" class="site.unp.cms.service.member.sec.UnpLogoutSuccessHandler">
+    	<property name="siteId" value="ucms" />
+    	<property name="defaultTargetUrl" value="/ucms/main/main.do" />
+    </bean>
+
+    <bean id="bosSessionSavedRequestAwareAuthenticationHandler" class="site.unp.cms.service.member.sec.BosSessionSavedRequestAwareAuthenticationHandler">
+    	<property name="defaultTargetUrl" value="/bos/loginProcess.do" />
+    </bean>
+
+    <bean id="ucmsSessionSavedRequestAwareAuthenticationHandler" class="site.unp.cms.service.member.sec.SessionSavedRequestAwareAuthenticationHandler">
+    	<property name="defaultTargetUrl" value="/ucms/main/main.do" />
+    </bean>
+
+    <bean id="pushSessionSavedRequestAwareAuthenticationHandler" class="site.unp.cms.service.member.sec.SessionSavedRequestAwareAuthenticationHandler">
+    	<property name="defaultTargetUrl" value="/push/main/main.do" />
+    </bean>
+
+    <bean id="loginHistoryAuthenticationFailureHandler" class="site.unp.cms.service.member.sec.LoginHistoryAuthenticationFailureHandler">
+    	<property name="defaultFailureUrl" value="/bos/member/admin/forLogin.do" />
+    	<property name="sqlDao" ref="SqlDAO" />
+    </bean>
+
+    <bean id="ucmsLoginHistoryAuthenticationFailureHandler" class="site.unp.cms.service.member.sec.LoginHistoryAuthenticationFailureHandler">
+    	<property name="defaultFailureUrl" value="/ucms/member/user/forLogin.do?menuNo=300019" />
+    	<property name="sqlDao" ref="SqlDAO" />
+    </bean>
+
+    <bean id="pushLoginHistoryAuthenticationFailureHandler" class="site.unp.cms.service.member.sec.LoginHistoryAuthenticationFailureHandler">
+    	<property name="defaultFailureUrl" value="/push/member/uwam/forLogin.do" />
+    	<property name="sqlDao" ref="SqlDAO" />
+    </bean>
+
+	<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+		<constructor-arg value="256" />
+	</bean>
+
+    <!-- <bean id="saltSource" class="org.springframework.security.authentication.dao.ReflectionSaltSource">
+    	<property name="userPropertyToUse" value="username" />
+    </bean> -->
+
+    <bean id="bosUserMapping" class="site.unp.cms.service.member.sec.BosUserMapping" />
+
+    <bean id="userMapping" class="site.unp.cms.service.member.sec.UserMapping" />
+
+    <bean id="jdbcUserService" class="site.unp.cms.service.member.sec.JnBosJdbcUserDetailsManager" >
+        <property name="usersByUsernameQuery" value="
+        
+        	SELECT A.USER_ID AS username
+					, A.user_PASSWORD AS password
+					, A.USER_NAME AS userNm
+				
+					, (SELECT CODE_NAME FROM TB_CODE WHERE CODE_CODE = A.USER_GROUP AND CODEG_CODE = 'CM05') AS centerName
+					
+					
+					
+			FROM ta_user A
+        	WHERE USER_ID = ?
+        
+        /*
+			SELECT A.USER_SN
+					, A.USER_ID AS username
+					, A.PASSWORD AS password
+					, A.USER_NM
+					, A.USER_EMAD
+					, A.USER_CPNO
+					, A.AUTHOR_CD
+					, B.USER_PIN
+					, B.CRTFC_SE_CD
+					, B.CHLD_CRTFC_AT
+					, B.BRTHDY
+					, B.SEX_CD
+			FROM TM_USER_INFO A
+			LEFT OUTER JOIN TM_USER_PIN B ON B.USER_SN = A.USER_SN
+			WHERE USE_AT = 'Y' AND USER_ID = ?
+			
+			*/
+  		"/>
+        <property name="authoritiesByUsernameQuery" value="
+			SELECT USER_ID, AUTHOR_CD AS AUTHORITY
+			FROM TM_USER_INFO
+			WHERE USER_ID = ?
+        "/>
+        <property name="hierarchicalRolesQuery" value="
+       		SELECT a.CHLDRN_AUTHOR_CD as child, a.PARNTS_AUTHOR_CD as parent
+			FROM TC_AUTHOR_SCLSRT a LEFT JOIN TC_AUTHOR_SCLSRT b on (a.CHLDRN_AUTHOR_CD = b.PARNTS_AUTHOR_CD)
+		"/>
+        <property name="mapper" ref="userMapping"/>
+        <property name="dataSource" ref="ucms.dataSource"/>
+    </bean>
+	
+    <bean id="bosJdbcUserService" class="site.unp.cms.service.member.sec.JnBosJdbcUserDetailsManager" >
+    
+    	
+        <property name="usersByUsernameQuery" value="
+			/*context-security-usersByUsernameQuery*/
+			
+			SELECT
+				A.USER_ID
+				, USER_PASSWORD as PASSWORD
+				, A.USER_NAME
+				, A.USER_LEVEL AS AUTHOR_CD
+				, A.USER_CDATE
+				, A.CENTER_CODE
+				, A.CENTER_CODE2
+				, A.CENTER_CODE3
+				, A.USER_GROUP
+				, (SELECT CODE_NAME FROM tb_code WHERE CODE_CODE = A.CENTER_CODE AND CODEG_CODE = 'CM05') AS CENTER_NAME
+				, (SELECT CODE_NAME FROM tb_code WHERE CODE_CODE = A.CENTER_CODE AND CODEG_CODE = 'CM05') AS centerName
+				, (SELECT CODE_NAME FROM tb_code WHERE CODE_CODE = A.CENTER_CODE2 AND CODEG_CODE = 'CM05') AS CENTER_NAME2
+				, (SELECT CODE_NAME FROM tb_code WHERE CODE_CODE = A.CENTER_CODE3 AND CODEG_CODE = 'CM05') AS CENTER_NAME3
+				FROM TA_USER A
+		  	WHERE A.USER_ID = ?
+		  	
+			/*
+			SELECT
+				A.USER_ID, USER_PASSWORD as PASSWORD, A.USER_NAME, 'ROLE_SUPER' as AUTHOR_CD, A.USER_CDATE
+		  	FROM TA_USER A
+		  	WHERE A.USER_ID = ?
+		  	*/
+		"/>
+        <property name="authoritiesByUsernameQuery" value="
+        	/*context-security- authoritiesByUsernameQuery */
+        	
+        	SELECT A.USER_ID, A.USER_LEVEL AS AUTHORITY
+        	FROM ta_user A
+        	WHERE A.USER_ID = ?
+        	
+        	/*
+        	SELECT A.USER_ID, 'ROLE_SUPER' AS AUTHORITY
+        	FROM TA_USER A
+        	WHERE A.USER_ID = ?
+        	*/
+        
+       		/*SELECT A.USER_ID, B.AUTHOR_CD AS AUTHORITY
+			FROM TM_MNGR_INFO A, TC_USER_AUTHOR B
+			WHERE A.STTUS_CD='T' AND A.USER_ID = B.USER_ID AND A.USER_ID = ?*/
+        "/>
+        <property name="hierarchicalRolesQuery" value="
+       		SELECT a.CHLDRN_AUTHOR_CD as child, a.PARNTS_AUTHOR_CD as parent
+			FROM TC_AUTHOR_SCLSRT a LEFT JOIN TC_AUTHOR_SCLSRT b on (a.CHLDRN_AUTHOR_CD = b.PARNTS_AUTHOR_CD)
+        "/>
+        <property name="mapper" ref="bosUserMapping"/>
+        <property name="dataSource" ref="ucms.dataSource"/>
+    </bean>
+</beans>

@@ -1,0 +1,709 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.cms.dao.bbs.BbsEstnDAO">
+
+	<insert id="saveBbsEstn" parameterType="zvl">
+		<selectKey resultType="long" order="BEFORE" keyProperty="nttId">
+			SELECT ISNULL(MAX(NTT_ID),0)+1 AS NTT_ID FROM TB_BBS_ESTN
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TB_BBS_ESTN (
+				NTT_ID,BBS_ID,SORT_ORDR,NTT_SJ,NTT_CN,NTCR_ID,
+				NTCR_NM,NTCR_EMAD,NTCR_ZIP,NTCR_ADRES1,NTCR_ADRES2,
+				NTCR_TELNO,NTCR_CPNO,NTCR_PIN,PASSWORD,INQIRE_CO,
+				NTCE_BGNDE,NTCE_ENDDE,ANSWER_AT,PARNTS_NO,NTT_NO,
+				ANSWER_LC,SECRET_AT,NTT_TY_CD,USER_SN,ATCH_FILE_ID,
+				DEPT_ID,DEPT_NM,HTML_AT,BBS_SE_CD,IMAGE_REPLC_TEXT_CN,
+				SITE_ID,OPTN1,OPTN2,OPTN3,OPTN4,
+				OPTN5,OPTN6,OPTN7,OPTN8,OPTN9,
+				OPTN10,OPTN11,OPTN12,OPTN13,OPTN14,
+				OPTN15,OPTN16,OPTN17,OPTN18,OPTN19,
+				OPTN20,DELETE_CD,USE_AT,REGIST_ID,REGIST_DT,
+				UPDT_ID,UPDT_DT
+			)
+			VALUES (
+				#{nttId},#{bbsId},#{sortOrdr},#{nttSj},#{nttCn},#{ntcrId},
+				#{ntcrNm},#{ntcrEmad},#{ntcrZip},#{ntcrAdres1},#{ntcrAdres2},
+				#{ntcrTelno},#{ntcrCpno},#{ntcrPin},#{password},0,
+				#{ntceBgnde},#{ntceEndde},#{answerAt},#{parntsNo},#{nttNo},
+				#{answerLc},#{secretAt},#{nttTyCd},#{userSn},#{atchFileId},
+				#{deptId},#{deptNm},ISNULL(#{htmlAt},'N'),#{bbsSeCd},#{imageReplcTextCn},
+				#{siteId},#{optn1},#{optn2},#{optn3},#{optn4},
+				#{optn5},#{optn6},#{optn7},#{optn8},#{optn9},
+				#{optn10},#{optn11},#{optn12},#{optn13},#{optn14},
+				#{optn15},#{optn16},#{optn17},#{optn18},#{optn19},
+				#{optn20},ISNULL(#{deleteCd}, '0'),'Y',#{registId},GETDATE(),
+				#{updtId},GETDATE()
+			)
+		]]>
+	</insert>
+
+	<sql id="findAllBbsEstn-where">
+		<if test='sdate != null and sdate != ""'>
+			<![CDATA[	AND CONVERT(char(8),A.REGIST_DT, 112) >= REPLACE(#{sdate},'-','') 		]]>
+		</if>
+		<if test='edate != null and edate != ""'>
+			<![CDATA[	AND CONVERT(char(8),A.REGIST_DT, 112) <= REPLACE(#{edate},'-','') 		]]>
+		</if>
+		<if test='searchBgnDe != null and searchBgnDe != ""'>
+			<![CDATA[	AND REPLACE(A.NTCE_BGNDE,'-','') >= REPLACE(#{searchBgnDe},'-','') 		]]>
+		</if>
+		<if test='searchEndDe != null and searchEndDe != ""'>
+			<![CDATA[	AND REPLACE(A.NTCE_ENDDE,'-','') <= REPLACE(#{searchEndDe},'-','') 		]]>
+		</if>
+
+		<if test='useAt != null and useAt != ""'>
+			<![CDATA[	AND A.USE_AT = #{useAt} 		]]>
+		</if>
+		<if test='deptId != null and deptId != ""'>
+			<![CDATA[	AND A.DEPT_ID = #{deptId} 		]]>
+		</if>
+		<if test='deleteCd != null and deleteCd != ""'>
+			<![CDATA[	AND A.DELETE_CD = #{deleteCd} 		]]>
+		</if>
+		<if test='option1 != null and option1 != ""'>
+			<![CDATA[	AND A.OPTION1 = #{option1} 		]]>
+		</if>
+		<if test='option2 != null and option2 != ""'>
+			<![CDATA[	AND A.OPTION2 = #{option2} 		]]>
+		</if>
+		<if test='option3 != null and option3 != ""'>
+			<![CDATA[	AND A.OPTION3 = #{option3} 		]]>
+		</if>
+		<if test='option4 != null and option4 != ""'>
+			<![CDATA[	AND A.OPTION4 = #{option4} 		]]>
+		</if>
+		<if test='option5 != null and option5 != ""'>
+			<![CDATA[	AND A.OPTION5 = #{option5} 		]]>
+		</if>
+		<if test='searchWrd != null and searchWrd != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[	AND A.NTT_SJ LIKE '%' + #{searchWrd} + '%'		]]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[	AND A.NTT_CN LIKE '%' + #{searchWrd} + '%'		]]>
+			</if>
+			<if test='searchCnd == "3"'>
+				<![CDATA[	AND ( A.NTT_SJ LIKE '%' + #{searchWrd} + '%' OR A.NTT_CN LIKE '%' + #{searchWrd} + '%' )	]]>
+			</if>
+			<if test='searchCnd == "4"'>
+				<![CDATA[	AND A.NTCR_NM LIKE '%' + #{searchWrd} + '%' 		]]>
+			</if>
+		</if>
+
+		<if test='userPin != null and userPin != ""'>
+			<![CDATA[	AND A.NTCR_PIN = #{userPin} 		]]>
+		</if>
+
+		<if test='frstRegisterId != null and frstRegisterId !="" and myinfoAT =="Y"'>
+			AND A.REGIST_ID = #{registId}
+		</if>
+	</sql>
+
+	<select id="countBbsEstn" parameterType="zvl" resultType="long">
+		<![CDATA[
+			SELECT
+				COUNT(A.NTT_ID)
+			FROM
+				TB_BBS_ESTN A
+			WHERE  A.BBS_ID = #{bbsId} AND A.PARNTS_NO = 0
+
+		]]>
+		<include refid="findAllBbsEstn-where" />
+	</select>
+
+	<select id="findAllBbsFile" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT A.ATCH_FILE_ID,
+			       A.FILE_SN,
+			       A.FILE_STRE_COURS,
+			       A.STRE_FILE_NM,
+			       A.ORIGNL_FILE_NM,
+			       A.FILE_EXTSN_NM,
+			       A.FILE_SIZE,
+			       A.FILE_CN,
+			       A.FILE_FIELD_NM,
+				   B.NTT_ID,
+				   B.BBS_ID
+			  FROM TC_CMMN_FILE_DETAIL A
+			  INNER JOIN TB_BBS_ESTN B ON B.ATCH_FILE_ID = A.ATCH_FILE_ID
+			  WHERE A.ATCH_FILE_ID IN
+		]]>
+		<foreach item="item" index="index" collection="atchFileIdData" open="(" close=")" separator=",">
+			#{item}
+		</foreach>
+		ORDER BY A.FILE_SN DESC
+	</select>
+
+
+	<select id="findAllBbsEstn" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT  AA.*
+			  FROM  (
+			SELECT
+				ROW_NUMBER() OVER(
+		]]>
+		<choose>
+			<!-- 계단형게시판 -->
+			<when test="bbsTyCd != null and bbsTyCd == 'BBST02'">
+				<![CDATA[	ORDER BY ALL_LIST.PARNTS_NO DESC, ALL_LIST.ANSWER_LC ASC, ALL_LIST.REGIST_DT DESC	]]>
+			</when>
+			<!-- 공지게시판 -->
+			<when test="bbsTyCd != null and bbsTyCd == 'BBST03'">
+				<![CDATA[	ORDER BY ALL_LIST.NTT_TY_CD ASC, ALL_LIST.REGIST_DT DESC	]]>
+			</when>
+			<!-- 일반게시판 -->
+			<otherwise>
+				<![CDATA[	ORDER BY ALL_LIST.REGIST_DT DESC	]]>
+			</otherwise>
+		</choose>
+
+		<![CDATA[
+				) RNUM, 	ALL_LIST.*
+			  FROM  (
+
+
+			SELECT
+				  A.NTT_ID
+				, A.BBS_ID
+				, A.NTCR_ID
+				, A.SORT_ORDR
+				, A.NTCR_NM
+				, A.NTCR_EMAD
+				, A.NTCR_PIN
+				, A.NTCR_ZIP
+				, A.NTCR_ADRES1
+				, A.NTCR_ADRES2
+				, A.NTCR_TELNO
+				, A.NTCR_CPNO
+				, A.PASSWORD
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.INQIRE_CO
+				, A.USE_AT
+				, A.NTCE_BGNDE
+				, A.NTCE_ENDDE
+				, A.REGIST_DT
+				, A.UPDT_DT
+				, A.REGIST_ID
+				, A.UPDT_ID
+				, A.PARNTS_NO
+				, A.NTT_NO
+				, A.ATCH_FILE_ID
+				, A.DELETE_CD
+				, A.OPTN1, A.OPTN2, A.OPTN3, A.OPTN4, A.OPTN5, A.OPTN6, A.OPTN7, A.OPTN8, A.OPTN9, A.OPTN10
+				, A.NTT_TY_CD
+				, A.IMAGE_REPLC_TEXT_CN
+				, A.ANSWER_AT
+				, CASE
+					WHEN A.REGIST_DT >= GETDATE()-3 THEN 'Y'
+					ELSE 'N'
+				  END AS NEW_YN
+				, CASE
+					WHEN A.NTT_TY_CD = '1'
+					AND REPLACE(A.NTCE_BGNDE,'-','') <= CONVERT(char(8),GETDATE(), 112)
+					AND REPLACE(A.NTCE_ENDDE,'-','') >= CONVERT(char(8),GETDATE(), 112)
+					THEN '1'
+					ELSE '2'
+				  END AS NTT_TYPE
+				, A.DEPT_ID
+				, A.HTML_AT
+				, A.BBS_SE_CD
+			FROM
+				TB_BBS_ESTN A
+			WHERE  A.BBS_ID = #{bbsId} AND A.PARNTS_NO = 0
+		]]>
+		<include refid="findAllBbsEstn-where" />
+
+		<![CDATA[
+					) ALL_LIST
+			  	) AA
+			WHERE  AA.RNUM > #{firstIndex}
+			AND AA.RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="findAllBbsEstnExcel" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.NTT_ID
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.REGIST_ID
+				, A.NTCR_NM
+				, A.NTT_NO
+				, A.INQIRE_CO
+				, A.PARNTS_NO
+				, A.USE_AT
+				, A.ATCH_FILE_ID
+				, A.BBS_ID
+				, A.NTCE_BGNDE
+				, A.NTCE_ENDDE
+				, A.SECRET_AT
+				, A.NTT_TY_CD
+				, A.REGIST_DT
+				, A.DELETE_CD
+				, A.DEPT_ID
+				, A.ANSWER_AT
+				, A.OPTN1, A.OPTN2, A.OPTN3, A.OPTN4, A.OPTN5, A.OPTN6, A.OPTN7, A.OPTN8, A.OPTN9, A.OPTN10
+			FROM
+				TB_BBS_ESTN a
+			WHERE A.BBS_ID = #{bbsId}
+		]]>
+		<include refid="findAllBbsEstn-where" />
+
+		<!-- 일반게시판 -->
+		<if test="bbsTyCd != null and bbsTyCd == 'BBST01'">
+			<![CDATA[	ORDER BY A.REGIST_DT DESC	]]>
+		</if>
+		<!-- 계단형게시판 -->
+		<if test="bbsTyCd != null and bbsTyCd == 'BBST02'">
+			<![CDATA[	ORDER BY A.PARNTS_NO desc, A.REPLY_LC ASC	]]>
+		</if>
+		<!-- 공지게시판 -->
+		<if test="bbsTyCd != null and bbsTyCd == 'BBST03'">
+			<![CDATA[	ORDER BY A.NTT_TY_CD ASC, A.REGIST_DT DESC	]]>
+		</if>
+	</select>
+
+
+	<select id="findOneBbsEstn" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				  A.NTT_ID
+				, A.BBS_ID
+				, A.NTCR_ID
+				, A.SORT_ORDR
+				, A.NTCR_NM
+				, A.NTCR_EMAD
+				, A.NTCR_PIN
+				, A.NTCR_ZIP
+				, A.NTCR_ADRES1
+				, A.NTCR_ADRES2
+				, A.NTCR_TELNO
+				, A.NTCR_CPNO
+				, A.PASSWORD
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.INQIRE_CO
+				, A.USE_AT
+				, A.NTCE_BGNDE
+				, A.NTCE_ENDDE
+				, A.REGIST_DT
+				, A.UPDT_DT
+				, A.REGIST_ID
+				, A.UPDT_ID
+				, A.PARNTS_NO
+				, A.NTT_NO
+				, A.ATCH_FILE_ID
+				, A.DELETE_CD
+				, A.OPTN1, A.OPTN2, A.OPTN3, A.OPTN4, A.OPTN5, A.OPTN6, A.OPTN7, A.OPTN8, A.OPTN9, A.OPTN10
+				, A.NTT_TY_CD
+				, A.IMAGE_REPLC_TEXT_CN
+				, A.ANSWER_AT
+				, CASE
+					WHEN A.REGIST_DT >= GETDATE()-3 THEN 'Y'
+					ELSE 'N'
+				  END AS NEW_YN
+				, CASE
+					WHEN A.NTT_TY_CD = '1'
+					AND REPLACE(A.NTCE_BGNDE,'-','') <= CONVERT(char(8),GETDATE(), 112)
+					AND REPLACE(A.NTCE_ENDDE,'-','') >= CONVERT(char(8),GETDATE(), 112)
+					THEN '1'
+					ELSE '2'
+				  END AS NTT_TYPE
+				, A.DEPT_ID
+				, A.HTML_AT
+				, A.BBS_SE_CD
+			FROM
+				TB_BBS_ESTN A
+			WHERE
+				A.BBS_ID = #{bbsId}
+			AND
+				A.NTT_ID = #{nttId}
+		]]>
+		<if test='siteId != "bos"'>
+			AND A.DELETE_CD = '0'
+		</if>
+	</select>
+
+	<update id="updateBbsEstn" parameterType="zvl">
+ 		<![CDATA[
+			UPDATE TB_BBS_ESTN
+			SET
+			    NTT_SJ = #{nttSj},
+			    NTT_CN = #{nttCn},
+			    NTCR_NM = #{ntcrNm},
+			    NTCR_EMAD = #{ntcrEmad},
+			    NTCR_ZIP = #{ntcrZip},
+			    NTCR_ADRES1 = #{ntcrAdres1},
+			    NTCR_ADRES2 = #{ntcrAdres2},
+			    NTCR_TELNO = #{ntcrTelno},
+			    NTCR_CPNO = #{ntcrCpno},
+			    NTCE_BGNDE = #{ntceBgnde},
+			    NTCE_ENDDE = #{ntceEndde},
+			    SECRET_AT = #{secretAt},
+			    NTT_TY_CD = #{nttTyCd},
+			    ATCH_FILE_ID = #{atchFileId},
+			    DEPT_ID = #{deptId},
+			    DEPT_NM = #{deptNm},
+			    HTML_AT = #{htmlAt},
+			    BBS_SE_CD = #{bbsSeCd},
+			    IMAGE_REPLC_TEXT_CN = #{imageReplcTextCn},
+			    ANSWER_AT = #{answerAt},
+			    OPTN1 = #{optn1},
+			    OPTN2 = #{optn2},
+			    OPTN3 = #{optn3},
+			    OPTN4 = #{optn4},
+			    OPTN5 = #{optn5},
+			    OPTN6 = #{optn6},
+			    OPTN7 = #{optn7},
+			    OPTN8 = #{optn8},
+			    OPTN9 = #{optn9},
+			    OPTN10 = #{optn10},
+			    OPTN11 = #{optn11},
+			    OPTN12 = #{optn12},
+			    OPTN13 = #{optn13},
+			    OPTN14 = #{optn14},
+			    OPTN15 = #{optn15},
+			    OPTN16 = #{optn16},
+			    OPTN17 = #{optn17},
+			    OPTN18 = #{optn18},
+			    OPTN19 = #{optn19},
+			    OPTN20 = #{optn20},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = GETDATE()
+			WHERE BBS_ID = #{bbsId} AND NTT_ID = #{nttId}
+ 		]]>
+	</update>
+
+	<update id="deleteBbsEstn" parameterType="zvl">
+ 		<![CDATA[
+			UPDATE TB_BBS_ESTN SET
+				USE_AT = 'N',
+				UPDT_ID = #{updtId},
+				UPDT_DT = GETDATE(),
+				DELETE_CD = #{deleteCd}
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		]]>
+	</update>
+
+	<update id="restoreBbsEstn" parameterType="zvl">
+ 		<![CDATA[
+			UPDATE TB_BBS_ESTN SET
+				USE_AT = 'Y',
+				UPDT_ID = #{updtId},
+				UPDT_DT = GETDATE(),
+				DELETE_CD = #{deleteCd}
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		]]>
+	</update>
+
+	<delete id="deleteBbsEstnByBbsIdAndNttId" parameterType="zvl">
+ 		<![CDATA[
+			DELETE TB_BBS_ESTN
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		]]>
+	</delete>
+
+	<delete id="deleteBbsEstnByBbsId" parameterType="zvl">
+ 		<![CDATA[
+			DELETE TB_BBS_ESTN
+			WHERE BBS_ID = #{bbsId}
+ 		]]>
+	</delete>
+
+	<update id="modifyBbsEstnInqireCo" parameterType="zvl">
+ 		<![CDATA[
+			UPDATE TB_BBS_ESTN
+			SET
+				INQIRE_CO = INQIRE_CO+1,
+				UPDT_ID = #{updtId},
+				UPDT_DT = GETDATE()
+			WHERE BBS_ID = #{bbsId}
+			  AND NTT_ID = #{nttId}
+ 		]]>
+	</update>
+
+	<select id="countBbsEstnReplay" parameterType="zvl" resultType="int">
+		<![CDATA[
+			SELECT COUNT(NTT_ID)
+			FROM
+				TB_BBS_ESTN a
+			WHERE
+				A.BBS_ID = #{bbsId}
+				AND A.DELETE_CD = '0'
+				AND A.PARNTS_NO = #{nttId}
+		]]>
+	</select>
+
+	<select id="findAllBbsEstnReplay" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.NTT_SJ
+				, A.NTT_CN
+				, A.NTCR_ID
+				, A.NTCR_NM
+				, A.PASSWORD
+				, A.REGIST_ID
+				, A.NTCE_BGNDE
+				, A.NTCE_ENDDE
+				, A.INQIRE_CO
+				, A.USE_AT
+				, A.ATCH_FILE_ID
+				, A.BBS_ID
+				, A.NTT_ID
+				, A.PARNTS_NO
+				, A.SECRET_AT
+				, A.NTT_TY_CD
+				, A.DELETE_CD
+				, REGIST_DT
+				, UPDT_DT
+				, A.DEPT_ID
+				, HTML_AT
+				, BBS_SE_CD
+				, OPTN1, OPTN2, OPTN3, OPTN4, OPTN5, OPTN6, OPTN7, OPTN8, OPTN9, OPTN10
+				, IMAGE_REPLC_TEXT_CN
+			FROM
+				TB_BBS_ESTN A
+			WHERE
+				A.BBS_ID = #{bbsId}
+				AND A.DELETE_CD = '0'
+				AND A.PARNTS_NO = #{nttId}
+			ORDER BY A.REGIST_DT DESC
+		]]>
+	</select>
+
+	<select id="findAllBbsEstnPrevAndNext" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT
+			NTT_ID, ISNULL(PREV_NTT_ID, 0) AS PREV_NTT_ID, ISNULL(NEXT_NTT_ID, 0) AS NEXT_NTT_ID, PREV_NTT_SJ, NEXT_NTT_SJ
+		FROM (
+			SELECT
+      			NTT_ID
+			    , LEAD(NTT_ID, 1, '') OVER (ORDER BY REGIST_DT DESC) AS PREV_NTT_ID
+			    , LAG(NTT_ID, 1, '') OVER (ORDER BY REGIST_DT DESC ) AS NEXT_NTT_ID
+			    , LEAD(NTT_SJ, 1, '') OVER (ORDER BY REGIST_DT DESC) AS PREV_NTT_SJ
+			    , LAG(NTT_SJ, 1, '') OVER (ORDER BY REGIST_DT DESC ) AS NEXT_NTT_SJ
+			FROM
+				TB_BBS_ESTN a
+			WHERE BBS_ID = #{bbsId} AND A.DELETE_CD = '0'
+		]]>
+		<include refid="findAllBbsEstn-where" />
+		<![CDATA[
+			)
+			WHERE NTT_ID = #{nttId}
+		]]>
+	</select>
+
+	<select id="findAllBbsEstnByBbsIdAndDeleteCd" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				A.NTT_SJ
+				, A.NTCR_ID
+				, A.NTCR_NM
+				, A.PASSWORD
+				, A.REGIST_ID
+				, A.NTCE_BGNDE
+				, A.NTCE_ENDDE
+				, A.INQIRE_CO
+				, A.USE_AT
+				, A.ATCH_FILE_ID
+				, A.BBS_ID
+				, A.NTT_ID
+				, A.PARNTS_NO
+				, A.SECRET_AT
+				, A.NTT_TY_CD
+				, A.DELETE_CD
+				, CASE
+					WHEN A.REGIST_DT >= GETDATE()-3 THEN 'Y'
+					ELSE 'N'
+				  END AS NEW_YN
+				, REGIST_DT
+				, UPDT_DT
+				, A.DEPT_ID
+				, HTML_AT
+				, BBS_SE_CD
+				, OPTN1, OPTN2, OPTN3, OPTN4, OPTN5, OPTN6, OPTN7, OPTN8, OPTN9, OPTN10
+			FROM TB_BBS_ESTN A WITH(NOLOCK)
+			WHERE A.BBS_ID = #{bbsId} AND A.DELETE_CD = #{deleteCd}
+		]]>
+	</select>
+
+	<select id="findOneBbsEstnNext" parameterType="zvl" resultType="zvl" >
+	/* findOneBbsEstnNext */
+		<![CDATA[
+		SELECT aa.NTT_ID AS Next_NTT_ID, aa.NTT_SJ AS Next_NTT_SJ
+		FROM (
+
+			SELECT
+				a.NTT_ID
+				,a.NTT_SJ
+			FROM
+				TB_BBS_ESTN a WITH(NOLOCK)
+			WHERE a.BBS_ID = #{bbsId}
+				AND a.DELETE_CD = '0'
+				AND a.NTT_ID IN (
+					SELECT MIN(NTT_ID)
+					FROM TB_BBS_ESTN WITH(NOLOCK)
+					WHERE BBS_ID = #{bbsId} AND DELETE_CD = '0' AND NTT_ID > #{nttId} AND PARNTS_NO = 0
+		]]>
+		<include refid="findAllBbsEstn-where" />
+		<![CDATA[
+				)
+		) aa
+		]]>
+	</select>
+
+
+	<select id="findOneBbsEstnPrev" parameterType="zvl" resultType="zvl" >
+	/* findOneBbsEstnPrev */
+		<![CDATA[
+		SELECT aa.NTT_ID AS PREV_NTT_ID, aa.NTT_SJ AS PREV_NTT_SJ
+		FROM (
+
+			SELECT
+				a.NTT_ID
+				,a.NTT_SJ
+			FROM
+				TB_BBS_ESTN a WITH(NOLOCK)
+			WHERE a.BBS_ID = #{bbsId}
+				AND a.DELETE_CD = '0'
+				AND a.NTT_ID IN (
+					SELECT MAX(NTT_ID)
+					FROM TB_BBS_ESTN WITH(NOLOCK)
+					WHERE BBS_ID = #{bbsId} AND DELETE_CD = '0' AND NTT_ID < #{nttId} AND PARNTS_NO = 0
+		]]>
+		<include refid="findAllBbsEstn-where" />
+		<![CDATA[
+				)
+		) aa
+		]]>
+	</select>
+
+	<select id="findAllBbsEstnMain" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT  AA.*
+			   FROM
+			   (
+			    SELECT  ROW_NUMBER() OVER(ORDER BY ALL_LIST.NTT_TYPE ASC,  ALL_LIST.REG_DATE DESC) RNUM, ALL_LIST.*
+			      FROM  (
+
+			SELECT
+				A.NTT_ID
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.BBS_ID
+				, A.OPTN1
+				, A.REGIST_DT as REG_DATE
+				, CONVERT(char(10),A.REGIST_DT, 120) as REGIST_DT
+				, A.ATCH_FILE_ID
+				, IMAGE_REPLC_TEXT_CN
+				, CASE
+					WHEN A.REGIST_DT >= GETDATE()-3 THEN 'Y'
+					ELSE 'N'
+				  END AS NEW_YN
+				, CASE
+					WHEN A.NTT_TY_CD = '1'
+					AND REPLACE(A.NTCE_BGNDE,'-','') <= CONVERT(char(8),GETDATE(), 112)
+					AND REPLACE(A.NTCE_ENDDE,'-','') >= CONVERT(char(8),GETDATE(), 112)
+					THEN '1'
+					ELSE '2'
+				  END AS NTT_TYPE
+			FROM
+				TB_BBS_ESTN A
+			WHERE
+				A.DELETE_CD = '0'
+			AND A.BBS_ID = #{bbsId}
+			AND A.USE_AT = 'Y'
+		]]>
+		<if test='optn1 != null and optn1 != ""'>
+			<![CDATA[	AND	A.OPTN1 = #{optn1} 		]]>
+		</if>
+		<![CDATA[
+
+					) ALL_LIST
+			  	) AA
+			WHERE  AA.RNUM > #{firstIndex}
+			AND AA.RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="findOneBbsEstnAccessInfo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				NTT_ID, BBS_ID, DEPT_ID, NTCR_PIN, NTCR_ID, SECRET_AT
+			FROM TB_BBS_ESTN A
+			WHERE A.BBS_ID = #{bbsId} AND A.NTT_ID = #{nttId}
+		]]>
+	</select>
+
+	<select id="findOneBbsEstnReByBbsIdAndNttId" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				  A.NTT_ID
+				, A.BBS_ID
+				, A.NTCR_ID
+				, A.NTCR_NM
+				, A.NTT_SJ
+				, A.NTT_CN
+				, A.HTML_AT
+			FROM
+				TB_BBS_ESTN A
+			WHERE
+				A.BBS_ID = #{bbsId}
+			AND
+				A.NTT_ID = #{nttId}
+		]]>
+	</select>
+
+	<select id="countBbsEstnReply" parameterType="zvl" resultType="long">
+		<![CDATA[
+			SELECT
+				COUNT(A.NTT_ID)
+			FROM
+				TB_BBS_ESTN A
+			WHERE  A.BBS_ID = #{bbsId} AND A.PARNTS_NO = #{parntsNo} AND A.DELETE_CD = 0
+		]]>
+	</select>
+
+	<update id="modifyBbsEstnAnswerAt" parameterType="zvl">
+ 		<![CDATA[
+			UPDATE TB_BBS_ESTN
+			SET
+				ANSWER_AT = #{answerAt},
+				UPDT_ID = #{updtId},
+				UPDT_DT = GETDATE()
+			WHERE BBS_ID = #{bbsId}
+			AND NTT_ID = #{nttId}
+ 		]]>
+	</update>
+
+	<!-- 첨부파일 관련 게시글 정보 조회하기(게시글이 많아서 성능에 문제 될시 atch_file_id index생성 필요) -->
+	<select id="findOneBbsEstnAtchFileIdAt" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT  AA.*
+			   FROM
+			   (
+			    SELECT  ROW_NUMBER() OVER(ORDER BY ALL_LIST.REGIST_DT DESC) RNUM, ALL_LIST.*
+			      FROM  (
+
+
+			SELECT
+				NTCR_ID, SECRET_AT, DELETE_CD, USE_AT, REGIST_DT
+			FROM TB_BBS_ESTN
+			WHERE ATCH_FILE_ID = #{atchFileId}
+
+
+					) ALL_LIST
+			  	) AA
+			WHERE  AA.RNUM = 1
+		]]>
+	</select>
+</mapper>

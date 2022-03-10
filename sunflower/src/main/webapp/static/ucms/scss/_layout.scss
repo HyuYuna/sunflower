@@ -1,0 +1,364 @@
+.global{
+	position:absolute;
+	right:0;
+	top:20px;
+	z-index: 1;
+	li{float:left;}
+	a{
+		line-height:1;
+		padding:5px 11px;
+		border:1px solid $bdcolor;
+		float:right;
+		margin-left:10px;
+	}
+}
+
+input[type="checkbox"], input[type="radio"]{width: 30px;height: 30px;}
+label{line-height: 36px;}
+
+#wrap{position:relative;}
+#header{height:80px;max-width:1000px;margin: 0 auto;height:119px;position:relative;z-index:2;}
+#header .logo{float:left;padding-top:63px}
+#header .logo a{display:block;}
+
+.menuNavOpener { 
+	position: absolute; 
+	transition: all 0s;
+	transform: scale(1);
+	animation: cd-bounce-in 0.3s linear;
+	display: none;
+	top: 50px; 
+	right: 10px; 
+	width: 60px;
+	height: 60px;
+	.bar {
+		position: absolute;
+		display: block;
+		width: 30px;
+		height: 3px;
+		background: #000;
+		top: 50%;
+		margin-top: -1px;
+		left: 50%;
+		margin-left: -10px;
+		transition: background 0.3s;
+		&:before,
+		&:after{
+			 content: ''; 
+			 position: absolute; 
+			 left: 0; 
+			 background: inherit; 
+			 width: 100%; 
+			 height: 100%; 
+			 transform: translateZ(0); 
+			 backface-visibility: hidden; 
+			 transition: transform 0.3s, background 0s;
+		}
+		&:before{
+			top: -8px; 
+			transform: rotate(0);
+		}
+		&:after{
+			bottom: -8px; 
+			transform: rotate(0);
+		}
+	}
+	.menuNavOpen & .bar{
+		background: rgba(232, 74, 100, 0);
+		&:before,
+		&:after{
+			background: #000; 
+		}
+		&:before{
+			top: 0; 
+			transform: rotate(135deg);
+		}
+		&:after{
+			bottom: 0; 
+			transform: rotate(225deg);
+		}
+	}
+}
+
+
+@include breakpoint($tb) {
+	#gnb>ul{
+		display: none;
+		height: 0;
+	}
+	.menuNavOpener {
+		display: block;
+	}
+	.menuNavOpen #gnb {
+		float: left;
+		width: 100%;
+		position: absolute;
+		top: 118px;
+		z-index: 100;
+		background-color: rgba(21, 62, 64, 0.8);
+		>ul{
+			display: block;
+			height: auto;
+			width: 100%;
+			>li{
+				border-left:1px solid rgba(255, 255, 255, 0.3);
+				border-top:1px solid rgba(255, 255, 255, 0.3);
+			}
+			a{color:#fff;
+				&:before{
+					display: none;
+				}
+			}
+		}
+	} 
+}
+
+#gnb .navBar {
+	position: absolute; 
+	transition: left 0.25s ease-out, width 0.25s ease-in-out;
+}
+#gnb .navBar:before {
+	content:''; 
+	position: absolute; 
+	margin-left: -50%; 
+	width:100%; 
+	border-bottom: 2px solid #0063cc; 
+	left:auto; 
+	right: auto; 
+	bottom: -1px;
+}
+
+#gnb{
+	float:right;
+	padding-top:65px;
+	@include breakpoint($tb){ 
+		padding-top: 0;
+	}
+	position: relative;
+	>ul{
+		>li{
+			position: relative;
+			@include breakpoint($tb){ 
+				width: 16.6666%;
+				text-align: center;
+			}
+			@include breakpoint($sm){ 
+				width: 50%;
+			}
+			float:left;
+			&:last-child:after{
+				content: '';
+				position:absolute;
+				border-left:1px solid #e3e3e3;
+				top:3px;
+				right:0;
+				height:16px;
+			}
+			&.on>a{
+				@include breakpoint($tb){ 
+					background-color: #000;
+				}
+			}
+			>a{
+				display:block;
+				padding:0 24px;
+				@include breakpoint($tb){ 
+					padding:20px;
+				}
+				font-size:22px;
+				line-height:1;
+				color:#163d40;
+				font-family:'Nanum Square';
+				font-weight:bold;
+				position: relative;
+				&:before {
+					content: '';
+					position:absolute;
+					border-left:1px solid #e3e3e3;
+					top:3px;
+					left:0;
+					height:16px;
+				}
+			}
+			ul{
+				display:none;
+				li{
+					a{}
+				}
+			}
+		}
+	}
+}
+
+.lnb{
+	background-color:rgba(21,62, 64, 0.8);
+	margin-top:-50px;
+	z-index:1;
+	position:relative;
+	height:50px;
+	&.size1 ul{
+		display:block;
+		li{
+			width:250px;
+		}
+	}
+	ul{
+		width:$mw;
+		@include breakpoint($tb){ width: 100%;}
+		margin: 0 auto;
+		display:table;
+		table-layout:fixed;
+		li{
+			display:table-cell;
+			vertical-align:middle;
+			border-left:1px solid #b1bfc1;
+			height:50px;
+			&:last-child{border-right:1px solid #b1bfc1;}
+		}		
+		a{
+			font-size:18px;
+			line-height: 50px;
+			@include breakpoint($xs){ font-size:12px;}
+			text-align:center;
+			font-family:'Nanum Square';
+			font-weight:bold;
+			color:#fff;
+			display:block;
+			
+		}
+		li.on{
+			background-color:#fff;
+			border:none !important;
+			a{
+				position:relative;
+				top:-10px;
+				padding-top:10px;
+				line-height:40px;
+				color:#163d40;
+				font-size:20px;
+				@include breakpoint($xs){ font-size:14px;}
+				background-color:#fff;
+			}
+			&+li{border-left:none;}
+		}
+	}
+}
+#footer{
+	margin-top:100px;
+	border-top:1px solid #e3e3e3;
+	padding-top:40px;
+	height:160px;
+	@include breakpoint($tb){ 
+		height: auto;
+		padding-top: 30px;
+		margin-top: 50px;
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+	.set{
+		max-width:$mw;
+		margin: 0 auto;
+		position:relative;
+		padding-bottom: 120px;
+	}
+	nav{
+		margin-bottom:15px;
+		margin-left:-11px;
+		@include breakpoint($tb){ margin-left: 0;  }
+		@include clearfix;
+		a{
+			float:left;
+			position:relative;
+			color:#242424;
+			padding:0 11px;
+			line-height:1;
+			font-size:15px;
+			font-weight:bold;
+			&::before {
+				content: '';
+				position:absolute;
+				left:0;
+				top:8px;
+				height:15px;
+				margin-top:-8px;
+				border-left:1px solid #e3e3e3;
+			}
+			&:first-child:before{display:none;}
+			@include breakpoint($xs){ 
+				width: 50%; 
+				padding:15px 0;
+				border:1px solid #eee;
+				text-align: center;
+				&::before {
+					display: none;
+				}
+			}
+		}
+	}
+	address{
+		line-height:1.71;
+		font-size:14px;
+		color:#444;
+		font-style:normal;
+		letter-spacing:-0.8px;
+	}
+	.markset{
+		position:absolute;
+		right:0;
+		top:0;
+		@include breakpoint($tb){ 
+			position: relative;
+			right: auto;
+			text-align: center;
+			width: 100%;
+			margin-bottom: 150px;
+		}
+		padding:18px 0 0 0;
+		img{margin-left:22px;}
+		@include breakpoint($xs){ 
+			img{width: 40%; margin-left: 10px;}
+		}
+	}
+}
+
+.gotoTop{
+	position: fixed;
+	right:110px;
+	bottom:30px;
+	@include breakpoint($lg){ 
+		
+	}
+	z-index: 100;
+	background:url(/static/ucms/img/gototop.png) no-repeat;width: 50px;height: 50px;
+	display: none;
+}
+
+
+.visible-xs,
+.visible-sm,
+.visible-md,
+.visible-lg {
+  display: none !important;
+}
+
+@media (min-width: 1024px) {
+  .visible-lg {
+    display: block !important;
+  }
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .visible-md {
+    display: block !important;
+  }
+}
+@media (max-width: 767px) {
+  .visible-sm {
+    display: block !important;
+  }
+}
+
+@media (max-width: 459px) {
+  .visible-xs {
+    display: block !important;
+  }
+}

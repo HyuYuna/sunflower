@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>관리자(#번서버)</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1" />
+<meta name="robots" content="all" />
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/nanumgothic/nanumgothic.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/jslibrary/bootstrap/js/bootstrap.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+<script src="/static/commons/commons.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<div id="header_wrap">
+			<div class="header">
+				<h1><a href="/bos/main/main.do"><img src="/cmmn/file/getImage.do?atchFileId=FILE_000000000000031&fileSn=1" alt="CMS관리자 로고" height="27"/></a></h1>
+				<div class="user"> <em> 관리자(admin) </em> 님으로 로그인 하셨습니다.<!-- 로그인 접속IP:127.0.0.1 -->
+					<a href="javascript:openPopup();" class="btn btn-xs btn-success"><i class="fa fa-wrench"></i> 내정보수정</a>
+					<a href="/bos/member/admin/logout.do" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> 로그아웃</a>
+				</div>
+				<div class="util "> <div class="btn-group"> <a href="?menuNo=100085" class='on'><i class="fa fa-cogs"></i> 관리자</a> <a href="/ucms/main/main.do" target="_blank" ><i class="fa "></i> 홈페이지</a> </div> </div>
+			</div>
+			<div id="gnb">
+				<ul class="gnb_width">
+	 			<li class='on'> <a href="?menuNo=100007" >홈페이지 관리자</a> </li>
+	 			<li > <a href="?menuNo=100072" >홈페이지 관리</a> </li>
+	 			<li > <a href="?menuNo=100073" >홈페이지 통계</a> </li>
+	 			<li class='pr0'> <a href="?menuNo=100025" >미인증 메뉴</a> </li>
+				</ul>
+			</div>
+		</div>
+		<div id="container">
+			<div id="lnb">
+				<h2>홈페이지 관리자</h2>
+				<ul class="lnbNav">
+					홈페이지 관리자
+				</ul>
+			</div>
+			<div id="content">
+				<div class="hgroup clearfix">
+					<h1>홈페이지 관리자 권한관리</h1>
+					<div class="fr">
+						<a href="/bos/siteManage/siteHpcm/view.do?pGroupId=auth&amp;pSrvcId=auth&amp;pMethodId=list&amp;viewType=BODY" class="b-help" title="도움말 새창열림" target="_blank" onclick="window.open(this.href, 'siteHpcm', 'resizable=1, scrollbars=1, width=1280,height=800'); return false;">도움말</a>
+						<a class="b-print" href="/cmmn/bosForPrint.jsp" id="print" title="새창" onclick="window.open(this.href, 'printPage', 'width=840,height=640,scrollbars,toolbar,status');return false;">
+						<!-- <i class="fa fa-hover fa-print"></i> -->
+						<span >인쇄하기</span>
+						</a>
+					</div>
+				</div>
+				
+	<table class="table">
+		<caption>000 목록</caption>
+		<thead>
+			<tr>
+				<th scope="col" class="no">번호</th>
+				<th scope="col">제목</th>
+				<th scope="col" class="name">작성자</th>
+				<th scope="col" class="date">등록일</th>
+				<th scope="col">진행상태</th>
+				<th scope="col" class="count">조회</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td class="tit"><a href="">스토리 요청 글 등록시 이용안내 및 유의사항</a></td>
+				<td>관리자</td>
+				<td>2016-04-30</td>
+				<td>답변대기</td>
+				<td>67</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td class="tit"><a href="">스토리 요청 글 등록시 이용안내 및 유의사항</a></td>
+				<td>관리자</td>
+				<td>2016-04-30</td>
+				<td>답변완료</td>
+				<td>67</td>
+			</tr>
+		</tbody>
+	</table>
+페이징
+<hr>
+
+<div class="view">
+	<h2 class="subject">게시물제목</h2>
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>등록된 첨부파일이 없습니다.</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+
+			<ul class="fileList">
+				<li><a href="">파일이름.pdf</a></li>
+				<li><a href="">파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름 파일 이 름 .pdf</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+</div>
+
+<div class="btnSet">
+	<a href="" class="b-list">답변하기</a>
+	<a href="" class="b-list">목록</a>
+</div>

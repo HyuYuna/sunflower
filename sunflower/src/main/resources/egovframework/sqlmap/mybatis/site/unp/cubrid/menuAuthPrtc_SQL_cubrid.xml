@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.MenuAuthPrtcDAO">
+
+	<insert id="saveMenuAuthPrtc" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="mnno">
+			SELECT NVL(Max(MNNO),0)+1 FROM TC_MENU_AUTHOR_PRTC
+		</selectKey>
+		<![CDATA[
+		     INSERT INTO TC_MENU_AUTHOR_PRTC (
+                  MNNO
+                 , MENU_NO
+                 , USER_ID
+                 , AUTHOR_CD
+                 , AUTHOR_DT
+                 , AUTHOR_IPAD
+                 , AUTHOR_PURPS_SE
+		     )
+			VALUES (
+				 #{mnno}
+				, #{menuNo}
+				, #{userId}
+				, #{authorCd}
+				, SYSDATETIME
+				, #{authorIpad}
+				, #{authorPurpsSe}
+			)
+		]]>
+	</insert>
+
+	<sql id="findAllMenuAuthPrtc-where">
+		<if test='searchDate != null and searchDate != ""'>
+			<![CDATA[	AND DATE_FORMAT(A.AUTHOR_DT,'%Y-%m-%d') = #{searchDate} 		]]>
+		</if>
+	</sql>
+
+	<select id="findAllMenuAuthPrtcExcel" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT
+				  A.MENU_NO
+				, NVL((SELECT MENU_NM FROM TC_MENU_INFO WHERE MENU_NO = A.MENU_NO),'') AS MENU_NM
+				, A.USER_ID
+				, A.AUTHOR_CD
+				, NVL((SELECT AUTHOR_NM FROM TC_AUTHOR_INFO WHERE AUTHOR_CD = A.AUTHOR_CD),'') AS AUTHOR_NM
+				, A.AUTHOR_DT
+				, A.AUTHOR_IPAD
+				, A.AUTHOR_PURPS_SE
+			FROM TC_MENU_AUTHOR_PRTC A
+			WHERE 1=1
+		]]>
+		<include refid="findAllMenuAuthPrtc-where" />
+		<![CDATA[
+			ORDER BY A.MNNO ASC
+		]]>
+	</select>
+
+</mapper>

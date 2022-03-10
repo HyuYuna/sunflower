@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>관리자(#번서버)</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1" />
+<meta name="robots" content="all" />
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/nanumgothic/nanumgothic.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/jslibrary/bootstrap/js/bootstrap.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+<script src="/static/commons/commons.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<div id="header_wrap">
+			<div class="header">
+				<h1><a href="/bos/main/main.do"><img src="/cmmn/file/getImage.do?atchFileId=FILE_000000000000031&fileSn=1" alt="CMS관리자 로고" height="27"/></a></h1>
+				<div class="user"> <em> 관리자(admin) </em> 님으로 로그인 하셨습니다.<!-- 로그인 접속IP:127.0.0.1 -->
+					<a href="javascript:openPopup();" class="btn btn-xs btn-success"><i class="fa fa-wrench"></i> 내정보수정</a>
+					<a href="/bos/member/admin/logout.do" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> 로그아웃</a>
+				</div>
+				<div class="util "> <div class="btn-group"> <a href="?menuNo=100085" class='on'><i class="fa fa-cogs"></i> 관리자</a> <a href="/ucms/main/main.do" target="_blank" ><i class="fa "></i> 홈페이지</a> </div> </div>
+			</div>
+			<div id="gnb">
+				<ul class="gnb_width">
+	 			<li class='on'> <a href="?menuNo=100007" >홈페이지 관리자</a> </li>
+	 			<li > <a href="?menuNo=100072" >홈페이지 관리</a> </li>
+	 			<li > <a href="?menuNo=100073" >홈페이지 통계</a> </li>
+	 			<li class='pr0'> <a href="?menuNo=100025" >미인증 메뉴</a> </li>
+				</ul>
+			</div>
+		</div>
+		<div id="container">
+			<div id="lnb">
+				<h2>홈페이지 관리자</h2>
+				<ul class="lnbNav">
+					홈페이지 관리자
+				</ul>
+			</div>
+			<div id="content">
+				<div class="hgroup clearfix">
+					<h1>홈페이지 관리자 권한관리</h1>
+					<div class="fr">
+						<a href="/bos/siteManage/siteHpcm/view.do?pGroupId=auth&amp;pSrvcId=auth&amp;pMethodId=list&amp;viewType=BODY" class="b-help" title="도움말 새창열림" target="_blank" onclick="window.open(this.href, 'siteHpcm', 'resizable=1, scrollbars=1, width=1280,height=800'); return false;">도움말</a>
+						<a class="b-print" href="/cmmn/bosForPrint.jsp" id="print" title="새창" onclick="window.open(this.href, 'printPage', 'width=840,height=640,scrollbars,toolbar,status');return false;">
+						<!-- <i class="fa fa-hover fa-print"></i> -->
+						<span >인쇄하기</span>
+						</a>
+					</div>
+				</div>
+				
+				
+<h1 id="defaultView">뷰 기본</h1>
+<div class="view">
+	<h2 class="subject">8월 환우위문 음악회 안내 </h2>
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>등록된 첨부파일이 없습니다.</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+
+			<ul class="fileList">
+				<li><a href="">파일이름.pdf</a></li>
+				<li><a href="">파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름 파일 이 름 .pdf</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+</div>
+<div class="recomentList">
+		<fieldset class="set">
+			<legend class="hidden">댓글 작성</legend>
+			<div class="i">
+				<textarea class="characterLen" data-lensize="1980" cols="100" rows="10" title="댓글입력" placeholder="댓글입력"></textarea>
+				<p class="characterLenDeco"></p>
+				<button type="submit" class="b-submit">등록</button>
+			</div>
+			<script>
+			$(function() {
+				$('.characterLen').each(function(index, el) {
+					$(this).keyup(function (e){
+						var selfintroduction = $(this).val();
+						var str = $(this).val();
+						var limit = $(this).data().lensize;
+						$(this).next().html(selfintroduction.length + '/'+limit+'자 이내 입력');
+						if(selfintroduction.length >= 2000){
+							alert("글자수는 "+limit+"자를 초과할수 없습니다.");
+							$(this).val(str.substring(0,limit))
+						}
+					})
+					.next().html($(this).data().lensize+'자 이내 입력')
+				});
+			});
+			</script>
+		</fieldset>
+	<strong class="screen_out">전체 댓글</strong>
+	<ul>
+		<li>
+			<div class="cmtBody">
+				<span class="infoAppend">
+					<span class="name">글쓴이</span>
+					<span class="vline">|</span>
+					<span class="time">2013.01.01 14:22</span>
+				</span>
+				<p class="txtDesc">
+					댓글 내용이 나오는 곳...댓글댓글 내용이 나오는 곳...댓글 내용이 나오는 곳...댓글 내용이 나오는 곳...
+				</p>
+			</div>
+			<div class="cmtFoot">
+				<a href="#none">수정</a>
+				<span class="vline">|</span>
+				<a href="#none">삭제</a>
+				<span class="vline">|</span>
+				<a href="#none">신고</a>
+			</div>
+			
+		</li>
+	</ul>
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd><a href=""> 이전게시물 제목 </a></dd>
+	</dl>
+	<dl>
+		<dt>아랫글</dt>
+		<dd><a href=""> 다음게시물 제목 </a></dd>
+	</dl>
+</div>
+<div class="btnSet">
+	<a href="" class="b-edit">수정</a>
+	<a href="" class="b-del">삭제</a>
+	<a href="" class="b-list">목록</a>
+</div>
+<pre>
+&lt;div class="view">
+	&lt;h2 class="subject">8월 환우위문 음악회 안내 &lt;/h2>
+	&lt;dl>
+		&lt;dt>작성자&lt;/dt>
+		&lt;dd>홍길동&lt;/dd>
+		&lt;dt>등록일&lt;/dt>
+		&lt;dd>2016-01-01&lt;/dd>
+		&lt;dt>조회수&lt;/dt>
+		&lt;dd>689&lt;/dd>
+	&lt;/dl>
+	&lt;dl>
+		&lt;dt>첨부파일&lt;/dt>
+		&lt;dd>등록된 첨부파일이 없습니다.&lt;/dd>
+	&lt;/dl>
+	&lt;dl>
+		&lt;dt>첨부파일&lt;/dt>
+		&lt;dd>
+
+			&lt;ul class="fileList">
+				&lt;li>&lt;a href="">파일이름.pdf&lt;/a>&lt;/li>
+				&lt;li>&lt;a href="">파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름 파일 이 름 .pdf&lt;/a>&lt;/li>
+			&lt;/ul>
+		&lt;/dd>
+	&lt;/dl>
+	&lt;div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	&lt;/div>
+&lt;/div>
+&lt;div class="recomentList">
+		&lt;fieldset class="set">
+			&lt;legend class="hidden">댓글 작성&lt;/legend>
+			&lt;div class="i">
+				&lt;textarea class="characterLen" data-lensize="1980" cols="100" rows="10" title="댓글입력" placeholder="댓글입력">&lt;/textarea>
+				&lt;p class="characterLenDeco">&lt;/p>
+				&lt;button type="submit" class="b-submit">등록&lt;/button>
+			&lt;/div>
+			&lt;script>
+			$(function() {
+				$('.characterLen').each(function(index, el) {
+					$(this).keyup(function (e){
+						var selfintroduction = $(this).val();
+						var str = $(this).val();
+						var limit = $(this).data().lensize;
+						$(this).next().html(selfintroduction.length + '/'+limit+'자 이내 입력');
+						if(selfintroduction.length >= 2000){
+							alert("글자수는 "+limit+"자를 초과할수 없습니다.");
+							$(this).val(str.substring(0,limit))
+						}
+					})
+					.next().html($(this).data().lensize+'자 이내 입력')
+				});
+			});
+			&lt;/script>
+		&lt;/fieldset>
+	&lt;strong class="screen_out">전체 댓글&lt;/strong>
+	&lt;ul>
+		&lt;li>
+			&lt;div class="cmtBody">
+				&lt;span class="infoAppend">
+					&lt;span class="name">글쓴이&lt;/span>
+					&lt;span class="vline">|&lt;/span>
+					&lt;span class="time">2013.01.01 14:22&lt;/span>
+				&lt;/span>
+				&lt;p class="txtDesc">
+					댓글 내용이 나오는 곳...댓글댓글 내용이 나오는 곳...댓글 내용이 나오는 곳...댓글 내용이 나오는 곳...
+				&lt;/p>
+			&lt;/div>
+			&lt;div class="cmtFoot">
+				&lt;a href="#none">수정&lt;/a>
+				&lt;span class="vline">|&lt;/span>
+				&lt;a href="#none">삭제&lt;/a>
+				&lt;span class="vline">|&lt;/span>
+				&lt;a href="#none">신고&lt;/a>
+			&lt;/div>
+			
+		&lt;/li>
+	&lt;/ul>
+&lt;/div>
+&lt;div class="bdViewNav">
+	&lt;dl>
+		&lt;dt>이전글&lt;/dt>
+		&lt;dd>&lt;a href=""> 이전게시물 제목 &lt;/a>&lt;/dd>
+	&lt;/dl>
+	&lt;dl>
+		&lt;dt>다음글&lt;/dt>
+		&lt;dd>&lt;a href=""> 다음게시물 제목 &lt;/a>&lt;/dd>
+	&lt;/dl>
+&lt;/div>
+&lt;div class="btnSet">
+	&lt;a href="" class="b-edit">수정&lt;/a>
+	&lt;a href="" class="b-del">삭제&lt;/a>
+	&lt;a href="" class="b-list">목록&lt;/a>
+&lt;/div>
+</pre>
+
+<h1 id="view">view</h1>
+<div class="view">
+	<h2 class="subject">8월 환우위문 음악회 안내 </h2>
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>등록된 첨부파일이 없습니다.</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+
+			<ul class="fileList">
+				<li><a href="">파일이름.pdf</a></li>
+				<li><a href="">파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름 파일 이 름 .pdf</a></li>
+			</ul>
+		</dd>
+	</dl>
+	<div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	</div>
+</div>
+<pre>
+&lt;div class="view">
+	&lt;h2 class="subject">8월 환우위문 음악회 안내 &lt;/h2>
+	&lt;dl>
+		&lt;dt>작성자&lt;/dt>
+		&lt;dd>-&lt;/dd>
+		&lt;dt>등록일&lt;/dt>
+		&lt;dd>2016-01-01&lt;/dd>
+		&lt;dt>조회수&lt;/dt>
+		&lt;dd>-&lt;/dd>
+	&lt;/dl>
+	&lt;dl>
+		&lt;dt>첨부파일&lt;/dt>
+		&lt;dd>-&lt;/dd>
+	&lt;/dl>
+	&lt;dl>
+		&lt;dt>첨부파일&lt;/dt>
+		&lt;dd>
+			&lt;ul class="fileList">
+				&lt;li>&lt;a href="">파일이름.pdf&lt;/a>&lt;/li>
+				&lt;li>&lt;a href="">파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름파일이름 파일 이 름 .pdf&lt;/a>&lt;/li>
+			&lt;/ul>
+		&lt;/dd>
+	&lt;/dl>
+	&lt;div class="dbData">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+	&lt;/div>
+&lt;/div>
+</pre>
+
+<h1 id="view2">view : 너비100% = &lt;dl class="w"></h1>
+<div class="view">
+	<h2 class="subject">8월 환우위문 음악회 안내 </h2>
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl class="w">
+		<dt>내용 100%</dt>
+		<dd>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		</dd>
+	</dl>
+	
+</div>
+<pre>
+&lt;div class="view">
+	&lt;h2 class="subject">8월 환우위문 음악회 안내 &lt;/h2>
+	&lt;dl>
+		&lt;dt>작성자&lt;/dt>
+		&lt;dd>홍길동&lt;/dd>
+		&lt;dt>등록일&lt;/dt>
+		&lt;dd>2016-01-01&lt;/dd>
+		&lt;dt>조회수&lt;/dt>
+		&lt;dd>689&lt;/dd>
+	&lt;/dl>
+	&lt;dl class="w">
+		&lt;dt>내용 100%&lt;/dt>
+		&lt;dd>
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		&lt;/dd>
+	&lt;/dl>
+&lt;/div>
+</pre>
+
+<h1 id="dbData">dbData</h1>
+<div class="dbData">
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+<!--  -->
+<h1 id="btnSet">버튼정렬</h1>
+<table class="table">
+	<tr><th>기본값 오른쪽 정렬</th><td>class=btnSet</td></tr>
+	<tr><th>왼쪽 정렬</th><td>class=btnSet l</td></tr>
+	<tr><th>가운데 정렬</th><td>class=btnSet c</td></tr>
+</table>
+<div class="btnSet"><a href="" class="b-list">목록</a></div>
+<pre>&lt;div class="btnSet">...&lt;/div></pre>
+<div class="btnSet l"><a href="" class="b-list">목록</a></div>
+<pre>&lt;div class="btnSet l">...&lt;/div></pre>
+<div class="btnSet c"><a href="" class="b-list">목록</a></div>
+<pre>&lt;div class="btnSet c">...&lt;/div></pre>
+<!--  -->
+

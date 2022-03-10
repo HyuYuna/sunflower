@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.member.LoginHistDAO">
+
+
+	<insert id="insertLoginHist" parameterType="zvl" >
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="histNo">
+			SELECT NVL(MAX(HIST_NO),0)+1 AS HIST_NO  FROM TM_LOGIN_HIST
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TM_LOGIN_HIST (
+			    HIST_NO,
+			    USER_ID,
+			    USER_IPAD,
+			    LOGIN_DT,
+			    STTUS_CD,
+			    SITE_ID
+			)
+			VALUES (
+			   #{histNo},
+			   #{userId},
+			   #{userIpad},
+			   sysdate(),
+			   #{sttusCd},
+			   #{siteId}
+			)
+		]]>
+	</insert>
+
+	<sql id="listAllLoginHist-where">
+		<if test='userId != null and userId != ""'>
+			<![CDATA[	and	USER_ID = #{userId}		]]>
+		</if>
+		<if test='siteId != null and siteId != ""'>
+			<![CDATA[	and	SITE_ID = #{siteId}		]]>
+		</if>
+	</sql>
+
+	<select id="listAllLoginHist" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT  ALL_LIST2.*
+			  FROM  (
+				SELECT ROWNUM RNUM, ALL_LIST.*
+				  FROM  (
+
+					SELECT
+					    HIST_NO,
+					    USER_ID,
+					    USER_IPAD,
+					    LOGIN_DT,
+		                CASE WHEN SYSDATETIME > DATE_ADD(LOGIN_DT,INTERVAL 30 MINUTE) THEN 'Y'
+		                ELSE 'N'
+		                END AS LOGIN_TRY_AT,
+					    STTUS_CD,
+					    SITE_ID
+					FROM TM_LOGIN_HIST
+					WHERE 1=1
+		]]>
+		<include refid="listAllLoginHist-where" />
+		<![CDATA[
+			ORDER BY HIST_NO DESC
+
+				   ) ALL_LIST
+				) ALL_LIST2
+			WHERE RNUM  > #{firstIndex}
+			  AND RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+
+ 	<delete id="deleteLoginHist" parameterType="zvl">
+ 		<![CDATA[
+			DELETE FROM TM_LOGIN_HIST
+			WHERE 1 = 1
+ 		]]>
+		<if test='siteId != null and siteId != ""'>
+			<![CDATA[	and	SITE_ID = #{siteId}		]]>
+		</if>
+		<if test='userId != null and userId != ""'>
+			<![CDATA[	and	USER_ID = #{userId}		]]>
+		</if>
+		<if test='histNo != null and histNo != ""'>
+			<![CDATA[	and HIST_NO = #{histNo}		]]>
+		</if>
+ 	</delete>
+
+</mapper>

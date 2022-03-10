@@ -1,0 +1,159 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<style type="text/css">
+<!--
+.excel1 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:11.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"맑은 고딕", monospace;
+text-align:general;
+vertical-align:middle;
+border:none;
+white-space:nowrap;
+}
+.excel2 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:11.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"맑은 고딕", monospace;
+text-align:general;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+background:yellow;
+}
+.excel4 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:11.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"맑은 고딕", monospace;
+text-align:left;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+}
+.excel5 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:11.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"맑은 고딕", monospace;
+text-align:center;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+background:yellow;
+}
+.excel3 {
+padding-top:1px;
+padding-right:1px;
+padding-left:1px;
+color:black;
+font-size:11.0pt;
+font-weight:400;
+font-style:normal;
+text-decoration:none;
+font-family:"맑은 고딕", monospace;
+text-align:center;
+vertical-align:middle;
+border:.5pt solid windowtext;
+white-space:nowrap;
+}
+-->
+</style>
+</head>
+
+<body>
+<h1>설문조사 참여현황</h1>
+<table cellspacing="0" cellpadding="0" class="excel1">
+	<col width="72" style="width:54pt;">
+	<col width="85" style="width:64pt;">
+	<col width="72" span="6" style="width:54pt;">
+	<tr style="height:16.5pt;">
+		<td class="excel2" width="72" style="height:16.5pt;width:54pt;">제목</td>
+		<td colspan="7" class="excel4" width="517" style="border-left:none;width:388pt;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel2" style="height:16.5pt;border-top:none;">설문대상</td>
+		<td colspan="7" class="excel4" style="border-left:none;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel2" style="height:16.5pt;border-top:none;">참여인원</td>
+		<td colspan="7" class="excel4" style="border-left:none;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel2" style="height:16.5pt;border-top:none;">조사기간</td>
+		<td colspan="7" class="excel4" style="border-left:none;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel2" style="height:16.5pt;border-top:none;">담당부서</td>
+		<td colspan="7" class="excel4" style="border-left:none;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel2" style="height:16.5pt;border-top:none;">전화번호</td>
+		<td colspan="7" class="excel4" style="border-left:none;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel2" style="height:16.5pt;border-top:none;">등록일</td>
+		<td colspan="7" class="excel4" style="border-left:none;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel2" style="height:16.5pt;border-top:none;">내용</td>
+		<td colspan="7" class="excel4" style="border-left:none;"></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td style="height:16.5pt;"></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel5" style="height:16.5pt;">순번</td>
+		<td class="excel5" style="border-left:none;">이름</td>
+		<td class="excel5" style="border-left:none;">문제1</td>
+		<td class="excel5" style="border-left:none;">문제2</td>
+		<td class="excel5" style="border-left:none;">문제3</td>
+		<td class="excel5" style="border-left:none;">문제4</td>
+		<td class="excel5" style="border-left:none;">문제5</td>
+		<td class="excel5" style="border-left:none;">문제6</td>
+	</tr>
+	<tr style="height:16.5pt;">
+		<td class="excel3">1</td>
+		<td class="excel3">홍길동</td>
+		<td class="excel3">1</td>
+		<td class="excel3">4.5</td>
+		<td class="excel3">1</td>
+		<td class="excel3">2</td>
+		<td class="excel3">2</td>
+		<td class="excel3">-</td>
+	</tr>
+</table>
+</body>
+</html>

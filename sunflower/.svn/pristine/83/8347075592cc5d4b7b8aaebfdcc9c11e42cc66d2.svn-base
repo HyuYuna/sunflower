@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xmlns:p="http://www.springframework.org/schema/p"
+		xmlns:util="http://www.springframework.org/schema/util"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/mvc
+		http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		">
+
+	<beans>
+		<!-- - The controllers are autodetected POJOs labeled with the @Controller annotation. -->
+		<context:component-scan base-package="site">
+			<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service" />
+			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository" />
+		</context:component-scan>
+
+		<!-- Turns on support for mapping requests to Spring MVC @Controller methods Also registers default Formatters and Validators for use across all @Controllers -->
+		<mvc:annotation-driven />
+	</beans>
+
+	<beans profile="test,dev,local,junit">
+		<mvc:default-servlet-handler />
+	</beans>
+	<beans profile="real">
+		<mvc:default-servlet-handler />
+	<!-- <mvc:default-servlet-handler default-servlet-name="WorkerServlet"/>  --> <!-- jeus 환경설정시 필요 -->
+	</beans>
+
+	<beans>
+
+
+		<!-- Allows for mapping the DispatcherServlet to "/" by forwarding static resource requests to the container's default Servlet -->
+
+		<mvc:resources mapping="/static/**" location="/static/" />
+
+		<mvc:view-controller path="/bos/member/user/list.do" view-name="bos/member/user/list" />
+		<mvc:view-controller path="/bos/member/creator/list.do" view-name="bos/member/user/list" />
+		<mvc:view-controller path="/bos/member/business/list.do" view-name="bos/member/user/list" />
+		<mvc:view-controller path="/bos/member/expert/list.do" view-name="bos/member/user/list" />
+
+		<!-- <mvc:view-controller path="/portal/login.do" view-name="portal/member/login" /> -->
+
+		<!-- - This bean resolves specific types of exceptions to corresponding logical - view names for error views. The default behaviour of DispatcherServlet - is to propagate all exceptions to the servlet container: this will happen - here with all other types of exceptions. -->
+		<bean class="site.unp.cms.conf.DaoExceptionResolver">
+			<property name="sqlDAO" ref="SqlDAO" />
+			<property name="defaultErrorView" value="egovframework/rte/cmmn/commonServiceError" />
+			<property name="exceptionMappings">
+				<props>
+					<prop key="java.lang.reflect.InvocationTargetException">egovframework/rte/cmmn/commonServiceError</prop>
+					<prop key="org.springframework.web.multipart.MultipartException">egovframework/rte/cmmn/commonServiceError</prop>
+					<prop key="org.springframework.dao.DataAccessException">egovframework/rte/cmmn/commonServiceError</prop>
+					<prop key="org.springframework.transaction.TransactionException">egovframework/rte/cmmn/commonServiceError</prop>
+					<prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">egovframework/rte/cmmn/commonServiceError</prop>
+					<prop key="org.springframework.security.AccessDeniedException">egovframework/rte/cmmn/commonServiceError</prop>
+				</props>
+			</property>
+		</bean>
+
+		<!-- - Message source for this context, loaded from localized "messages_xx" files. - Could also reside in the root application context, as it is generic, - but is currently just used within Application's web tier. <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages"/> -->
+		<!-- annotatedMappingJacksonJsonView 으로 변경
+		<bean id="mappingJacksonJsonView" class="site.unp.cms.view.UnpMappingJacksonJsonView" />
+		 -->
+		 
+		 <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource" p:basename="messages">
+		 	
+		 </bean>
+
+		<bean id="excelGenerateView" class="site.unp.cms.view.ExcelGenerateView" />
+
+		<bean id="rssFeedView" class="site.unp.cms.view.RssFeedView" />
+
+		<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+			<property name="order" value="1" />
+			<property name="contentNegotiationManager">
+				<bean class="org.springframework.web.accept.ContentNegotiationManager">
+					<constructor-arg>
+						<bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+							<constructor-arg>
+								<map>
+									<entry key="json" value="application/json" />
+									<entry key="rss" value="application/rss+xml" />
+									<entry key="uxml" value="application/xml" />
+									<entry key="uxls" value="application/x-msexcel" />
+								</map>
+							</constructor-arg>
+						</bean>
+					</constructor-arg>
+				</bean>
+			</property>
+
+
+			<property name="defaultViews">
+				<list>
+					<!-- JSON View -->
+					<ref bean="annotatedMappingJacksonJsonView" />
+
+					<!-- EXCEL View -->
+					<ref bean="excelGenerateView" />
+
+					<!-- RSS View -->
+					<ref bean="rssFeedView" />
+
+					<!-- XML View -->
+					<bean class="org.springframework.web.servlet.view.xml.MarshallingView">
+						<constructor-arg>
+							<bean class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+								<property name="classesToBeBound">
+									<list>
+										<value>site.unp.core.domain.SearchVO</value>
+									</list>
+								</property>
+							</bean>
+						</constructor-arg>
+					</bean>
+				</list>
+			</property>
+		</bean>
+
+		<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+			<property name="prefix" value="/WEB-INF/jsp/" />
+			<property name="suffix" value=".jsp" />
+		</bean>
+
+		<!-- <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" /> -->
+		
+		<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+			<property name="defaultLocale" value="ko" />
+		</bean>
+		
+
+
+
+		<mvc:interceptors>
+			<!--
+			<mvc:interceptor>
+				<mvc:mapping path="/**/*.do" />
+				<bean class="site.story.cmm.SiteNameLocaleChangeInterceptor" />
+			</mvc:interceptor>
+			 -->
+
+			<!-- 세션하이제킹 방어 Interceptor start -->
+			<mvc:interceptor>
+				<mvc:mapping path="/**/*.do" />
+				<mvc:mapping path="/**/*.jsp" />
+				<!-- mvc:exclude-mapping path="/uat/uia/**" / -->
+				<bean class="site.unp.core.interceptor.SessionHijackingInterceptor" />
+			</mvc:interceptor>
+			<!-- 세션하이제킹 방어 Interceptor end -->
+
+			<!-- 개인정보 필터링 Interceptor start -->
+			<!-- <mvc:interceptor>
+				<mvc:mapping path="/*/bbs/**/insert*" />
+				<bean class="site.unp.core.interceptor.PrivacyInterceptor" />
+			</mvc:interceptor>
+
+			<mvc:interceptor>
+				<mvc:mapping path="/*/bbs/**/update*" />
+				<bean class="site.unp.core.interceptor.PrivacyInterceptor" />
+			</mvc:interceptor> -->
+			<!-- 개인정보 필터링 Interceptor end -->
+
+			<!-- 금지단어 필터링 Interceptor start -->
+			<!-- <mvc:interceptor>
+				<mvc:mapping path="/*/bbs/**/insert*" />
+				<bean class="site.unp.cms.interceptor.WordFilterInterceptor" />
+			</mvc:interceptor>
+
+			<mvc:interceptor>
+				<mvc:mapping path="/*/bbs/**/update*" />
+				<bean class="site.unp.cms.interceptor.WordFilterInterceptor" />
+			</mvc:interceptor> -->
+			<!-- 금지단어 필터링 Interceptor end -->
+
+			<!-- 관리자 메뉴권한체크 Interceptor start -->
+			<mvc:interceptor>
+				<mvc:mapping path="/bos/**/*.do" />
+				<!-- 예외처리 -->
+				<mvc:exclude-mapping path="/bos/member/admin/*.do"/>
+				<mvc:exclude-mapping path="/bos/loginProcess.do"/>
+				<mvc:exclude-mapping path="/bos/main/main.do"/>
+				<mvc:exclude-mapping path="/bos/singl/contents/ready.do"/>
+				<mvc:exclude-mapping path="/bos/bbs/bbsCm/**"/>
+				<mvc:exclude-mapping path="/bos/cmmn/**"/>
+				<mvc:exclude-mapping path="/cmmn/file/**"/>
+				<mvc:exclude-mapping path="/bos/cmmn/file/**"/>
+				<mvc:exclude-mapping path="/bos/siteManage/siteHpcm/view.do*"/>
+				<mvc:exclude-mapping path="/**/siteConectStats/rcord.do*"/>
+				<mvc:exclude-mapping path="/*/cmmn/**"/>
+
+				<bean class="site.unp.core.interceptor.MenuAuthorCeckInterceptor" />
+			</mvc:interceptor>
+			<!-- 관리자 메뉴권한체크 Interceptor end -->
+
+			<!-- 익명사용자/실명인증자만 접근가능한 페이지 지정 start -->
+			<mvc:interceptor>
+				<mvc:mapping path="/**/member/user/forLogin.do" />
+				<mvc:mapping path="/**/member/user/idPwdSearch.do" />
+				<mvc:mapping path="/**/member/user/joinAgre.do" />
+				<mvc:exclude-mapping path="/bos/member/user/forLogin.do"/>
+				<mvc:exclude-mapping path="/push/member/uwam/forLogin.do"/>
+				<bean class="site.unp.core.interceptor.AnonymousAccessUrlInterceptor" />
+			</mvc:interceptor>
+			<!-- 익명사용자만 접근가능한 페이지 지정 end -->
+		</mvc:interceptors>
+
+		<!-- Spring MVC 브라우저 캐쉬 제어 설정 : 회원쪽은 캐쉬 사용 안함 start -->
+		<!-- cacheSeconds == 0	cache 방지 -->
+		<mvc:interceptors>
+		     <mvc:interceptor>
+		          <mvc:mapping path="/**/member/user/**"/>
+		          <bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+		                <property name="cacheSeconds" value="0"/>
+						<property name="useExpiresHeader" value="true"/>
+						<property name="useCacheControlHeader" value="true"/>
+						<property name="useCacheControlNoStore" value="true"/>
+		          </bean>
+		     </mvc:interceptor>
+		</mvc:interceptors>
+		<!-- Spring MVC 브라우저 캐쉬 제어 설정 : 회원쪽은 캐쉬 사용 안함 end -->
+
+		<!-- CSRF token start -->
+		<!--
+		<mvc:interceptors>
+		     <mvc:interceptor>
+		     	<mvc:mapping path="/**" />
+		     	<mvc:exclude-mapping path="/**/forLogin.do" />
+		     	<mvc:exclude-mapping path="/**/toLogin.do" />
+				<mvc:exclude-mapping path="/**/login.do" />
+				<mvc:exclude-mapping path="/**/logout.do" />
+		     	<mvc:exclude-mapping path="/**/*.json*" />
+		     	<mvc:exclude-mapping path="/*/cmmn/file/*" />
+		     	<mvc:exclude-mapping path="/*/member/user/vname**" />
+		     	<mvc:exclude-mapping path="/*/member/user/pwdChange**" />
+		     	<mvc:exclude-mapping path="/*/member/user/joinVerify**" />
+		     	<mvc:exclude-mapping path="/*/oauth/sns/**" />
+			 -->
+		     	<!--
+				<mvc:mapping path="/*/member/user/forLogin.do" />
+				<mvc:mapping path="/*/member/user/toLogin.do" />
+				<mvc:mapping path="/bos/member/admin/forLogin.do" />
+				<mvc:mapping path="/bos/member/admin/toLogin.do" />
+				<mvc:mapping path="/**/forUpdate*" />
+				<mvc:mapping path="/**/update*" />
+				<mvc:mapping path="/**/forInsert*" />
+				<mvc:mapping path="/**/insert*" />
+				<mvc:mapping path="/**/view*" />
+				<mvc:mapping path="/**/delete*" />
+				<mvc:mapping path="/*/siteManage/siteInfo/*List**" />
+				<mvc:exclude-mapping path="/*/singl/deptInfo/*" />
+				<mvc:exclude-mapping path="/*/singl/menu/*" />
+				<mvc:exclude-mapping path="/*/main/userMainCntnts/*" />
+				<mvc:exclude-mapping path="/*/qestnar/qesitm/*" />
+				<mvc:exclude-mapping path="/*/qestnar/answer/*" />
+				<mvc:exclude-mapping path="/*/cmmnCd/cmmnCdCtgry/*" />
+				<mvc:exclude-mapping path="/*/siteManage/siteHpcm/*" />
+				<mvc:exclude-mapping path="/*/singl/stsfdg/*" />
+				-->
+
+			 <!--
+		        <bean class="site.unp.core.interceptor.CSRFInterceptor" />
+		     </mvc:interceptor>
+		     -->
+
+			<!-- 기능 처리 사용 기록 Interceptor start -->
+			<!--
+			<mvc:interceptor>
+				<mvc:mapping path="/**/insert.do" />
+				<mvc:mapping path="/**/update.do" />
+				<mvc:mapping path="/**/delete.do" />
+				<mvc:mapping path="/**/toLogin.do" />
+				<bean class="site.unp.cms.interceptor.SiteConectStatsInterceptor" />
+			</mvc:interceptor>
+			-->
+			<!-- 기능 처리 사용 기록 Interceptor end -->
+		<!--
+		</mvc:interceptors>
+		 -->
+		<!-- CSRF token end -->
+
+	</beans>
+</beans>

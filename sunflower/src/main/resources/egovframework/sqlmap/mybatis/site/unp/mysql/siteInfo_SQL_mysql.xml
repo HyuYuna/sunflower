@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.siteManage.SiteInfoDAO">
+
+	<!-- 사이트정보 목록 -->
+	<select id="findAllSiteInfo" resultType="zvl">
+	/* findAllSiteInfo */
+
+	SELECT SITE_ID
+	     , SITE_NM
+	     , SITE_DC
+	     , SITE_URLAD
+	     , SITE_IPAD
+	     , SITE_PORT_NO
+	     , SITE_ESTBS_CD
+	     , STSFDG_USE_AT
+	     , DTA_MNGR_USE_AT
+	     , ACCES_IPAD
+		 , INSTT_NM
+		 , INSTT_NM_USE_AT
+		 , CPYRHT_CN
+		 , CPYRHT_CN_USE_AT
+		 , ZIP
+		 , ZIP_USE_AT
+		 , ADRES1
+		 , ADRES1_USE_AT
+		 , ADRES2
+		 , ADRES2_USE_AT
+		 , TELNO
+		 , TELNO_USE_AT
+		 , FAXNO
+		 , FAXNO_USE_AT
+		 , A.ATCH_FILE_ID
+         , B.FILE_SN
+         , B.FILE_CN
+	     , DATE_FORMAT(REGIST_DT,'%Y-%m-%d') AS REGIST_DT
+         , B.FILE_STRE_COURS
+         , B.STRE_FILE_NM
+         , A.SITE_SKIN_CD
+         , A.WA_VALID_USE_AT
+         , A.WORK_BGNTM
+		 , A.WORK_ENDTM
+		 , A.ADT_CRTFC_USE_AT
+	  FROM TC_SITE_INFO A
+	  	   LEFT OUTER JOIN
+           TC_CMMN_FILE_DETAIL B
+      ON A.ATCH_FILE_ID = B.ATCH_FILE_ID
+          AND B.FILE_SN=1
+	ORDER BY SITE_ID ASC
+	</select>
+
+	<!-- 사이트정보 저장 -->
+	<insert id="saveSiteInfo" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="siteSn">
+			SELECT IFNULL(MAX(SITE_SN),0)+1 AS SITE_SN  FROM TC_SITE_INFO
+		</selectKey>
+		<![CDATA[
+		/* saveSiteInfo */
+
+		INSERT
+		  INTO TC_SITE_INFO
+		       (
+		           SITE_SN
+		         , SITE_ID
+		         , SITE_NM
+		         , SITE_DC
+		         , SITE_URLAD
+		         , SITE_IPAD
+		         , SITE_PORT_NO
+		         , SITE_ESTBS_CD
+			     , STSFDG_USE_AT
+			     , DTA_MNGR_USE_AT
+		         , ACCES_IPAD
+ 				 , INSTT_NM
+				 , CPYRHT_CN
+				 , ZIP
+				 , ADRES1
+				 , ADRES2
+				 , TELNO
+				 , FAXNO
+				 , ATCH_FILE_ID
+				 , SITE_SKIN_CD
+				 , WA_VALID_USE_AT
+		         , USE_AT
+		         , REGIST_ID
+		         , REGIST_DT
+		         , WORK_BGNTM
+		         , WORK_ENDTM
+		         , ADT_CRTFC_USE_AT
+		       )
+		       VALUES
+		       (
+		           #{siteSn}
+		         , #{pSiteId}
+		         , #{siteNm}
+		         , #{siteDc}
+		         , #{siteUrlad}
+		         , #{siteIpad}
+		         , #{sitePortNo}
+		         , #{siteEstbsCd}
+		         , #{stsfdgUseAt}
+		         , #{dtaMngrUseAt}
+		         , #{accesIpad}
+		         , #{insttNm}
+		         , #{cpyrhtCn}
+		         , #{zip}
+		         , #{adres1}
+		         , #{adres2}
+		         , #{telno}
+		         , #{faxno}
+		         , #{atchFileId}
+		         , ifnull(#{siteSkinCd},'')
+		         , ifnull(#{waValidUseAt},'N')
+		         , 'Y'
+		         , #{registId}
+		         , NOW()
+		         , #{workBgntm}
+		         , #{workEndtm}
+		         , #{adtCrtfcUseAt}
+		       )
+
+		]]>
+	</insert>
+
+	<!-- 사이트정보 수정 -->
+	<update id="updateSiteInfo" parameterType="zvl">
+		<![CDATA[
+		/* updateSiteInfo */
+
+		UPDATE TC_SITE_INFO
+		       SET SITE_NM = #{siteNm}
+		     , SITE_DC = #{siteDc}
+		     , SITE_URLAD = #{siteUrlad}
+		     , SITE_IPAD = #{siteIpad}
+		     , SITE_PORT_NO = #{sitePortNo}
+		     , SITE_ESTBS_CD = #{siteEstbsCd}
+		     , STSFDG_USE_AT = #{stsfdgUseAt}
+		     , DTA_MNGR_USE_AT = #{dtaMngrUseAt}
+		     , ACCES_IPAD = #{accesIpad}
+		     , INSTT_NM = #{insttNm}
+		     , CPYRHT_CN = #{cpyrhtCn}
+		     , ZIP = #{zip}
+		     , ADRES1 = #{adres1}
+		     , ADRES2 = #{adres2}
+		     , TELNO = #{telno}
+		     , FAXNO = #{faxno}
+			 , INSTT_NM_USE_AT = #{insttNmUseAt}
+			 , CPYRHT_CN_USE_AT = #{cpyrhtCnUseAt}
+			 , ZIP_USE_AT = #{zipUseAt}
+			 , ADRES1_USE_AT = #{adres1UseAt}
+			 , ADRES2_USE_AT = #{adres2UseAt}
+			 , TELNO_USE_AT = #{telnoUseAt}
+			 , FAXNO_USE_AT = #{faxnoUseAt}
+		     ]]>
+		     <if test='atchFileId != null and atchFileId != ""'>
+		     , ATCH_FILE_ID = #{atchFileId}
+		     </if>
+		     <![CDATA[
+			 , SITE_SKIN_CD = ifnull(#{siteSkinCd},'')
+			 , WA_VALID_USE_AT = ifnull(#{waValidUseAt},'N')
+		     , UPDT_ID = #{updtId}
+		     , UPDT_DT = NOW()
+		     , WORK_BGNTM = #{workBgntm}
+		     , WORK_ENDTM = #{workEndtm}
+		     , ADT_CRTFC_USE_AT = #{adtCrtfcUseAt}
+		 WHERE SITE_ID = #{pSiteId}
+		]]>
+	</update>
+
+	<!-- 사이트정보 삭제 -->
+	<delete id="deleteSiteInfoBySiteId" parameterType="string">
+		<![CDATA[
+		/* deleteSiteInfoBySiteId */
+
+		DELETE
+		  FROM TC_SITE_INFO
+		 WHERE SITE_ID = #{pSiteId}
+		]]>
+	</delete>
+
+	<!-- 사이트정보 세부내역 -->
+	<select id="findOneSiteInfo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findOneSiteInfo */
+
+		SELECT SITE_ID
+		     , SITE_NM
+		     , SITE_DC
+		     , SITE_URLAD
+		     , SITE_IPAD
+		     , SITE_PORT_NO
+		     , SITE_ESTBS_CD
+		     , STSFDG_USE_AT
+		     , DTA_MNGR_USE_AT
+		     , ACCES_IPAD
+			 , INSTT_NM
+			 , INSTT_NM_USE_AT
+			 , CPYRHT_CN
+			 , CPYRHT_CN_USE_AT
+			 , ZIP
+			 , ZIP_USE_AT
+			 , ADRES1
+			 , ADRES1_USE_AT
+			 , ADRES2
+			 , ADRES2_USE_AT
+			 , TELNO
+			 , TELNO_USE_AT
+			 , FAXNO
+			 , FAXNO_USE_AT
+		     , ATCH_FILE_ID
+		     , DATE_FORMAT(REGIST_DT,'%Y-%m-%d') AS REGIST_DT
+		     , SITE_IPAD
+		     , SITE_SKIN_CD
+		     , WA_VALID_USE_AT
+		     , WORK_BGNTM
+		     , WORK_ENDTM
+		     , ADT_CRTFC_USE_AT
+		  FROM TC_SITE_INFO
+		 WHERE SITE_ID = #{pSiteId}
+		 ]]>
+	</select>
+
+	<!-- 사이트정보 개수 by siteId-->
+	<select id="countSiteId" parameterType="zvl" resultType="long">
+		<![CDATA[
+		/* countSiteId */
+
+		SELECT COUNT( *) totcnt
+		  FROM TC_SITE_INFO
+		 WHERE SITE_ID = #{pSiteId}
+		 ]]>
+	</select>
+
+	<!-- 사이트정보 목록 bos 제외 -->
+	<select id="findAllSiteInfoExclBos" resultType="zvl">
+		<![CDATA[
+		/* findAllSiteInfoExclBos */
+
+		SELECT SITE_ID
+		     , SITE_NM
+		  FROM TC_SITE_INFO
+		 WHERE SITE_ID <> 'bos'
+		ORDER BY SITE_ID ASC
+	 	]]>
+	</select>
+	
+	<!-- 사이트정보 목록 bos -->
+	<select id="findAllSiteInfoBos" resultType="zvl">
+		<![CDATA[
+		/* findAllSiteInfoExclBos */
+
+		SELECT SITE_ID
+		     , SITE_NM
+		  FROM TC_SITE_INFO
+		 WHERE SITE_ID = 'bos'
+		ORDER BY SITE_ID ASC
+	 	]]>
+	</select>
+
+	<update id="updateUseYnChange" parameterType="zvl">
+		<![CDATA[
+		/* updateUseYnChange */
+		UPDATE TC_SITE_INFO
+			SET
+			]]>
+			<if test='fieldNm == "insttNmUseAt"'>	<![CDATA[ INSTT_NM_USE_AT=if(#{val}='Y','N','Y') ]]>	</if>
+			<if test='fieldNm == "cpyrhtCnUseAt"'>	<![CDATA[ CPYRHT_CN_USE_AT=if(#{val}='Y','N','Y') ]]>	</if>
+			<if test='fieldNm == "zipUseAt"'>		<![CDATA[ ZIP_USE_AT=if(#{val}='Y','N','Y') ]]>			</if>
+			<if test='fieldNm == "adres1UseAt"'>	<![CDATA[ ADRES1_USE_AT=if(#{val}='Y','N','Y') ]]>		</if>
+			<if test='fieldNm == "adres2UseAt"'>	<![CDATA[ ADRES2_USE_AT=if(#{val}='Y','N','Y') ]]>		</if>
+			<if test='fieldNm == "telnoUseAt"'>		<![CDATA[ TELNO_USE_AT=if(#{val}='Y','N','Y') ]]>		</if>
+			<if test='fieldNm == "faxnoUseAt"'>		<![CDATA[ FAXNO_USE_AT=if(#{val}='Y','N','Y') ]]>		</if>
+			<![CDATA[
+		WHERE SITE_ID=#{pSiteId}
+	 	]]>
+	</update>
+
+</mapper>

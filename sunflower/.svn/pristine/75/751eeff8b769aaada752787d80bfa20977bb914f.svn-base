@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.singl.prhibtWrdDicaryDAO">
+
+	<!-- 금지단어 사전 전체count수 -->
+    <select id="countPrhibtWrdDicary" parameterType="zvl" resultType="Long">
+        <![CDATA[
+		/* countPrhibtWrdDicary */
+
+		SELECT COUNT(*) totcnt
+		  FROM TC_PRHIBT_WRD_DICARY
+		 WHERE 1=1
+        ]]>
+           <if test='searchKwd != null and searchKwd != ""'>
+				<if test='searchCnd == "1"'>
+					<![CDATA[	AND WRD_NM LIKE '%' || #{searchKwd} || '%' 		]]>
+				</if>
+			</if>
+			<if test='searchUseAt != null and searchUseAt != ""'>
+				<![CDATA[ AND	USE_AT = #{searchUseAt} ]]>
+			</if>
+			<if test='searchWrdSe != null and searchWrdSe != ""'>
+				<![CDATA[ AND	WRD_SE = #{searchWrdSe} ]]>
+			</if>
+    </select>
+
+	<!-- 금지단어 사전 목록 -->
+	<select id="findAllPrhibtWrdDicary" parameterType="zvl" resultType="zvl">
+        <![CDATA[
+		/* findAllPrhibtWrdDicary */
+
+		SELECT  ALL_LIST2.*
+			  FROM  (
+			SELECT ROWNUM RNUM, ALL_LIST.*
+			  FROM  (
+		              SELECT WRD_SN
+		                   , USE_AT
+		                   , WRD_NM
+		                   , WRD_SE
+		                   , REGIST_ID
+		                   , REGIST_DT
+		                FROM TC_PRHIBT_WRD_DICARY
+		               WHERE 1=1
+        ]]>
+
+        	<if test='searchKwd != null and searchKwd != ""'>
+				<if test='searchCnd == "1"'>
+					<![CDATA[	AND WRD_NM LIKE '%' || #{searchKwd} || '%'		]]>
+				</if>
+			</if>
+			<if test='searchUseAt != null and searchUseAt != ""'>
+					<![CDATA[ AND	USE_AT = #{searchUseAt} ]]>
+			</if>
+			<if test='searchWrdSe != null and searchWrdSe != ""'>
+				<![CDATA[ AND	WRD_SE = #{searchWrdSe} ]]>
+			</if>
+        <![CDATA[
+		            ORDER BY REGIST_DT DESC
+		          ) ALL_LIST
+				) ALL_LIST2
+			WHERE RNUM  > #{firstIndex}
+			  AND RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+	<!-- 금지단어 사전 조회 by 번호 -->
+    <select id="findOnePrhibtWrdDicary" resultType="zvl">
+        <![CDATA[
+		/* findOnePrhibtWrdDicary */
+
+		SELECT WRD_SN
+		     , USE_AT
+		     , WRD_NM
+		     , WRD_SE
+		     , REGIST_ID
+		     , REGIST_DT
+		  FROM TC_PRHIBT_WRD_DICARY
+		 WHERE WRD_SN = #{wrdSn}
+        ]]>
+    </select>
+
+	<!-- 금지단어 등록 -->
+    <insert id="savePrhibtWrdDicary" parameterType="zvl">
+    <selectKey resultType="Integer" order="BEFORE" keyProperty="wrdSn">
+			SELECT NVL(MAX(WRD_SN),0)+1 FROM TC_PRHIBT_WRD_DICARY
+		</selectKey>
+        <![CDATA[
+		/* savePrhibtWrdDicary */
+
+		INSERT
+		  INTO TC_PRHIBT_WRD_DICARY
+		       (
+		           WRD_SN
+		         , WRD_NM
+		         , WRD_SE
+		         , USE_AT
+		         , REGIST_ID
+		         , REGIST_DT
+		         , UPDT_ID
+		         , UPDT_DT
+		       )
+		       VALUES
+		       (
+		           #{wrdSn}
+		         , #{wrdNm}
+		         , #{wrdSe}
+		         , #{useAt}
+		         , #{registId}
+		         , SYSDATETIME
+		         , #{updtId}
+		         , SYSDATETIME
+		       )
+
+        ]]>
+    </insert>
+
+	<!-- 금지단어 수정 -->
+    <update id="modifyPrhibtWrdDicary" parameterType="zvl">
+        <![CDATA[
+        /* modifyPrhibtWrdDicary */
+
+		UPDATE TC_PRHIBT_WRD_DICARY
+		       SET WRD_NM = #{wrdNm}
+		     , WRD_SE = #{wrdSe}
+		     , USE_AT = #{useAt}
+		     , UPDT_ID = #{updtId}
+		     , UPDT_DT = SYSDATETIME
+		 WHERE WRD_SN = #{wrdSn}
+        ]]>
+    </update>
+
+	<!-- 금지단어 삭제 -->
+    <delete id="deletePrhibtWrdDicary" parameterType="zvl">
+        <![CDATA[
+		/* deletePrhibtWrdDicary */
+
+		DELETE
+		  FROM TC_PRHIBT_WRD_DICARY
+		 WHERE WRD_SN = #{wrdSn}
+        ]]>
+    </delete>
+
+    <!-- 금지단어 목록 -->
+    <select id="countPrhibtWrdDicaryString" resultType="zvl">
+        <![CDATA[
+		/* countPrhibtWrdDicaryString */
+		SELECT WRD_NM
+		  FROM TC_PRHIBT_WRD_DICARY
+		WHERE USE_AT = 'Y'
+        ]]>
+		<if test='wrdSe != null and wrdSe != ""'>
+			<if test='wrdSe == "1"'>
+				<![CDATA[	AND WRD_SE IN ('A','L')		]]>
+			</if>
+			<if test='wrdSe == "2"'>
+				<![CDATA[	AND WRD_SE IN ('A','P')		]]>
+			</if>
+		</if>
+
+    </select>
+
+</mapper>

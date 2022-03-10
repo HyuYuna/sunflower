@@ -1,0 +1,120 @@
+#set( $n = '
+')
+#set( $attrName = ${entity.name.replaceAll('[T|t][c|m|b]','')} )
+#set( $pkAttrName = ${entity.keyAttributes[0].name} )
+#set( $pkDatabaseName = ${entity.keyAttributes[0].databaseName} )
+#set( $hasClob = 'N' )
+#foreach( $field in $entity.attributes)
+#if(${field.type.toLowerCase()} == 'clob')
+#set( $hasClob = 'Y' )
+#end
+#end
+#set( $pkDatabaseName = ${entity.keyAttributes[0].databaseName} )
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://bibeault.org/tld/ccc" prefix="ccc" %>
+
+<ccc:constantsMap className="site.unp.core.domain.SearchVO" var="SearchVO"/>
+
+<script>
+	function del(){
+		if (!confirm('정말로 삭제 하시겠습니까?')) {
+			return;
+		}
+		var form = $("#board")[0];
+		form.action = "/bos/bbs/${_}{paramVO.bbsId}/delete.do";
+		form.submit();
+	}
+
+	function restore(){
+		if (!confirm('정말로 복구 하시겠습니까?')) {
+			return;
+		}
+		var form = $("#board")[0];
+		form.action = "/bos/bbs/${_}{paramVO.bbsId}/restore.do";
+		form.submit();
+	}
+
+	function delPermanently(){
+		if (!confirm('정말로 영구삭제 하시겠습니까?')) {
+			return;
+		}
+		var form = $("#board")[0];
+		form.action = "/bos/bbs/${_}{paramVO.bbsId}/delPermanently.do";
+		form.submit();
+	}
+
+</script>
+
+<form id="board" name="board" method="post" enctype="multipart/form-data" action="${_}{action}">
+	<input type="hidden" name="pageQueryString" value="${_}{pageQueryString}"/>
+	<input type="hidden" name="nttId" value="${_}{empty result.nttId ? 0 : result.nttId }" />
+	<input type="hidden" name="bbsId" value="${_}{masterVO.bbsId}" />
+	<input type="hidden" id="atchFileId0" name="atchFileId" value="${_}{result.atchFileId}">
+
+	<div class="galleryView">
+		<h2>${_}{result.nttSj}</h2>
+		<div>
+			<dl>
+#foreach( $field in $entity.attributes)
+#if($field.readUseAt == 'Y')
+#if(${field.type.toLowerCase()} == 'clob')
+#elseif(${field.type.toLowerCase()} == 'date')
+				<dt>${field.fieldDc} :</dt>
+				<dd><fmt:formatDate value="${_}{result.${field.name}}" pattern="yyyy-MM-dd HH:mm"/></dd>
+#else
+				<dt>${field.fieldDc} :</dt>
+				<dd class="wid">${_}{result.${field.name}}</dd>
+#end
+#end
+#end
+			</dl>
+		</div>
+#foreach( $field in $entity.attributes)
+#if($field.readUseAt == 'Y')
+#if(${field.type.toLowerCase()} == 'clob')
+		<div class="dbdata">
+			<c:choose>
+				<c:when test="${_}{result.htmlYn=='Y'}">${_}{result.${field.name}}</c:when>
+				<c:otherwise>
+					<% pageContext.setAttribute("crlf", "\n"); %>
+					${_}{fn:replace(result.${field.name}, crlf, "<br/>")}
+				</c:otherwise>
+			</c:choose>
+		</div>
+#end
+#end
+#end
+	</div>
+</form>
+
+<div class="btnSet">
+	<div class="fl">
+		<button type="button" class="b-del" href="javascript:delPermanently();">영구삭제</button>
+		<c:if test="${_}{prevNextMap.prevNttId > 0}">
+			<a class="b-prev" href="/bos/bbs/${_}{paramVO.bbsId}/view.do?nttId=${_}{prevNextMap.prevNttId}&${_}{pageQueryString}">이전글</a>
+		</c:if>
+		<c:if test="${_}{prevNextMap.nextNttId > 0}">
+			<a class="b-next" href="/bos/bbs/${_}{paramVO.bbsId}/view.do?nttId=${_}{prevNextMap.nextNttId}&${_}{pageQueryString}">다음글</a>
+		</c:if>
+	</div>
+
+	<div class="fr" >
+		<a class="b-edit" href="/bos/bbs/${_}{paramVO.bbsId}/forUpdate.do?nttId=${_}{result.nttId}&${_}{pageQueryString}">수정</a>
+		<c:if test="${_}{result.deleteCd eq '0' }" >
+			<button type="button" class="b-del" onclick="del();">삭제</button>
+		</c:if>
+		<c:if test="${_}{result.deleteCd eq '1' }" >
+			<button type="button" class="b-restore" onclick="restore();">복구</button>
+		</c:if>
+		<c:if test="${_}{fn:length(replyList) eq 0}">
+			<a class="b-reply" href="/bos/bbs/${_}{paramVO.bbsId}/forInsertRe.do?parntsNo=${_}{result.nttId}&${_}{pageQueryString}">답변하기</a>
+		</c:if>
+		<c:url var="url" value="/bos/bbs/${_}{paramVO.bbsId}/list.do?${_}{pageQueryString}"/>
+		<a class="b-list" href="${_}{url}">목록</a>
+	</div>
+</div>

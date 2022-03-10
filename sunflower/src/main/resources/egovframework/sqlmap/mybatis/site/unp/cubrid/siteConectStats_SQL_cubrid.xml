@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="SiteConectStatsService">
+
+	<sql id="SiteConectStats-where">
+		<choose>
+		<when test='searchCnd == "D"'>
+			<if test='sdate != null and sdate != ""'>
+				<![CDATA[	AND SM_DE >= REPLACE(#{sdate},'-','') 		]]>
+			</if>
+			<if test='edate != null and edate != ""'>
+				<![CDATA[	AND SM_DE <= REPLACE(#{edate},'-','') 		]]>
+			</if>
+		</when>
+		<when test='searchCnd == "M"'>
+			<if test='smonth != null and smonth != ""'>
+				<![CDATA[	AND SUBSTR(SM_DE,1,6) >= REPLACE(#{smonth},'-','') 		]]>
+			</if>
+			<if test='emonth != null and emonth != ""'>
+				<![CDATA[	AND SUBSTR(SM_DE,1,6) <= REPLACE(#{emonth},'-','') 		]]>
+			</if>
+		</when>
+		</choose>
+		<if test='menuNo1 != null and menuNo1 != ""'>
+			<if test='menuNo2 != null and menuNo2 != ""'>
+				<![CDATA[	AND B.MENU_NO = #{menuNo2} 		]]>
+			</if>
+			<if test='menuNo2 == null or menuNo2 == ""'>
+				<![CDATA[	AND B.UPPER_MENU_NO = #{menuNo1} 		]]>
+			</if>
+		</if>
+	</sql>
+
+
+	<insert id="saveSiteConectStats" parameterType="zvl" >
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="conectSn">
+			SELECT NVL(MAX(CONECT_SN),0)+1 AS CONECT_SN  FROM TC_SITE_CONECT_STATS
+		</selectKey>
+		<![CDATA[
+		/* saveSiteConectStats */
+
+		INSERT
+		  INTO TC_SITE_CONECT_STATS
+		       (
+		           CONECT_SN
+		         ,SESION_ID
+		         ,SITE_ID
+		         ,CONECT_URLAD
+		         ,MENU_NO
+		         ,CONECT_OPERSYSM_NM
+		         ,CONECT_WBSR_NM
+		         ,CONECT_PC_MOBILE_SE
+		         ,CONECT_YM
+		         ,CONECT_DE
+		         ,REGIST_DT
+
+		        )
+		       VALUES
+		       (
+		          #{conectSn}
+		         ,#{sesionId}
+		         ,#{siteId}
+		         ,#{conectUrlad}
+		         ,#{menuNo}
+		         ,#{conectOpersysmNm}
+		         ,#{conectWbsrNm}
+		         ,#{conectPcMobileSe}
+		         ,TO_CHAR(SYSDATE,'YYYYMM')
+		         ,TO_CHAR(SYSDATE,'YYYYMMDD')
+		         ,SYSDATE
+		       )
+		]]>
+	</insert>
+
+	<select id="findAllBySiteConectCount" parameterType="zvl" resultType="zvl" >
+
+		<choose>
+			<when test='searchCnd == "D"'>
+			<![CDATA[
+				SELECT P.CONECT_DE, nvl(V.PCNT,0) AS PCNT, nvl(V.VCNT,0) AS VCNT FROM
+				(
+
+				   SELECT TO_CHAR(TO_DATE(#{sdate}, 'YYYY-MM-DD')-1+LEVEL, 'YYYY-MM-DD') CONECT_DE
+				   FROM DB_ROOT
+				   CONNECT BY LEVEL <= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM-DD'),'YYYY-MM-DD')-TO_DATE(#{sdate},'YYYY-MM-DD')
+				)P
+				LEFT JOIN
+				(
+				 	SELECT SUBSTR(SM_DE, 1, 4) || '-' || SUBSTR(SM_DE, 5, 2) || '-' || SUBSTR(SM_DE, 7, 2) AS CONECT_DE,
+						PGE_VIEW_CO AS PCNT,
+						VISITR_CO AS VCNT
+					FROM TS_SITE_CONECT_STATS_SM
+					WHERE SITE_ID = #{pSiteId}
+				    AND SM_SE = #{smSe}
+			]]>
+			<include refid="SiteConectStats-where" />
+			<![CDATA[
+		        	ORDER BY SM_DE ASC
+		        )V
+				ON P.CONECT_DE = V.CONECT_DE
+				ORDER BY P.CONECT_DE ASC
+				]]>
+			</when>
+			<when test='searchCnd == "M"'>
+			<![CDATA[
+				SELECT P.CONECT_DE, nvl(V.PCNT,0) AS PCNT, nvl(V.VCNT,0) AS VCNT FROM
+				(
+				    SELECT CONECT_DE FROM
+				    (
+				     SELECT TO_CHAR(TO_DATE(#{smonth}, 'YYYY-MM')+LEVEL, 'YYYY-MM') CONECT_DE
+				     FROM DB_ROOT
+				     CONNECT BY LEVEL <= TO_DATE(TO_CHAR(SYSDATE, 'YYYY-MM'),'YYYY-MM')-TO_DATE(#{smonth},'YYYY-MM')
+				   )
+				   GROUP BY CONECT_DE
+				)P
+				LEFT JOIN
+				(
+					SELECT
+						CONECT_DE,
+						SUM(PGE_VIEW_CO) AS PCNT,
+						SUM(VISITR_CO) AS VCNT
+    				FROM
+    				(
+						SELECT
+      	 					SUBSTR(SM_DE, 1, 4) || '-' || SUBSTR(SM_DE, 5, 2) as CONECT_DE,
+          					PGE_VIEW_CO,
+          					VISITR_CO
+      					FROM TS_SITE_CONECT_STATS_SM
+				        WHERE SITE_ID = #{pSiteId}
+			        	AND SM_SE = #{smSe}
+			]]>
+			<include refid="SiteConectStats-where" />
+			<![CDATA[
+						ORDER BY CONECT_DE ASC
+   					)
+					GROUP BY CONECT_DE
+				)V
+				ON P.CONECT_DE = V.CONECT_DE
+				ORDER BY P.CONECT_DE ASC
+			]]>
+			</when>
+		</choose>
+	</select>
+
+
+	<select id="findAllBySiteMenuConectCount" parameterType="zvl" resultType="zvl" >
+
+		<![CDATA[
+			SELECT
+				C.MENU_NO,
+				C.PCNT,
+				CASE
+					WHEN C.MENU_NO = '1'
+				THEN '메인'
+				ELSE
+					NVL((SELECT REPLACE(RELATE_MENU_NM_LIST,'|',' > ') FROM TC_MENU_INFO B  WHERE B.MENU_NO = C.MENU_NO),(SELECT MENU_NM FROM TC_MENU_INFO B  WHERE B.MENU_NO = C.MENU_NO))
+				END  MENU_PATH,
+				ROWNUM RNUM
+			FROM
+			(
+				SELECT
+			    	A.MENU_NO,
+					A.PCNT
+				FROM
+				(
+			    	SELECT
+			        	MENU_NO,
+			            SUM(PGE_VIEW_CO) AS PCNT
+					FROM
+					(
+			        	SELECT
+			            	A.MENU_NO ,
+							A.PGE_VIEW_CO
+						FROM TS_SITE_CONECT_STATS_SM A
+						WHERE A.SITE_ID = #{pSiteId}
+						AND A.MENU_NO != 0
+				        AND A.SM_SE = #{smSe}
+		]]>
+		<include refid="SiteConectStats-where" />
+		<![CDATA[
+					)
+					GROUP BY MENU_NO
+					ORDER BY PCNT DESC
+				)A
+			)C
+		]]>
+		<if test='searchGb == "N"'>
+		<![CDATA[
+			WHERE ROWNUM < 21
+        ]]>
+        </if>
+	</select>
+
+	<select id="findAllBySiteGubunConectCount" parameterType="zvl" resultType="zvl" >
+	<![CDATA[
+		SELECT
+			TB.SM_SE_VALUE,
+       		SUM(TB.PGE_VIEW_CO) AS PCNT,
+       		SUM(TB.VISITR_CO) AS VCNT
+  		FROM
+       	(
+       		SELECT
+       			SM_SE_VALUE,
+              	PGE_VIEW_CO,
+              	VISITR_CO
+         	FROM TS_SITE_CONECT_STATS_SM
+        	WHERE SITE_ID = #{pSiteId}
+            AND SM_SE = #{smSe}
+            AND NVL(SM_SE_VALUE,'1') != '1'
+        ]]>
+        <include refid="SiteConectStats-where" />
+        <![CDATA[
+			ORDER BY SM_DE ASC
+       )TB
+		GROUP BY TB.SM_SE_VALUE
+       ]]>
+	</select>
+
+</mapper>

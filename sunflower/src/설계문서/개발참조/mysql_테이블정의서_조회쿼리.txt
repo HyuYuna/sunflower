@@ -1,0 +1,34 @@
+/* 테이블정의서 조회 */
+SELECT
+  a.table_name,
+  (select TABLE_COMMENT from information_schema.tables where TABLE_NAME=a.table_name limit 0,1) table_comments,
+  a.column_name,
+  a.column_comment as comments,
+  a.column_type,
+  IF(LENGTH(a.COLUMN_KEY) > 0,'PK','') AS pk,
+  IF(b.column_name IS NULL,'','FK') AS fk,
+  a.COLUMN_DEFAULT default_value,
+  IF(a.IS_NULLABLE = 'NO','Not Null','') AS notNull
+FROM  information_schema.columns a
+LEFT JOIN (
+  SELECT bb.table_name,  bb.column_name
+  FROM information_schema.key_column_usage bb
+  INNER JOIN information_schema.table_constraints cc ON bb.CONSTRAINT_NAME = cc.CONSTRAINT_NAME
+    and bb.table_name = cc.table_name and cc.constraint_type='FOREIGN KEY' and bb.TABLE_SCHEMA = cc.TABLE_SCHEMA
+  WHERE bb.TABLE_SCHEMA = 'ucms22'
+) b ON a.table_name = b.table_name and a.column_name = b.column_name
+
+
+WHERE a.TABLE_SCHEMA = 'ucms22'
+ORDER BY a.TABLE_NAME ASC, a.ORDINAL_POSITION ASC;
+
+
+/* 테이블 목록조회 */
+SELECT
+	TABLE_NAME,TABLE_COMMENT
+FROM information_schema.tables a WHERE a.TABLE_SCHEMA = 'ucms22';
+
+
+
+
+

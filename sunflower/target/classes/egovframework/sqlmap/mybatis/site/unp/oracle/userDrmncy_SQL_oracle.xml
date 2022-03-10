@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserDrmncy">
+
+	<sql id="userDrmncy-where">
+		<if test='pSiteId != null and pSiteId != ""'>
+			<![CDATA[	AND SITE_ID=#{pSiteId}	]]>
+		</if>
+		<if test='sdate != null and sdate != ""'>
+			<![CDATA[	AND TO_CHAR(A.DRMNCY_DT, 'YYYYMMDD') >= REPLACE(#{sdate},'-','') 		]]>
+		</if>
+		<if test='edate != null and edate != ""'>
+			<![CDATA[	AND TO_CHAR(A.DRMNCY_DT, 'YYYYMMDD') <= REPLACE(#{edate},'-','') 		]]>
+		</if>
+		<if test='searchKwd != null and searchKwd != ""'>
+			<if test='searchCnd=="1"'>
+				<![CDATA[ 	AND USER_ID LIKE '%' || #{searchKwd} || '%' ]]>
+			</if>
+			<if test='searchCnd=="2"'>
+				<![CDATA[ 	AND USER_NM LIKE '%' || #{searchKwd} || '%' ]]>
+			</if>
+		</if>
+	</sql>
+
+	<select id="countUserDrmncy" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT
+				COUNT(A.USER_ID)
+			FROM tm_user_drmncy A
+			WHERE 1=1
+		]]>
+		<include refid="userDrmncy-where" />
+	</select>
+
+	<select id="findAllUserDrmncy" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+		SELECT  *
+			  FROM  (
+			SELECT ROWNUM RNUM, ALL_LIST.*
+			  FROM  (
+				SELECT
+					USER_ID,
+					USER_SN,
+					PASSWORD,
+					USER_TY_CD,
+					USER_NM,
+					USER_EMAD,
+					USER_CPNO,
+					USER_TELNO,
+					USER_ZIP,
+					USER_ADRES1,
+					USER_ADRES2,
+					EMAIL_RECPTN_AT,
+					SMS_RECPTN_AT,
+					ENTRPRS_NO,
+					STTUS_CD,
+					AUTHOR_CD,
+					MNG_AT,
+					ENT_AT,
+					SEAT_NO,
+					ATCH_FILE_ID,
+					SITE_ID,
+					DEPT_ID,
+					LAST_LOGIN_DT,
+					PASSWORD_CHANGE_DT,
+					PASSWORD_DERIVE_DT,
+					STPLAT_AGRE_DT,
+					DELETE_CD,
+					USE_AT,
+					REGIST_ID,
+					REGIST_DT,
+					UPDT_ID,
+					UPDT_DT,
+					DRMNCY_DT
+				FROM tm_user_drmncy A
+				WHERE 1=1
+		]]>
+		<include refid="userDrmncy-where" />
+		<![CDATA[
+			ORDER BY A.DRMNCY_DT DESC
+			) ALL_LIST
+				    )
+			 WHERE  RNUM  > #{firstIndex}
+			   AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="findAllDrmncyMail" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			/* findAllDrmncyMail */
+			SELECT
+				USER_ID, USER_NM, USER_EMAD
+			FROM
+				tm_user_info
+			WHERE
+				NVL(LAST_LOGIN_DT,REGIST_DT)<DATE_ADD(SYSDATE, INTERVAL -11 MONTH)
+				AND DRMNCY_NTCN_AT='N'
+		]]>
+	</select>
+
+	<update id="updateUserInfoDrmncyNtcn" parameterType="zvl" >
+		<![CDATA[
+			/* updateUserInfoDrmncyNtcn */
+			UPDATE
+				tm_user_info
+			SET
+				DRMNCY_NTCN_AT='Y',
+				DRMNCY_NTCN_DT=SYSDATE
+			WHERE
+				USER_ID=#{userId}
+		]]>
+	</update>
+
+	<select id="findAllUserDrmncyList" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			/* findAllUserDrmncyList */
+			SELECT
+				USER_ID,
+				USER_SN,
+				PASSWORD,
+				USER_TY_CD,
+				USER_NM,
+				USER_EMAD,
+				USER_CPNO,
+				USER_TELNO,
+				USER_ZIP,
+				USER_ADRES1,
+				USER_ADRES2,
+				EMAIL_RECPTN_AT,
+				SMS_RECPTN_AT,
+				ENTRPRS_NO,
+				STTUS_CD,
+				AUTHOR_CD,
+				MNG_AT,
+				ENT_AT,
+				SEAT_NO,
+				ATCH_FILE_ID,
+				SITE_ID,
+				DEPT_ID,
+				TO_CHAR(LAST_LOGIN_DT, 'YYYYMMDD HH24:MI:SS') AS LAST_LOGIN_DT,
+				TO_CHAR(PASSWORD_CHANGE_DT, 'YYYYMMDD HH24:MI:SS') AS PASSWORD_CHANGE_DT,
+				TO_CHAR(PASSWORD_DERIVE_DT, 'YYYYMMDD HH24:MI:SS') AS PASSWORD_DERIVE_DT,
+				TO_CHAR(STPLAT_AGRE_DT, 'YYYYMMDD HH24:MI:SS') AS STPLAT_AGRE_DT,
+				DELETE_CD,
+				USE_AT,
+				REGIST_ID,
+				TO_CHAR(REGIST_DT, 'YYYYMMDD HH24:MI:SS') AS REGIST_DT,
+				UPDT_ID,
+				TO_CHAR(UPDT_DT, 'YYYYMMDD HH24:MI:SS') AS UPDT_DT,
+				DRMNCY_NTCN_AT,
+				TO_CHAR(DRMNCY_NTCN_DT, 'YYYYMMDD HH24:MI:SS') AS DRMNCY_NTCN_DT
+			FROM
+				tm_user_info
+			WHERE
+				NVL(LAST_LOGIN_DT,REGIST_DT)<DATE_ADD(SYSDATE, INTERVAL -12 MONTH)
+				AND DRMNCY_NTCN_AT='Y'
+		]]>
+	</select>
+
+	<delete id="deleteUserDrmncy" parameterType="zvl" >
+		<![CDATA[
+			DELETE
+			FROM
+				tm_user_info
+			WHERE
+				NVL(LAST_LOGIN_DT,REGIST_DT)<DATE_ADD(SYSDATE, INTERVAL -12 MONTH)
+				AND DRMNCY_NTCN_AT='Y'
+				AND USER_ID=#{userId}
+		]]>
+	</delete>
+
+	<insert id="saveUserDrmncy" parameterType="zvl" >
+		<![CDATA[
+			/* saveUserDrmncy */
+			INSERT INTO
+				tm_user_drmncy
+				(
+					USER_ID,
+					USER_SN,
+					PASSWORD,
+					USER_TY_CD,
+					USER_NM,
+					USER_EMAD,
+					USER_CPNO,
+					USER_TELNO,
+					USER_ZIP,
+					USER_ADRES1,
+					USER_ADRES2,
+					EMAIL_RECPTN_AT,
+					SMS_RECPTN_AT,
+					ENTRPRS_NO,
+					STTUS_CD,
+					AUTHOR_CD,
+					MNG_AT,
+					ENT_AT,
+					SEAT_NO,
+					ATCH_FILE_ID,
+					SITE_ID,
+					DEPT_ID,
+					LAST_LOGIN_DT,
+					PASSWORD_CHANGE_DT,
+					PASSWORD_DERIVE_DT,
+					STPLAT_AGRE_DT,
+					DELETE_CD,
+					USE_AT,
+					REGIST_ID,
+					REGIST_DT,
+					UPDT_ID,
+					UPDT_DT,
+					DRMNCY_DT
+				)
+			VALUES
+				(
+				#{userId},
+				#{userSn},
+				#{password},
+				#{userTyCd},
+				#{userNm},
+				#{userEmad},
+				#{userCpno},
+				#{userTelno},
+				#{userZip},
+				#{userAdres1},
+				#{userAdres2},
+				#{emailRecptnAt},
+				#{sms_recptnAt},
+				#{entrprsNo},
+				#{sttusCd},
+				#{authorCd},
+				#{mngAt},
+				#{entAt},
+				#{seatNo},
+				#{atchFileId},
+				#{siteId},
+				#{deptId},
+				#{lastLoginDt},
+				#{passwordChangeDt},
+				#{passwordDeriveDt},
+				#{stplatAgreDt},
+				#{deleteCd},
+				#{useAt},
+				#{registId},
+				#{registDt},
+				#{updtId},
+				#{updtDt},
+				SYSDATE
+				)
+		]]>
+	</insert>
+
+	<insert id="saveDrmncyToUserInfo" parameterType="zvl" >
+		<![CDATA[
+			/* saveDrmncyToUserInfo */
+			INSERT INTO tm_user_info
+			(
+				USER_ID,
+				USER_SN,
+				PASSWORD,
+				USER_TY_CD,
+				USER_NM,
+				USER_EMAD,
+				USER_CPNO,
+				USER_TELNO,
+				USER_ZIP,
+				USER_ADRES1,
+				USER_ADRES2,
+				EMAIL_RECPTN_AT,
+				SMS_RECPTN_AT,
+				ENTRPRS_NO,
+				STTUS_CD,
+				AUTHOR_CD,
+				MNG_AT,
+				ENT_AT,
+				SEAT_NO,
+				ATCH_FILE_ID,
+				SITE_ID,
+				DEPT_ID,
+				LAST_LOGIN_DT,
+				PASSWORD_CHANGE_DT,
+				PASSWORD_DERIVE_DT,
+				STPLAT_AGRE_DT,
+				DELETE_CD,
+				USE_AT,
+				REGIST_ID,
+				REGIST_DT,
+				UPDT_ID,
+				UPDT_DT,
+				DRMNCY_NTCN_AT,
+				DRMNCY_NTCN_DT
+			)
+			SELECT
+				USER_ID,
+				USER_SN,
+				PASSWORD,
+				USER_TY_CD,
+				USER_NM,
+				USER_EMAD,
+				USER_CPNO,
+				USER_TELNO,
+				USER_ZIP,
+				USER_ADRES1,
+				USER_ADRES2,
+				EMAIL_RECPTN_AT,
+				SMS_RECPTN_AT,
+				ENTRPRS_NO,
+				STTUS_CD,
+				AUTHOR_CD,
+				MNG_AT,
+				ENT_AT,
+				SEAT_NO,
+				ATCH_FILE_ID,
+				SITE_ID,
+				DEPT_ID,
+				SYSDATE,
+				SYSDATE,
+				PASSWORD_DERIVE_DT,
+				STPLAT_AGRE_DT,
+				DELETE_CD,
+				USE_AT,
+				REGIST_ID,
+				REGIST_DT,
+				UPDT_ID,
+				UPDT_DT,
+				NULL,
+				NULL
+			FROM tm_user_drmncy
+			WHERE USER_ID=#{username}
+		]]>
+	</insert>
+
+	<delete id="deleteUserDrmncyById" parameterType="zvl">
+		<![CDATA[
+			/* deleteUserDrmncyById */
+			DELETE
+			FROM tm_user_drmncy
+			WHERE USER_ID=#{username}
+		]]>
+	</delete>
+
+	<select id="findAllUserDrmncySecsnList" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			/* findAllUserDrmncySecsnList */
+			SELECT
+				USER_ID,
+				USER_SN,
+				USER_NM
+			FROM
+				tm_user_drmncy
+			WHERE
+				DRMNCY_DT<DATE_ADD(SYSDATE, INTERVAL -4 YEAR)
+		]]>
+	</select>
+
+
+	<delete id="deleteUserDrmncySecsn" parameterType="zvl" >
+		<![CDATA[
+			DELETE
+			FROM
+				tm_user_drmncy
+			WHERE
+				DRMNCY_DT<DATE_ADD(SYSDATE, INTERVAL -4 YEAR)
+				AND USER_ID=#{userId}
+		]]>
+	</delete>
+</mapper>

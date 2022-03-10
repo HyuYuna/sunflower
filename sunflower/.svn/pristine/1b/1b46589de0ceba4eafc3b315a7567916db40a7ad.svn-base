@@ -1,0 +1,53 @@
+
+
+<div class="view2">
+	<h2 class="subject">참신한  로맨스코미디 장르 스토리를 찾고 있습니다.</h2>
+	<dl>
+		<dt>작성자</dt>
+		<dd>홍길동</dd>
+		<dt>등록일</dt>
+		<dd>2016-01-01</dd>
+		<dt>조회수</dt>
+		<dd>689</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>등록된 첨부파일이 없습니다.</dd>
+	</dl>
+	<dl>
+		<dt>첨부파일</dt>
+		<dd>
+			<ul class="fileList">
+				<li><a href="">파일이름.pdf</a></li>
+			</ul>
+		</dd>
+	</dl>
+</div>
+<div class="dbData">
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+<div class="bdViewNav">
+	<dl>
+		<dt>윗글</dt>
+		<dd>
+			<a href="">
+			<span>이전글 게시물 제목</span>
+			<span>2016-01-01</span>
+			</a>
+		</dd>
+	</dl>
+	<dl>
+		<dt>아랫글</dt>
+		<dd>
+			<a href="">
+			<span>다음글 게시물 제목</span>
+			<span>2016-01-01</span>
+			</a>
+		</dd>
+	</dl>
+</div>
+<div class="btnSet">
+	<a href="" class="b-list">목록</a>
+</div>
+
+

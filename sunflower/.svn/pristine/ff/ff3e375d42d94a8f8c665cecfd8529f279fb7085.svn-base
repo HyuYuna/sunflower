@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.file.ekrFileDao">
+	<select id="findAllEkrFile" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllEkrFile */
+			
+			SELECT	UFL_SEQ, UFL_FILESIZE, UFL_FILENAME_ORIGINAL
+					, CASE LENGTH(UFL_FILENAME_EXTENSION) WHEN 1 THEN 'null' ELSE IF(UFL_FILENAME_EXTENSION IS NULL, 'null', REPLACE(UFL_FILENAME_EXTENSION, '.', '')) END AS UFL_FILENAME_EXTENSION
+					, UFL_CUSER, FU_GETUSER_NM(UFL_CUSER) AS UFL_CUSER_NM, DATE_FORMAT(UFL_DATE, '%Y-%m-%d %H:%i') AS UFL_DATE
+			FROM	TB_UPLOAD_FILE
+			WHERE	UFL_REL_CODE=#{fileUploadGroup}
+					AND UFL_REL_NUMBER=#{fileUploadCode}
+		]]>
+		<if test='fileUploadCodeSub != null and fileUploadCodeSub != ""'>
+			<![CDATA[ AND UFL_REL_NUMBER2=#{fileUploadCodeSub}]]>
+		</if>
+		<![CDATA[
+			ORDER BY UFL_SEQ ASC
+		]]>
+	</select>
+
+	<insert id="ekrFileUploadSave" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="uflSeq">
+			SELECT IFNULL(MAX(UFL_SEQ),0)+1 AS UFL_SEQ  FROM TB_UPLOAD_FILE
+		</selectKey>
+		<![CDATA[
+			/* ekrFileUploadSave */
+			
+			INSERT INTO TB_UPLOAD_FILE (
+				UFL_SEQ,
+				UFL_FILENAME_SAVED,
+				UFL_FILENAME_ORIGINAL,
+				UFL_FILENAME_EXTENSION,
+				UFL_FILESIZE,
+				URL_FILE_LOCATION,
+				UFL_MIMETYPE,
+				UFL_REL_NUMBER,
+				UFL_REL_NUMBER2,
+				UFL_REL_CODE,
+				UFL_CUSER,
+				UFL_TEXT,
+				UFL_DATE
+			) VALUES (
+				#{uflSeq},
+				#{uflFilenameSaved},
+				#{uflFilenameOriginal},
+				#{uflFilenameExtension},
+				#{uflFilesize},
+				#{urlFileLocation},
+				#{uflMimetype},
+				#{uflRelNumber},
+				#{uflRelNumber2},
+				#{uflRelCode},
+				#{uflCuser},
+				#{uflText},
+				NOW() )
+		]]>
+	</insert>
+
+	<insert id="ekrFileUploadAtBranch" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="bddSeq">
+			SELECT IFNULL(MAX(BDD_SEQ),0)+1 AS BDD_SEQ  FROM TB_BOARD_DATA_CENTER_FILE
+		</selectKey>
+		<![CDATA[
+			/* ekrFileUploadAtBranch */
+			
+			INSERT INTO TB_BOARD_DATA_CENTER_FILE (
+				BDD_SEQ,
+				BDDC_CENTER,
+				BDCF_WRITER_USER,
+				FILES_SEQ,
+				BDCF_MEMO
+			) VALUES (
+				#{bddSeq},
+				#{bddcCenter},
+				#{userId},
+				#{filesSeq},
+				#{bdcfMemo} )
+		]]>
+	</insert>
+	
+	<select id="ekrFileDeleteCount" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* ekrFileDeleteCount */
+			
+			SELECT	COUNT(*)
+			FROM	TB_UPLOAD_FILE
+			WHERE	UFL_SEQ = #{uflSeq}
+					AND UFL_CUSER = #{userId}
+		]]>
+	</select>
+	
+	<delete id="ekrFileUploadDelete" parameterType="zvl">
+		<![CDATA[
+			/* ekrFileUploadDelete */
+			
+			DELETE	
+			FROM	TB_UPLOAD_FILE
+			WHERE	UFL_SEQ = #{uflSeq} and UFL_CUSER = #{userId}
+		]]>
+	</delete>
+	
+	<!-- 게시물 삭제시 첨부파일 삭제 -->
+	<delete id="ekrFileDelete" parameterType="zvl">
+		<![CDATA[
+			/* ekrFileDelete */
+			
+			DELETE	
+			FROM	TB_UPLOAD_FILE
+			WHERE	UFL_REL_NUMBER = #{uflRelNumber} AND UFL_REL_CODE = #{uflRelCode}
+		]]>
+	</delete>
+	
+	<select id="ekrFileDownload" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* ekrFileDownload */
+			
+			SELECT URL_FILE_LOCATION, UFL_FILENAME_ORIGINAL
+			, IFNULL(UFL_MIMETYPE, 'application/unknown') AS UFL_MIMETYPE
+			, UFL_FILENAME_EXTENSION, UFL_FILENAME_SAVED
+			FROM TB_UPLOAD_FILE
+			WHERE UFL_SEQ=#{uflSeq} AND UFL_FILESIZE=#{uflFilesize}
+		]]>
+	</select>
+	
+	<update id="ekrUploadFileListInsertCenterJaryo" parameterType="zvl">
+		<![CDATA[
+			/* ekrUploadFileListInsertCenterJaryo */
+			
+			UPDATE	TB_BOARD_DATA_CENTER_FILE
+			SET		BDCF_CHECK_DATE = NOW()
+					, BDCF_CHECK_USER = #{userId}
+			WHERE	BDD_SEQ IN (SELECT BDD_SEQ FROM TB_BOARD_DATA WHERE BDD_SEQ = #{bddSeq} AND BDD_CENTER = #{bddCenter})
+					AND (BDCF_CHECK_DATE IS NULL OR BDCF_CHECK_USER IS NULL)
+		]]>
+	</update>
+	
+	<!-- 첨부 리스트(압축) -->
+    <select id="findUploadZip" parameterType="zvl" resultType="zvl">
+        <![CDATA[
+        /* findUploadZip */
+        SELECT *
+		 FROM TB_UPLOAD_FILE
+		  WHERE UFL_REL_NUMBER = #{seq}
+		  AND UFL_REL_CODE = #{zipName}
+        ]]>
+    </select>
+</mapper>

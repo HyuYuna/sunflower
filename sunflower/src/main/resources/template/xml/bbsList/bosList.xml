@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+<![CDATA[
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://bibeault.org/tld/ccc" prefix="ccc" %>
+
+<ccc:constantsMap className="kr.co.unp.bbs.vo.SearchVO" var="SearchVO"/>
+
+<script>
+	function del(){
+		if($(":checkbox:checked").length == 0)
+		{
+			alert("삭제할 게시물을 선택하세요.");
+			return;
+		}
+		if( !confirm("정말로 삭제하시겠습니까?") ){
+			return;
+		}
+		var inData = $("#frm").serialize();
+		$.post(
+			"/bos/bbs/${paramVO.bbsId}/deleteAll.json",
+			inData,
+			function(data){
+				var resultCode = data.resultCode;
+				var resultMsg = data.msg;
+				alert(resultMsg);
+				if(resultCode == "success") location.reload();
+			}
+		);
+	}
+	$(function() {
+		var strKey = '${paramVO.searchWrd}'; // 하이라이트를 적용할 스트링
+		 if(strKey != ''){
+			$('.tit').highlight(strKey); //line class에 해당하는 요소들에서 strKey 값들을 하이라이트 처리
+		 }
+		$( '.check-all' ).click( function() {
+	          $( '.input_check' ).prop( 'checked', this.checked );
+	    } );
+	});
+</script>
+
+<form id="frm" name="frm" action ="/bos/bbs/${paramVO.bbsId}/list.do" method="post">
+	<div class="sh">
+		<fieldset>
+			<legend>검색</legend>
+			<input type="text" id="sdate" name="sdate" value="${param.sdate}" size="10" /> ~
+		    <input type="text" id="edate" name="edate" value="${param.edate}" size="10" />
+
+			<label for="deptId" class="hidden">담당부서선택</label>
+			<select id="deptId" name="deptId">
+			   <option>담당부서선택</option>
+				<c:forEach var="dept" items="${deptList}" varStatus="status">
+				<option value="${dept.deptId}" <c:if test="${dept.deptId == paramVO.deptId}">selected="selected"</c:if>>${dept.deptName}</option>
+				</c:forEach>
+			</select>
+
+			<label for="stributary" class="hidden">검색조건</label>
+			<select id="stributary" name="searchCnd" title="검색조건">
+			   <option value="1" <c:if test="${paramVO.searchCnd == '1'}">selected="selected"</c:if> >제목</option>
+			   <option value="4" <c:if test="${paramVO.searchCnd == '4'}">selected="selected"</c:if> >작성자</option>
+			   <option value="2" <c:if test="${paramVO.searchCnd == '2'}">selected="selected"</c:if> >내용</option>
+			   <option value="3" <c:if test="${paramVO.searchCnd == '3'}">selected="selected"</c:if> >제목+내용</option>
+			</select>
+			<input type="text" title="검색어" class="inpKeyword" name="searchWrd" value="${paramVO.searchWrd}" />
+			<input type="submit" value="검색" class="btn btn-primary" />
+		</fieldset>
+	</div>
+</form>
+
+<!-- board list start -->
+<div class="bdList">
+	<table class="table table-bordered table-hover table-striped">
+		<caption>${masterVO.bbsNm} 목록</caption>
+		<colgroup>
+			<col style="width:5%" />
+			<col style="width:8%" />
+]]>
+<forEach>
+	<isEqual value="default">
+	<![CDATA[
+			<col style="width:10%" />
+	]]>
+	</isEqual>
+	<isEqual value="nttSj">
+	<![CDATA[
+			<col />
+	]]>
+	</isEqual>
+	<isEqual value="frstRegisterPnttm">
+	<![CDATA[
+			<col style="width:12%" />
+	]]>
+	</isEqual>
+</forEach>
+<![CDATA[
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col"><input type="checkbox" name="check-all" id="tschLfrcOrgplceCode" value="all" class="check-all" <c:if test="${zvl.check_all == 'all'}">checked="checked"</c:if> /></th>
+				<th scope="col">번호</th>
+]]>
+	<forEach>
+	<![CDATA[
+				<th scope="col">[fieldText]</th>
+	]]>
+	</forEach>
+<![CDATA[
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach var="result" items="${resultList}" varStatus="status">
+			<tr>
+				<td><input type="checkbox" name="checkbox" id="checkbox" class="input_check" value="${result.nttId}" /></td>
+
+				<td>${result.nttType=='1' ? '공지' : (resultCnt) - (paramVO.pageSize * (paramVO.pageIndex-1))}</td>
+]]>
+<forEach>
+	<isEqual value="default">
+	<![CDATA[
+				<td>${result.[fieldName]}</td>
+	]]>
+	</isEqual>
+	<isEqual value="nttSj">
+	<![CDATA[
+				<td class="tit">
+					<c:url var="url" value="/bos/bbs/${paramVO.bbsId}/view.do?nttId=${result.nttId}&${pageQueryString}" />
+					<a href="${url}">
+					<c:choose>
+						<c:when test="${result.delcode ne SearchVO.NON_DELETION}">
+						<span class="del">${result.nttSj}</span>
+						</c:when>
+						<c:otherwise>${result.nttSj}</c:otherwise>
+					</c:choose>
+					<c:if test="${result.commentCnt>0}">(댓글:${result.commentCnt})</c:if>
+					<c:if test="${result.replyCnt>0}">(댓글:${result.replyCnt})</c:if>
+					${result.newYn=='Y'?'[new]':''}
+					</a>
+				</td>
+	]]>
+	</isEqual>
+	<isEqual value="secret">
+	<![CDATA[
+				<td>
+					${result.secret=='N'?'공개':'비공개'}
+				</td>
+	]]>
+	</isEqual>
+	<isEqual value="replyAt">
+	<![CDATA[
+				<td>
+				  <c:choose>
+					<c:when test="${result.replyAt eq SearchVO.NON_PROCESS}">미처리</c:when>
+					<c:when test="${result.replyAt eq SearchVO.RECEIPT}">접수</c:when>
+					<c:when test="${result.replyAt eq SearchVO.ASSING_PUBLIC_OFFICE or result.replyAt eq SearchVO.ASSIGN_DEPT}">처리중</c:when>
+					<c:when test="${result.replyAt eq SearchVO.ANSWERING}">중간답변</c:when>
+					<c:when test="${result.replyAt eq SearchVO.COMPLETE_ANSWER}">완료</c:when>
+					<c:when test="${result.replyAt eq SearchVO.NON_ANSWERING}">비답변</c:when>
+					<c:when test="${result.replyAt eq SearchVO.CANCEL}">취소</c:when>
+				  </c:choose>
+				</td>
+	]]>
+	</isEqual>
+	<isEqual value="atchFileId">
+	<![CDATA[
+		    	<td>
+		    		<c:if test="${not empty result.atchFileId and result.fileCount > 0}">
+		    		<a href="/bos/cmm/fms/FileDown.do?atchFileId=${result.atchFileId}&amp;fileSn=${result.fileSn}">
+		    			<img src="/static/img/commons/disk.gif" alt="${result.orignlFileNm}"/>
+		    		</a>
+		    		</c:if>
+		    	</td>
+	]]>
+	</isEqual>
+</forEach>
+<![CDATA[
+			</tr>
+			<c:set var="resultCnt" value="${resultCnt-1}" />
+		</c:forEach>
+		<c:if test="${fn:length(resultList) == 0}"><tr><td colspan="7">데이터가 없습니다.</td></tr></c:if>
+		</tbody>
+	</table>
+</div><!-- bdList end //-->
+<c:if test="${fn:length(resultList) > 0}">
+	<util:out escapeXml="false">${pageNav}</util:out>
+</c:if>
+
+<div class="btnSet">
+	<button class="btn btn-primary" onclick="del()"><span>삭제</span></button>
+	<c:if test="${empty paramVO.delcode or paramVO.delcode eq '0'}">
+		<sec:authorize ifAnyGranted="ROLE_SUPER">
+			<a class="btn btn-primary" href="/bos/bbs/${paramVO.bbsId}/list.do?delcode=1"><span>삭제글보기</span></a>
+		</sec:authorize>
+			<a class="btn btn-primary" href="/bos/bbs/${paramVO.bbsId}/forInsert.do?${pageQueryString}"><span>글쓰기</span></a>
+			<a class="btn btn-info" href="/bos/bbs/${paramVO.bbsId}/downloadExcel.xls?${pageQueryString}&fieldList=Y"><span>Excel</span></a>
+	</c:if>
+	<c:if test="${paramVO.delcode eq '1'}">
+			<a class="btn btn-primary" href="/bos/bbs/${paramVO.bbsId}/list.do?delcode=0"><span>돌아가기</span></a>
+	</c:if>
+</div>
+]]>
+</page>

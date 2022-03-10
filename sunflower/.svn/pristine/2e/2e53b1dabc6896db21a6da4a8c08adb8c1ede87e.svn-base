@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.siteManage.banner">
+
+	<!-- 배너 조건 -->
+	<sql id="banner-where">
+		<if test='searchKwd != null and searchKwd != ""'>
+			<![CDATA[ 		AND	BANNER_NM LIKE CONCAT('%', TRIM(#{searchKwd}), '%') ]]>
+		</if>
+		<if test='siteIdSe != null and siteIdSe != ""'>
+			<![CDATA[ 		AND	SITE_ID_SE LIKE CONCAT('%', TRIM(#{siteIdSe}), '%') ]]>
+		</if>
+		<if test='searchUseAt != null and searchUseAt != ""'>
+			<![CDATA[ 		AND	USE_AT = #{searchUseAt} ]]>
+		</if>
+		<if test='pSiteId != null and pSiteId != ""'>
+			<![CDATA[ 		AND	SITE_ID = #{pSiteId} ]]>
+		</if>
+		<if test='pSiteId == null || pSiteId == ""'>
+			<![CDATA[ 		AND	SITE_ID = '']]>
+		</if>
+		<if test='pSiteId != "" and pSiteId == "bos"'>
+			<![CDATA[ 		AND	SITE_ID = 'bos']]>
+		</if>
+	</sql>
+
+	<!-- 배너 전체count수 -->
+	<select id="countBanner" parameterType="zvl" resultType="long">
+		<![CDATA[
+		/*  countBanner */
+
+		SELECT COUNT(*) AS totcnt
+		  FROM TC_BANNER
+		 WHERE 1 = 1
+		]]>
+		<include refid="banner-where" />
+	</select>
+
+	<!-- 배너 목록 -->
+	<select id="findBannerList" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/*  findBannerList */
+
+		SELECT BANNER_NO
+		     , a.BANNER_NM
+		     , a.BANNER_URLAD
+		     , a.DEPT_ID
+		     ,
+		       (
+		       SELECT USER_ID
+		         FROM TM_USER_INFO B
+		        WHERE A.DEPT_ID = '1'
+		       ) AS USER_ID
+		     , a.REGIST_DT
+		     , a.REGIST_ID
+		     , a.UPDT_DT
+		     , a.UPDT_ID
+		     , a.EXPSR_AT
+		     , a.DONG_CD
+		     , a.BANNER_SE
+		     , a.BGNDE
+		     , a.ENDDE
+		     , a.SORT_ORDR
+		     , a.ATCH_FILE_ID
+		     , a.POPUP_AT
+		     , a.SITE_ID_SE
+		     , a.SITE_ID
+		     , a.USE_AT
+		  FROM TC_BANNER a
+		 WHERE 1=1
+
+	 	]]>
+		<include refid="banner-where" />
+		<![CDATA[
+		ORDER BY SORT_ORDR ASC
+		     , REGIST_DT ASC
+		]]>
+	</select>
+
+	<!-- 배너 목록 -->
+	<select id="findAllBanner" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/*  findAllBanner */
+
+		SELECT AA.*
+		  FROM
+		       (
+		       SELECT @RN:=@RN+1 AS RNUM, ALL_LIST.*
+		         FROM
+		              (
+		              SELECT BANNER_NO
+		                   , a.BANNER_NM
+		                   , a.BANNER_URLAD
+		                   , a.DEPT_ID
+		                   ,
+		                     (
+		                     SELECT USER_ID
+		                       FROM TM_USER_INFO B
+		                      WHERE A.DEPT_ID = '1'
+		                     ) AS USER_ID
+		                   , a.REGIST_DT
+		                   , a.REGIST_ID
+		                   , a.UPDT_DT
+		                   , a.UPDT_ID
+		                   , a.EXPSR_AT
+		                   , a.DONG_CD
+		                   , a.BANNER_SE
+		                   , a.BGNDE
+		                   , a.ENDDE
+		                   , a.SORT_ORDR
+		                   , a.ATCH_FILE_ID
+		                   , a.POPUP_AT
+		                   , a.SITE_ID_SE
+		                   , a.SITE_ID
+		                   ,
+		                     (
+		                     SELECT SITE_NM
+		                       FROM TC_SITE_INFO B
+		                      WHERE A.SITE_ID = B.SITE_ID
+		                     ) AS SITE_NM
+		                   , a.USE_AT
+		                FROM TC_BANNER a
+		               WHERE (@RN:=0)=0
+		]]>
+		<include refid="banner-where" />
+		<![CDATA[
+		ORDER BY SORT_ORDR DESC
+		              ) ALL_LIST
+		       ) AA
+		 LIMIT ${firstIndex}, ${recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 배너 목록 -->
+	<select id="findPublishListByBannerSe" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/*  findPublishListByBannerSe */
+
+		SELECT BANNER_NO
+		     , a.BANNER_NM
+		     , a.BANNER_URLAD
+		     , a.DEPT_ID
+		     , a.REGIST_DT
+		     , a.REGIST_ID
+		     , a.UPDT_DT
+		     , a.UPDT_ID
+		     , a.EXPSR_AT
+		     , a.DONG_CD
+		     , a.BANNER_SE
+		     , a.BGNDE
+		     , a.ENDDE
+		     , a.SORT_ORDR
+		     , a.ATCH_FILE_ID
+		     , a.POPUP_AT
+		     , a.SITE_ID_SE
+		     , a.SITE_ID
+		     , a.USE_AT
+		  FROM TC_BANNER a
+		 WHERE USE_AT = 'Y'
+	     AND EXPSR_AT = 'Y'
+	     AND DATE_FORMAT(BGNDE,'%Y%m%d') <= DATE_FORMAT( NOW(), '%Y%m%d')
+      	 AND DATE_FORMAT(ENDDE,'%Y%m%d') >= DATE_FORMAT( NOW(), '%Y%m%d')
+
+	    ]]>
+	    <if test='bannerSe != null and bannerSe != ""'>
+			<![CDATA[ AND a.BANNER_SE = #{bannerSe} ]]>
+		</if>
+
+	    <choose>
+	    <when test='siteIdSe != null and siteIdSe != ""'>
+			<![CDATA[ AND	SITE_ID_SE LIKE CONCAT('%',#{siteIdSe},'%') ]]>
+		</when>
+		<otherwise>
+			<![CDATA[ AND SITE_ID = #{pSiteId} ]]>
+		</otherwise>
+	    </choose>
+
+		ORDER BY SORT_ORDR DESC
+		     , REGIST_DT DESC
+	</select>
+
+	<!-- 배너 목록 -->
+	<select id="findBannerDetail" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findBannerDetail */
+
+		SELECT BANNER_NO
+		     , a.BANNER_NM
+		     , a.BANNER_URLAD
+		     , a.DEPT_ID
+		     , a.REGIST_DT
+		     , a.REGIST_ID
+		     , a.UPDT_DT
+		     , a.UPDT_ID
+		     , a.EXPSR_AT
+		     , a.DONG_CD
+		     , a.BANNER_SE
+		     , a.BGNDE
+		     , a.ENDDE
+		     , a.SORT_ORDR
+		     , a.ATCH_FILE_ID
+		     , a.POPUP_AT
+		     , a.SITE_ID_SE
+		     , a.SITE_ID
+		     , a.USE_AT
+		  FROM TC_BANNER a
+		 WHERE 1=1
+
+		]]>
+		<if test='sortOrdr == null or sortOrdr == ""'>
+			<![CDATA[	AND a.BANNER_NO = #{bannerNo}	]]>
+		</if>
+		<if test='sortOrdr != null and sortOrdr != ""'>
+			<![CDATA[
+			AND a.BANNER_NO = (
+				SELECT BANNER_NO
+				FROM (
+					SELECT *
+					FROM TC_BANNER
+					WHERE 1=1
+			]]>
+			<include refid="banner-where" />
+			<if test='option == "1"'><![CDATA[	ORDER BY SORT_ORDR DESC	]]></if>
+			<if test='option == "2"'><![CDATA[	AND SORT_ORDR > #{sortOrdr} ORDER BY SORT_ORDR	]]></if>
+			<if test='option == "3"'><![CDATA[	AND SORT_ORDR < #{sortOrdr} ORDER BY SORT_ORDR DESC	]]></if>
+			<if test='option == "4"'><![CDATA[	ORDER BY SORT_ORDR	]]></if>
+			<![CDATA[
+				) tb
+				LIMIT 1
+			)
+			]]>
+		</if>
+	</select>
+
+	<!-- 배너 등록 -->
+	<insert id="saveBanner" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="bannerNo">
+			SELECT IFNULL(MAX(BANNER_NO),0)+1 AS BANNER_NO  FROM TC_BANNER
+		</selectKey>
+		<![CDATA[
+		/* saveBanner */
+
+		INSERT
+		  INTO TC_BANNER
+		       (
+		           BANNER_NO
+		         , BANNER_NM
+		         , BANNER_URLAD
+		         , DEPT_ID
+		         , REGIST_DT
+		         , REGIST_ID
+		         , UPDT_DT
+		         , UPDT_ID
+		         , EXPSR_AT
+		         , DONG_CD
+		         , BANNER_SE
+		         , BGNDE
+		         , ENDDE
+		         , SORT_ORDR
+		         , ATCH_FILE_ID
+		         , POPUP_AT
+		         , SITE_ID_SE
+		         , SITE_ID
+		         , USE_AT
+		       )
+		       VALUES
+		       (
+		           #{bannerNo}
+		         , #{bannerNm}
+		         , #{bannerUrlad}
+		         , #{deptId}
+		         , NOW()
+		         , #{registId}
+		         , NOW()
+		         , #{updtId}
+		         , #{expsrAt}
+		         , #{dongCd}
+		         , #{bannerSe}
+		         , #{bgnde}
+		         , #{endde}
+		         , #{sortOrdr}
+		         , #{atchFileId}
+		         , #{popupAt}
+		         , #{siteIdSe}
+		         , #{pSiteId}
+		         , #{useAt}
+		       )
+
+		]]>
+	</insert>
+
+	<!-- 배너 수정 -->
+	<update id="modifyBanner" parameterType="zvl">
+		<![CDATA[
+		/* modifyBanner */
+
+		UPDATE TC_BANNER
+		       SET BANNER_NM = #{bannerNm}
+		     , BANNER_URLAD = #{bannerUrlad}
+		     , DEPT_ID = #{deptId}
+		     , UPDT_DT = NOW()
+		     , UPDT_ID = #{updtId}
+		     , EXPSR_AT = #{expsrAt}
+		     , DONG_CD = #{dongCd}
+		     , BANNER_SE = #{bannerSe}
+		     , BGNDE = #{bgnde}
+		     , ENDDE = #{endde}
+		     , SORT_ORDR = #{sortOrdr}
+		     , ATCH_FILE_ID = #{atchFileId}
+		     , POPUP_AT = #{popupAt}
+		     , SITE_ID_SE = #{siteIdSe}
+		     , SITE_ID = #{pSiteId}
+		     , USE_AT = #{useAt}
+		 WHERE BANNER_NO = #{bannerNo}
+
+		]]>
+	</update>
+
+	<!-- 배너 노출순서 수정 -->
+	<update id="modifyBannerSortOrdr">
+		<![CDATA[
+		/* modifyBannerSortOrdr */
+
+		UPDATE TC_BANNER
+		SET SORT_ORDR = #{sortOrdr}
+		WHERE BANNER_NO = #{bannerNo}
+		]]>
+	</update>
+
+	<!-- 배너 사용여부 수정 -->
+	<update id="modifyBannerUseAt">
+		<![CDATA[
+		/* modifyBannerUseAt */
+
+		UPDATE TC_BANNER
+		SET USE_AT = #{useAt}, EXPSR_AT = #{expsrAt}
+		WHERE BANNER_NO = #{bannerNo}
+		]]>
+	</update>
+
+	<!-- 배너 삭제 -->
+	<delete id="deleteBanner" parameterType="zvl">
+		<![CDATA[
+		/* deleteBanner */
+
+		DELETE
+		  FROM TC_BANNER
+		 WHERE BANNER_NO = #{bannerNo}
+		]]>
+	</delete>
+
+	<!-- 배너 정렬순서 최대값 -->
+	<select id="findBannerMaxSortOrdr" parameterType="zvl" resultType="string">
+		<![CDATA[
+		/* findBannerMaxSortOrdr */
+
+		SELECT IFNULL(MAX(SORT_ORDR),0)+1 AS SORT_ORDR
+		FROM TC_BANNER
+
+		]]>
+	</select>
+</mapper>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>관리자(#번서버)</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1" />
+<meta name="robots" content="all" />
+<link rel="stylesheet" type="text/css" href="/static/jslibrary/bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/NotoSans/notosans.css" />
+<link rel="stylesheet" type="text/css" href="/static/font/nanumgothic/nanumgothic.css" />
+<link rel="stylesheet" type="text/css" href="/static/bos/css/bossub.css" />
+<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+<script src="/static/jslibrary/bootstrap/js/bootstrap.js"></script>
+<script src="/static/bos/js/boscommon.js"></script>
+<script src="/static/commons/commons.js"></script>
+</head>
+<body>
+	<div id="wrap">
+		<div id="header_wrap">
+			<div class="header">
+				<h1><a href="/bos/main/main.do"><img src="/cmmn/file/getImage.do?atchFileId=FILE_000000000000031&fileSn=1" alt="CMS관리자 로고" height="27"/></a></h1>
+				<div class="user"> <em> 관리자(admin) </em> 님으로 로그인 하셨습니다.<!-- 로그인 접속IP:127.0.0.1 -->
+					<a href="javascript:openPopup();" class="btn btn-xs btn-success"><i class="fa fa-wrench"></i> 내정보수정</a>
+					<a href="/bos/member/admin/logout.do" class="btn btn-xs btn-info"><i class="fa fa-power-off"></i> 로그아웃</a>
+				</div>
+				<div class="util "> <div class="btn-group"> <a href="?menuNo=100085" class='on'><i class="fa fa-cogs"></i> 관리자</a> <a href="/ucms/main/main.do" target="_blank" ><i class="fa "></i> 홈페이지</a> </div> </div>
+			</div>
+			<div id="gnb">
+				<ul class="gnb_width">
+	 			<li class='on'> <a href="?menuNo=100007" >홈페이지 관리자</a> </li>
+	 			<li > <a href="?menuNo=100072" >홈페이지 관리</a> </li>
+	 			<li > <a href="?menuNo=100073" >홈페이지 통계</a> </li>
+	 			<li class='pr0'> <a href="?menuNo=100025" >미인증 메뉴</a> </li>
+				</ul>
+			</div>
+		</div>
+		<div id="container">
+			<div id="lnb">
+				<h2>홈페이지 관리자</h2>
+				<ul class="lnbNav">
+					홈페이지 관리자
+				</ul>
+			</div>
+			<div id="content">
+				<div class="hgroup clearfix">
+					<h1>홈페이지 관리자 권한관리</h1>
+					<div class="fr">
+						<a href="/bos/siteManage/siteHpcm/view.do?pGroupId=auth&amp;pSrvcId=auth&amp;pMethodId=list&amp;viewType=BODY" class="b-help" title="도움말 새창열림" target="_blank" onclick="window.open(this.href, 'siteHpcm', 'resizable=1, scrollbars=1, width=1280,height=800'); return false;">도움말</a>
+						<a class="b-print" href="/cmmn/bosForPrint.jsp" id="print" title="새창" onclick="window.open(this.href, 'printPage', 'width=840,height=640,scrollbars,toolbar,status');return false;">
+						<!-- <i class="fa fa-hover fa-print"></i> -->
+						<span >인쇄하기</span>
+						</a>
+					</div>
+				</div>
+				
+				
+<h2>메인비주얼 변경</h2>
+<div class="view">
+	<dl>
+		<dt>메인비주얼</dt>
+		<dd>
+			<input type="file" name="" id="" title="메인비주얼" style="display: inline">
+			<button type="button" class="b-del">삭제</button>
+			<div class="row">
+				<div class="col-sm-2"><label for="visualtext">메인비주얼 대체텍스트 :</label></div>
+				<div class="col-sm-10"><input id="visualtext" type="text" class="w100p" placeholder="이미지와 동등한 텍스트를 입력하세요. "></div>
+			</div>
+			<p class="help">메인비주얼 이미지 사이즈는 000px × 000px 입니다.</p>
+		</dd>
+	</dl>
+</div>
+<h2>콘텐츠 변경</h2>
+<div class="view">
+	<dl>
+		<dt>콘텐츠 구분</dt>
+		<dd class="contentSelect">
+			<label><input type="radio" name="contentType">일반형 게시판</label>
+			<label><input type="radio" name="contentType">포토형 게시판</label>
+			<label><input type="radio" name="contentType">내부콘텐츠 링크</label>
+			<label><input type="radio" name="contentType">알림영역</label>
+		</dd>
+	</dl>
+	<dl class="contentsSelectArea">
+		<dt> 콘텐츠 선택 </dt>
+		<dd class="setarea1">
+			<button type="button" class="b-open">게시판 선택</button>
+			<span>
+				<button type="button" class="b-default">공지사항 <span class="b-del btn-xs"><span class="sr-only">삭제</span></span></button>
+			</span>
+		</dd>
+		<dd class="setarea2">
+			<div class="row">
+				<div class="col-sm-2"><label for="contenturl">콘텐츠 URL</label></div>
+				<div class="col-sm-10">
+					<input type="text" id="contenturl" class="w100p">
+					<input type="file" name="" title="버튼이미지" style="display: inline">
+					<button type="button" class="b-del">삭제</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-2">버튼이미지 텍스트</div>
+				<div class="col-sm-10">
+				<input type="text" class="w70p" placeholder="이미지와 동등한 텍스트를 입력하세요.">
+				<div> <label><input type="checkbox" name="" id=""> 새창사용</label> </div>
+				</div>
+			</div>
+		</dd>
+	</dl>
+</div>
+<script>
+	$('.contentsSelectArea').hide();
+	$('.contentSelect input:radio').each(function(index, el) {
+		$(this).focus(function(event) {
+			$('.contentsSelectArea').show();
+			switch(index){
+				case 0:
+					$('.setarea1').show().siblings('dd').hide();
+					break;
+				case 1:
+					$('.setarea1').show().siblings('dd').hide();
+					break;
+				case 2:
+					$('.setarea2').show().siblings('dd').hide();
+					break;
+				case 3:
+					$('.contentsSelectArea').hide();
+					break;
+			}
+		});
+	});
+</script>

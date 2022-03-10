@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="/static/jslibrary/jquery-1.12.2.min.js"></script>
+	<script src="/static/commons/commons.js"></script>
+	<link rel="stylesheet" href="/static/bos/css/bossub.scss">
+</head>
+<body>
+	<h1>asd</h1>
+	<h2>asd</h2>
+	<input type="text" class="sdate" placeholder="ex) 2017-02-07" title="시작날짜" id="">
+	<input type="text" class="edate" placeholder="ex) 2017-02-11">
+	<label for="a01">그냥날짜</label><input type="text" class="date" placeholder="ex) 2017-02-13" id="a01">
+	<textarea name="" id="" cols="30" rows="10"></textarea>
+</body>
+</html>

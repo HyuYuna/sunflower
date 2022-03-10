@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.singl.MngrDAO">
+
+	<select id="findOneMngrLoginInfo" resultType="zvl">
+		<![CDATA[
+			SELECT A.USER_ID AS username
+				   , A.USER_NAME AS userNm
+			       , A.USER_PASSWORD
+			       , A.CENTER_CODE
+			       , A.CENTER_CODE2
+			       , A.CENTER_CODE3
+			       , A.USER_STATE
+			       , A.USER_LEVEL
+			FROM ta_user A
+			WHERE A.USER_ID = #{username}
+		]]>
+	</select>
+	<select id="findOneMngrLoginInfo2" resultType="zvl">
+		<![CDATA[
+			SELECT A.USER_ID
+				   , A.USER_NAME AS userNm
+			       , A.CENTER_CODE
+			       , A.CENTER_CODE2
+			       , A.CENTER_CODE3
+			       , (SELECT CODE_NAME FROM tb_code WHERE CODE_CODE = A.CENTER_CODE AND CODEG_CODE = 'CM05') AS centerName
+			       , user_level
+			       , user_group
+			       , CASE WHEN NOW() > DATE_ADD( USER_PASSWORD_DERIVE_DATE , INTERVAL (SELECT password_derive_daycnt FROM tb_login_policy) DAY)
+			       		THEN 'Y'
+			       			WHEN NOW() <= DATE_ADD( USER_PASSWORD_DERIVE_DATE , INTERVAL (SELECT password_derive_daycnt FROM tb_login_policy) DAY)
+			       		THEN 'N'
+			       END AS PASSWORD_DERIVE_YN
+			       , USER_STATE
+			FROM ta_user A
+			WHERE A.USER_ID = #{userId}
+		]]>
+	</select>
+	
+	<!-- 업무지원 -->
+	<select id="findOneMngrMenuBoardNewYn" resultType="zvl">
+		/*findOneMngrMenuBoardNewYn*/
+		<![CDATA[
+			SELECT count(*) cnt FROM (
+				SELECT BOCREATEDATE d 
+				FROM edu_board aa
+				WHERE aa.BOABCBOARDCODE = 'bid_7'
+				AND SYSDATE() <= ADDDATE(aa.BOCREATEDATE,INTERVAL 3 DAY)
+				UNION all
+				SELECT WDATE d 
+				FROM sun_message bb
+				WHERE bb.SEQ IN 
+				 (select SEQ FROM SUN_MESSAGE_TGT
+				 where RECEIVER = #{userId} )
+				AND SYSDATE() <= ADDDATE(bb.WDATE,INTERVAL 3 DAY)
+				) AS c
+		]]>
+	</select>
+	
+	<!-- 문서수발신 -->
+	<select id="findOneMngrMenuBoardNewYn2" resultType="zvl">
+		/*findOneMngrMenuBoardNewYn2*/
+		<![CDATA[
+			SELECT count(*) cnt FROM (
+					SELECT BDD_CDATE FROM TB_BOARD_DATA A
+					WHERE BDS_SEQ = 'demand'
+					AND BDD_STATE = 'C'
+					AND	CONCAT(BDD_TARGET,',') REGEXP #{centerCode} 
+					AND SYSDATE() <= ADDDATE(a.BDD_CDATE,INTERVAL 3 DAY)
+				) AS c
+		]]>
+	</select>
+	
+	<select id="findOneMngrLoginPolicy" resultType="zvl">
+		<![CDATA[
+			SELECT A.ATMC_LOGOUT_TIME AS base_time
+					,A.ATMC_LOGOUT_TIME_ALERT
+					,A.PASSWORD_RETRY_CO
+					,A.PASSWORD_DERIVE_DAYCNT
+			FROM tb_login_policy A
+		]]>
+	</select>
+
+	<!-- 관리자 검색조건  -->
+	<sql id="findAllMngr-where">
+		<!-- <![CDATA[	AND USER_ID NOT IN('admin','super_admin','unpl_admin')	]]> -->
+		<if test='sdate != null and sdate != ""'>
+			<![CDATA[	AND DATE_FORMAT(A.REGIST_DT, '%Y%m%d') >= REPLACE(#{sdate},'-','') 		]]>
+		</if>
+		<if test='edate != null and edate != ""'>
+			<![CDATA[	AND DATE_FORMAT(A.REGIST_DT, '%Y%m%d') <= REPLACE(#{edate},'-','') 		]]>
+		</if>
+		<if test='userSn != null and userSn != ""'>
+			<![CDATA[	AND	USER_SN = #{userSn} 		]]>
+		</if>
+		<if test='userId != null and userId != ""'>
+			<![CDATA[	AND USER_ID = #{userId} 		]]>
+		</if>
+		<if test='searchWrd != null and searchWrd != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[	AND A.USER_ID LIKE CONCAT('%',trim(#{searchWrd}),'%')		]]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[	AND A.USER_NM LIKE CONCAT('%',trim(UPPER(#{searchWrd})),'%') 		]]>
+			</if>
+			<if test='searchCnd == "3"'>
+				<![CDATA[	AND C.DEPT_KOR_NM LIKE CONCAT('%',trim(#{searchWrd}),'%') 		]]>
+			</if>
+		</if>
+	</sql>
+
+	<!-- 관리자 전체count수 -->
+	<!-- <select id="countMngr" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countMngr */
+			SELECT COUNT(*)
+			FROM TM_MNGR_INFO A
+			LEFT OUTER JOIN TC_AUTHOR_INFO B ON B.AUTHOR_CD = A.AUTHOR_CD
+			LEFT OUTER JOIN TM_DEPT_INFO C ON C.DEPT_ID = A.DEPT_ID AND C.DELETE_CD = '0'
+			WHERE A.DELETE_CD = '0'
+		]]>
+		<include refid="findAllMngr-where" />
+	</select> -->
+	
+	<select id="countMngr" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countMngr */
+			SELECT COUNT(*)
+			FROM ta_user A
+			LEFT OUTER JOIN tb_code B ON A.USER_LEVEL = B.CODE_CODE AND B.CODEG_CODE = 'USLV'
+			LEFT OUTER JOIN tb_code C ON A.CENTER_CODE = C.CODE_CODE AND C.CODEG_CODE  = 'CM05'
+			LEFT OUTER JOIN tb_code D ON A.USER_GROUP = D.CODE_CODE AND D.CODEG_CODE  = 'CDOP'
+			WHERE 1=1
+		]]>
+		<include refid="findAllMngr-where" />
+	</select>
+
+	<!-- 관리자 목록 -->
+	<!-- <select id="findAllMngr" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllMngr */
+			SELECT
+				A.USER_SN,
+			   	A.USER_ID,
+		       	A.PASSWORD,
+		       	A.USER_NM,
+		       	A.SEAT_NO,
+		       	A.DEPT_ID,
+		       	A.STTUS_CD,
+		       	A.USER_CPNO,
+		       	A.USER_EMAD,
+		       	A.AUTHOR_CD,
+		       	B.AUTHOR_NM,
+		       	C.DEPT_KOR_NM,
+		       	C.DEPT_ENG_NM,
+		       	C.USE_AT AS DEPT_USE_AT,
+				DATE_FORMAT(A.REGIST_DT, '%Y-%m-%d') AS REGIST_DT,
+				(select GROUP_CONCAT(B1.AUTHOR_NM) from tc_user_author A1, tc_author_info B1 WHERE A1.AUTHOR_CD = B1.AUTHOR_CD AND A1.USER_ID=A.USER_ID) AS AUTHOR_NMS
+			FROM TM_MNGR_INFO A
+			LEFT OUTER JOIN TC_AUTHOR_INFO B ON B.AUTHOR_CD = A.AUTHOR_CD
+			LEFT OUTER JOIN TM_DEPT_INFO C ON C.DEPT_ID = A.DEPT_ID AND C.DELETE_CD = '0'
+			WHERE A.DELETE_CD = '0'
+		]]>
+		<include refid="findAllMngr-where" />
+	    <![CDATA[
+	    	ORDER BY A.REGIST_DT desc
+	    	LIMIT #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select> -->
+	
+	<select id="findAllMngr" parameterType="zvl" resultType="zvl">
+	/* findAllMngr */
+		SELECT 
+			A.USER_ID AS USER_ID
+			, A.USER_PASSWORD AS "PASSWORD"
+			, A.USER_NAME AS USER_NM
+			, C.CODE_NAME AS CENTER_NAME
+			, A.CENTER_CODE AS CENTER_CODE
+			, A.CENTER_CODE2 AS CENTER_CODE2
+			, A.CENTER_CODE3 AS CENTER_CODE3
+			, A.USER_STATE AS STTUS_CD
+			, A.USER_PHONE AS USER_CPNO
+			, A.USER_SEX
+			, B.CODE_NAME AS AUTHOR_NM
+			/*, A.USER_LEVEL*/
+			, A.USER_CDATE AS REGIST_DT
+			, A.USER_BDATE
+			, A.USER_EDATE
+			, A.USER_BIRTH
+			, D.CODE_NAME AS USER_GROUP
+			/*, A.USER_GROUP*/
+			, A.USER_DEPARTMENT
+			, A.USER_POSITION
+			, A.USER_EMAIL AS USER_EMAD
+			, A.USER_NUMBER
+			, A.USER_PDATE
+		from ta_user A 
+		LEFT OUTER JOIN tb_code B ON A.USER_LEVEL = B.CODE_CODE AND B.CODEG_CODE = 'USLV'
+		LEFT OUTER JOIN tb_code C ON A.CENTER_CODE = C.CODE_CODE AND C.CODEG_CODE  = 'CM05'
+		LEFT OUTER JOIN tb_code D ON A.USER_GROUP = D.CODE_CODE AND D.CODEG_CODE  = 'CDOP'
+		WHERE 1=1
+		<include refid="findAllMngr-where" />
+	    <![CDATA[
+	    	ORDER BY A.USER_CDATE desc
+	    	LIMIT #{firstIndex}, #{recordCountPerPage}
+		]]>
+	
+	</select>
+
+	<!-- 관리자 상세 -->
+	<!-- <select id="findOneMngr" parameterType="string" resultType="zvl">
+		<![CDATA[
+			/* findOneMngr */
+			SELECT
+				A.USER_SN,
+			   	A.USER_ID,
+		       	A.PASSWORD,
+		       	A.USER_NM,
+		       	A.SEAT_NO,
+		       	A.DEPT_ID,
+		       	A.STTUS_CD,
+		       	A.USER_CPNO,
+		       	A.USER_EMAD,
+		       	A.AUTHOR_CD,
+		       	B.AUTHOR_NM,
+		       	C.DEPT_KOR_NM,
+		       	C.DEPT_ENG_NM,
+				DATE_FORMAT(A.REGIST_DT, '%Y-%m-%d') AS REGIST_DT
+			FROM TM_MNGR_INFO A
+			LEFT OUTER JOIN TC_AUTHOR_INFO B ON B.AUTHOR_CD = A.AUTHOR_CD
+			LEFT OUTER JOIN TM_DEPT_INFO C ON C.DEPT_ID = A.DEPT_ID AND C.DELETE_CD = '0'
+			WHERE 1 = 1
+		]]>
+		<include refid="findAllMngr-where" />
+	</select> -->
+	<select id="findOneMngr" parameterType="string" resultType="zvl">
+		<![CDATA[
+			/* findOneMngr */
+			SELECT 
+				A.USER_ID AS USER_ID
+				, A.USER_PASSWORD AS "PASSWORD"
+				, A.USER_NAME AS USER_NM
+				, C.CODE_NAME AS CENTER_NAME
+				, A.CENTER_CODE AS CENTER_CODE
+				, A.CENTER_CODE2 AS CENTER_CODE2
+				, A.CENTER_CODE3 AS CENTER_CODE3
+				, A.USER_STATE AS STTUS_CD
+				, A.USER_PHONE AS USER_CPNO
+				, A.USER_SEX
+				, B.CODE_NAME AS AUTHOR_NM
+				/*, A.USER_LEVEL*/
+				, A.USER_CDATE AS REGIST_DT
+				, A.USER_BDATE
+				, A.USER_EDATE
+				, A.USER_BIRTH
+				, D.CODE_NAME AS USER_GROUP
+				/*, A.USER_GROUP*/
+				, A.USER_DEPARTMENT
+				, A.USER_POSITION
+				, A.USER_EMAIL AS USER_EMAD
+				, A.USER_NUMBER
+				, A.USER_PDATE
+			from ta_user A 
+			LEFT OUTER JOIN tb_code B ON A.USER_LEVEL = B.CODE_CODE AND B.CODEG_CODE = 'USLV'
+			LEFT OUTER JOIN tb_code C ON A.CENTER_CODE = C.CODE_CODE AND C.CODEG_CODE  = 'CM05'
+			LEFT OUTER JOIN tb_code D ON A.USER_GROUP = D.CODE_CODE AND D.CODEG_CODE  = 'CDOP'
+			WHERE 1=1
+		]]>
+		<include refid="findAllMngr-where" />
+	</select>
+
+	<!-- 관리자 등록 -->
+	<!-- <insert id="saveMngr" parameterType="zvl">
+		<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userSn">
+			SELECT IFNULL(MAX(USER_SN),0)+1 AS USER_SN FROM TM_MNGR_INFO
+		</selectKey>
+		<![CDATA[
+			/* saveMngr */
+			INSERT INTO TM_MNGR_INFO (
+				USER_SN,
+				USER_ID,
+				PASSWORD,
+				USER_NM,
+				DEPT_ID,
+
+				REGIST_ID,
+				REGIST_DT,
+				SEAT_NO,
+				USER_CPNO,
+				USER_IPAD,
+				USER_EMAD,
+				STTUS_CD,
+				DELETE_CD,
+				USE_AT
+			)
+			VALUES (
+				#{userSn},
+				#{userId},
+				#{password},
+				#{userNm,jdbcType=VARCHAR},
+				#{deptId},
+
+				#{registId},
+				NOW(),
+		]]>
+		<if test='seatNo != null and seatNo != ""'>
+			<![CDATA[	#{seatNo}, 		]]>
+		</if>
+		<if test='seatNo == null or seatNo == ""'>
+			<![CDATA[	NULL, 		]]>
+		</if>
+		<![CDATA[
+				#{userCpno},
+				#{userIpad, jdbcType=VARCHAR},
+				#{userEmad},
+				#{sttusCd},
+				'0',
+				'Y'
+ 			)
+		]]>
+	</insert> -->
+	
+	
+	<insert id="saveMngr" parameterType="zvl">
+		<!-- <selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userSn">
+			SELECT IFNULL(MAX(USER_SN),0)+1 AS USER_SN FROM TM_MNGR_INFO
+		</selectKey> -->
+		<![CDATA[
+			/* saveMngr */
+			INSERT INTO ta_user (
+				USER_ID
+				, USER_PASSWORD
+				, USER_NAME
+				, CENTER_CODE
+				, USER_STATE
+				, USER_PHONE
+				, USER_SEX
+				, USER_LEVEL
+				, USER_CDATE
+				, USER_BDATE
+				, USER_EDATE
+				, USER_BIRTH
+				, USER_GROUP
+				, USER_DEPARTMENT
+				, USER_POSITION
+				, USER_EMAIL
+				, USER_NUMBER
+				, USER_PDATE
+				, USER_PASSWORD_DERIVE_DATE
+				
+			)
+			VALUES (
+				#{userId}
+				, #{userPassword}
+				, #{userName}
+				, #{centerCode}
+				, #{userState}
+				, #{userPhone}
+				, #{userSex}
+				, #{userLevel}
+				, now()
+				, #{userBdate}
+				, #{userEdate}
+				, #{userBirth}
+				, #{userGroup}
+				, #{userDepartment}
+				, #{userPosition}
+				, #{userEmail}
+				, #{userNumber}
+				, #{userPdate}
+				, NOW()
+ 			)
+		]]>
+	</insert>
+
+	<!-- 관리자 수정-->
+	<update id="updateMngr" parameterType="zvl">
+		<![CDATA[
+			/* updateMngr */
+			UPDATE ta_user
+			SET
+			     USER_NAME = #{userNm},
+			     CENTER_CODE = #{centerCode},
+			     USER_PHONE = #{userPhone},
+			     USER_EMAIL = #{userEmail},
+			     USER_STATE = #{userState},
+		]]>
+		<if test='seatNo != null and seatNo != ""'>
+			<![CDATA[	USER_NUMBER = #{userNumber}, 		]]>
+		</if>
+		<if test='seatNo == null or seatNo == ""'>
+			<![CDATA[	USER_NUMBER = NULL, 		]]>
+		</if>
+		<if test='userPassword != null and userPassword != ""'>
+			<![CDATA[	USER_PASSWORD = #{userPassword}, 		
+					USER_PASSWORD_DERIVE_DATE = NOW(),
+			
+			]]>
+			
+		</if>
+		<![CDATA[
+
+			     USER_EDATE = NOW()
+			WHERE USER_ID = #{userId}
+		]]>
+	</update>
+
+	<!-- 내 정보 수정-->
+	<update id="updateMngrMy" parameterType="zvl">
+		/* updateMngrMy */
+		<![CDATA[
+			UPDATE ta_user
+			SET
+				USER_NAME = #{userNm},
+			     CENTER_CODE = #{centerCode},
+			     USER_PHONE = #{userPhone},
+			     USER_EMAIL = #{userEmail},
+		]]>
+		<if test='userNumber != null and userNumber != ""'>
+			<![CDATA[	USER_NUMBER = #{userNumber},		]]>
+		</if>
+		<if test='userNumber == null or userNumber == ""'>
+			<![CDATA[	USER_NUMBER = NULL, 		]]>
+		</if>
+		<if test='userPassword != null and userPassword != ""'>
+			<![CDATA[	USER_PASSWORD = #{userPassword}, 		
+				USER_PASSWORD_DERIVE_DATE = NOW(),
+			]]>
+		</if>
+		<![CDATA[
+			    USER_PDATE = NOW()
+			WHERE USER_ID = #{userId}
+		]]>
+	</update>
+
+	<!-- 관리자 삭제 -->
+	<delete id="deleteMngr" parameterType="zvl">
+		<![CDATA[
+			/* deleteMngr */
+			DELETE FROM ta_user
+			WHERE USER_ID = #{userId}
+		]]>
+	</delete>
+
+	<!-- 관리자 권한 목록 -->
+	<select id="findAllMngrAuth" parameterType="zvl" resultType="zvl">
+		SELECT A.USER_ID, A.USER_TY_CD, A.AUTHOR_CD, B.AUTHOR_NM
+		FROM TC_USER_AUTHOR A, TC_AUTHOR_INFO B
+		WHERE A.AUTHOR_CD = B.AUTHOR_CD
+		AND USER_ID = #{userId}
+		AND USER_TY_CD = 'A'
+	</select>
+
+	<!-- 관리자 권한 등록 -->
+	<insert id="saveMngrAuth" parameterType="zvl">
+		<![CDATA[
+			/* saveMngrAuth */
+			INSERT INTO TC_USER_AUTHOR (
+				USER_ID,
+				USER_TY_CD,
+				AUTHOR_CD
+			)
+			VALUES (
+				#{userId},
+				IFNULL(#{userTyCd},'A'),
+				#{authorCd}
+ 			)
+		]]>
+	</insert>
+
+	<!-- 관리자 권한 전체 삭제 -->
+	<delete id="deleteMngrAuth" parameterType="zvl">
+		<![CDATA[
+			/* deleteMngrAuth */
+			DELETE FROM tc_user_author
+			WHERE USER_ID = #{userId}
+		]]>
+	</delete>
+
+	<!-- 관리자 권한 삭제 -->
+	<delete id="deleteMngrAuthOne" parameterType="zvl">
+		<![CDATA[
+			/* deleteMngrAuth */
+			DELETE FROM tc_user_author
+			WHERE USER_ID = #{userId}
+				AND AUTHOR_CD=#{authorCd}
+		]]>
+	</delete>
+	
+	<!-- super권한 관리자 리스트 -->
+	<select id="findAllMngrSuperList" parameterType="zvl" resultType="zvl">
+		SELECT 
+			A.USER_ID, 
+			A.USER_EMAD,
+			B.AUTHOR_CD
+		FROM TM_MNGR_INFO A, TC_USER_AUTHOR B
+		WHERE A.USER_ID = B.USER_ID
+		AND B.AUTHOR_CD = 'ROLE_SUPER'
+	</select>
+	
+	<select id="findOneUserLockCheck" parameterType="zvl" resultType="zvl">
+		/* findOneUserLogin */
+		SELECT USER_ID
+			, LOGIN_FAIL_COUNT
+			, LOGIN_IP
+			, INSERT_DATE
+			, UPDATE_DATE
+			, LOCK_DATE
+			, UNLOCK_DATE
+			, UNLOCK_USER
+		FROM tb_user_login
+		WHERE user_id = #{id}
+	</select>
+	
+	<insert id="insertUserLockCount" parameterType="zvl">
+		/*insertUserLockCount*/
+		INSERT INTO
+		      tb_user_login (USER_ID
+					, LOGIN_FAIL_COUNT
+					, LOGIN_IP
+					, INSERT_DATE
+					, UPDATE_DATE
+					, LOCK_DATE
+					, UNLOCK_DATE
+					, UNLOCK_USER
+					)
+				VALUES(
+					#{id}
+					,'1'
+					,''
+					,NOW()
+					,NOW()
+					,NULL
+					,NULL
+					,NULL
+				)
+		   ON
+		     	DUPLICATE KEY
+		   UPDATE
+		      LOGIN_FAIL_COUNT = LOGIN_FAIL_COUNT + 1
+		      ,UPDATE_DATE = NOW()
+	</insert>
+	
+	<update id="updateUserLockZero">
+		update tb_user_login 
+		set 
+			LOGIN_FAIL_COUNT = 0
+		where
+			USER_ID = #{id}
+	</update>
+	
+	<insert id="insertUserOtpKey" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="otpSn">
+			SELECT IFNULL(MAX(OTP_SN),0)+1 AS OTP_SN  FROM TB_USER_OTP
+		</selectKey>
+		
+		<![CDATA[
+			/* insertUserOtpKey */
+			
+			INSERT TB_USER_OTP (
+			OTP_SN, OTP_USER_ID, OTP_KEY, REGIST_DT
+			) VALUES (
+			#{otpSn}, #{userId}, #{otpKey}, NOW()
+			)
+		]]>
+	</insert>
+	
+	<select id="findOneUserOtpKey" parameterType="zvl" resultType="zvl">
+		/* findOneUserOtpKey */
+		
+		SELECT	OTP_SN,
+				OTP_USER_ID,
+				OTP_KEY,
+				REGIST_DT
+		FROM	TB_USER_OTP
+		WHERE	OTP_USER_ID = #{userId}
+	</select>
+</mapper>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.member.LoginHistDAO">
+
+
+	<insert id="insertLoginHist" parameterType="zvl" >
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="histNo">
+			select max(MLHIDX)+1 from tbmlh_memberloginhistory
+		</selectKey>
+		<![CDATA[
+			/* insertLoginHist */
+			INSERT INTO tbmlh_memberloginhistory (
+			    MLHIDX,
+			    MLHUSERID,
+			    MLHUSERIP,
+			    MLHLOGINDATETIME,
+			    MLHLOGOUTDATETIME,
+			    MLHUSERCENTER,
+			    MLHUSERNAME,
+			    MLHCENTERCODE
+			)
+			VALUES (
+			   #{histNo},
+			   #{userId},
+			   #{userIpad},
+			   NOW(),
+			   null,
+			   (select code_name from tb_code where codeg_code = 'CM05' and code_code = (select center_code from ta_user where user_id = #{userId})),
+			   (SELECT USER_NAME FROM ta_user WHERE USER_ID=#{userId}),
+			   (select center_code from ta_user where user_id = #{userId})
+			)
+		]]>
+	</insert>
+	
+	<update id="updateLoginHist" parameterType="zvl">
+		UPDATE tbmlh_memberloginhistory
+		SET MLHLOGOUTDATETIME = NOW()
+		WHERE MLHLOGINDATETIME = #{loginDt}
+		AND MLHUSERID = #{userId}
+		ORDER BY MLHLOGOUTDATETIME ASC
+		LIMIT 1
+
+	</update>
+
+	<sql id="listAllLoginHist-where">
+		<if test='userId != null and userId != ""'>
+			<![CDATA[	and	USER_ID = #{userId}		]]>
+		</if>
+		<if test='siteId != null and siteId != ""'>
+			<![CDATA[	and	SITE_ID = #{siteId}		]]>
+		</if>
+	</sql>
+
+	<select id="listAllLoginHist" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT  *
+			  FROM  (
+			SELECT @RN:=@RN+1 AS RNUM, ALL_LIST.*
+			  FROM  (
+
+			SELECT
+			    HIST_NO,
+			    USER_ID,
+			    USER_IPAD,
+			    LOGIN_DT,
+                CASE WHEN NOW() > DATE_ADD(LOGIN_DT,INTERVAL 30 MINUTE) THEN 'Y'
+                ELSE 'N'
+                END AS LOGIN_TRY_AT,
+			    STTUS_CD,
+			    SITE_ID
+			FROM TM_LOGIN_HIST
+			WHERE (@RN:=0)=0
+		]]>
+		<include refid="listAllLoginHist-where" />
+		<![CDATA[
+			ORDER BY HIST_NO DESC
+
+				    ) ALL_LIST
+			    ) ALL_LIST
+			limit #{firstIndex},
+			#{recordCountPerPage}
+		]]>
+	</select>
+
+	<select id="lastLoginFailHist" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT * FROM (
+				SELECT
+				    HIST_NO,
+				    USER_ID,
+				    USER_IPAD,
+				    LOGIN_DT,
+	                CASE WHEN NOW() > DATE_ADD(LOGIN_DT,INTERVAL 30 MINUTE) THEN 'Y'
+	                ELSE 'N'
+	                END AS LOGIN_TRY_AT,
+				    STTUS_CD,
+				    SITE_ID
+				FROM TM_LOGIN_HIST
+				WHERE 1=1
+		]]>
+		<include refid="listAllLoginHist-where" />
+		<![CDATA[
+				ORDER BY HIST_NO DESC LIMIT 5
+			) A ORDER BY HIST_NO ASC
+		]]>
+	</select>
+
+ 	<delete id="deleteLoginHist" parameterType="zvl">
+ 		<![CDATA[
+			DELETE FROM TM_LOGIN_HIST
+			WHERE 1 = 1
+ 		]]>
+		<if test='siteId != null and siteId != ""'>
+			<![CDATA[	and	SITE_ID = #{siteId}		]]>
+		</if>
+		<if test='userId != null and userId != ""'>
+			<![CDATA[	and	USER_ID = #{userId}		]]>
+		</if>
+		<if test='histNo != null and histNo != ""'>
+			<![CDATA[	and HIST_NO = #{histNo}		]]>
+		</if>
+ 	</delete>
+
+
+	<sql id="loginHist-where">
+		<if test='pSiteId != null and pSiteId != ""'>
+			<![CDATA[	AND SITE_ID=#{pSiteId}	]]>
+		</if>
+		<if test='sdate != null and edate != ""'>
+			<![CDATA[	AND DATE(A.LOGIN_DT) BETWEEN #{sdate} AND #{edate}	]]>
+		</if>
+		<if test='searchKwd != null and searchKwd != ""'>
+			<if test='searchCnd=="1"'>
+				<![CDATA[ 	AND USER_ID LIKE CONCAT('%', #{searchKwd}, '%') ]]>
+			</if>
+			<if test='searchCnd=="2"'>
+				<![CDATA[ 	AND USER_NM LIKE CONCAT('%', #{searchKwd}, '%') ]]>
+			</if>
+		</if>
+		<if test='searchFlag != null and searchFlag != ""'>
+			<if test='searchFlag=="OVSEA"'>
+				<![CDATA[ 	AND A.OVSEA_IP_AT='Y' ]]>
+			</if>
+			<if test='searchFlag=="MOBILE"'>
+				<![CDATA[ 	AND A.MOBILE_AT='Y' ]]>
+			</if>
+			<if test='searchFlag=="FAIL"'>
+				<![CDATA[ 	AND A.STTUS_CD='N' ]]>
+			</if>
+		</if>
+	</sql>
+
+	<select id="countLoginHist" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT
+				COUNT(A.HIST_NO)
+			FROM tm_login_hist A
+			WHERE 1=1
+		]]>
+		<include refid="loginHist-where" />
+	</select>
+
+	<select id="findAllLoginHist" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT
+				 A.HIST_NO,
+				 A.SITE_ID,
+				 A.USER_ID,
+				 A.USER_NM,
+				 A.USER_IPAD,
+				 A.STTUS_CD,
+				 A.LOGIN_DT,
+				 A.OVSEA_IP_AT,
+				 A.MOBILE_AT
+			FROM tm_login_hist A
+			WHERE 1=1
+		]]>
+		<include refid="loginHist-where" />
+		<![CDATA[
+			ORDER BY A.HIST_NO DESC
+			LIMIT #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select>
+
+	<update id="saveMngrLock" parameterType="zvl">
+		<![CDATA[
+		/* saveMngrLock */
+		UPDATE tm_mngr_info A
+		  SET STTUS_CD='M'
+		WHERE 
+		  STTUS_CD='T'
+		  AND DELETE_CD='0'
+		  AND noT EXISTS(SELECT 1 FROM tm_login_hist WHERE SITE_ID='bos' AND USER_ID=A.USER_ID AND LOGIN_DT>=DATE_ADD(NOW(), INTERVAL -6 MONTH) limit 1)
+		]]>
+	</update>
+</mapper>

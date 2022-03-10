@@ -1,0 +1,2433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.stats.stats">
+
+	<sql id="findStatCode-where">
+		<choose>
+			<when test='CASE_TYPE=="CS_TYPE"'>
+				AND CODEG_CODE = 'CSAB'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_01"'>
+				<choose>
+					<when test='CS_TYPE_01_SUB=="0104"'>
+						AND CODEG_CODE = 'CSAC'
+						AND CODE_GROUP = '0104'
+					</when>
+					<otherwise>
+						AND CODEG_CODE = 'CSACG'
+						AND CODE_GROUP = '01'
+					</otherwise>
+				</choose>
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_02"'>
+				AND CODEG_CODE = 'CSACG'
+				AND CODE_GROUP = '02'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_03"'>
+				AND CODEG_CODE = 'CSACG'
+				AND CODE_GROUP = '03'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_05"'>
+				AND CODEG_CODE = 'CSACG'
+				AND CODE_GROUP = '05'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_06"'>
+				AND CODEG_CODE = 'CSACG'
+				AND CODE_GROUP = '06'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_11"'>
+				AND CODEG_CODE = 'CSACG'
+				AND CODE_GROUP = '11'
+			</when>
+			<when test='CASE_TYPE=="CASE_JUPSOO"'>
+				AND CODEG_CODE = 'CS20'
+			</when>
+			<when test='CASE_TYPE=="CLIENT_REL_GRP"'>
+				<choose>
+					<when test='CLIENT_REL_GRP=="20"'>
+						AND CODEG_CODE = 'CS24'
+						AND CODE_GROUP = '20'
+					</when>
+					<when test='CLIENT_REL_GRP=="30"'>
+						AND CODEG_CODE = 'CS24'
+						AND CODE_GROUP = '30'
+					</when>
+					<otherwise>
+						AND CODEG_CODE = 'CS24G'
+					</otherwise>
+				</choose>
+			</when>
+			<when test='CASE_TYPE=="VICTIM_AREA"'>
+				<choose>
+					<when test='VICTIM_AREA_GRP != null and VICTIM_AREA_GRP != ""'>
+						AND CODEG_CODE = 'HM47'
+						AND CODE_GROUP = ${VICTIM_AREA_GRP}
+					</when>
+					<otherwise>
+						AND CODEG_CODE = 'HM46'
+					</otherwise>
+				</choose>
+			</when>
+			<when test='CASE_TYPE=="CASE_ROUTE_GRP"'>
+				<choose>
+					<when test='CASE_ROUTE_GRP=="10"'>
+						AND CODEG_CODE = 'CSRT'
+						AND CODE_GROUP = '10'
+					</when>
+					<when test='CASE_ROUTE_GRP=="20"'>
+						AND CODEG_CODE = 'CSRT'
+						AND CODE_GROUP = '20'
+					</when>
+					<when test='CASE_ROUTE_GRP=="30"'>
+						AND CODEG_CODE = 'CSRT'
+						AND CODE_GROUP = '30'
+					</when>
+					<otherwise>
+						AND CODEG_CODE = 'CSRTG'
+					</otherwise>
+				</choose>
+			</when>
+			<when test='CASE_TYPE=="DMG_STATE_YN"'>
+				AND CODEG_CODE = 'CDYN'
+			</when>
+			<when test='CASE_TYPE=="DMG_STATE"'>
+				AND CODEG_CODE = 'CSDG'
+			</when>
+			<when test='CASE_TYPE=="CASE_HELP"'>
+				AND CODEG_CODE = 'CDHP'
+			</when>
+			<when test='CASE_TYPE=="VICTIM_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>
+			<when test="CASE_TYPE=='CASE_TIME_INTVL'">
+				AND CODEG_CODE = 'CTITV'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_01_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_02_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_03_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_05_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_06_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>						
+			<when test='CASE_TYPE=="CS_TYPE_11_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>
+			<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+				AND CODEG_CODE = 'VTAG'
+			</when>
+			<otherwise>
+				AND CODEG_CODE = 'CSAB'
+			</otherwise>
+		</choose>
+	</sql>
+
+	
+	<sql id="findStatCode-selectOption1">
+		<choose>
+			<when test="CASE_TYPE=='CASE_TIME_INTVL'">
+				, NVL(FIELD_NAME_00, 0) AS FIELD_NAME_00
+				, NVL(FIELD_NAME_01, 0) AS FIELD_NAME_01
+				, NVL(FIELD_NAME_02, 0) AS FIELD_NAME_02
+				, NVL(FIELD_NAME_03, 0) AS FIELD_NAME_03
+				, NVL(FIELD_NAME_04, 0) AS FIELD_NAME_04
+				, NVL(FIELD_NAME_05, 0) AS FIELD_NAME_05
+				, NVL(FIELD_NAME_06, 0) AS FIELD_NAME_06
+				, NVL(FIELD_NAME_07, 0) AS FIELD_NAME_07
+				, NVL(FIELD_NAME_08, 0) AS FIELD_NAME_08
+				, NVL(FIELD_NAME_09, 0) AS FIELD_NAME_09
+				, NVL(FIELD_NAME_10, 0) AS FIELD_NAME_10
+				, NVL(FIELD_NAME_11, 0) AS FIELD_NAME_11
+				, NVL(FIELD_NAME_12, 0) AS FIELD_NAME_12
+				, NVL(FIELD_NAME_13, 0) AS FIELD_NAME_13
+				, NVL(FIELD_NAME_14, 0) AS FIELD_NAME_14
+				, NVL(FIELD_NAME_15, 0) AS FIELD_NAME_15
+				, NVL(FIELD_NAME_16, 0) AS FIELD_NAME_16
+				, NVL(FIELD_NAME_17, 0) AS FIELD_NAME_17
+				, NVL(FIELD_NAME_18, 0) AS FIELD_NAME_18
+				, NVL(FIELD_NAME_19, 0) AS FIELD_NAME_19
+				, NVL(FIELD_NAME_20, 0) AS FIELD_NAME_20
+				, NVL(FIELD_NAME_21, 0) AS FIELD_NAME_21
+				, NVL(FIELD_NAME_22, 0) AS FIELD_NAME_22
+				, NVL(FIELD_NAME_23, 0) AS FIELD_NAME_23
+			</when>
+			<!-- <when test="codeResult!=null || codeResult != ''"> -->
+			<otherwise>
+				<foreach collection="code" item="resultCodeName" open="," separator=",">
+					NVL(FIELD_NAME_${resultCodeName}, 0) AS FIELD_NAME_${resultCodeName}
+				</foreach>
+			</otherwise>
+			<!-- </when> -->
+		</choose>
+	</sql>
+	<sql id="findStatCode-selectOption2">
+		<choose>
+			<when test="CASE_TYPE=='CASE_TIME_INTVL'">
+				, SUM(FIELD_NAME_00) AS FIELD_NAME_00
+				, SUM(FIELD_NAME_01) AS FIELD_NAME_01
+				, SUM(FIELD_NAME_02) AS FIELD_NAME_02
+				, SUM(FIELD_NAME_03) AS FIELD_NAME_03
+				, SUM(FIELD_NAME_04) AS FIELD_NAME_04
+				, SUM(FIELD_NAME_05) AS FIELD_NAME_05
+				, SUM(FIELD_NAME_06) AS FIELD_NAME_06
+				, SUM(FIELD_NAME_07) AS FIELD_NAME_07
+				, SUM(FIELD_NAME_08) AS FIELD_NAME_08
+				, SUM(FIELD_NAME_09) AS FIELD_NAME_09
+				, SUM(FIELD_NAME_10) AS FIELD_NAME_10
+				, SUM(FIELD_NAME_11) AS FIELD_NAME_11
+				, SUM(FIELD_NAME_12) AS FIELD_NAME_12
+				, SUM(FIELD_NAME_13) AS FIELD_NAME_13
+				, SUM(FIELD_NAME_14) AS FIELD_NAME_14
+				, SUM(FIELD_NAME_15) AS FIELD_NAME_15
+				, SUM(FIELD_NAME_16) AS FIELD_NAME_16
+				, SUM(FIELD_NAME_17) AS FIELD_NAME_17
+				, SUM(FIELD_NAME_18) AS FIELD_NAME_18
+				, SUM(FIELD_NAME_19) AS FIELD_NAME_19
+				, SUM(FIELD_NAME_20) AS FIELD_NAME_20
+				, SUM(FIELD_NAME_21) AS FIELD_NAME_21
+				, SUM(FIELD_NAME_22) AS FIELD_NAME_22
+				, SUM(FIELD_NAME_23) AS FIELD_NAME_23
+			</when>
+			<otherwise>
+				<foreach collection="code" item="resultCodeName" open="," separator=",">
+					SUM(FIELD_NAME_${resultCodeName}) AS FIELD_NAME_${resultCodeName}
+				</foreach>
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<sql id="findStatCode-selectOption3">
+		<choose>
+			<when test='checkType=="check"'>
+				<foreach collection="code" item="resultCodeName" index="i">
+					<![CDATA[, CASE WHEN CONCAT(${fieldName},',') LIKE CONCAT('%','${resultCodeName},','%') THEN 1 ELSE 0 END AS FIELD_NAME_${resultCodeName}  ]]>
+				</foreach>
+			</when>
+			<when test='CASE_TYPE=="VICTIM_AGE"'>
+				<foreach collection="code" item="resultCodeName" open="," separator="," index="i">
+					<![CDATA[
+					  CASE WHEN NVL(${fieldName}, 199) >= ${code3[i]} AND NVL(${fieldName}, 199) < ${code4[i]} 
+						THEN 1 ELSE 0 END AS FIELD_NAME_${resultCodeName}
+					]]>
+				</foreach>
+			</when> 
+			<when test='CASE_TYPE=="VICTIM_AGE" || CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE" || CASE_TYPE=="CASE_ROUTE_GRP_AGE" '>
+				<foreach collection="code" item="resultCodeName" open="," separator="," index="i">
+					<![CDATA[
+					  CASE WHEN NVL(${fieldName}, 199) >= ${code3[i]} AND NVL(${fieldName}, 199) <= ${code4[i]} 
+						THEN 1 ELSE 0 END AS FIELD_NAME_${resultCodeName}
+					]]>
+				</foreach>
+			</when>
+			<when test='CASE_TYPE=="CASE_TIME_INTVL"'>
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '00' then 1 else 0 end AS FIELD_NAME_00
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '01' then 1 else 0 end AS FIELD_NAME_01
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '02' then 1 else 0 end AS FIELD_NAME_02
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '03' then 1 else 0 end AS FIELD_NAME_03
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '04' then 1 else 0 end AS FIELD_NAME_04
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '05' then 1 else 0 end AS FIELD_NAME_05
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '06' then 1 else 0 end AS FIELD_NAME_06
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '07' then 1 else 0 end AS FIELD_NAME_07
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '08' then 1 else 0 end AS FIELD_NAME_08
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '09' then 1 else 0 end AS FIELD_NAME_09
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '10' then 1 else 0 end AS FIELD_NAME_10
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '11' then 1 else 0 end AS FIELD_NAME_11
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '12' then 1 else 0 end AS FIELD_NAME_12
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '13' then 1 else 0 end AS FIELD_NAME_13
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '14' then 1 else 0 end AS FIELD_NAME_14
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '15' then 1 else 0 end AS FIELD_NAME_15
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '16' then 1 else 0 end AS FIELD_NAME_16
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '17' then 1 else 0 end AS FIELD_NAME_17
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '18' then 1 else 0 end AS FIELD_NAME_18
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '19' then 1 else 0 end AS FIELD_NAME_19
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '20' then 1 else 0 end AS FIELD_NAME_20
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '21' then 1 else 0 end AS FIELD_NAME_21
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '22' then 1 else 0 end AS FIELD_NAME_22
+				, CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) = '23' then 1 else 0 end AS FIELD_NAME_23
+
+
+
+
+			</when>
+			<otherwise>
+				<foreach collection="code" item="resultCodeName" open="," separator="," index="i">
+				CASE WHEN ${fieldName} = '${resultCodeName}'  THEN 1 ELSE 0 END AS FIELD_NAME_${resultCodeName}
+				</foreach>
+			
+			</otherwise>
+		</choose>
+	</sql>
+	
+	<!-- 코드 분류 -->
+	<sql id="findStatCode2-where">
+		<if test='CASE_TYPE != null and CASE_TYPE != ""'>
+			<choose>
+				<when test='CASE_TYPE == "CS_TYPE_01_AGE"'>
+					AND CODEG_CODE = 'VTAG'
+				</when>
+				<when test='CASE_TYPE == "CS_TYPE_01"'>
+					AND CODEG_CODE = 'CSACG'
+					AND CODE_GROUP = '01'
+				</when>
+				<when test='CASE_TYPE == "CS_TYPE_02"'>
+					AND CODEG_CODE = 'CSACG'
+					AND CODE_GROUP = '02'
+				</when>
+				<when test='CASE_TYPE == "CS_TYPE_03"'>
+					AND CODEG_CODE = 'CSACG'
+					AND CODE_GROUP = '03'
+				</when>
+				<when test='CASE_TYPE == "CS_TYPE_11"'>
+					AND CODEG_CODE = 'CSACG'
+					AND CODE_GROUP = '11'
+				</when>
+				<when test='CASE_TYPE == "CASE_JUPSOO"'>
+					AND CODEG_CODE = 'CS20'
+				</when>
+				<when test='CASE_TYPE == "CLIENT_REL_GRP"'>
+					<choose>
+						<when test='CLIENT_REL_TYPE == "20"'>
+							AND CODEG_CODE = 'CS24'
+							AND CODE_GROUP = '20'
+						</when>
+						<when test='CLIENT_REL_TYPE == "30"'>
+							AND CODEG_CODE = 'CS24'
+							AND CODE_GROUP = '30'
+						</when>
+						<otherwise>
+							AND CODEG_CODE = 'CS24G'
+						</otherwise>
+					</choose>
+				</when>
+				<when test='CASE_TYPE == "VICTIM_AREA"'>
+					AND CODEG_CODE = 'HM46'
+				</when>
+				<when test='CASE_TYPE == "CASE_ROUTE_GRP"'>
+					<choose>
+						<when test='CASE_ROUTE_GRP == "10"'>
+							AND CODEG_CODE = 'CSRT'
+							AND CODE_GROUP = '10'
+						</when>
+						<when test='CASE_ROUTE_GRP == "20"'>
+							AND CODEG_CODE = 'CSRT'
+							AND CODE_GROUP = '20'
+						</when>
+						<when test='CASE_ROUTE_GRP == "30"'>
+							AND CODEG_CODE = 'CSRT'
+							AND CODE_GROUP = '30'
+						</when>
+						<otherwise>
+							AND CODEG_CODE = 'CSRTG'
+						</otherwise>
+					</choose>
+				</when>
+				<when test='CASE_TYPE == "DMG_STATE_YN"'>
+					AND CODEG_CODE = 'CDYN'
+				</when>
+				<when test='CASE_TYPE == "DMG_STATE"'>
+					AND CODEG_CODE = 'CSDG'
+				</when>
+				<when test='CASE_TYPE == "CASE_HELP"'>
+					AND CODEG_CODE = 'CDHP'
+				</when>
+				<when test='CASE_TYPE == "ATTKR_STATE_YN"'>
+					AND CODEG_CODE = 'CDYN'
+				</when>
+				<when test='CASE_TYPE == "ATTKR_STATE"'>
+					AND CODEG_CODE = 'ATST'
+					<!-- AND ATTKR_STATE_YN = 'Y' -->
+				</when>
+				<when test='CASE_TYPE == "ATTKR_AGE"'>
+					AND CODEG_CODE = 'ATAG'
+				</when>
+				<otherwise>
+					AND CODEG_CODE = 'CSAB'
+				</otherwise>
+			</choose>
+		</if>
+		<if test='codegCode != null and codegCode != ""'>
+			AND CODEG_CODE = #{codegCode}
+			<if test='codeGroup != null and codeGroup != ""'>
+				AND CODE_GROUP = #{codeGroup}
+			</if>
+		</if>
+	</sql>
+	
+	<!-- attkr Plus 코드 분류 -->
+	<sql id="findAttkrStatCodePlus-where">
+		<if test='dsa == "Y"'>
+			AND VICTIM_DISABLE > 0
+		</if>
+		<choose>
+			<when test='CASE_TYPE == "CS_TYPE_01"'>
+				AND CASE_TYPE = '01'
+			</when>
+			<when test='CASE_TYPE == "CS_TYPE_02"'>
+				AND CASE_TYPE = '02'
+			</when>
+			<when test='CASE_TYPE == "CS_TYPE_03"'>
+				AND CASE_TYPE = '03'
+			</when>
+			<when test='CASE_TYPE == "CS_TYPE_11"'>
+				AND CASE_TYPE = '11'
+			</when>
+			<when test='CASE_TYPE == "CLIENT_REL_GRP"'>
+				<choose>
+					<when test='CLIENT_REL_GRP = "20"'>
+						AND CLIENT_REL_GRP = '20'
+					</when>
+					<when test='CLIENT_REL_GRP = "30"'>
+						AND CLIENT_REL_GRP = '30'
+					</when>
+				</choose>
+			</when>
+			<when test='CASE_TYPE == "CASE_ROUTE_GRP"'>
+				<choose>
+					<when test='CASE_ROUTE_GRP == "10"'>
+						AND CASE_ROUTE_GRP = '10'
+					</when>
+					<when test='CASE_ROUTE_GRP == "20"'>
+						AND CASE_ROUTE_GRP = '20'
+					</when>
+					<when test='CASE_ROUTE_GRP == "30"'>
+						AND CASE_ROUTE_GRP = '30'
+					</when>
+				</choose>
+			</when>
+			<when test='CASE_TYPE == "ATTKR_STATE"'>
+				AND ATTKR_STATE_YN='Y'
+			</when>
+		</choose>
+	</sql>
+
+	
+	
+	<sql id="findstats-where2">
+		<!-- <if test='ATTKR_FRGER != null and ATTKR_FRGER != ""'>
+			<![CDATA[AND ATTKR_FRGER = #{ATTKR_FRGER}]]>
+		</if> -->
+		
+		<!-- <if test='ATTKR_FRGER != null and ATTKR_FRGER != ""'>
+			<![CDATA[
+				AND CASET.CASE_SEQ IN (
+					SELECT CASE_SEQ
+					FROM TA_CASE_ATTKR
+					WHERE 1 = 1
+					AND ATTKR_FRGER = 'Y'
+				)
+			]]>
+		</if> -->
+		
+		<!-- <if test='ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""'>
+			<![CDATA[AND ATTKR_REL_GRP = #{ATTKR_REL_GRP}]]>
+		</if> -->
+		
+		<!-- <if test='ATTKR_AGE != null and ATTKR_AGE != ""'>
+			<![CDATA[AND ATTKR_AGE = #{ATTKR_AGE}]]>
+		</if> -->
+		
+		<!-- <if test='ATTKR_SEX != null and ATTKR_SEX != ""'>
+			<![CDATA[AND ATTKR_SEX = #{ATTKR_SEX}]]>
+		</if> -->
+		
+	<!-- 	<if test='ATTKR_STATE_YN != null and ATTKR_STATE_YN != ""'>
+			<![CDATA[AND ATTKR_STATE_YN = #{ATTKR_STATE_YN}]]>
+		</if>
+		 -->
+		<!-- <if test='ATTKR_STATE != null and ATTKR_STATE != ""'>
+			<![CDATA[AND ATTKR_STATE = #{ATTKR_STATE}]]>
+		</if> -->
+		<!-- <if test='VICTIM_FRGER != null and VICTIM_FRGER != ""'>
+			<![CDATA[AND VICTIM_FRGER = #{VICTIM_FRGER}]]>
+		</if> -->
+		<if test='VICTIM_DISABLE != null and VICTIM_DISABLE != ""'>
+			<choose>
+				<when test='VICTIM_DISABLE == "00"'>
+					<![CDATA[AND VICTIM_DISABLE = 0]]>
+				</when>
+				<when test='VICTIM_DISABLE == "01"'>
+					<![CDATA[AND VICTIM_DISABLE = 1]]>
+				</when>
+				<when test='VICTIM_DISABLE == "02"'>
+					<![CDATA[AND VICTIM_DISABLE = 2]]>
+				</when>
+				<when test='VICTIM_DISABLE == "03"'>
+					<![CDATA[AND VICTIM_DISABLE = 3]]>
+				</when>
+				<when test='VICTIM_DISABLE == "99" or VICTIM_DISABLE == "Y"'>
+					<![CDATA[AND VICTIM_DISABLE > 0]]>
+				</when>
+			</choose>
+		</if>
+		<if test='VICTIM_SEX != null and VICTIM_SEX != ""'>
+			<![CDATA[AND VICTIM_SEX = #{VICTIM_SEX}]]>
+		</if>
+		<if test='VICTIM_AREA != null and VICTIM_AREA != ""'>
+			<![CDATA[AND VICTIM_AREA = #{VICTIM_AREA}]]>
+		</if>
+		<!-- <if test='ATTKR_DISABLE != null and ATTKR_DISABLE != ""'>
+			<![CDATA[AND ATTKR_DISABLE > 0]]>
+		</if> -->
+		
+		<if test='src_CSL_ID != null and src_CSL_ID != ""'>
+			<![CDATA[AND MEMBER_ID = #{src_CSL_ID}]]>
+		</if>
+		<if test='src_CSL_IDJiwon != null and src_CSL_IDJiwon != ""'>
+			<![CDATA[AND PASS_MANAGER = #{src_CSL_IDJiwon}]]>
+		</if>
+		<if test='VICTIM_AGE_FROM != null and VICTIM_AGE_FROM != ""'>
+			<![CDATA[AND VICTIM_AGE >= #{VICTIM_AGE_FROM} AND VICTIM_AGE <= '120']]>
+		</if>
+		
+		<if test='VICTIM_AGE_TO != null and VICTIM_AGE_TO != ""'>
+			<![CDATA[AND VICTIM_AGE <= #{VICTIM_AGE_TO} AND VICTIM_AGE <= '120']]>
+		</if>
+		<if test='ATTKR_DISABLE != null and ATTKR_DISABLE != ""
+			or ATTKR_FRGER != null and ATTKR_FRGER != ""
+			or ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""
+			or ATTKR_AGE != null and ATTKR_AGE != ""
+			or ATTKR_SEX != null and ATTKR_SEX != ""
+			or ATTKR_STATE_YN != null and ATTKR_STATE_YN != ""
+			or ATTKR_STATE != null and ATTKR_STATE != ""'>
+			<choose>
+				<when test='searchType4Date == "pass" or searchType4Date == "serv"'>
+					<![CDATA[AND caseT.CASE_SEQ IN ( SELECT CASE_SEQ FROM TA_CASE_ATTKR WHERE 1=1]]>
+				</when>
+				<otherwise>
+					<choose>
+						<when test='isAdmin == "true" and chkhasattkr == "Y"'>
+						</when>
+						<otherwise>
+							<![CDATA[AND caseT.CASE_SEQ IN ( SELECT CASE_SEQ FROM TA_CASE_ATTKR WHERE 1=1]]>
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>
+			
+			<if test='ATTKR_DISABLE != null and ATTKR_DISABLE != ""'>
+				<choose>
+					<when test='ATTKR_DISABLE == "00"'>
+						<![CDATA[AND ATTKR_DISABLE = 0]]>
+					</when>
+					<when test='ATTKR_DISABLE == "01"'>
+						<![CDATA[AND ATTKR_DISABLE = 1]]>
+					</when>
+					<when test='ATTKR_DISABLE == "02"'>
+						<![CDATA[AND ATTKR_DISABLE = 2]]>
+					</when>
+					<when test='ATTKR_DISABLE == "03"'>
+						<![CDATA[AND ATTKR_DISABLE = 3]]>
+					</when>
+					<when test='ATTKR_DISABLE == "99" or ATTKR_DISABLE == "Y"'>
+						<![CDATA[AND ATTKR_DISABLE > 0]]>
+					</when>
+				</choose>
+			</if>
+			
+			<if test='ATTKR_FRGER != null and ATTKR_FRGER != ""'>
+				<![CDATA[AND ATTKR_FRGER = #{ATTKR_FRGER}]]>
+			</if>
+			
+			<if test='ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""'>
+				<![CDATA[AND ATTKR_REL_GRP = #{ATTKR_REL_GRP}]]>
+			</if>
+			
+			<if test='ATTKR_AGE != null and ATTKR_AGE != ""'>
+				<![CDATA[AND ATTKR_AGE = #{ATTKR_AGE}]]>
+			</if>
+			
+			<if test='ATTKR_SEX != null and ATTKR_SEX != ""'>
+				<![CDATA[AND ATTKR_SEX = #{ATTKR_SEX}]]>
+			</if>
+			
+			<if test='ATTKR_STATE_YN != null and ATTKR_STATE_YN != ""'>
+				<![CDATA[AND ATTKR_STATE_YN = #{ATTKR_STATE_YN}]]>
+			</if>
+			
+			<if test='ATTKR_STATE != null and ATTKR_STATE != ""'>
+				<![CDATA[AND ATTKR_STATE = #{ATTKR_STATE}]]>
+			</if>
+			
+			<choose>
+				<when test='searchType4Date == "pass" or searchType4Date == "serv"'>
+					<![CDATA[)]]>
+				</when>
+				<otherwise>
+					<choose>
+						<when test='isAdmin == "true" and chkhasattkr == "Y"'>
+						</when>
+						<otherwise>
+							<![CDATA[)]]>
+						</otherwise>
+					</choose>
+					<if test='ATTKR_SEX != null and ATTKR_SEX != ""'>
+						<![CDATA[AND attkr.ATTKR_SEX = #{ATTKR_SEX}]]>
+					</if>
+					<if test='ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""'>
+						<![CDATA[AND attkr.ATTKR_REL_GRP = #{ATTKR_REL_GRP}]]>
+					</if>
+				</otherwise>
+			</choose>
+		</if>
+		
+	</sql>
+	
+	
+	
+	<select id="findStats" parameterType="zvl" resultType="zvl">
+	/*findStats*/
+		SELECT 
+			SUBSTR(C.CODE_CODE, 1, 1) as CGROUP_CODE
+			, FN_GET_CODE_NAME('CM04', SUBSTR(C.CODE_CODE, 1, 1)) as CGROUP_NAME
+			, C.CODE_CODE
+			, FN_GET_CODE_NAME('CM05', C.CODE_CODE) as CENTER_NAME 
+			<choose>
+				<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+					 , C.CASE_TYPE
+					 , FN_GET_CODE_NAME('CSACG', C.CASE_TYPE) AS VICTIM_SEX_NM
+					  <if test='sexYN == "Y"'>, VICTIM_SEX </if>
+				</when>
+				<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+					, C.CASE_TYPE
+					, FN_GET_CODE_NAME('CSRTG', C.CASE_TYPE) AS VICTIM_SEX_NM
+					<if test='sexYN == "Y"'>, VICTIM_SEX </if>
+				</when>
+				<otherwise>
+					 , CODE_SEX AS VICTIM_SEX
+					 , FN_GET_CODE_NAME('MF', CODE_SEX) as VICTIM_SEX_NM
+				</otherwise>
+			</choose>
+			,  NVL(FIELD_NAME_ALL, 0) as FIELD_NAME_ALL
+			<include refid="findStatCode-selectOption1" />
+			, NVL(FIELD_NAME_NON, 0) as FIELD_NAME_NON 
+		FROM 	
+		
+			<choose>
+				<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+					<choose>
+						<when test='CASE_TYPE=="CS_TYPE_01_AGE"'>
+							VA_CODE_CENTER_TYPE C
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_02_AGE"'>
+							VA_CODE_CENTER_TYPE_02 C
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_03_AGE"'>
+							VA_CODE_CENTER_TYPE_03 C
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_05_AGE"'>
+							(select
+						        tb_code.CODE_CODE as CODE_CODE,
+						        tb_code.CODE_NAME as CODE_NAME,
+						        tb_code.CODE_SORT as CODE_SORT,
+						        '0501' as CASE_TYPE,
+						        tb_code.CODE_BEGIN as CODE_BEGIN,
+						        tb_code.CODE_END as CODE_END
+						    from
+						        tb_code
+						    where 1=1
+						       AND  CODEG_CODE = 'CM05'
+						     )C    
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_06_AGE"'>
+							(select
+						        tb_code.CODE_CODE as CODE_CODE,
+						        tb_code.CODE_NAME as CODE_NAME,
+						        tb_code.CODE_SORT as CODE_SORT,
+						        '0601' as CASE_TYPE,
+						        tb_code.CODE_BEGIN as CODE_BEGIN,
+						        tb_code.CODE_END as CODE_END
+						    from
+						        tb_code
+						    where 1=1
+						       AND  CODEG_CODE = 'CM05'
+						     )C    
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_11_AGE"'>
+							VA_CODE_CENTER_TYPE_11 C
+						</when>
+						<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							VA_CODE_CENTER_TYPE_ROUTE C
+						</when>
+					</choose>
+				</when>
+				<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+					VA_CODE_CENTER_TYPE_ROUTE C
+				</when>
+				<otherwise>
+					VA_CODE_CENTER_SEX C
+				</otherwise>
+			</choose>
+			
+			
+			LEFT OUTER JOIN (
+			SELECT 
+				CENTER_CODE
+				<choose>
+					<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+						,CASE_TYPE_GRP
+						
+					</when>
+					<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+						,CASE_ROUTE_GRP
+						<if test='sexYN == "Y"'>, VICTIM_SEX </if>
+					</when>
+					<otherwise>
+						, VICTIM_SEX 
+					</otherwise>			
+				</choose>
+				,SUM(FIELD_NAME_ALL) AS FIELD_NAME_ALL
+				<include refid="findStatCode-selectOption2" />
+				,SUM(FIELD_NAME_NON) AS FIELD_NAME_NON
+			FROM 
+			
+				(SELECT 
+					caseT.CENTER_CODE
+					<choose>
+						<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+							, caseT.CASE_TYPE_GRP
+							
+						</when>
+						<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							, caseT.CASE_ROUTE_GRP
+							<if test='sexYN == "Y"'>, caseT.VICTIM_SEX </if>
+						</when>
+						<otherwise>
+							, caseT.VICTIM_SEX 
+						</otherwise>			
+					</choose>
+					<choose>
+						<when test='checkType == "check"'>
+							, FN_COUNT_STR(${fieldName},'${codegCode}') as FIELD_NAME_ALL
+							 <!-- ,GET_CASE_HELP_COUNT(#{fieldName}, #{cdoegCode}) AS FIELD_NAME_ALL -->
+						</when>
+						
+						<when test='CASE_TYPE=="CASE_TIME_INTVL"'> 
+							,CASE WHEN SUBSTR(CASE_TIME, 1, instr(CASE_TIME, ':')-1) NOT IN ('XX', '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23')
+							or CASE_TIME is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+						</when>
+					
+						<when test='CASE_TYPE=="VICTIM_AGE" || CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE"  || CASE_TYPE=="CS_TYPE_06_AGE"  || CASE_TYPE=="CS_TYPE_11_AGE" || CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							, CASE WHEN ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+						</when>
+						<otherwise>
+							,CASE WHEN ${fieldName} NOT IN ('XX', 
+							<foreach collection="code" item="resultCodeName" separator="," close=")">
+								'${resultCodeName}'						
+							</foreach>
+						 	or ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+						
+						</otherwise>
+					</choose>
+					<choose>
+						<when test='CASE_TYPE=="VICTIM_AGE" || CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE" || CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							<include refid="findStatCode-selectOption3" />
+							<![CDATA[
+							, CASE WHEN NVL(${fieldName}, 199) >199 or NVL(${fieldName}, 199) <0 or NVL(${fieldName}, 199) is null THEN 1 ELSE 0 END AS FIELD_NAME_NON
+							]]>
+						</when>
+						<when test="CASE_TYPE=='CASE_TIME_INTVL'">
+							<include refid="findStatCode-selectOption3" />
+							, CASE WHEN ${fieldName} is null THEN 1 ELSE 0 END AS FIELD_NAME_NON
+						</when>
+						<otherwise>
+							<include refid="findStatCode-selectOption3" />
+							, CASE WHEN ${fieldName} NOT IN ('XX', 
+								<foreach collection="code" item="resultCodeName" separator="," close=")">
+									'${resultCodeName}'						<!-- '01','02','03','11') -->
+								</foreach>
+							 or ${fieldName} is null THEN 1 ELSE 0 END AS FIELD_NAME_NON
+						</otherwise>
+					</choose>
+					
+				FROM TA_CASE caseT
+				
+				<choose>
+					<when test='ATTKR_DISABLE != null and ATTKR_DISABLE != ""
+						or ATTKR_FRGER != null and ATTKR_FRGER != ""
+						or ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""
+						or ATTKR_AGE != null and ATTKR_AGE != ""
+						or ATTKR_SEX != null and ATTKR_SEX != ""
+						or ATTKR_STATE_YN != null and ATTKR_STATE_YN != ""
+						or ATTKR_STATE != null and ATTKR_STATE != ""'> 	
+						<choose>
+							<when test="arr_cond_frdate = '' || arr_cond_frdate = null || arr_cond_todate = '' || arr_cond_todate = null "></when>
+							<when test="frdateYear lt 2018 and todateYear lt  2018">
+								/*1*/
+								,TA_CASE_ATTKR attkr
+								WHERE 1=1
+								AND caseT.CASE_ATTKR_SEQ = attkr.ATTKR_SEQ
+								<include refid="findstats-where2"/>
+							</when>
+							<otherwise>
+								/*2*/
+								left outer join TA_CASE_ATTKR attkr
+								ON caseT.CASE_SEQ = attkr.CASE_SEQ
+								where 1=1
+								<include refid="findstats-where2"/>
+								<!-- <include refid="tableWhere"/>
+								<include refid="findAttkrStatCodePlus-where"/> -->
+								
+							</otherwise>
+						</choose>
+					</when>
+					<otherwise>
+						/*3*/
+						left outer join TA_CASE_ATTKR attkr
+						ON caseT.CASE_ATTKR_SEQ = attkr.ATTKR_SEQ
+						WHERE 1=1
+					</otherwise>
+				</choose>
+				
+				
+				<include refid="findstats-where2"/>
+				<if test='CS_TYPE_01_SUB != null and CS_TYPE_01_SUB != ""'>
+					AND caseT.CASE_TYPE='01' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_01_SUB}
+				</if>
+				<if test='CS_TYPE_02_SUB != null and CS_TYPE_02_SUB != ""'>
+					AND caseT.CASE_TYPE='02' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_02_SUB}
+				</if>
+				<if test='CS_TYPE_03_SUB != null and CS_TYPE_03_SUB != ""'>
+					AND caseT.CASE_TYPE='03' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_03_SUB}
+				</if>
+				<if test='CS_TYPE_11_SUB != null and CS_TYPE_11_SUB != ""'>
+					AND caseT.CASE_TYPE='11' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_11_SUB}
+				</if>
+				<if test='VISIT_CASE_CHECK == "N"'>
+					/* VISIT_CASE_CHECK N */
+					<![CDATA[AND caseT.CASE_SEQ IN (SELECT CASE_SEQ FROM TA_PASS WHERE PASS_WAY = '2') ]]>
+				</if> 
+				
+				<if test='dsa=="Y"'>
+					 AND VICTIM_DISABLE>0
+				</if>
+				
+				<choose>
+					<when test='term_type != "N"'>
+						<![CDATA[
+							and CASE_DATE >= '${cond_frdate}'
+							and CASE_DATE <= '${cond_todate}'
+						]]>
+					</when>
+				</choose>
+					and	 caseT.CENTER_CODE IN (SELECT CODE_CODE FROM tb_code WHERE codeg_code='CM05' 
+					and code_group not in ('5','6','7') 
+					and code_use_yn = 'Y'
+					
+					
+					<choose>
+						<when test='term_type != "N"'>
+						<![CDATA[
+							/*AND CODE_BEGIN<=${cond_frdate} 
+							AND CODE_END>=${cond_todate}*/
+						]]>
+						</when>
+					</choose>
+					<![CDATA[
+						
+					]]>
+					) 
+					and CASE_DELETED='N' 
+					and CASE_TYPE IN 
+					
+					
+					<foreach collection="code1" item="resultCodeName" open="(" separator="," close=")">
+						${resultCodeName}						<!-- ('01','02','03','11') -->
+					</foreach>
+					<if	test='CASE_TYPE == "VICTIM_AGE" and VICTIM_SEX != null and VICTIM_SEX != ""'>
+						AND VICTIM_SEX =  '${VICTIM_SEX}' 
+					</if>
+					<if	test='CASE_TYPE=="VICTIM_AGE" and VICTIM_AREA != null and VICTIM_AREA != ""'>
+						AND VICTIM_AREA =  '${VICTIM_AREA}' 
+					</if>
+					
+					<if	test='CASE_TYPE == "ATTKR_AGE" and ATTKR_SEX != null and ATTKR_SEX != ""'>
+						AND ATTKR_SEX =  '${ATTKR_SEX}' 
+					</if>
+					
+					<if	test='joinCASE_JUPSOO != null and joinCASE_JUPSOO != ""'>
+						and caseT.CASE_JUPSOO = ${joinCASE_JUPSOO}
+					</if>  
+					
+					<if	test='CLIENT_REL_GRP != null and CLIENT_REL_GRP != ""'>
+						and caseT.CLIENT_REL_GRP = ${CLIENT_REL_GRP}
+					</if>  
+					
+					<if	test='CLIENT_REL != null and CLIENT_REL != ""'>
+						and caseT.CLIENT_REL = ${CLIENT_REL}
+					</if>  
+					
+					<if	test='VICTIM_AREA_GRP != null and VICTIM_AREA_GRP != ""'>
+						and caseT.VICTIM_AREA = ${VICTIM_AREA_GRP}
+					</if>  
+					
+					<if	test='CASE_ROUTE_GRP != null and CASE_ROUTE_GRP != ""'>
+						and caseT.CASE_ROUTE_GRP = ${CASE_ROUTE_GRP}
+					</if>  
+					
+					<if	test='DMG_STATE_YN != null and DMG_STATE_YN != ""'>
+						and caseT.DMG_STATE_YN = '${DMG_STATE_YN}'
+					</if>  
+					
+					<if	test='DMG_STATE != null and DMG_STATE != ""'>
+						and caseT.DMG_STATE_YN = 'Y'
+						and caseT.DMG_STATE = ${DMG_STATE}
+					</if>  
+					
+					<if	test='CASE_HELP != null and CASE_HELP != ""'>
+						and caseT.CASE_HELP = ${CASE_HELP}
+					</if>  
+					
+					<if	test='CASE_MANAGER != null and CASE_MANAGER != ""'>
+						and caseT.CASE_MANAGER = ${CASE_MANAGER}
+					</if>  
+					<if test='VICTIM_FRGER != null and VICTIM_FRGER != ""'>
+						<![CDATA[AND VICTIM_FRGER = #{VICTIM_FRGER}]]>
+					</if>
+					<!-- <if test='ATTKR_FRGER != null and ATTKR_FRGER != ""'>
+						<![CDATA[AND ATTKR_FRGER = #{ATTKR_FRGER}]]>
+					</if> -->
+					
+					)F
+			GROUP BY CENTER_CODE 
+			<choose>
+				<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+					,CASE_TYPE_GRP 
+					
+					
+					 ) A
+					ON C.CODE_CODE=A.CENTER_CODE
+					AND C.CASE_TYPE=A.CASE_TYPE_GRP
+					WHERE 1=1
+					
+					<!-- <choose>
+						<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN == "XXX"'>
+							/* src_CNTR_GBN */
+							<if test='arrCntrCod != null and arrCntrCod != ""'>
+								/* arrCntrCod */
+								AND c.CODE_CODE IN
+								<foreach collection="arrCntrCod" item="gbn" index="index" separator=", " open="(" close=")">
+									<![CDATA[#{gbn}]]>
+								</foreach>
+							</if>
+						</when>
+					</choose>
+					<choose>
+						<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+							/* src_CNTR_COD */ 
+							AND c.CODE_CODE = #{src_CNTR_COD}
+						</when>
+						<otherwise>
+							<if test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+								/* src_CNTR_COD2 */ 
+								AND SUBSTR(c.CODE_CODE, 1, 1) = #{src_CNTR_GBN}
+							</if>
+						</otherwise>
+					</choose> -->
+
+					<include refid="srcCntrWhere"/>
+
+					<choose>
+						<when test='term_type != "N"'>
+							<![CDATA[
+							/*AND C.CODE_BEGIN<=${cond_frdate} 
+							AND C.CODE_END>=${cond_todate}*/
+							]]>
+						</when>
+					</choose>
+					<![CDATA[
+					AND SUBSTR(code_code,1,1) < '6' 
+					]]>
+					ORDER BY CODE_CODE, C.CODE_SORT, CAST(CASE_TYPE AS INT) ASC
+				</when>
+				<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+					,CASE_ROUTE_GRP 
+					<if test='sexYN == "Y"'>, VICTIM_SEX </if>
+					
+					) A
+					ON C.CODE_CODE=A.CENTER_CODE
+					AND C.CASE_TYPE=A.CASE_ROUTE_GRP
+					WHERE 1=1
+					
+					<!-- <choose>
+						<when test='isCenter == "true"'>
+							<choose>
+								<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+									<![CDATA[AND c.CODE_CODE = #{src_CNTR_COD}]]>
+								</when>
+								<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+									<![CDATA[AND SUBSTR(c.CODE_CODE, 1, 1) = #{src_CNTR_GBN}]]>
+								</when>
+							</choose>
+						</when>
+						<otherwise>
+							<![CDATA[AND c.CODE_CODE = #{centerCode}]]>
+						</otherwise>
+					</choose> -->
+					
+					<include refid="srcCntrWhere"/>
+					
+					
+					<choose>
+						<when test='term_type != "N"'>
+							<![CDATA[
+							/*AND C.CODE_BEGIN<=${cond_frdate} 
+							AND C.CODE_END>=${cond_todate}*/
+							]]>
+						</when>
+					</choose>
+					ORDER BY CODE_CODE, C.CODE_SORT, CAST(CASE_TYPE AS INT) ASC
+				</when>
+				<otherwise>
+					, VICTIM_SEX ) A
+					ON C.CODE_CODE=A.CENTER_CODE
+					AND C.CODE_SEX=A.VICTIM_SEX
+					WHERE 1=1
+					
+					<!-- <choose>
+						<when test='isCenter == "true"'>
+							<choose>
+								<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+									<![CDATA[AND c.CODE_CODE = #{src_CNTR_COD}]]>
+								</when>
+								<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+									<![CDATA[AND SUBSTR(c.CODE_CODE, 1, 1) = #{src_CNTR_GBN}]]>
+								</when>
+							</choose>
+						</when>
+						<otherwise>
+							<![CDATA[AND c.CODE_CODE = #{centerCode}]]>
+						</otherwise>
+					</choose> -->
+					<include refid="srcCntrWhere"/>
+					
+					<choose>
+						<when test='term_type != "N"'>
+							<![CDATA[
+							/*AND C.CODE_BEGIN<=${cond_frdate} 
+							AND C.CODE_END>=${cond_todate}*/
+							
+							]]>
+						</when>
+					</choose>
+					<![CDATA[
+					AND SUBSTR(c.code_code,1,1) < '5' 
+					
+					ORDER BY C.CODE_SORT ,VICTIM_SEX DESC
+					]]>
+				</otherwise>			
+			</choose>
+
+	</select> 
+	
+	<select id="findStats_dsa" parameterType="zvl" resultType="zvl">
+		SELECT 
+			SUBSTR(C.CODE_CODE, 1, 1) as CGROUP_CODE
+			, FN_GET_CODE_NAME('CM04', SUBSTR(C.CODE_CODE, 1, 1)) as CGROUP_NAME
+			, C.CODE_CODE
+			, FN_GET_CODE_NAME('CM05', C.CODE_CODE) as CENTER_NAME 
+			<choose>
+				<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+					 , C.CASE_TYPE
+					 , FN_GET_CODE_NAME('CSACG', C.CASE_TYPE) AS VICTIM_SEX_NM
+					<if test='sexYN == "Y"'>, VICTIM_SEX </if>
+				</when>
+				<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+					, C.CASE_TYPE
+					, FN_GET_CODE_NAME('CSRTG', C.CASE_TYPE) AS VICTIM_SEX_NM
+					<if test='sexYN == "Y"'>, VICTIM_SEX </if>
+				</when>
+				<otherwise>
+					 , CODE_SEX AS VICTIM_SEX
+					 , FN_GET_CODE_NAME('MF', CODE_SEX) as VICTIM_SEX_NM
+				</otherwise>
+			</choose>
+			,  NVL(FIELD_NAME_ALL, 0) as FIELD_NAME_ALL
+			<include refid="findStatCode-selectOption1" />
+			, NVL(FIELD_NAME_NON, 0) as FIELD_NAME_NON 
+		FROM 	
+		
+			<choose>
+				<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+					<choose>
+						<when test='CASE_TYPE=="CS_TYPE_01_AGE"'>
+							VA_CODE_CENTER_TYPE C
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_02_AGE"'>
+							VA_CODE_CENTER_TYPE_02 C
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_03_AGE"'>
+							VA_CODE_CENTER_TYPE_03 C
+						</when>
+						<when test='CASE_TYPE=="CS_TYPE_11_AGE"'>
+							VA_CODE_CENTER_TYPE_11 C
+						</when>
+						<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							VA_CODE_CENTER_TYPE_ROUTE C
+						</when>
+					</choose>
+				</when>
+				<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+					VA_CODE_CENTER_TYPE_ROUTE C
+				</when>
+				<otherwise>
+					VA_CODE_CENTER_SEX C
+				</otherwise>
+			</choose>
+			
+			
+			LEFT OUTER JOIN (
+			SELECT 
+				CENTER_CODE
+				<choose>
+					<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+						,CASE_TYPE_GRP
+						
+					</when>
+					<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+						,CASE_ROUTE_GRP
+						<if test='sexYN == "Y"'>, VICTIM_SEX </if>
+					</when>
+					<otherwise>
+						, VICTIM_SEX 
+					</otherwise>			
+				</choose>
+				,SUM(FIELD_NAME_ALL) AS FIELD_NAME_ALL
+				<include refid="findStatCode-selectOption2" />
+				,SUM(FIELD_NAME_NON) AS FIELD_NAME_NON
+			FROM 
+			
+				(SELECT 
+					caseT.CENTER_CODE
+					<choose>
+						<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+							, caseT.CASE_TYPE_GRP
+							
+						</when>
+						<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							, caseT.CASE_ROUTE_GRP
+							<if test='sexYN == "Y"'>, caseT.VICTIM_SEX </if>
+						</when>
+						<otherwise>
+							, caseT.VICTIM_SEX 
+						</otherwise>			
+					</choose>
+					<!-- <choose>
+						<when test='sqlWhereType == "check"'>
+							 ,GET_CASE_HELP_COUNT(#{fieldName}, #{cdoegCode}) AS FIELD_NAME_ALL
+						</when>
+						<otherwise>
+							, 1 AS FIELD_NAME_ALL
+						</otherwise>
+					</choose> -->
+					<choose>
+						<when test='checkType == "check"'>
+							,FN_COUNT_STR(${fieldName},'${codegCode}') as FIELD_NAME_ALL
+						</when>
+						
+						<when test='CASE_TYPE=="CASE_TIME_INTVL"'> 
+							,CASE WHEN DATE_FORMAT(NVL(CASE_TIME, '00:00'),'%H') NOT IN ('XX', '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23')
+							or CASE_TIME is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+						</when>
+						
+						
+						<when test='CASE_TYPE=="VICTIM_AGE" || CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE" || CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							, CASE WHEN ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+						</when>
+						<!-- <when test='sqlWhereType == "check"'>
+							SUBSTRING_INDEX(case_help, ',', 1) NOT IN ('XX', 
+							<foreach collection="code" item="resultCodeName" separator="," close=")">
+								'${resultCodeName}'						
+							</foreach>
+						 	or ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+							
+						</when> -->
+						
+						<otherwise>
+							,CASE WHEN ${fieldName} NOT IN ('XX', 
+							<foreach collection="code" item="resultCodeName" separator="," close=")">
+								'${resultCodeName}'						
+							</foreach>
+						 	or ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+						
+						</otherwise>
+					<!-- , CASE WHEN ${fieldName} NOT IN ('XX', 
+							<foreach collection="code" item="resultCodeName" separator="," close=")">
+								${resultCodeName}						'01','02','03','11')
+							</foreach>
+						 or ${fieldName} is null THEN 0 ELSE 1 END --> 
+						</choose>
+					<choose>
+						<when test='CASE_TYPE=="VICTIM_AGE" || CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE" || CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+							<include refid="findStatCode-selectOption3" />
+							<![CDATA[
+							, CASE WHEN NVL(${fieldName}, 199) >199 or NVL(${fieldName}, 199) <0 or NVL(${fieldName}, 199) is null THEN 1 ELSE 0 END AS FIELD_NAME_NON
+							]]>
+						</when>
+						<when test="CASE_TYPE=='CASE_TIME_INTVL'">
+							<include refid="findStatCode-selectOption3" />
+							, CASE WHEN ${fieldName} is null THEN 1 ELSE 0 END AS FIELD_NAME_NON
+						</when>
+						<otherwise>
+							<include refid="findStatCode-selectOption3" />
+							, CASE WHEN ${fieldName} NOT IN ('XX', 
+								<foreach collection="code" item="resultCodeName" separator="," close=")">
+									'${resultCodeName}'						<!-- ('01','02','03','11') -->
+								</foreach>
+							 or ${fieldName} is null THEN 1 ELSE 0 END AS FIELD_NAME_NON
+						</otherwise>
+					</choose>
+					
+				FROM TA_CASE caseT 	
+				<choose>
+					<when test="ATTKR_DISABLE != '' || ATTKR_FRGER != '' || ATTKR_REL_GRP != '' || ATTKR_AGE != '' || ATTKR_SEX != '' || ATTKR_STATE_YN != '' || ATTKR_STATE != ''">
+						<choose>
+							<when test="arr_cond_frdate = '' || arr_cond_frdate = null || arr_cond_todate = '' || arr_cond_todate = null "></when>
+							<when test="arr_cond_frdate >= 2018 and arr_cond_todate >= 2018">
+								,TA_CASE_ATTKR attkr
+								WHERE 1=1
+								AND caseT.CASE_SEQ = attkr.CASE_SEQ
+								<include refid="findstats-where2"/>
+							</when>
+							<otherwise>
+								left outer join TA_CASE_ATTKR attkr
+								ON caseT.CASE_ATTKR_SEQ = attkr.ATTKR_SEQ
+								WHERE 1=1
+								<include refid="findstats-where2"/>
+							</otherwise>
+						</choose>
+					</when>
+					<otherwise>
+						left outer join TA_CASE_ATTKR attkr
+						ON caseT.CASE_ATTKR_SEQ = attkr.ATTKR_SEQ
+						WHERE 1=1
+					</otherwise>
+				</choose>
+				<if test='caseType = CS_TYPE_01'>
+					 <if test='CS_TYPE_01_SUB != null and CS_TYPE_01_SUB != ""'>
+						AND caseT.CASE_TYPE='01' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_01_SUB}
+					</if>
+				</if>
+				 <!-- <if test='CS_TYPE_02_SUB != null and CS_TYPE_02_SUB != ""'>
+					AND caseT.CASE_TYPE='02' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_02_SUB}
+				</if>
+				 <if test='CS_TYPE_03_SUB != null and CS_TYPE_03_SUB != ""'>
+					AND caseT.CASE_TYPE='03' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_03_SUB}
+				</if>
+				 <if test='CS_TYPE_11_SUB != null and CS_TYPE_11_SUB != ""'>
+					AND caseT.CASE_TYPE='11' AND caseT.CASE_TYPE_GRP=#{CS_TYPE_11_SUB}
+				</if> -->
+				 AND VICTIM_DISABLE>0
+				<choose>
+					<when test='term_type != "N"'>
+						<![CDATA[
+							and CASE_DATE >= '${cond_frdate}'
+							and CASE_DATE <= '${cond_todate}'
+						]]>
+					</when>
+				</choose>
+					and	 caseT.CENTER_CODE IN (SELECT CODE_CODE FROM tb_code WHERE codeg_code='CM05' 
+					and code_group not in ('5','6','7') 
+					and code_use_yn = 'Y'
+					<choose>
+						<when test='term_type != "N"'>
+						<![CDATA[
+							/*AND CODE_BEGIN<=${cond_frdate} 
+							AND CODE_END>=${cond_todate}*/
+						]]>
+						</when>
+					</choose>
+					<![CDATA[
+						
+					]]>
+					) 
+					and CASE_DELETED='N' 
+					and CASE_TYPE IN 
+					<foreach collection="code1" item="resultCodeName" open="(" separator="," close=")">
+						${resultCodeName}						<!-- ('01','02','03','11') -->
+					</foreach>
+					<if	test='CASE_TYPE == "VICTIM_AGE" and VICTIM_SEX != null and VICTIM_SEX != ""'>
+						AND VICTIM_SEX =  '${VICTIM_SEX}' 
+					</if>
+					<if	test='CASE_TYPE=="VICTIM_AGE" and VICTIM_AREA != null and VICTIM_AREA != ""'>
+						AND VICTIM_AREA =  '${VICTIM_AREA}' 
+					</if>
+					
+					<if	test='CASE_TYPE == "ATTKR_AGE" and ATTKR_SEX != null and ATTKR_SEX != ""'>
+						AND ATTKR_SEX =  '${ATTKR_SEX}' 
+					</if>
+					
+					<if	test='joinCASE_JUPSOO != null and joinCASE_JUPSOO != ""'>
+						and caseT.CASE_JUPSOO = ${joinCASE_JUPSOO}
+					</if>  
+					
+					<if	test='CLIENT_REL_GRP != null and CLIENT_REL_GRP != ""'>
+						and caseT.CLIENT_REL_GRP = ${CLIENT_REL_GRP}
+					</if>  
+					
+					<if	test='CLIENT_REL != null and CLIENT_REL != ""'>
+						and caseT.CLIENT_REL = ${CLIENT_REL}
+					</if>  
+					
+					<if	test='VICTIM_AREA_GRP != null and VICTIM_AREA_GRP != ""'>
+						and caseT.VICTIM_AREA = ${VICTIM_AREA_GRP}
+					</if>  
+					
+					<if	test='CASE_ROUTE_GRP != null and CASE_ROUTE_GRP != ""'>
+						and caseT.CASE_ROUTE_GRP = ${CASE_ROUTE_GRP}
+					</if>  
+					
+					<if	test='DMG_STATE_YN != null and DMG_STATE_YN != ""'>
+						and caseT.DMG_STATE_YN = ${DMG_STATE_YN}
+					</if>  
+					
+					<if	test='DMG_STATE != null and DMG_STATE != ""'>
+						and caseT.DMG_STATE_YN = 'Y'
+						and caseT.DMG_STATE = ${DMG_STATE}
+					</if>  
+					
+					<if	test='CASE_HELP != null and CASE_HELP != ""'>
+						and caseT.CASE_HELP = ${CASE_HELP}
+					</if>  
+					
+					<if	test='CASE_MANAGER != null and CASE_MANAGER != ""'>
+						and caseT.CASE_MANAGER = ${CASE_MANAGER}
+					</if>  
+					
+					)F
+					
+			GROUP BY CENTER_CODE 
+			<choose>
+				<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
+					,CASE_TYPE_GRP  
+					
+					) A
+					ON C.CODE_CODE=A.CENTER_CODE
+					AND C.CASE_TYPE=A.CASE_TYPE_GRP
+					WHERE 1=1
+					
+					<choose>
+						<when test='isCenter == "true"'>
+							<choose>
+								<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+									<![CDATA[
+								 	AND C.CODE_CODE IN (
+										SELECT #{src_CNTR_COD} FROM DUAL
+										UNION ALL
+										SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{src_CNTR_COD}
+									)										
+									]]>
+								</when>
+								<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+									<![CDATA[AND SUBSTR(c.CODE_CODE, 1, 1) = #{src_CNTR_GBN}]]>
+								</when>
+							</choose>
+						</when>
+						<otherwise>
+							<![CDATA[
+								 	AND C.CODE_CODE IN (
+										SELECT #{centerCode} FROM DUAL
+										UNION ALL
+										SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{centerCode} AND TRANS_STDR_DATE <= now()
+									)	
+							]]>
+						</otherwise>
+					</choose>
+					<choose>
+						<when test='term_type != "N"'>
+							<![CDATA[
+							/*AND C.CODE_BEGIN<=${cond_frdate} 
+							AND C.CODE_END>=${cond_todate}*/
+							]]>
+						</when>
+					</choose>
+					<![CDATA[
+						AND SUBSTR(code_code,1,1) < '6' 
+					]]>
+					ORDER BY CODE_CODE, C.CODE_SORT, CAST(SUBSTR(CASE_TYPE,2,4) AS INT) ASC
+				</when>
+				<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+					,CASE_ROUTE_GRP 
+					<if test='sexYN=="Y"'>, VICTIM_SEX </if>
+					) A
+					ON C.CODE_CODE=A.CENTER_CODE
+					AND C.CASE_TYPE=A.CASE_ROUTE_GRP
+					WHERE 1=1
+					
+					<choose>
+						<when test='isCenter == "true"'>
+							<choose>
+								<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+									<![CDATA[
+								 	AND C.CODE_CODE IN (
+										SELECT #{src_CNTR_COD} FROM DUAL
+										UNION ALL
+										SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{src_CNTR_COD} AND TRANS_STDR_DATE <= now()
+									)										
+									]]>
+								</when>
+								<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+									<![CDATA[AND SUBSTR(c.CODE_CODE, 1, 1) = #{src_CNTR_GBN}]]>
+								</when>
+							</choose>
+						</when>
+						<otherwise>
+							<![CDATA[
+							 	AND C.CODE_CODE IN (
+									SELECT #{centerCode} FROM DUAL
+									UNION ALL
+									SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{centerCode} AND TRANS_STDR_DATE <= now()
+								)								
+							]]>
+						</otherwise>
+					</choose>
+					<choose>
+						<when test='term_type != "N"'>
+							<![CDATA[
+							/*AND C.CODE_BEGIN<=${cond_frdate} 
+							AND C.CODE_END>=${cond_todate}*/
+							]]>
+						</when>
+					</choose>
+					ORDER BY CODE_CODE, C.CODE_SORT, CAST(SUBSTR(CASE_TYPE,2,4) AS INT) ASC
+				</when>
+				<otherwise>
+					, VICTIM_SEX ) A
+					ON C.CODE_CODE=A.CENTER_CODE
+					AND C.CODE_SEX=A.VICTIM_SEX
+					WHERE 1=1
+					
+					<choose>
+						<when test='isCenter == "true"'>
+							<choose>
+								<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+									<![CDATA[
+									 	AND C.CODE_CODE IN (
+											SELECT #{src_CNTR_COD} FROM DUAL
+											UNION ALL
+											SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{src_CNTR_COD} AND TRANS_STDR_DATE <= now()
+										)										
+									]]>
+								</when>
+								<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+									<![CDATA[AND SUBSTR(c.CODE_CODE, 1, 1) = #{src_CNTR_GBN}]]>
+								</when>
+							</choose>
+						</when>
+						<otherwise>
+							<![CDATA[
+									 	AND C.CODE_CODE IN (
+											SELECT #{centerCode} FROM DUAL
+											UNION ALL
+											SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{centerCode} AND TRANS_STDR_DATE <= now()
+										)									
+							]]>
+						</otherwise>
+					</choose>
+					<choose>
+						<when test='term_type != "N"'>
+							<![CDATA[
+							/*AND C.CODE_BEGIN<=${cond_frdate} 
+							AND C.CODE_END>=${cond_todate}*/
+							
+							]]>
+						</when>
+					</choose>
+					<![CDATA[
+					AND SUBSTR(c.code_code,1,1) < '5' 
+					
+					ORDER BY C.CODE_SORT ,VICTIM_SEX DESC
+					]]>
+				</otherwise>			
+			</choose>
+		
+
+	</select> 
+	
+	
+	
+	<!-- <select id="findStats" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT 
+				SUBSTR(C.CODE_CODE, 1) as CGROUP_CODE
+				, FN_GET_CODE_NAME2('CM04', SUBSTR(C.CODE_CODE, 1)) as CGROUP_NAME
+				, C.CODE_CODE
+				, FN_GET_CODE_NAME('CM05', C.CODE_CODE) as CENTER_NAME
+				]]>
+				<choose>
+					<when test='CASE_TYPE="CS_TYPE_01_AGE" OR CASE_TYPE="CS_TYPE_02_AGE" OR CASE_TYPE="CS_TYPE_03_AGE" OR CASE_TYPE="CS_TYPE_11_AGE"'>
+						 , C.CASE_TYPE, FN_GET_CODE_NAME('CSACG', C.CASE_TYPE) AS CASE_TYPE_NM
+					</when>
+					<when test='CASE_TYPE="CASE_ROUTE_GRP_AGE"'>
+						, C.CASE_TYPE, FN_GET_CODE_NAME('CSRTG', C.CASE_TYPE) AS CASE_TYPE_NM
+					</when>
+					<otherwise>
+						 , CODE_SEX AS VICTIM_SEX, FN_GET_CODE_NAME('MF', CODE_SEX) as VICTIM_SEX_NM
+					</otherwise>
+				</choose>
+				
+				,  NVL(FIELD_NAME_ALL, 0) as FIELD_NAME_ALL 
+				<include refid="findStatCode-selectOption" />
+				, NVL(FIELD_NAME_NON, 0) as FIELD_NAME_NON
+				
+				
+				<![CDATA[
+				, FN_GET_CODE_NAME('MF', C.CODE_SEX) as VICTIM_SEX_NM
+				,CENTER_CODE
+				,VICTIM_SEX
+				,SUM(FIELD_NAME_ALL) AS FIELD_NAME_ALL
+				,SUM(FIELD_NAME_NON) AS FIELD_NAME_NON
+			FROM VA_CODE_CENTER_SEX C 
+					LEFT OUTER JOIN (
+						SELECT caseT.CENTER_CODE
+								,caseT.VICTIM_SEX
+								,1 AS FIELD_NAME_ALL
+								
+								<include refid="findStatCode-selectOption" />
+								<![CDATA[
+								,CASE WHEN CASE_TYPE NOT IN ('XX') or CASE_TYPE is null THEN 1 ELSE 0 END AS FIELD_NAME_NON
+						FROM TA_CASE AS caseT
+						LEFT OUTER JOIN TA_CASE_ATTKR attkr
+						ON caseT.CASE_ATTKR_SEQ = attkr.ATTKR_SEQ
+						WHERE 1=1
+						AND caseT.CASE_DELETED='N'
+						AND caseT.CENTER_CODE IN 
+							(SELECT CODE_CODE FROM tb_code
+								WHERE codeg_code='CM05' 
+								AND CODE_BEGIN<='2099-12-31' 
+								AND CODE_END>='2000-01-01')
+						)A 
+					ON C.CODE_CODE=A.CENTER_CODE
+					AND C.CODE_SEX=A.VICTIM_SEX
+				WHERE CODE_BEGIN<='2099-12-31' 
+				AND CODE_END>='2000-01-01'	
+				GROUP BY CENTER_CODE, VICTIM_SEX, C.CODE_SEX
+				ORDER BY C.CODE_SORT, VICTIM_SEX DESC
+		]]>
+
+	</select> -->
+	
+	<!-- attkr통계 -->
+	<select id="findAttkrStats" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAttkrStats */
+		
+		SELECT	SUBSTR(c.CODE_CODE, 1, 1) AS CGROUP_CODE, FN_GET_CODE_NAME('CM04', SUBSTR(c.CODE_CODE, 1, 1)) AS CGROUP_NAME
+			, c.CODE_CODE, FN_GET_CODE_NAME('CM05', c.CODE_CODE) AS CENTER_NAME
+			, CODE_SEX AS VICTIM_SEX, FN_GET_CODE_NAME('MF', CODE_SEX) AS VICTIM_SEX_NM
+			, IFNULL(FIELD_NAME_ALL, 0) AS FIELD_NAME_ALL
+		]]>
+		<foreach collection="code" item="code" index="index" >
+			<![CDATA[, IFNULL(a.FIELD_NAME_${code}, 0) AS FIELD_NAME_${code} ]]>
+		</foreach>
+		<![CDATA[
+			, IFNULL(FIELD_NAME_NON, 0) AS FIELD_NAME_NON
+		FROM	VA_CODE_CENTER_SEX c LEFT OUTER JOIN (SELECT	CENTER_CODE, VICTIM_SEX, SUM(FIELD_NAME_ALL) AS FIELD_NAME_ALL
+		]]>
+		
+			
+
+		<foreach collection="code" item="code" index="index">
+			<![CDATA[, SUM(FIELD_NAME_${code}) AS FIELD_NAME_${code} ]]>
+		</foreach>
+		
+		
+		<![CDATA[
+		
+		]]>
+			, SUM(FIELD_NAME_NON) AS FIELD_NAME_NON
+			FROM 
+				(SELECT cs.CENTER_CODE, attkr.ATTKR_SEX AS VICTIM_SEX
+				<choose>
+					<when test='checkType == "check"'>
+						,FN_COUNT_STR(${fieldName},'${codegCode}') as FIELD_NAME_ALL
+					</when>
+					
+					<otherwise>
+						,1 as  FIELD_NAME_ALL
+					
+					</otherwise>
+					
+				</choose>
+		
+		<foreach collection="code" item="code" index="index">
+			<choose>
+				<when test='checkType == "check"'>
+					<![CDATA[, CASE WHEN CONCAT(${fieldName},',') LIKE CONCAT('%',#{code},',%') THEN 1 ELSE 0 END AS FIELD_NAME_${code}  ]]>
+				</when>
+				<otherwise>
+					<![CDATA[, CASE WHEN ${fieldName} = #{code} THEN 1 ELSE 0 END AS FIELD_NAME_${code} ]]>
+				</otherwise>
+			</choose>
+		</foreach>
+		<![CDATA[, CASE WHEN ${fieldName} NOT IN ('XX']]>
+		<foreach collection="code" item="code" index="index">
+			<![CDATA[ , #{code} ]]>
+		</foreach>
+		<![CDATA[
+				) OR ${fieldName} IS NULL THEN 1 ELSE 0 END AS FIELD_NAME_NON
+		]]>
+		<choose>
+			<when test='frdateYear lt 2018 and todateYear lt 2018'>
+				<![CDATA[FROM	TA_CASE cs LEFT OUTER JOIN TA_CASE_ATTKR attkr ON cs.CASE_ATTKR_SEQ = attkr.ATTKR_SEQ]]>
+			</when>
+			<otherwise>
+				<![CDATA[FROM	TA_CASE cs, TA_CASE_ATTKR attkr]]>
+			</otherwise>
+		</choose>
+		<![CDATA[ 
+				WHERE 1=1
+				AND cs.CENTER_CODE IN (SELECT CODE_CODE FROM TB_CODE WHERE CODEG_CODE='CM05' AND CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate})
+				AND cs.CASE_SEQ = attkr.CASE_SEQ
+		]]>
+		<include refid="tableWhere"/>
+		<include refid="findAttkrStatCodePlus-where"/>
+		and CASE_TYPE IN 
+			<foreach collection="code1" item="resultCodeName" open="(" separator="," close=")">
+				${resultCodeName}						<!-- ('01','02','03','11') -->
+			</foreach>
+		<![CDATA[
+				) aa
+			GROUP BY CENTER_CODE, VICTIM_SEX
+			) a ON c.CODE_CODE = a.CENTER_CODE AND c.CODE_SEX = a.VICTIM_SEX
+		WHERE c.CODE_BEGIN <= #{todate} AND c.CODE_END >= #{frdate}
+		]]>
+		<include refid="srcCntrWhere"/>
+		<![CDATA[
+		ORDER BY c.CODE_SORT, VICTIM_SEX DESC
+		]]>
+	</select>
+	
+	<select id="findAllStats" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		
+			SELECT * from ta_user_log
+			LIMIT 20
+		]]>
+
+	</select>
+	<select id="countStats" parameterType="zvl" resultType="Long">
+		<![CDATA[
+		
+			SELECT count(*) from ta_user_log
+			LIMIT 20
+		]]>
+
+	</select>
+	
+	<select id="findStatCode" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT 
+				CODE_CODE as cd 
+				, CODE_NAME as cd_nm
+				, CODE_NAME2 as cd_nm2
+				, CODE_NAME3 as cd_nm3 
+       		FROM TB_CODE caseCode
+       		WHERE 1=1
+       		
+		]]>
+		<if test="CASE_TYPE=='CS_TYPE'">
+       		AND CODE_CODE IN (${CHEK_CASE_TYPE_VALUE})
+		</if>
+		
+ 		<choose>
+			<!-- <when test='CASE_TYPE=="VICTIM_AGE" 
+				or CASE_TYPE=="CS_TYPE_01_AGE" 
+				or CASE_TYPE=="CS_TYPE_02_AGE" 
+				or CASE_TYPE=="CS_TYPE_03_AGE" 
+				or CASE_TYPE=="CS_TYPE_11_AGE" 
+				or CASE_TYPE=="CASE_ROUTE_GRP_AGE"'> -->
+			<when test='CASE_TYPE=="VICTIM_AGE"'>
+					<if test="codegWhere == 1">
+						/*codegWhere1*/
+						AND CODE_GROUP='${userId}'	
+					</if>
+					<if test="codegWhere != 1">
+						/*codegWhere0*/
+						AND CODE_GROUP='_default'
+					</if>
+			</when>
+			<when test='CASE_TYPE=="CS_TYPE_01_AGE" 
+				or CASE_TYPE=="CS_TYPE_02_AGE" 
+				or CASE_TYPE=="CS_TYPE_03_AGE" 
+				or CASE_TYPE=="CS_TYPE_05_AGE"
+				or CASE_TYPE=="CS_TYPE_06_AGE"
+				or CASE_TYPE=="CS_TYPE_11_AGE" 
+				or CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
+				AND CODE_GROUP='_default'
+			</when>
+		</choose>
+		
+		<include refid="findStatCode-where" />
+		
+		
+		
+		
+		<if test='CASE_TYPE != "VICTIM_AREA" '>
+			AND CODE_USE_YN='Y'
+		</if> 
+			ORDER BY CODE_SORT
+	</select>
+	
+	
+	
+	<select id="findStatCodeCount" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			SELECT 
+				count(*)
+       		FROM TB_CODE caseCode
+       		WHERE 1=1
+       		AND CODEG_CODE = 'VTAG' 
+       		AND CODE_GROUP = #{userId}
+		]]>
+		
+	</select>
+
+	<!-- <select id="findStatsTest" parameterType="zvl" resultType="zvl">
+		select
+			code_code
+			, codeg_code
+			, code_name
+			, ROW_NUMBER() over()
+		from ta_case a
+		where 1=1
+		<include refid="findStatCode-where" />
+		
+	</select> -->
+
+	<!-- 통계 코드 분류하기 -->
+	<select id="findStatCode2" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findStatCode2 */
+		
+		SELECT	CODE_CODE AS CD, CODE_NAME AS CD_NM
+		FROM	TB_CODE cs
+		WHERE	CODE_USE_YN = 'Y'
+		
+		]]>
+		<if test="CASE_TYPE=='CS_TYPE'">
+       		AND CODE_CODE IN (${CHEK_CASE_TYPE_VALUE})
+		</if>
+		<include refid="findStatCode2-where" />
+		<![CDATA[
+		ORDER BY CODE_SORT
+		]]>
+	</select>
+	
+	<select id="findCenterList" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findAttkrStatCode */
+		
+			SELECT * FROM tb_code
+			WHERE codeg_code LIKE 'CM05'
+			and code_group not in ('5','6','7') 
+			AND CODE_USE_YN = 'Y'
+			order by code_code, code_group
+		]]>
+	</select>
+
+	
+	<!-- spass 통계 -->
+	<select id="findSPassStats" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findSPassStats */
+		
+		SELECT	SUBSTR(c.CODE_CODE, 1, 1) AS CGROUP_CODE, FN_GET_CODE_NAME('CM04', SUBSTR(C.CODE_CODE, 1, 1)) AS CGROUP_NAME
+				, c.CODE_CODE, FN_GET_CODE_NAME('CM05', c.CODE_CODE) AS CENTER_NAME
+				, CODE_SEX AS VICTIM_SEX, FN_GET_CODE_NAME('MF', CODE_SEX) AS VICTIM_SEX_NM
+				, IFNULL(FIELDNAMEALL, 0) AS FIELDNAMEALL
+		]]>
+		<foreach collection="code" item="code" index="index" >
+			<![CDATA[, IFNULL(a.FIELDNAME${code}, 0) AS FIELDNAME${code} ]]>
+		</foreach>
+		<![CDATA[
+		FROM	VA_CODE_CENTER_SEX c LEFT OUTER JOIN (
+				SELECT	CENTER_CODE, VICTIM_SEX, SUM(FIELDNAMEALL) AS FIELDNAMEALL
+		]]>
+		<foreach collection="code" item="code" index="index">
+			<![CDATA[, SUM(FIELDNAME${code}) AS FIELDNAME${code} ]]>
+		</foreach>
+		<![CDATA[
+				FROM	(
+					SELECT	cs.CENTER_CODE, cs.VICTIM_SEX, 1 AS FIELDNAMEALL
+		]]>
+		<foreach collection="code" item="code" index="index" >
+			<![CDATA[, CASE WHEN ${fieldName} = #{code} THEN 1 ELSE 0 END AS FIELDNAME${code} ]]>
+		</foreach>
+		<![CDATA[
+					FROM	TA_CASE cs, TA_PASS pass
+					WHERE	cs.CASE_DELETED = 'N'
+							AND cs.CENTER_CODE IN (SELECT CODE_CODE FROM TB_CODE WHERE CODEG_CODE='CM05' AND CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate})
+							AND cs.CASE_SEQ = pass.CASE_SEQ
+		]]>
+		<include refid="tableWhere"/>
+		<include refid="sPassStats-where"/>
+		
+		UNION ALL 
+		
+		SELECT	tc.TRANS_AFTER_CENTER_CODE, cs.VICTIM_SEX, 1 AS FIELDNAMEALL
+				<foreach collection="code" item="code" index="index" >
+			<![CDATA[, CASE WHEN ${fieldName} = #{code} THEN 1 ELSE 0 END AS FIELDNAME${code} ]]>
+		</foreach>
+		<![CDATA[
+					FROM	TA_CASE cs, TA_PASS pass,TA_TRANS_CENTER tc
+					WHERE	cs.CASE_DELETED = 'N'
+							AND cs.CENTER_CODE IN (SELECT CODE_CODE FROM TB_CODE WHERE CODEG_CODE='CM05' AND CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate})
+							AND cs.CASE_SEQ = pass.CASE_SEQ
+							AND cs.CENTER_CODE = tc.TRANS_BEFORE_CENTER_CODE 
+							AND tc.TRANS_STDR_DATE <= now()
+		]]>
+		<include refid="tableWhere"/>
+		<include refid="sPassStats-where"/>
+		
+		<![CDATA[
+				) z
+				GROUP BY CENTER_CODE, VICTIM_SEX
+		) a ON c.CODE_CODE = a.CENTER_CODE AND c.CODE_SEX = a.VICTIM_SEX
+		WHERE	CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate}
+		]]>
+		<include refid="srcCntrWhere"/>
+		<![CDATA[
+		ORDER BY c.CODE_SORT, VICTIM_SEX DESC
+		]]>
+	</select>
+	
+	<sql id="sPassStats-where">
+		<if test='dsa == "Y"'>
+			AND VICTIM_DISABLE > 0
+		</if>
+		<if test='passTypeDepth == "B"'>
+			AND pass.PASS_TYPE = #{PASS_TYPE}
+		</if>
+		<if test='passTypeDepth == "C"'>
+			AND pass.SUB1_DATA = #{SUB1_DATA}
+		</if>
+		<if test='CS_TYPE_01_SUB != null and CS_TYPE_01_SUB != ""'>
+			AND cs.CASE_TYPE='01' AND cs.CASE_TYPE_GRP=#{CS_TYPE_01_SUB}
+		</if>
+		<if test='CS_TYPE_02_SUB != null and CS_TYPE_02_SUB != ""'>
+			AND cs.CASE_TYPE='02' AND cs.CASE_TYPE_GRP=#{CS_TYPE_02_SUB}
+		</if>
+		<if test='CS_TYPE_03_SUB != null and CS_TYPE_03_SUB != ""'>
+			AND cs.CASE_TYPE='03' AND cs.CASE_TYPE_GRP=#{CS_TYPE_03_SUB}
+		</if>
+		<if test='CS_TYPE_11_SUB != null and CS_TYPE_11_SUB != ""'>
+			AND cs.CASE_TYPE='11' AND cs.CASE_TYPE_GRP=#{CS_TYPE_11_SUB}
+		</if>
+		<if test='CS_TYPE_11_SUB != null and CS_TYPE_11_SUB != ""'>
+		
+		</if>
+	</sql>
+	
+	<sql id="srcCntrWhere">
+		<choose>
+			<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN == "XXX"'>
+				<if test='arrCntrCod != null and arrCntrCod != ""'>
+					AND c.CODE_CODE IN
+					<foreach collection="arrCntrCod" item="gbn" index="index" separator=", " open="(" close=")">
+						<![CDATA[#{gbn}]]>
+					</foreach>
+				</if>
+			</when>
+		</choose>
+		<choose>
+			<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+				 	AND C.CODE_CODE IN (
+						SELECT #{src_CNTR_COD} FROM DUAL
+						UNION ALL
+						SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{src_CNTR_COD} <![CDATA[ AND TRANS_STDR_DATE <= now() ]]>
+					)					
+			</when>
+			<otherwise>
+				<if test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+					AND SUBSTR(c.CODE_CODE, 1, 1) = #{src_CNTR_GBN}
+				</if>
+			</otherwise>
+		</choose>
+		
+	</sql>
+	
+	<!-- vpass 통계 -->
+	<select id="findVPassStats" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findVPassStats */
+		
+		SELECT	SUBSTR(c.CODE_CODE, 1, 1) AS CGROUP_CODE, FN_GET_CODE_NAME('CM04', SUBSTR(C.CODE_CODE, 1, 1)) AS CGROUP_NAME
+				, c.CODE_CODE, FN_GET_CODE_NAME('CM05', c.CODE_CODE) AS CENTER_NAME
+				, CODE_SEX AS VICTIM_SEX, FN_GET_CODE_NAME('MF', CODE_SEX) AS VICTIM_SEX_NM
+				, IFNULL(FIELDNAMEALL, 0) AS FIELDNAMEALL
+		FROM	VA_CODE_CENTER_SEX c LEFT OUTER JOIN (
+				SELECT	CENTER_CODE, VICTIM_SEX, COUNT(DISTINCT FIELDNAMEALL) AS FIELDNAMEALL
+				FROM	(
+					SELECT	cs.CENTER_CODE, cs.VICTIM_SEX, cs.CASE_SEQ AS FIELDNAMEALL
+					FROM	TA_CASE cs, TA_PASS pass
+					WHERE	cs.CASE_DELETED = 'N'
+							AND cs.CENTER_CODE IN (SELECT CODE_CODE FROM TB_CODE WHERE CODEG_CODE='CM05' AND CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate})
+							AND cs.CASE_SEQ = pass.CASE_SEQ
+		]]>
+		<include refid="tableWhere"/>
+		<include refid="sPassStats-where"/>
+		<![CDATA[
+				) z
+				GROUP BY CENTER_CODE, VICTIM_SEX
+		) a ON c.CODE_CODE = a.CENTER_CODE AND c.CODE_SEX = a.VICTIM_SEX
+		WHERE	CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate}
+		]]>
+		<include refid="srcCntrWhere"/>
+		<![CDATA[
+		ORDER BY c.CODE_SORT, VICTIM_SEX DESC
+		]]>
+	</select>
+	
+	<select id="findServStats" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		/* findServStats */
+		
+		SELECT	SUBSTR(C.CODE_CODE, 1, 1) AS CGROUP_CODE, FN_GET_CODE_NAME('CM04', SUBSTR(C.CODE_CODE, 1, 1)) AS CGROUP_NAME
+				, C.CODE_CODE, FN_GET_CODE_NAME('CM05', C.CODE_CODE) AS CENTER_NAME
+				, CODE_SEX AS VICTIM_SEX, FN_GET_CODE_NAME('MF', CODE_SEX) AS VICTIM_SEX_NM
+				, 0
+		]]>
+		<foreach collection="code" item="code" index="index">
+			<![CDATA[+ IFNULL(FIELDNAME${code}, 0) ]]>
+		</foreach>
+		<![CDATA[
+				AS FIELDNAMEALL
+		]]>
+		<foreach collection="code" item="code" index="index">
+			<![CDATA[, IFNULL(FIELDNAME${code}, 0) AS FIELDNAME${code} ]]>
+		</foreach>
+		<![CDATA[
+		FROM	VA_CODE_CENTER_SEX C LEFT OUTER JOIN ( 
+				SELECT	CENTER_CODE, VICTIM_SEX
+				, SUM(FIELDNAMEALL) AS FIELDNAMEALL
+				]]>
+				<foreach collection="code" item="code" index="index">
+					<![CDATA[, SUM(FIELDNAME${code}) AS FIELDNAME${code} ]]>
+				</foreach>
+				<![CDATA[
+				FROM	(
+					SELECT	cs.CENTER_CODE, cs.VICTIM_SEX
+					, 1 AS FIELDNAMEALL
+					]]>
+					<choose>
+						<when test='CASE_SERV == "CS_TYPE_ACT"'>
+							<foreach collection="code" item="code" index="index">
+								<![CDATA[, CASE WHEN CS_TYPE_ACT0${index+1} = 'Y' THEN 1 ELSE 0 END AS FIELDNAME${code} ]]>
+							</foreach>
+						</when>
+						<when test='CASE_SERV == "CS_GROUP"'>
+							<foreach collection="code" item="code" index="index">
+								<![CDATA[, CASE WHEN CS_GROUP_A0${index+1} = 'Y' THEN 1 ELSE 0 END AS FIELDNAME${code} ]]>
+							</foreach>
+						</when>
+						<otherwise>
+							<foreach collection="code" item="code" index="index">
+								<![CDATA[, CASE WHEN ${fieldName} = #{code} THEN 1 ELSE 0 END AS FIELDNAME${code} ]]>
+							</foreach>
+						</otherwise>
+					</choose>
+					<![CDATA[
+					FROM	TA_CASE cs, TA_CASE_SERV serv
+					WHERE cs.CASE_DELETED='N' AND cs.CENTER_CODE IN (SELECT CODE_CODE FROM TB_CODE WHERE CODEG_CODE = 'CM05' AND CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate})
+						AND cs.CASE_SEQ = serv.CASE_SEQ
+						]]>
+						<include refid="tableWhere"/>
+						<include refid="sPassStats-where"/>
+						<![CDATA[
+					) z 
+					GROUP BY CENTER_CODE, VICTIM_SEX
+			) A ON c.CODE_CODE = a.CENTER_CODE AND c.CODE_SEX = a.VICTIM_SEX
+		WHERE	CODE_BEGIN <= #{todate} AND CODE_END >= #{frdate}
+		]]>
+		<include refid="srcCntrWhere"/>
+		<![CDATA[
+		ORDER BY c.CODE_SORT, VICTIM_SEX DESC;
+		]]>
+	</select>
+	
+	<sql id="servStats-where">
+		<if test='CS_TYPE == "CS_TYPE"'>
+			AND serv.CS_TYPE is not null
+		</if>
+		<if test='CS_TYPE == "CS_TYPE_GROUP"'>
+			AND serv.CS_TYPE_GROUP is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP"'>
+			AND (serv.CS_GROUP_A01 is not null 
+			or serv.CS_GROUP_A02 is not null 
+			or serv.CS_GROUP_A03 is not null 
+			or serv.CS_GROUP_A04 is not null 
+			or serv.CS_GROUP_A05 is not null 
+			or serv.CS_GROUP_A06 is not null 
+			or serv.CS_GROUP_A07 is not null 
+			or serv.CS_GROUP_A08 is not null 
+			or serv.CS_GROUP_A09 is not null)
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_A10"'>
+			AND serv.CS_GROUP_A10 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_B10"'>
+			AND serv.CS_GROUP_B10 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_B20"'>
+			AND serv.CS_GROUP_B20 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_B30"'>
+			AND serv.CS_GROUP_B30 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_B40"'>
+			AND serv.CS_GROUP_B40 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_B50"'>
+			AND serv.CS_GROUP_B50 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_B61"'>
+			AND serv.CS_GROUP_B61 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_B62"'>
+			AND serv.CS_GROUP_B62 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_C10"'>
+			AND serv.CS_GROUP_C10 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_C22"'>
+			AND serv.CS_GROUP_C22 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_C23"'>
+			AND serv.CS_GROUP_C23 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_C24"'>
+			AND serv.CS_GROUP_C24 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_C20"'>
+			AND serv.CS_GROUP_C20 is not null
+		</if>
+		<if test='CS_TYPE == "CS_GROUP_D10"'>
+			AND serv.CS_GROUP_D10 is not null
+		</if>
+	</sql>
+	
+	<sql id="tableWhere">
+		<![CDATA[AND CASE_DELETED='N']]>
+	
+		<choose>
+			<when test='(pageType != null and pageType != "") and pageType == "othercenter"'>
+				<![CDATA[AND cs.CENTER_CODE NOT IN (#{centerCode})]]>
+			</when>
+			<otherwise>
+				<if test='(pageType != null and pageType != "") and pageType == "centernumber"'>
+					<![CDATA[AND LENGTH(CENTER_NUMBER)>0 ]]>
+				</if>
+				<if test='(pageType != null and pageType != "") and pageType == "finish"'>
+					<![CDATA[AND CASE_FINISH ='Y' ]]>
+				</if>
+				<if test='(pageType != null and pageType != "") and pageType == "bookmark"'>
+					<![CDATA[AND cs.CASE_SEQ IN ( SELECT CASE_SEQ FROM TA_CASE_BOOKMARK WHERE MEMBER_ID=#{userId} ]]>
+				</if>
+				<if test='(pageType != null and pageType != "") and pageType == "mycase"'>
+					<![CDATA[AND cs.CASE_MANAGER = #{userId}]]>
+				</if>
+				
+				<choose>
+					<when test='isCenter == "true"'>
+						<choose>
+							<when test='src_CNTR_COD != null and src_CNTR_COD != ""'>
+								<![CDATA[
+							 	AND cs.CENTER_CODE IN (
+									SELECT #{src_CNTR_COD} FROM DUAL
+									UNION ALL
+									SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{src_CNTR_COD} AND TRANS_STDR_DATE <= now()
+								)									
+								]]>
+							</when>
+							<when test='(src_CNTR_GBN != null and src_CNTR_GBN != "") and src_CNTR_GBN != "XXX"'>
+								<![CDATA[
+								AND SUBSTR(cs.CENTER_CODE, 1, 1) IN (SELECT #{src_CNTR_GBN} FROM DUAL
+																	UNION ALL
+																	SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{src_CNTR_GBN} AND TRANS_STDR_DATE <= now()								
+								]]>
+							</when>
+						</choose>
+					</when>
+					<otherwise>
+						<![CDATA[
+						 	AND cs.CENTER_CODE IN (
+								SELECT #{centerCode} FROM DUAL
+								UNION ALL
+								SELECT TRANS_BEFORE_CENTER_CODE FROM TA_TRANS_CENTER WHERE TRANS_AFTER_CENTER_CODE = #{centerCode} AND TRANS_STDR_DATE <= now()
+							)							
+						]]>
+					</otherwise>
+				</choose>
+			</otherwise>
+		</choose>
+	
+		<if test='(searchCaseType != null and searchCaseType != "") and searchMasterText != null and searchMasterText != ""'>
+			<choose>
+				<!-- 암호화 -->
+				<when test='searchCaseType == "VICTIM_NAME"'>
+					<![CDATA[AND VICTIM_NAME = #{searchMasterText}]]>
+				</when>
+				
+				<!-- 암호화 -->
+				<when test='searchCaseType == "VICTIM_BIRTH"'>
+					<![CDATA[AND VICTIM_BIRTH = #{searchMasterText}]]>
+				</when>
+				
+				<when test='searchCaseType == "VICTIM_MEMO"'>
+					<![CDATA[AND cs.CASE_SEQ IN (SELECT CASE_SEQ FROM TA_CASE_MEMO WHERE VICTIM_MEMO LIKE CONCAT('%',#{searchMasterText},'%')]]>
+				</when>
+				
+				<when test='searchCaseType == "ATTKR_MEMO"'>
+					<![CDATA[AND cs.CASE_SEQ IN (SELECT CASE_SEQ FROM TA_CASE_MEMO WHERE ATTKR_MEMO LIKE CONCAT('%',#{searchMasterText},'%')]]>
+				</when>
+				
+				<when test='searchCaseType == "CC_NAME"'>
+					<![CDATA[AND cs.CASE_SEQ IN (SELECT CASE_SEQ FROM TA_CASE_MEMO WHERE CC_NAME LIKE CONCAT('%',#{searchMasterText},'%') OR CC_PHONE_LIKE CONCAT('%',#{searchMasterText},'%'))]]>
+				</when>
+				
+				<!-- 암호화 -->
+				<when test='searchCaseType == "CLIENT"'>
+					<![CDATA[AND CLIENT = #{searchMasterText}]]>
+				</when>
+				
+				<when test='searchCaseType == "CASE_NUMBER"'>
+					<![CDATA[AND CASE_NUMBER LIKE CONCAT('%',#{searchMasterText},'%')]]>
+				</when>
+				
+				<!-- 암호화 -->
+				<when test='searchCaseType == "USER_NAME"'>
+					<if test='searchType4Date == "pass"'>
+						<![CDATA[AND pass.USER_NAME = #{searchMasterText}]]>
+					</if>
+					<if test='searchType4Date != "pass"'>
+						<![CDATA[AND cs.CASE_SEQ IN (SELECT CASE_SEQ FROM TA_PASS WHERE USER_NAME = #{searchMasterText})]]>
+					</if>
+				</when>
+				
+				<otherwise>
+					<![CDATA[AND #{searchCaseType} LIKE CONCAT('%',#{searchMasterText},'%')]]>
+				</otherwise>
+			</choose>
+		</if>
+	
+		<if test='cond_frdate != null and cond_frdate != ""'>
+			<choose>
+				<when test='searchType4Date == "pass"'>
+					<![CDATA[AND PASS_DATE >= #{cond_frdate}]]>
+				</when>
+				<otherwise>
+					<![CDATA[AND CASE_DATE >= #{cond_frdate}]]>
+				</otherwise>
+			</choose>
+		</if>
+		<if test='cond_todate != null and cond_todate != ""'>
+			<choose>
+				<when test='searchType4Date == "pass"'>
+					<![CDATA[AND PASS_DATE <= #{cond_todate}]]>
+				</when>
+				<otherwise>
+					<![CDATA[AND CASE_DATE <= #{cond_todate}]]>
+				</otherwise>
+			</choose>
+		</if>
+		
+		<if test='CASE_TIME != null and CASE_TIME != ""'>
+			<![CDATA[AND CASE_TIME = #{CASE_TIME}]]>
+		</if>
+		
+		<if test='caseTypeChk != null and caseTypeChk != ""'>
+			<![CDATA[AND CASE_TYPE IN ]]>
+			<foreach collection="caseTypeChk" item="code" open="(" separator="," close=")">
+				${code}
+			</foreach>
+		</if>
+		
+		<if test='VICTIM_AREA != null and VICTIM_AREA != ""'>
+			<![CDATA[AND VICTIM_AREA = #{VICTIM_AREA}]]>
+		</if>
+		
+		<if test='VICTIM_DISABLE != null and VICTIM_DISABLE != ""'>
+			<choose>
+				<when test='VICTIM_DISABLE == "00"'>
+					<![CDATA[AND VICTIM_DISABLE = 0]]>
+				</when>
+				<when test='VICTIM_DISABLE == "01"'>
+					<![CDATA[AND VICTIM_DISABLE = 1]]>
+				</when>
+				<when test='VICTIM_DISABLE == "02"'>
+					<![CDATA[AND VICTIM_DISABLE = 2]]>
+				</when>
+				<when test='VICTIM_DISABLE == "03"'>
+					<![CDATA[AND VICTIM_DISABLE = 3]]>
+				</when>
+				<when test='VICTIM_DISABLE == "99" or VICTIM_DISABLE == "Y"'>
+					<![CDATA[AND VICTIM_DISABLE > 0]]>
+				</when>
+			</choose>
+		</if>
+		
+		<if test='VICTIM_FRGER != null and VICTIM_FRGER != ""'>
+			<![CDATA[AND VICTIM_FRGER = #{VICTIM_FRGER}]]>
+		</if>
+		
+		<if test='VICTIM_AGE_FROM != null and VICTIM_AGE_FROM != ""'>
+			<![CDATA[AND VICTIM_AGE >= #{VICTIM_AGE_FROM} AND VICTIM_AGE <= '120']]>
+		</if>
+		
+		<if test='VICTIM_AGE_TO != null and VICTIM_AGE_TO != ""'>
+			<![CDATA[AND VICTIM_AGE <= #{VICTIM_AGE_TO} AND VICTIM_AGE <= '120']]>
+		</if>
+		
+		<if test='VICTIM_SEX != null and VICTIM_SEX != ""'>
+			<![CDATA[AND VICTIM_SEX = #{VICTIM_SEX}]]>
+		</if>
+		
+		<if test='src_CSL_ID != null and src_CSL_ID != ""'>
+			<![CDATA[AND MEMBER_ID = #{src_CSL_ID}]]>
+		</if>
+		
+		<if test='src_CSL_IDJiwon != null and src_CSL_IDJiwon != ""'>
+			<![CDATA[AND PASS_MANAGER = #{src_CSL_IDJiwon}]]>
+		</if>
+		
+		<if test='ATTKR_DISABLE != null and ATTKR_DISABLE != ""
+			or ATTKR_FRGER != null and ATTKR_FRGER != ""
+			or ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""
+			or ATTKR_AGE != null and ATTKR_AGE != ""
+			or ATTKR_SEX != null and ATTKR_SEX != ""
+			or ATTKR_STATE_YN != null and ATTKR_STATE_YN != ""
+			or ATTKR_STATE != null and ATTKR_STATE != ""'>
+			<choose>
+				<when test='searchType4Date == "pass" or searchType4Date == "serv"'>
+					<![CDATA[AND cs.CASE_SEQ IN ( SELECT CASE_SEQ FROM TA_CASE_ATTKR WHERE 1=1]]>
+				</when>
+				<otherwise>
+					<choose>
+						<when test='isAdmin == "true" and chkhasattkr == "Y"'>
+						</when>
+						<otherwise>
+							<![CDATA[AND cs.CASE_SEQ IN ( SELECT CASE_SEQ FROM TA_CASE_ATTKR WHERE 1=1]]>
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>
+			
+			<if test='ATTKR_DISABLE != null and ATTKR_DISABLE != ""'>
+				<choose>
+					<when test='ATTKR_DISABLE == "00"'>
+						<![CDATA[AND ATTKR_DISABLE = 0]]>
+					</when>
+					<when test='ATTKR_DISABLE == "01"'>
+						<![CDATA[AND ATTKR_DISABLE = 1]]>
+					</when>
+					<when test='ATTKR_DISABLE == "02"'>
+						<![CDATA[AND ATTKR_DISABLE = 2]]>
+					</when>
+					<when test='ATTKR_DISABLE == "03"'>
+						<![CDATA[AND ATTKR_DISABLE = 3]]>
+					</when>
+					<when test='ATTKR_DISABLE == "99" or ATTKR_DISABLE == "Y"'>
+						<![CDATA[AND ATTKR_DISABLE > 0]]>
+					</when>
+				</choose>
+			</if>
+			
+			<if test='ATTKR_FRGER != null and ATTKR_FRGER != ""'>
+				<![CDATA[AND ATTKR_FRGER = #{ATTKR_FRGER}]]>
+			</if>
+			
+			<if test='ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""'>
+				<![CDATA[AND ATTKR_REL_GRP = #{ATTKR_REL_GRP}]]>
+			</if>
+			
+			<if test='ATTKR_AGE != null and ATTKR_AGE != ""'>
+				<![CDATA[AND ATTKR_AGE = #{ATTKR_AGE}]]>
+			</if>
+			
+			<if test='ATTKR_SEX != null and ATTKR_SEX != ""'>
+				<![CDATA[AND ATTKR_SEX = #{ATTKR_SEX}]]>
+			</if>
+			
+			<if test='ATTKR_STATE_YN != null and ATTKR_STATE_YN != ""'>
+				<![CDATA[AND ATTKR_STATE_YN = #{ATTKR_STATE_YN}]]>
+			</if>
+			
+			<if test='ATTKR_STATE != null and ATTKR_STATE != ""'>
+				<![CDATA[AND ATTKR_STATE = #{ATTKR_STATE}]]>
+			</if>
+			
+			<choose>
+				<when test='searchType4Date == "pass" or searchType4Date == "serv"'>
+					<![CDATA[)]]>
+				</when>
+				<otherwise>
+					<choose>
+						<when test='isAdmin == "true" and chkhasattkr == "Y"'>
+						</when>
+						<otherwise>
+							<![CDATA[)]]>
+						</otherwise>
+					</choose>
+					<if test='ATTKR_SEX != null and ATTKR_SEX != ""'>
+						<![CDATA[AND attkr.ATTKR_SEX = #{ATTKR_SEX}]]>
+					</if>
+					<if test='ATTKR_REL_GRP != null and ATTKR_REL_GRP != ""'>
+						<![CDATA[AND attkr.ATTKR_REL_GRP = #{ATTKR_REL_GRP}]]>
+					</if>
+				</otherwise>
+			</choose>
+		</if>
+		
+		<if test='FINISH_CASE_CHECK == "N"'>
+			<![CDATA[AND CASE_FINISH ='N']]>
+		</if>
+		
+		<if test='VISIT_CASE_CHECK == "N"'>
+			<![CDATA[AND cs.CASE_SEQ IN (SELECT CASE_SEQ FROM TA_PASS WHERE PASS_WAY = '2')]]>
+		</if>
+		
+		<if test='VISIT_JIWON_CHECK == "N"'>
+			<![CDATA[AND pass.PASS_WAY = '2']]>
+		</if>
+		
+		<if test='PASS_REL_TYPE != null and PASS_REL_TYPE != ""'>
+			<![CDATA[AND pass.PASS_REL_TYPE = #{PASS_REL_TYPE}]]>
+		</if>
+		<if test='PASS_WAY != null and PASS_WAY != ""'>
+			<![CDATA[AND pass.PASS_WAY = #{PASS_WAY}]]>
+		</if>
+		
+		<if test='USER_REL_GRP != null and USER_REL_GRP != ""'>
+			<![CDATA[AND pass.USER_REL_GRP = #{USER_REL_GRP}]]>
+		</if>
+		
+		<if test='USER_REL != null and USER_REL != ""'>
+			<![CDATA[AND pass.USER_REL = #{USER_REL}]]>
+		</if>
+		
+		<if test='joinCASE_JUPSOO != null and joinCASE_JUPSOO != ""'>
+			<![CDATA[AND cs.CASE_JUPSOO = #{joinCASE_JUPSOO}]]>
+		</if>
+		
+		<if test='CLIENT_REL_GRP != null and CLIENT_REL_GRP != ""'>
+			<![CDATA[AND cs.CLIENT_REL_GRP = #{CLIENT_REL_GRP}]]>
+		</if>
+		
+		<if test='CLIENT_REL != null and CLIENT_REL != ""'>
+			<![CDATA[AND cs.CLIENT_REL = #{CLIENT_REL}]]>
+		</if>
+		
+		<if test='VICTIM_AREA_GRP != null and VICTIM_AREA_GRP != ""'>
+			<![CDATA[AND cs.VICTIM_AREA = #{VICTIM_AREA_GRP}]]>
+		</if>
+		
+		<if test='CASE_ROUTE_GRP != null and CASE_ROUTE_GRP != ""'>
+			<![CDATA[AND cs.CASE_ROUTE_GRP = #{CASE_ROUTE_GRP}]]>
+		</if>
+		
+		<if test='DMG_STATE_YN != null and DMG_STATE_YN != ""'>
+			<![CDATA[AND cs.DMG_STATE_YN = #{DMG_STATE_YN}]]>
+		</if>
+		
+		<if test='DMG_STATE != null and DMG_STATE != ""'>
+			<![CDATA[AND cs.DMG_STATE = #{DMG_STATE}]]>
+		</if>
+		
+		<if test='CASE_HELP != null and CASE_HELP != ""'>
+			<![CDATA[AND cs.CASE_JUPSOO = #{joinCASE_JUPSOO}]]>
+		</if>
+		
+		<if test='CASE_MANAGER != null and CASE_MANAGER != ""'>
+			<![CDATA[AND cs.CASE_MANAGER = #{CASE_MANAGER}]]>
+		</if>
+	</sql>
+	
+	<select id="AgeSettingCnt" parameterType="zvl" resultType="long">
+		/*AgeSettingCnt*/
+		select count(*) 
+		from tb_code
+		where 1=1
+		<choose>
+			<when test="codegWhere == 1">
+				/*codegWhere11*/
+				and code_group = '${userId}'
+			</when>
+			<otherwise>
+				/*codegWhere00*/
+				and code_group = '_default'
+			</otherwise>
+		</choose>
+		and codeg_code = 'VTAG'
+	</select>
+
+	<select id="findAgeSetting" parameterType="zvl" resultType="zvl">
+		select 
+			group_concat(CODE_NAME3) as CODE_NAME3
+		from tb_code 
+		where code_group = '${userId}'
+		and codeg_code = 'VTAG'
+		<![CDATA[
+		and code_name3 <= 120 
+		]]>
+		
+	</select>
+
+	<select id="updateAgeSetting" parameterType="zvl">
+		update tb_code
+		set code_name = '${ageSetting}'
+			,code_group = '${userId}'
+			
+		where code_code = '${userId}'
+		and codeg_code = '${codegCode}' 
+		
+	</select>
+	<select id="deleteAgeSetting" parameterType="zvl">
+		delete from tb_code
+		where code_group = '${userId}'
+		and codeg_code = 'VTAG'
+		
+	</select>
+	<select id="insertAgeSetting" parameterType="zvl">
+			INSERT INTO tb_code (CODEG_CODE
+					,CODE_CODE
+					,CODE_NAME
+					,CODE_NAME2
+					,CODE_NAME3
+					,CODE_USE_YN
+					,CODE_GROUP
+					,CODE_SORT)
+				VALUES(
+						'${codegCode}'
+						, '${codeCode}'
+						, '${codeName}'
+						, '${codeName2}'
+						, '${codeName3}'
+						, 'Y'
+						, '${userId}'
+						, 100
+					)
+	</select>
+	
+	<insert id="saveStatsHistory" parameterType="zvl">
+        <selectKey resultType="Integer" order="BEFORE" keyProperty="chSeq">
+            SELECT IFNULL(MAX(CH_SEQ),0)+1 AS CH_SEQ  FROM TA_CASE_HISTORY
+        </selectKey>
+        <![CDATA[
+        /* saveCaseHistory */
+        INSERT INTO TA_CASE_HISTORY ( 
+            CH_SEQ, CASE_SEQ, CH_GROUP, CH_USER_ID, CH_MEMO, CH_DATE, CH_USER_NM, CH_ACTION, CH_GROUP_SEQ
+        ) VALUES (
+            #{chSeq}, #{caseSeq}, #{chGroup}, #{chUserId}, #{chMemo}, NOW(), #{chUserNm}, #{chAction}, #{chGroupSeq}
+        )
+        ]]>
+    </insert>
+</mapper>

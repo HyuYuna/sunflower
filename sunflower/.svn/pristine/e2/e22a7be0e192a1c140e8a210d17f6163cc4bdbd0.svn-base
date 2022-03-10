@@ -1,0 +1,125 @@
+#set( $n = '
+')
+#set( $attrName = ${entity.name.replaceAll('[T|t][c|m|b]','')} )
+#set( $pkAttrName = ${entity.keyAttributes[0].name} )
+#set( $pkDatabaseName = ${entity.keyAttributes[0].databaseName} )
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.${attrName}DAO">
+
+#set( $hasClob = 'N' )
+#foreach( $field in $entity.attributes)
+	#if(${field.type.toLowerCase()} == 'clob')
+		#set( $hasClob = 'Y' )
+	#end
+#end
+#set( $pkDatabaseName = ${entity.keyAttributes[0].databaseName} )
+
+#if($hasClob == 'Y')
+	<resultMap id="${attrName}ResultMap" type="zvl">
+#foreach( $field in $entity.attributes)
+#if(${field.type.toLowerCase()} == 'clob')
+        <result property="${field.name}" column="${field.databaseName}" jdbcType="CLOB" javaType="string" />
+#end
+#end
+    </resultMap>
+#end
+
+	<sql id="${attrName}-where">
+		<if test='$pkAttrName != null and $pkAttrName != ""'>
+			<![CDATA[	AND A.$pkDatabaseName = #{$pkAttrName} 		]]>
+		</if>
+	</sql>
+
+	<select id="count${attrName}" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT
+				COUNT(A.$pkDatabaseName)
+			FROM ${entity.databaseTable} A
+			WHERE 1=1
+		]]>
+		<include refid="${attrName}-where" />
+	</select>
+
+	<select id="findAll${attrName}" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT  *
+			  FROM  (
+			SELECT ROWNUM RNUM, ALL_LIST.*
+			  FROM  (
+
+			SELECT
+#foreach( $field in $entity.attributes)
+#if(${field.type} != 'Clob')
+				#if($velocityCount != 1),#end A.${field.databaseName}
+#end
+#end
+			FROM ${entity.databaseTable} A
+			WHERE 1=1
+		]]>
+		<include refid="${attrName}-where" />
+		<![CDATA[
+			ORDER BY A.$pkDatabaseName DESC
+
+				    ) ALL_LIST
+				    )
+			 WHERE  RNUM  > #{firstIndex}
+			   AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+
+	<select id="findOne$attrName" parameterType="zvl" #if($hasClob == 'Y')resultMap="${attrName}ResultMap"#else resultType="zvl"#end >
+		<![CDATA[
+			SELECT
+#foreach( $field in $entity.attributes)
+                 #if($velocityCount != 1),#end A.${field.databaseName}
+#end
+			FROM ${entity.databaseTable} A
+			WHERE
+				A.$pkDatabaseName = #{$pkAttrName}
+		]]>
+	</select>
+
+
+	<insert id="save${attrName}" parameterType="zvl">
+		<selectKey resultType="long" order="BEFORE" keyProperty="$pkAttrName">
+			SELECT To_Number('0' || Max($pkDatabaseName))+1 FROM ${entity.databaseTable}
+		</selectKey>
+		<![CDATA[
+		     INSERT INTO ${entity.databaseTable} (
+#foreach( $field in $entity.attributes)
+                 #if($velocityCount != 1),#end ${field.databaseName}
+#end
+		     )
+			VALUES (
+#foreach( $field in $entity.attributes )
+				#if($velocityCount != 1),#end #{${field.name}#if(${field.type} == 'Clob'):CLOB#end}
+#end
+			)
+		]]>
+	</insert>
+
+	<update id="update${attrName}" parameterType="zvl">
+		<![CDATA[
+		     UPDATE ${entity.databaseTable}
+			 SET
+#set ($idx = 0) 
+#foreach( $field in $entity.attributes)
+#if ( !$field.isKeyElement() )
+#set ($idx = $idx + 1)
+                 #if($idx != 1),#end${field.databaseName} = #{${field.name}#if(${field.type} == 'Clob'):CLOB#end}
+#end
+#end
+			 WHERE $pkDatabaseName = #{$pkAttrName}
+		]]>
+	</update>
+
+	<delete id="delete${attrName}" parameterType="zvl">
+		<![CDATA[
+		     DELETE ${entity.databaseTable}
+			 WHERE $pkDatabaseName = #{$pkAttrName}
+		]]>
+	</delete>
+</mapper>

@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.dao.singl.ContentsDAO">
+
+	<select id="countContents" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countContents */
+			SELECT count(*)
+			  FROM TC_MENU_INFO A
+			  LEFT OUTER JOIN TM_MNGR_INFO B ON A.USER_ID = B.USER_ID
+			 WHERE ISNULL(CNTNTS_FILE_COURS,'0') != '0' AND UPPER_MENU_NO != '0' AND MENU_CNTNTS_CD = 'CON01' AND A.DELETE_CD = '0'
+		]]>
+		<if test='sSiteId != null and sSiteId != ""'>
+			<![CDATA[	AND SITE_ID = #{sSiteId}  ]]>
+		</if>
+		<if test='searchStr != null and searchStr != ""'>
+			<if test='searchKey == "path"'>
+				<![CDATA[	AND ( RELATE_MENU_NM_LIST LIKE '%' + #{searchStr} + '%' OR MENU_NM LIKE '%' + #{searchStr} + '%' )	]]>
+			</if>
+			<if test='searchKey == "menuNo"'>
+				<![CDATA[	AND A.MENU_NO = #{searchStr}	]]>
+			</if>
+			<if test='searchKey == "userNm"'>
+				<![CDATA[	AND  B.USER_NM LIKE '%' + #{searchStr} + '%' 	]]>
+			</if>
+		</if>
+		<if test='role != "ROLE_SUPER"'>
+			<![CDATA[	AND A.USER_ID = #{userId}	]]>
+		</if>
+	</select>
+
+	<!-- 콘텐츠 목록 -->
+	<select id="findAllContents" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+		SELECT AA.* FROM (
+				SELECT ROW_NUMBER() OVER(ORDER BY ALL_LIST.MENU_NO) RNUM, ALL_LIST.*
+				FROM (
+
+			SELECT
+				A.MENU_NO,
+				A.UPPER_MENU_NO,
+				A.SITE_ID,
+				A.MENU_NM,
+				A.RELATE_MENU_NM_LIST,
+				A.MENU_ORDR,
+				A.POPUP_AT,
+		        A.USE_AT,
+		        A.USER_ID,
+		        B.USER_NM,
+		        A.DEPT_ID,
+		        (SELECT DEPT_KOR_NM FROM TM_DEPT_INFO WHERE DEPT_ID = A.DEPT_ID) AS DEPT_KOR_NM,
+		        CONVERT(char(10),A.UPDT_DT,120) AS UPDT_DT
+			FROM TC_MENU_INFO A
+			LEFT OUTER JOIN TM_MNGR_INFO B ON A.USER_ID = B.USER_ID
+			LEFT OUTER JOIN TC_CNTNTS_MANAGE C ON A.MENU_NO = C.MENU_NO AND C.DELETE_CD = '0' AND C.USE_AT = 'Y'
+			WHERE ISNULL(CNTNTS_FILE_COURS,'0') != '0' AND UPPER_MENU_NO != '0' AND MENU_CNTNTS_CD = 'CON01' AND A.DELETE_CD = '0'
+
+		]]>
+		<if test='sSiteId != null and sSiteId != ""'>
+			<![CDATA[	AND SITE_ID = #{sSiteId}  ]]>
+		</if>
+		<if test='searchStr != null and searchStr != ""'>
+			<if test='searchKey == "path"'>
+				<![CDATA[	AND ( RELATE_MENU_NM_LIST LIKE '%' + #{searchStr} + '%' OR MENU_NM LIKE '%' + #{searchStr} + '%' )	]]>
+			</if>
+			<if test='searchKey == "menuNo"'>
+				<![CDATA[	AND A.MENU_NO = #{searchStr}	]]>
+			</if>
+			<if test='searchKey == "userNm"'>
+				<![CDATA[	AND ( B.USER_NM LIKE '%' + #{searchStr} + '%' )	]]>
+			</if>
+		</if>
+		<if test='role != "ROLE_SUPER"'>
+			<![CDATA[	AND USER_ID = #{userId}	]]>
+		</if>
+	    <![CDATA[
+	  				) ALL_LIST
+				)AA
+			WHERE  AA.RNUM  > #{firstIndex}
+			  AND  AA.RNUM <= #{firstIndex} + #{recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 콘텐츠 상세 -->
+	<select id="findOneContents" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneContents */
+			SELECT
+			    TOP(1)
+				a.MENU_NO,
+				a.MENU_NM,
+				a.RELATE_MENU_NM_LIST,
+				a.CNTNTS_FILE_COURS,
+				a.SITE_ID,
+				a.MENU_LINK,
+				b.CNTNTS_MNNO,
+				b.CNTNTS_CN,
+				b.USE_AT,
+				b.REGIST_ID,
+				b.REGIST_DT,
+				b.UPDT_ID,
+				b.UPDT_DT,
+				(SELECT SITE_URLAD FROM TC_SITE_INFO WHERE SITE_ID=#{sSiteId}) AS SITE_URLAD
+			FROM TC_MENU_INFO a
+				LEFT OUTER JOIN (
+					SELECT *
+					FROM TC_CNTNTS_MANAGE
+					WHERE DELETE_CD = '0'
+		]]>
+			<if test='cntntsMnno != null and cntntsMnno != ""'>
+				<if test='useAt == null or useAt == ""'>
+					<![CDATA[	AND CNTNTS_MNNO = #{cntntsMnno}		]]>
+				</if>
+				<if test='useAt != null and useAt != ""'>
+					<![CDATA[
+					  AND CNTNTS_MNNO = (
+					  	SELECT ISNULL(MAX(CNTNTS_MNNO), 0)
+					  	FROM TC_CNTNTS_MANAGE
+					  	WHERE MENU_NO = #{sMenuNo} AND CNTNTS_MNNO <> #{cntntsMnno} AND DELETE_CD = '0'
+					  )
+					]]>
+				</if>
+			</if>
+			<if test='cntntsMnno == null or cntntsMnno == ""'>
+				<![CDATA[	AND USE_AT='Y'		]]>
+			</if>
+		<![CDATA[
+				) b
+				ON a.MENU_NO = b.MENU_NO
+		 	WHERE a.menu_no = #{sMenuNo}
+		]]>
+	</select>
+
+	<!-- 콘텐츠 History 목록count수 -->
+	<select id="findOneContentsHistoryCount" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* findOneContentsHistoryCount */
+			SELECT COUNT(*)
+			FROM TC_CNTNTS_MANAGE a
+			INNER JOIN TC_MENU_INFO b ON a.MENU_NO = b.MENU_NO
+			WHERE a.MENU_NO = #{sMenuNo}
+			  AND a.DELETE_CD = '0'
+		]]>
+			<if test='useAt == "Y"'>
+				<![CDATA[	AND a.USE_AT='Y'		]]>
+			</if>
+	</select>
+
+	<!-- 콘텐츠 History 목록 -->
+	<select id="findOneContentsHistory" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneContentsHistory */
+		SELECT AA.* FROM (
+			SELECT ROW_NUMBER() OVER(ORDER BY ALL_LIST.CNTNTS_MNNO DESC) RNUM, ALL_LIST.* FROM (
+
+			SELECT
+				a.MENU_NO,
+				a.CNTNTS_MNNO,
+				b.MENU_NM,
+				b.RELATE_MENU_NM_LIST,
+				a.USE_AT,
+				CONVERT(char(10),a.UPDT_DT,120) AS UPDT_DT,
+				c.USER_NM,
+				b.SITE_ID
+			FROM TC_CNTNTS_MANAGE a
+			INNER JOIN TC_MENU_INFO b ON a.MENU_NO = b.MENU_NO
+			LEFT OUTER JOIN TM_MNGR_INFO c ON c.USER_ID = a.REGIST_ID
+			WHERE a.MENU_NO = #{sMenuNo} AND a.DELETE_CD = '0'
+
+      		) ALL_LIST
+			) AA
+		WHERE  AA.RNUM  > #{firstIndex}
+		  AND  AA.RNUM <= #{firstIndex} + #{recordCountPerPage}
+
+		]]>
+	</select>
+
+	<!-- 콘텐츠 파일 경로 -->
+	<select id="findOneContentsFileCours" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneContentsFileCours */
+			SELECT MENU_NO, SITE_ID, CNTNTS_FILE_COURS
+			FROM TC_MENU_INFO
+			WHERE MENU_NO = #{sMenuNo}
+		]]>
+	</select>
+
+	<!-- 콘텐츠 등록 -->
+	<insert id="saveContents" parameterType="zvl">
+		<selectKey resultType="java.lang.Integer" order="BEFORE" keyProperty="cntntsMnno">
+			SELECT ISNULL(MAX(CNTNTS_MNNO),0)+1 AS CNTNTS_MNNO FROM TC_CNTNTS_MANAGE WHERE MENU_NO = #{sMenuNo}
+		</selectKey>
+		<![CDATA[
+			/* saveContents */
+			INSERT INTO TC_CNTNTS_MANAGE (
+				MENU_NO,
+				CNTNTS_MNNO,
+				CNTNTS_CN,
+				USE_AT,
+				DELETE_CD,
+				REGIST_ID,
+				REGIST_DT,
+				UPDT_ID,
+				UPDT_DT
+			) VALUES (
+				#{sMenuNo},
+				#{cntntsMnno},
+				#{cntntsCn:CLOB},
+				#{useAt},
+				'0',
+				#{userId},
+				GETDATE(),
+				#{userId},
+				GETDATE()
+			)
+		]]>
+	</insert>
+
+	<!-- 콘텐츠 수정 -->
+	<update id="modifyContents" parameterType="zvl">
+		<![CDATA[
+			/* modifyContents */
+			UPDATE TC_CNTNTS_MANAGE
+			SET USE_AT = 'N'
+			WHERE MENU_NO = #{sMenuNo}
+		]]>
+	</update>
+
+	<!-- 콘텐츠 History 사용여부 수정 -->
+	<update id="modifyContentsHistory" parameterType="zvl">
+		<![CDATA[
+			/* modifyContentsHistory */
+			UPDATE TC_CNTNTS_MANAGE
+			SET
+				USE_AT = 'Y',
+				UPDT_ID = #{userId},
+				UPDT_DT = GETDATE()
+			WHERE MENU_NO = #{sMenuNo}
+		]]>
+		<if test='useAt == null or useAt == ""'>
+			<![CDATA[	AND CNTNTS_MNNO = #{cntntsMnno}		]]>
+		</if>
+		<if test='useAt != null and useAt != ""'>
+			<![CDATA[
+			  AND CNTNTS_MNNO = (
+			  	SELECT ISNULL(MAX(CNTNTS_MNNO), 0)
+			  	FROM TC_CNTNTS_MANAGE
+			  	WHERE MENU_NO = #{sMenuNo} AND CNTNTS_MNNO <> #{cntntsMnno} AND DELETE_CD = '0'
+			  )
+			]]>
+		</if>
+	</update>
+
+	<!-- 콘텐츠 삭제 -->
+	<update id="deleteContents" parameterType="zvl">
+		<![CDATA[
+			/* deleteContents */
+			UPDATE TC_CNTNTS_MANAGE
+			SET
+				DELETE_CD = '1',
+				UPDT_ID = #{userId},
+				UPDT_DT = GETDATE()
+			WHERE MENU_NO = #{sMenuNo} AND CNTNTS_MNNO = #{cntntsMnno}
+		]]>
+	</update>
+
+	<!-- 콘텐츠 파일 경로 목록 -->
+	<select id="findAllContentsFileCours" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllContentsFileCours */
+			SELECT
+				a.MENU_NO,
+				a.CNTNTS_FILE_COURS,
+				b.USE_AT
+			FROM TC_MENU_INFO a
+			LEFT OUTER JOIN TC_CNTNTS_MANAGE b ON b.MENU_NO = a.MENU_NO AND b.DELETE_CD = '0' AND b.USE_AT = 'Y'
+			WHERE ISNULL(CNTNTS_FILE_COURS,'0') != '0'
+		]]>
+		<if test='sSiteId != null and sSiteId != ""'>
+			<![CDATA[	AND SITE_ID = #{sSiteId}  ]]>
+		</if>
+	    <![CDATA[
+	       	ORDER BY MENU_NO
+		]]>
+	</select>
+
+	<update id="modifyContentsDayToToday" parameterType="zvl">
+		<![CDATA[
+			/* menuManageDAO.setModifyDayToToday */
+			UPDATE TC_MENU_INFO
+			SET
+			  UPDT_DT = GETDATE()
+			WHERE MENU_NO = #{sMenuNo}
+		]]>
+	</update>
+
+	<select id="findAllContentsHistory" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				a.MENU_NO,
+				a.CNTNTS_MNNO,
+				b.MENU_NM,
+				b.RELATE_MENU_NM_LIST,
+				a.USE_AT,
+				a.UPDT_DT,
+				c.USER_NM,
+				c.USER_ID,
+				b.SITE_ID
+			FROM TC_CNTNTS_MANAGE a
+			INNER JOIN TC_MENU_INFO b ON a.MENU_NO = b.MENU_NO
+			LEFT OUTER JOIN TM_MNGR_INFO c ON c.USER_ID = a.REGIST_ID
+			WHERE a.MENU_NO = #{sMenuNo} AND a.DELETE_CD = '0'
+      			ORDER BY a.CNTNTS_MNNO DESC
+		]]>
+	</select>
+</mapper>

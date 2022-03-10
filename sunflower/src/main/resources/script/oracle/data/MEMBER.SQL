@@ -1,0 +1,5 @@
+INSERT INTO MEMBER
+  (ID, PWD, NAME)
+VALUES
+  ('test', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', '테스트');
+

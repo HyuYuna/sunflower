@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.singl.MngrAuthorHistDAO">
+
+	<insert id="saveMngrAuthorHist" parameterType="zvl">
+		<![CDATA[
+			INSERT
+			  INTO tm_mngr_author_hist
+			       (
+			           USER_ID,
+			           USER_SN,
+			           USER_NM,
+			           AUTHOR_CD,
+			           USER_CPNO,
+			           USER_TELNO,
+			           USER_EMAD,
+			           STTUS_CD,
+			           STTUS_SUMRY,
+			           REGIST_ID,
+			           REGIST_DT,
+			           REGIST_IPAD
+			       )
+			       VALUES
+			       (
+			           #{userId},
+			           #{userSn},
+			           #{userNm},
+			           #{authorCd},
+			           #{userCpno},
+			           #{userTelno},
+			           #{userEmad},
+			           #{sttusCd},
+			           #{sttusSumry},
+			           #{registId},
+			           SYSDATE,
+			           #{registIpad}
+			       )
+		]]>
+	</insert>
+
+	<sql id="findAllMngrAuthorHist-where">
+		<if test='searchDate != null and searchDate != ""'>
+			<![CDATA[	AND TO_CHAR(A.REGIST_DT, 'YYYY-MM-DD') = #{searchDate} 		]]>
+		</if>
+	</sql>
+
+	<select id="findAllMngrAuthorHistExcel" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			SELECT
+	           USER_ID,
+	           USER_SN,
+	           USER_NM,
+	           AUTHOR_CD,
+	           NVL((SELECT AUTHOR_NM FROM TC_AUTHOR_INFO WHERE AUTHOR_CD = A.AUTHOR_CD), '') AS AUTHOR_NM,
+	           USER_CPNO,
+	           USER_TELNO,
+	           USER_EMAD,
+	           STTUS_CD,
+	           STTUS_SUMRY,
+	           REGIST_ID,
+	           REGIST_DT,
+	           REGIST_IPAD
+			FROM tm_mngr_author_hist A
+			WHERE 1=1
+		]]>
+		<include refid="findAllMngrAuthorHist-where" />
+		<![CDATA[
+			ORDER BY A.HIST_NO ASC
+		]]>
+	</select>
+</mapper>

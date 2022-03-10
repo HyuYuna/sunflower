@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.main.MngrMainEstbsDAO">
+
+	<insert id="saveMngrMainEstbs" parameterType="zvl" >
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="mnno">
+			SELECT NVL(MAX(MNNO),0)+1 FROM TC_MNGR_MAIN_ESTBS
+		</selectKey>
+		<![CDATA[
+			/*  saveMngrMainEstbs */
+			INSERT INTO TC_MNGR_MAIN_ESTBS (
+	            MNNO,
+				SE_CD,
+				BASS_MG,
+				ESTBS_CN,
+				USE_AT,
+				REGIST_ID,
+				REGIST_DT,
+				USER_ID,
+				AR_MVL,
+				AR_MNVL,
+				HG_MVL,
+				HG_MNVL,
+				SIZE_UPDT_AT
+
+			)
+			VALUES (
+				#{mnno},
+				#{seCd},
+				#{bassMg},
+				#{estbsCn},
+				NVL(#{useAt},'N'),
+				#{registId},
+				SYSDATE,
+				#{userId},
+				#{arMvl},
+				#{arMnvl},
+				#{hgMvl},
+				#{hgMnvl},
+				NVL(#{sizeUpdtAt},'N')
+			)
+		]]>
+	</insert>
+
+
+
+	<select id="findAllMngrMainEstbs" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+			/*  findAllMngrMainEstbs */
+			SELECT a.CD,
+			       a.CD_ID,
+			       a.CD_NM,
+			       a.SORT_ORDR,
+			       b.MNNO,
+			       b.SE_CD,
+			       b.BASS_MG,
+			       b.ESTBS_CN,
+			       b.USE_AT,
+			       b.AR_MVL,
+		 		   b.AR_MNVL,
+		 		   b.HG_MVL,
+		 		   b.HG_MNVL,
+		 		   b.SIZE_UPDT_AT
+			  FROM TC_CMMN_CD_DETAIL a
+			  	LEFT JOIN (SELECT
+			  				b.MNNO,
+			                b.SE_CD,
+			                b.BASS_MG,
+			                b.ESTBS_CN,
+			                b.USE_AT,
+			                b.REGIST_ID,
+			                b.REGIST_DT,
+			                b.UPDT_ID,
+			                b.UPDT_DT,
+			                b.USER_ID,
+			                b.AR_MVL,
+				 		    b.AR_MNVL,
+				 		    b.HG_MVL,
+				 		    b.HG_MNVL,
+				 		    b.SIZE_UPDT_AT
+			FROM TC_MNGR_MAIN_ESTBS b
+			       WHERE b.USER_ID = #{userId}) b
+			       ON a.CD = b.SE_CD
+			       WHERE a.CD_ID = 'MAIN_ESTBS_CD' AND a.USE_AT = 'Y'
+			   ORDER BY a.SORT_ORDR
+
+		]]>
+	</select>
+
+	<select id="countMngrMainEstbs" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			/*  countMngrMainEstbs */
+			SELECT
+				COUNT(a.MNNO)
+			FROM
+				TC_MNGR_MAIN_ESTBS A
+		]]>
+	</select>
+
+	<select id="countMngrMainEstbsById" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			/*  countMngrMainEstbsById */
+			SELECT
+				COUNT(a.MNNO)
+			FROM
+				TC_MNGR_MAIN_ESTBS A
+			WHERE USER_ID = #{userId} AND SE_CD = #{seCd}
+		]]>
+	</select>
+
+ 	<update id="updateMngrMainEstbs" parameterType="zvl">
+ 		<![CDATA[
+ 			/*  updateMngrMainEstbs */
+			UPDATE TC_MNGR_MAIN_ESTBS SET
+		        BASS_MG = NVL(#{bassMg},BASS_MG),
+		        ESTBS_CN = NVL(#{estbsCn},ESTBS_CN),
+		        USE_AT = NVL(#{useAt},'N'),
+		        UPDT_ID = NVL(#{updtId},UPDT_ID),
+		        UPDT_DT = SYSDATE,
+		        AR_MVL = NVL(#{arMvl},AR_MVL),
+				AR_MNVL = NVL(#{arMnvl},AR_MNVL),
+				HG_MVL = NVL(#{hgMvl},HG_MVL),
+				HG_MNVL = NVL(#{hgMnvl},HG_MNVL),
+				SIZE_UPDT_AT = NVL(#{sizeUpdtAt},'N')
+			WHERE MNNO = #{mnno}
+ 		]]>
+ 	</update>
+
+ 	<select id="findMngrMainEstbsDetailByMnno" parameterType="zvl"  resultType="zvl" >
+		<![CDATA[
+			/* findMngrMainEstbsDetailByMnno */
+			SELECT
+				b.SN,
+		        b.MNNO,
+		        b.ESTBS_NM,
+		        b.BBS_ID,
+		        b.TABLE_NM,
+		        b.URLAD,
+		        b.POPUP_AT,
+		        b.ATCH_FILE_ID,
+		        b.FILE_FIELD_NM,
+		        b.FIELD_ORDR,
+		        b.ICON_NM,
+		        b.SE_CD,
+		        b.USER_ID,
+		        b.AR_MVL,
+				b.AR_MNVL,
+				b.HG_MVL,
+				b.HG_MNVL,
+				b.SIZE_UPDT_AT
+			  FROM
+			       (SELECT 1 AS FIELD_ORDR
+		              union all SELECT 2 AS FIELD_ORDR
+		              union all SELECT 3 AS FIELD_ORDR
+		              union all SELECT 4 AS FIELD_ORDR
+		              union all SELECT 5 AS FIELD_ORDR
+			       ) a
+			   LEFT JOIN
+			       (SELECT b.SN,
+			              b.MNNO,
+			              b.ESTBS_NM,
+			              b.BBS_ID,
+			              (SELECT TABLE_NM FROM TB_BBS_MASTR WHERE BBS_ID = b.BBS_ID) AS TABLE_NM,
+			              b.URLAD,
+			              b.POPUP_AT,
+			              b.ATCH_FILE_ID,
+			              b.FILE_FIELD_NM,
+			              b.FIELD_ORDR,
+			              b.ICON_NM,
+			              c.SE_CD,
+			              c.USER_ID,
+			              c.AR_MVL,
+						  c.AR_MNVL,
+						  c.HG_MVL,
+						  c.HG_MNVL,
+						  c.SIZE_UPDT_AT
+			         FROM TC_MNGR_MAIN_ESTBS_DETAIL b LEFT JOIN TC_MNGR_MAIN_ESTBS c ON b.MNNO = c.MNNO
+			        WHERE c.SE_CD = #{seCd} AND c.USER_ID = #{userId}
+			       ) b
+			       ON a.FIELD_ORDR = b.FIELD_ORDR
+			ORDER BY a.FIELD_ORDR
+		]]>
+	</select>
+
+	<insert id="saveMngrMainEstbsDetail" parameterType="zvl" >
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="sn">
+			SELECT NVL(MAX(MNNO),0)+1 FROM TC_MNGR_MAIN_ESTBS_DETAIL
+		</selectKey>
+		<![CDATA[
+			/*  saveMngrMainEstbsDetail */
+			INSERT INTO TC_MNGR_MAIN_ESTBS_DETAIL (
+	           SN,
+	           MNNO,
+	           ESTBS_NM,
+	           BBS_ID,
+	           URLAD,
+	           POPUP_AT,
+	           ATCH_FILE_ID,
+	           FILE_FIELD_NM,
+	           FIELD_ORDR,
+	           ICON_NM
+			)
+			VALUES (
+				#{sn},
+				#{mnno},
+				#{estbsNm},
+				#{bbsId},
+				#{urlad},
+				NVL(#{popupAt},''),
+				#{atchFileId},
+				#{fileFieldNm},
+				#{fieldOrdr},
+				#{iconNm}
+			)
+		]]>
+	</insert>
+
+	<delete id="deleteMngrMainEstbsDetailByMnno" parameterType="string">
+		<![CDATA[
+			/*  deleteMngrMainEstbsDetailByMnno */
+			DELETE TC_MNGR_MAIN_ESTBS_DETAIL WHERE MNNO = #{mnno}
+		]]>
+	</delete>
+
+	<select id="countBbsMastrCheckIdByBbsId" parameterType="zvl" resultType="long" >
+		<![CDATA[
+		/*countBbsMastrCheckIdByBbsId*/
+			SELECT
+				COUNT(a.BBS_ID)
+			FROM
+				TB_BBS_MASTR A
+			WHERE  DELETE_CD = '0' AND USE_AT ='Y' AND BBS_ID = #{bbsId}
+		]]>
+	</select>
+
+	<insert id="saveMngrMainLcEstbs" parameterType="zvl" >
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="sn">
+			SELECT NVL(MAX(SN),0)+1 FROM TC_MNGR_MAIN_LC_ESTBS
+		</selectKey>
+		<![CDATA[
+			/*  saveMngrMainLcEstbs */
+			INSERT INTO TC_MNGR_MAIN_LC_ESTBS (
+				SN,
+				MNNO,
+				LFT_CRDNT,
+				UPEND_CRDNT,
+				AR_VALUE,
+				HG_VALUE,
+				USER_ID,
+				UPDT_DT
+			)
+			VALUES (
+				#{sn},
+				#{mnno},
+				#{lftCrdnt},
+				#{upendCrdnt},
+				#{arValue},
+				#{hgValue},
+				#{userId},
+				SYSDATE
+			)
+		]]>
+	</insert>
+
+	<select id="findMngrMainLcEstbsByUserId" parameterType="zvl" resultType="zvl" >
+		<![CDATA[
+		/*findMngrMainLcEstbsByUserId*/
+			SELECT a.MNNO,
+			       a.SE_CD,
+			       (SELECT CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'MAIN_ESTBS_CD' AND a.SE_CD = CD) AS CD_NM,
+			       a.BASS_MG,
+			       a.ESTBS_CN,
+			       a.USE_AT,
+			       a.REGIST_ID,
+			       a.REGIST_DT,
+			       a.UPDT_ID,
+			       a.UPDT_DT,
+			       a.USER_ID,
+			       a.AR_MVL,
+				   a.AR_MNVL,
+				   a.HG_MVL,
+				   a.HG_MNVL,
+				   a.SIZE_UPDT_AT,
+			       b.SN,
+			       b.LFT_CRDNT,
+			       b.UPEND_CRDNT,
+			       b.AR_VALUE,
+			       b.HG_VALUE,
+			       CAST(a.se_Cd AS UNSIGNED)  AS ordr
+			  FROM TC_MNGR_MAIN_ESTBS a
+			   LEFT JOIN TC_MNGR_MAIN_LC_ESTBS b
+			       ON a.USER_ID = b.USER_ID
+			       AND a.MNNO = b.MNNO
+			 WHERE a.USE_AT = 'Y'
+			       AND a.USER_ID = #{userId}
+
+			       ORDER BY ORDR
+		]]>
+	</select>
+
+	<delete id="deleteMngrMainLcEstbsByUserId" parameterType="string">
+		<![CDATA[
+			/*  deleteMngrMainLcEstbsByUserId */
+			DELETE FROM TC_MNGR_MAIN_LC_ESTBS WHERE USER_ID = #{userId}
+		]]>
+	</delete>
+
+	<select id="findAllMngrMainRecentNtt" parameterType="zvl" resultType="zvl" >
+		/* findAllMngrMainRecentNtt */
+		SELECT DISTINCT NTT_ID, BBS_ID, NTT_SJ, REGIST_DT, MENU_LINK, MENU_NO, BBS_NM FROM (
+       <foreach item="item" index="index" collection="tableNmData" separator="UNION ALL">
+       		<![CDATA[
+				SELECT /*+ INDEX(A I_TB_BBS_ESTN_01) */
+					NTT_ID,
+					BBS_ID,
+					NTT_SJ,
+					REGIST_DT,
+					(SELECT MENU_LINK FROM TC_MENU_INFO WHERE USE_AT = 'Y' AND SITE_ID = 'bos' AND BBS_ID = A.BBS_ID AND ROWNUM = 1) AS MENU_LINK,
+					(SELECT MENU_NO FROM TC_MENU_INFO WHERE USE_AT = 'Y' AND SITE_ID = 'bos' AND BBS_ID = A.BBS_ID AND ROWNUM = 1) AS MENU_NO,
+					(SELECT BBS_NM FROM TB_BBS_MASTR WHERE USE_AT = 'Y' AND DELETE_CD = '0' AND BBS_ID = A.BBS_ID ) AS BBS_NM
+				  FROM TB_BBS_ESTN a
+				 WHERE BBS_ID IN
+			]]>
+			<foreach item="bbsId" index="index" collection="bbsIdData" open="(" close=")" separator=",">
+				/* ${index} */
+				#{bbsId}
+			</foreach>
+			<![CDATA[
+				       AND DELETE_CD = '0'
+				       AND USE_AT = 'Y'
+				       AND ROWNUM <= 10
+			]]>
+		</foreach>
+		<![CDATA[ ) WHERE ROWNUM <= 10 ORDER BY REGIST_DT DESC  ]]>
+	</select>
+
+	<select id="findAllMngrMainBbsMastr" resultType="zvl" >
+		<![CDATA[
+			/* findAllMngrMainBbsMastr */
+				SELECT * FROM (
+					SELECT
+						A.BBS_ID, A.BBS_TY_CD, B.CD_NM as BBS_TY_NM, A.BBS_DC,
+						A.BBS_ATTRB_CD, C.ATTRB_NM AS BBS_ATTRB_NM, A.BBS_NM,
+						A.TMPLAT_ID, D.TMPLAT_NM, D.TMPLAT_COURS, A.FILE_ATCH_POSBL_AT,
+						A.REPLY_POSBL_AT,
+						A.USE_AT, A.REGIST_DT,
+						A.ADIT_CNTNTS_CN,
+						A.TABLE_NM, A.PREV_NEXT_POSBL_AT, A.CM_POSBL_AT,
+						A.PAGE_UNIT, A.PAGE_SIZE,
+						(SELECT MENU_NO FROM TC_MENU_INFO WHERE BBS_ID=A.BBS_ID  AND SITE_ID='bos' AND A.USE_AT = 'Y' AND ROWNUM=1) AS MENU_NO
+					FROM
+						TB_BBS_MASTR A
+					LEFT OUTER JOIN
+						(SELECT CD_ID, CD, CD_NM FROM TC_CMMN_CD_DETAIL WHERE CD_ID = 'COM004' AND USE_AT='Y') B
+						ON A.BBS_TY_CD = B.CD
+					LEFT OUTER JOIN TB_ATTRB_INFO C
+						ON A.BBS_ATTRB_CD = C.ATTRB_CD
+					LEFT OUTER JOIN TC_TMPLAT_INFO D
+						ON A.TMPLAT_ID = D.TMPLAT_ID
+					WHERE A.USE_AT = 'Y'
+				) C WHERE MENU_NO IS NOT NULL
+				AND ROWNUM <= 10
+				ORDER BY BBS_ID DESC
+		]]>
+
+	</select>
+
+	<select id="countMngrMainMber" resultType="zvl" >
+		<![CDATA[
+			/* countMngrMainMber */
+			SELECT
+				b.TOTAL_CNT AS cnt, b.ORDR
+			  FROM
+			       (SELECT LEVEL AS ORDR
+			         FROM DUAL CONNECT BY LEVEL <= 2
+			       ) a
+			   LEFT JOIN
+			       (SELECT COUNT(USER_ID) AS TOTAL_CNT, '1' AS ORDR
+                		FROM TM_USER_INFO
+               			WHERE DELETE_CD = '0' AND USE_AT = 'Y'
+
+               		UNION ALL
+
+             		SELECT COUNT(REGIST_DT) AS cnt, '2' AS ORDR
+                		FROM TM_USER_INFO a
+               			WHERE DELETE_CD = '0' AND USE_AT = 'Y' AND TO_CHAR(REGIST_DT,'yyyy-mm-dd') = TO_CHAR(SYSDATE-1,'yyyy-mm-dd')
+			       ) b
+			       ON a.ORDR = b.ORDR
+			ORDER BY a.ORDR
+		]]>
+	</select>
+
+
+</mapper>

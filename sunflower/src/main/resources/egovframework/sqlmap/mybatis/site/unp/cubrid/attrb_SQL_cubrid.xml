@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.service.bbs.AttrbDAO">
+
+	<select id="findAllFieldInfoDesc" parameterType="zvl" resultType="zvl">
+        SELECT
+				 NVL(b.FIELD_ID , 0 ) as FIELD_ID,
+		         a.fieldName AS FIELD_NM,
+		         NVL(b.FIELD_DC,a.fieldText) AS FIELD_DC,
+		         b.FIELD_TY_CD,
+		         b.LIST_USE_AT
+		  FROM
+		       (SELECT   distinct
+			       cc.COLUMN_NAME      AS fieldName,
+			       cc.COMMENTS    AS fieldText
+				FROM ALL_COL_COMMENTS cc
+				WHERE LOWER(cc.TABLE_NAME) = LOWER(#{tableName}) AND cc.COMMENTS IS NOT null
+		       ) a
+		   LEFT OUTER JOIN
+		       (SELECT *
+		           FROM TB_FIELD_INFO
+		          WHERE ATTRB_CD=#{attrbCd}
+		         ) b
+		       ON LOWER(REPLACE(a.fieldName,'_','')) = LOWER(b.FIELD_IEM_NM)
+		ORDER BY  fieldName ASC
+	</select>
+
+	<select id="findAllAttrbInfo" resultType="zvl">
+		  SELECT
+		       a.ATTRB_CD,
+		       a.ATTRB_NM,
+			   a.ATTRB_DC,
+		       a.REGIST_DT,
+		       a.TABLE_NM
+		  FROM TB_ATTRB_INFO a
+		  ORDER BY a.REGIST_DT DESC
+	</select>
+
+	<select id="findOneAttrbInfoByAttrbCd" parameterType="string" resultType="zvl">
+		  SELECT
+		       a.ATTRB_CD,
+		       a.ATTRB_NM,
+			   a.ATTRB_DC,
+		       a.REGIST_DT,
+		       a.TABLE_NM
+		  FROM TB_ATTRB_INFO a
+		  WHERE a.ATTRB_CD = #{attrbCd}
+	</select>
+
+	<select id="findAllFieldInfo" parameterType="zvl" resultType="zvl">
+		SELECT a.FIELD_ID,
+		       a.ATTRB_CD,
+		       a.ATTRB_TY_CD,
+		       a.FIELD_IEM_NM,
+		       a.FIELD_TY_CD,
+		       a.FIELD_DC,
+		       a.LIST_USE_AT
+		  FROM TB_FIELD_INFO a
+		  WHERE a.ATTRB_CD = #{attrbCd}
+		<if test="attrbTyCd != null and attrbTyCd != ''">
+			<![CDATA[	AND ATTRB_TY_CD = #{attrbTyCd} 		]]>
+		</if>
+		<if test="listUseAt != null and listUseAt != ''">
+			<![CDATA[	AND LIST_USE_AT = #{listUseAt} 		]]>
+		</if>
+		  ORDER BY a.FIELD_ORDR ASC
+	</select>
+
+	<insert id="saveAttrbInfo" parameterType="zvl" >
+		<![CDATA[
+			INSERT INTO TB_ATTRB_INFO (
+				ATTRB_CD,
+				ATTRB_NM,
+				ATTRB_DC,
+				REGIST_DT,
+				TABLE_NM
+			)
+			VALUES (
+				#{attrbCd},
+				#{attrbNm},
+				#{attrbDc},
+				SYS_DATETIME,
+				#{tableNm}
+			)
+		]]>
+	</insert>
+
+	<update id="modifyAttrbInfo" parameterType="zvl" >
+		<![CDATA[
+			UPDATE TB_ATTRB_INFO
+			SET ATTRB_NM = #{attrbNm},
+			    ATTRB_DC = #{attrbDc},
+			    TABLE_NM = #{tableNm}
+			WHERE ATTRB_CD = #{attrbCd}
+		]]>
+	</update>
+
+	<select id="countFieldInfoByAttrbCd" parameterType="zvl" resultType="long">
+		<![CDATA[
+			SELECT COUNT(b.ATTRB_CD)
+			FROM TB_BBS_MASTR A
+			LEFT JOIN TB_ATTRB_INFO B ON a.BBS_ATTRB_CD = b.ATTRB_CD
+			WHERE b.ATTRB_CD = #{attrbCd} AND 1 = 1 GROUP BY a.BBS_ATTRB_CD ORDER BY COUNT(b.ATTRB_CD)
+		]]>
+	</select>
+
+	<delete id="deleteAttrbInfoByAttrbCd" parameterType="string" >
+		<![CDATA[
+			DELETE FROM TB_ATTRB_INFO
+			WHERE ATTRB_CD = #{attrbCd}
+		]]>
+	</delete>
+
+	<insert id="saveFieldInfo" parameterType="zvl" >
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="fieldId">
+			SELECT NVL(Max(FIELD_ID),0)+1 FROM TB_FIELD_INFO
+		</selectKey>
+		<![CDATA[
+			INSERT INTO TB_FIELD_INFO (
+				FIELD_ID,
+				ATTRB_CD,
+				ATTRB_TY_CD,
+				FIELD_IEM_NM,
+				FIELD_TY_CD,
+				FIELD_DC,
+				FIELD_ORDR,
+				LIST_USE_AT
+			)
+			VALUES (
+				#{fieldId},
+				#{attrbCd},
+				#{attrbTyCd},
+				#{fieldIemNm},
+				#{fieldTyCd},
+				#{fieldDc},
+				#{fieldOrdr},
+				NVL(#{listUseAt},'N')
+			)
+		]]>
+	</insert>
+
+	<delete id="deleteFieldInfo" parameterType="zvl" >
+		<![CDATA[
+			DELETE FROM TB_FIELD_INFO
+			WHERE ATTRB_CD = #{attrbCd}
+			AND ATTRB_TY_CD = #{attrbTyCd}
+		]]>
+	</delete>
+
+	<delete id="deleteFieldInfoByAttrbCd" parameterType="string" >
+		<![CDATA[
+			DELETE FROM TB_FIELD_INFO
+			WHERE ATTRB_CD = #{attrbCd}
+		]]>
+	</delete>
+
+	<select id="findAttrbTableInfo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				a.TABLE_COMMENT,
+			    a.TABLE_NAME,
+			    b.COLUMN_NAME,
+			    b.COLUMN_COMMENT ,
+			    b.COLUMN_TYPE ,
+			    b.CHARACTER_MAXIMUM_LENGTH,
+          		CASE WHEN b.COLUMN_KEY = 'PRI' THEN 'PK' ELSE NULL END AS pk,
+          		CASE WHEN b.COLUMN_KEY = 'MUL' THEN 'FK' ELSE NULL END AS fk,
+				CASE WHEN b.IS_NULLABLE = 'NO' THEN 'Not null' END AS IS_NULLABLE
+			FROM INFORMATION_SCHEMA.TABLES a, INFORMATION_SCHEMA.COLUMNS b, TB_ATTRB_INFO c
+			WHERE a.TABLE_NAME=b.TABLE_NAME
+      		AND a.TABLE_SCHEMA = b.TABLE_SCHEMA
+     		AND b.TABLE_SCHEMA = DATABASE()
+			AND c.TABLE_NM = a.TABLE_NAME
+			AND c.ATTRB_CD = #{attrbCd}
+			ORDER BY a.TABLE_NAME, b.COLUMN_NAME ASC
+		]]>
+	</select>
+
+	<select id="findTableInfo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				a.TABLE_COMMENT,
+			    a.TABLE_NAME,
+			    b.COLUMN_NAME,
+			    b.COLUMN_COMMENT ,
+			    b.COLUMN_TYPE ,
+			    b.CHARACTER_MAXIMUM_LENGTH,
+          		CASE WHEN b.COLUMN_KEY = 'PRI' THEN 'PK' ELSE NULL END AS pk,
+          		CASE WHEN b.COLUMN_KEY = 'MUL' THEN 'FK' ELSE NULL END AS fk,
+				CASE WHEN b.IS_NULLABLE = 'NO' THEN 'Not null END AS IS_NULLABLE
+			FROM INFORMATION_SCHEMA.TABLES a, INFORMATION_SCHEMA.COLUMNS b
+			WHERE a.TABLE_NAME=b.TABLE_NAME
+      		AND a.TABLE_SCHEMA = b.TABLE_SCHEMA
+     		AND b.TABLE_SCHEMA = DATABASE()
+			AND b.TABLE_NAME = #{tableName}
+			ORDER BY a.TABLE_NAME, b.COLUMN_NAME ASC
+		]]>
+	</select>
+
+	<select id="findAllTable" resultType="string">
+		<![CDATA[
+		
+			SELECT CLASS_NAME 
+				FROM DB_CLASS 
+				WHERE  is_system_class = 'NO'
+				ORDER BY CLASS_NAME
+		]]>
+	</select>
+
+</mapper>

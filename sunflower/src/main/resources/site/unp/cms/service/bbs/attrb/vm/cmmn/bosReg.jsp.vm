@@ -1,0 +1,253 @@
+#set( $n = '
+')
+#set( $attrName = ${entity.name.replaceAll('[T|t][c|m|b]','')} )
+#set( $pkAttrName = ${entity.keyAttributes[0].name} )
+#set( $pkDatabaseName = ${entity.keyAttributes[0].databaseName} )
+#set( $hasClob = 'N' )
+#foreach( $field in $entity.attributes)
+#if(${field.type.toLowerCase()} == 'clob')
+#set( $hasClob = 'Y' )
+#end
+#end
+#set( $pkDatabaseName = ${entity.keyAttributes[0].databaseName} )
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://bibeault.org/tld/ccc" prefix="ccc" %>
+
+<c:if test="${_}{empty result}">
+	<c:set var="action" value="/[siteId]/[groupId]/$attrName/insert.do" />
+</c:if>
+<c:if test="${_}{not empty result}">
+	<c:set var="action" value="/[siteId]/[groupId]/$attrName/update.do" />
+</c:if>
+
+<sec:authorize ifAnyGranted="ROLE_SUPER">
+	<c:set var="roleSuper" value="Y" />
+</sec:authorize>
+<!-- <script src="/crosseditor/js/namo_scripteditor.js"></script> -->
+<script src="/smarteditor/js/HuskyEZCreator.js"></script>
+<script>
+
+function checkForm() {
+	var form = $("#board")[0];
+	var v = new MiyaValidator(form);
+
+#foreach( $field in $entity.attributes)
+#if($field.readUseAt == 'Y' && ${field.type.toLowerCase()} != 'date')
+    v.add("${field.name}", {
+        required: true
+    });
+#end
+#if(${field.name.indexOf('telno')} > -1)
+    v.add("${field.name}", {
+        required: true
+    });
+	v.add("${field.name}1", {
+		required: true,
+		span: 3,
+		glue: "-",
+		option: "phone"
+	});
+#end
+#if(${field.name.indexOf('cpno')} > -1)
+    v.add("${field.name}", {
+        required: true
+    });
+	v.add("${field.name}1", {
+		required: true,
+		span: 3,
+		glue: "-",
+		option: "handphone"
+	});
+#end
+#end
+
+	var result = v.validate();
+	if (!result) {
+		alert(v.getErrorMessage());
+		v.getErrorElement().focus();
+		return;
+	}
+
+#foreach( $field in $entity.attributes)
+#if($field.readUseAt == 'Y')
+#if(${field.type.toLowerCase()} == 'clob')
+	if (oEditors.getById["${field.name}"].getIR() == "<p><br></p>") {
+		alert('내용을 입력해 주세요.');
+		oEditors.getById["${field.name}"].exec("FOCUS", []);
+	    return;
+	}
+
+	document.getElementById("${field.name}").value = oEditors.getById["${field.name}"].getIR();
+#end
+#end
+#end
+	if (!confirm('${_}{empty result ? "등록" : "수정"}하시겠습니까?')) {
+		return;
+	}
+
+	form.submit();
+}
+
+</script>
+
+<form id="board" name="board" method="post" enctype="multipart/form-data" action="${_}{action}">
+	<input type="hidden" name="pageQueryString" value="${_}{pageQueryString}" />
+	<input type="hidden" name="$pkAttrName" value="${_}{empty result.$pkAttrName ? 0 : result.$pkAttrName }" />
+	<input type="hidden" id="atchFileId0" name="atchFileId" value="${_}{result.atchFileId}">
+
+	<div class="bdView">
+		<table>
+			<caption>${_}{masterVO.bbsNm} - ${_}{empty result ? '쓰기' : '수정'}</caption>
+			<tbody>
+#foreach( $field in $entity.attributes)
+#if($field.readUseAt == 'Y')
+#if(${field.type.toLowerCase()} == 'clob')
+				<tr>
+					<th scope="row" class="con_tit">내용<span class="req"><span class="sr-only">필수입력</span></span></th>
+					<td class="outputEditor">
+						<textarea id="${field.name}" name="${field.name}" cols="150" rows="30" style="display: none;" class="textarea" title="내용">${_}{result.${field.name}}</textarea>
+						<script>
+						/* 네이버 스마트 에디터  */
+						// 추가 글꼴 목록
+						//var aAdditionalFontSet = [["MS UI Gothic", "MS UI Gothic"], ["Comic Sans MS", "Comic Sans MS"],["TEST","TEST"]];
+						var oEditors = [];
+						nhn.husky.EZCreator.createInIFrame({
+							oAppRef: oEditors,
+							elPlaceHolder: "${field.name}",
+							sSkinURI: "/smarteditor/SmartEditor2Skin.html",
+							htParams : {
+								bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+								bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+								bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+								//aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+								fOnBeforeUnload : function(){
+									//alert("완료!");
+								}
+							}, //boolean
+							fOnAppLoad : function(){
+								//예제 코드
+								//oEditors.getById["${field.name}"].exec("PASTE_HTML", "");
+							},
+							fCreator: "createSEditor2"
+						});
+						</script>
+					</td>
+				</tr>
+#elseif(${field.fieldTyCd.toLowerCase()} == 'text')
+				<tr>
+					<th scope="row"><label for="${field.name}">${field.fieldDc}<span class="req"><span class="sr-only">필수입력</span></span></label></th>
+					<td><input type="text" name="${field.name}" id="${field.name}" class="w100p" value="${_}{result.${field.name}}" /></td>
+				</tr>
+#elseif(${field.fieldTyCd.toLowerCase()} == 'radio')
+				<tr>
+					<th scope="row">${field.fieldDc}</th>
+					<td>
+						<label for="${field.name}">
+						<c:forEach var="code" items="${_}{${field.name}CodeList }" varStatus="status">
+							<input type="radio" name="${field.name}" id="${field.name}${_}{status.count}" value="${_}{code.cd }" <c:if test="${_}{result.${field.name} eq '${_}{code.cd }'}"> checked</c:if> /${_}{code.cdNm }
+						</c:forEach>
+						</label>
+					</td>
+				</tr>
+#elseif(${field.fieldTyCd.toLowerCase()} == 'checkbox')
+				<tr>
+					<th scope="row">${field.fieldDc}</th>
+					<td>
+						<label for="${field.name}">
+						<c:forEach var="code" items="${_}{${field.name}CodeList }" varStatus="status">
+							<input type="checkbox" name="${field.name}" id="${field.name}${_}{status.count}" value="${_}{code.cd }" <c:if test="${_}{result.${field.name} eq '${_}{code.cd }'}"> checked</c:if> /${_}{code.cdNm }
+						</c:forEach>
+						</label>
+					</td>
+				</tr>
+#elseif(${field.fieldTyCd.toLowerCase()} == 'select')
+				<tr>
+					<th scope="row"><label for="${field.name}">${field.fieldDc}</label></th>
+					<td>
+						<select id="${field.name}" name="${field.name}" class="input_select" title="${field.fieldDc}선택">
+						    <option>${field.fieldDc}선택</option>
+						<c:forEach var="code" items="${_}{${field.name}CodeList }">
+							<option value="${_}{code.cd }" <c:if test="${_}{param.${field.name} eq code.cd}">selected="selected"</c:if>>${_}{code.cdNm }</option>
+						</c:forEach>
+						</select>
+					</td>
+				</tr>
+#elseif(${field.name} == 'atchFileId')
+				<c:if test="${_}{not empty fileList}">
+					<tr>
+						<th scope="row">첨부된 첨부파일</th>
+						<td><jsp:include page="/WEB-INF/jsp/bos/share/incFileList.jsp" flush="true" /></td>
+					</tr>
+				</c:if>
+				<tr>
+					<th scope="row">첨부파일</th>
+					<td><jsp:include page="/WEB-INF/jsp/bos/share/incFileSubmit.jsp" flush="true" /></td>
+				</tr>
+#end
+#end
+#if(${field.name.indexOf('telno')} > -1)
+				<tr>
+					<th scope="row"><span class="req"><span class="sr-only">필수입력</span></span><label for="${field.name}1">${field.fieldDc}</label></th>
+					<td>
+						<c:set var="data" value="${_}{fn:split(result.${field.name}, '-')}" />
+						<select name="${field.name}1" title="${field.fieldDc} 앞 자리">
+							<option value="" selected="">선택</option>
+						<c:forEach var="code" items="${_}{telno1CdCodeList }">
+							<option value="${_}{code.cd }" ${_}{data[0] eq code.cd ? 'selected="selected"' : ''}>${_}{code.cdNm }</option>
+						</c:forEach>
+						</select> - 
+						<input type="text" name="${field.name}2" value="${_}{data[1]}" class="tel" title="${field.fieldDc} 중간 3~4자리" maxlength="4" /> - 
+						<input type="text" name="${field.name}3" value="${_}{data[2]}" class="tel" title="${field.fieldDc} 끝 4자리" maxlength="4" />
+					</td>
+				</tr>
+#end
+#if(${field.name.indexOf('cpno')} > -1)
+				<tr>
+					<th scope="row"><span class="req"><span class="sr-only">필수입력</span></span><label for="${field.name}1">${field.name}</label></th>
+					<td>
+						<c:set var="data" value="${_}{fn:split(result.${field.name}, '-')}" />
+						<select name="${field.name}1" title="${field.fieldDc} 앞 자리">
+							<option value="" selected="">선택</option>
+						<c:forEach var="code" items="${_}{cpno1CdCodeList }">
+							<option value="${_}{code.cd }" ${_}{data[0] eq code.cd ? 'selected="selected"' : ''}>${_}{code.cdNm }</option>
+						</c:forEach>
+						</select> - 
+						<input type="text" name="${field.name}2" value="${_}{data[1]}" class="tel" title="${field.fieldDc} 중간 3~4자리" maxlength="4" /> - 
+						<input type="text" name="${field.name}3" value="${_}{data[2]}" class="tel" title="${field.fieldDc} 끝 4자리" maxlength="4" />
+					</td>
+				</tr>
+#end
+#end
+			<c:if test="${_}{not empty result}">
+				<tr>
+					<th scope="row">등록일</th>
+					<td><fmt:formatDate value="${_}{result.registDt}" pattern="yyyy-MM-dd HH:mm"/></td>
+				</tr>
+				<tr>
+					<th scope="row">조회수</th>
+					<td>${_}{result.inqireCo}</td>
+				</tr>
+			</c:if>
+
+			</tbody>
+		</table>
+	</div>
+</form>
+
+<div class="btnSet">
+	<c:choose>
+		<c:when test="${_}{empty result}" >
+			<button type="button" onclick="checkForm();" class="b-reg">등록</button>
+		</c:when>
+		<c:otherwise>
+			<button type="button" class="b-reg" onclick="checkForm();">수정</button>
+		</c:otherwise>
+	</c:choose>
+	<c:url var="url" value="/[siteId]/[groupId]/$attrName/list.do?${_}{pageQueryString}"/>
+	<a class="b-list" href="${_}{url}">목록</a>
+</div>

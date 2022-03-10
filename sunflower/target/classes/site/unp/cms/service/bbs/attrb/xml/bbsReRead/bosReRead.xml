@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+<![CDATA[
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://bibeault.org/tld/ccc" prefix="ccc" %>
+
+<ccc:constantsMap className="kr.co.unp.bbs.vo.SearchVO" var="SearchVO"/>
+
+<script src="/static/jslibrary/miya_validator.js"></script>
+<script>
+
+	$(function() {
+		var nttType = "${result.nttType}";
+		if( nttType == '${BoardVO.BASIC_NTT_TYPE}' )
+	    {
+			$("#ntcrDeTr").hide();
+	    }
+	});
+
+	function checkForm2() {
+		var form = document.replyFrm;
+		var v = new MiyaValidator(form);
+	    v.add("nttSj", {
+	        required: true
+	    });
+	    v.add("ntcrNm", {
+	        required: true
+	    });
+	    v.add("nttCn", {
+	        required: true
+	    });
+		var result = v.validate();
+		if (!result) {
+			alert(v.getErrorMessage());
+			v.getErrorElement().focus();
+			return;
+		}
+
+		if (confirm('등록하시겠습니까?')) {
+			form.submit();
+		}
+	}
+
+	function del(){
+		var form = $("#board")[0];
+		form.action = "/bos/bbs/${paramVO.bbsId}/delete.do";
+		form.submit();
+	}
+</script>
+
+	<form id="board" name="board" method="post" enctype="multipart/form-data" action="${action}">
+		<input type="hidden" name="pageQueryString" value="${pageQueryString}"/>
+		<input type="hidden" name="nttId" value="${empty result.nttId ? 0 : result.nttId }" />
+		<input type="hidden" name="bbsId" value="${masterVO.bbsId}" />
+		<input type="hidden" id="atchFileId" name="atchFileId" value="${result.atchFileId}">
+
+		<div class="bdView">
+			<table>
+				<caption>${masterVO.bbsNm} - 쓰기</caption>
+				<colgroup>
+					<col style="width:15%"/>
+					<col />
+				</colgroup>
+				<tbody>
+	]]>
+		<forEach>
+			<isEqual value="default">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							${result.[fieldName]}
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="default-checkbox">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							<c:if test="${result.[fieldName] eq '01'}">옵션</c:if>
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="default-radio">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							<c:if test="${result.[fieldName] eq '01'}">옵션</c:if>
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="default-select">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							<c:if test="${result.[fieldName] eq '01'}">옵션</c:if>
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="nttCn">
+			<![CDATA[
+					<tr>
+						<th scope="row" class="con_tit">내용</th>
+						<td class="outputEditor">
+							<c:choose>
+								<c:when test="${result.htmlYn=='Y'}">${result.nttCn}</c:when>
+								<c:otherwise>
+									<util:out escapeXml="false">${result.nttCn}</util:out>
+								</c:otherwise>
+							</c:choose>
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="secret">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							<c:if test="${result.secret eq 'N'}"> 공개</c:if>
+							<c:if test="${result.secret eq 'Y'}"> 비공개</c:if>
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="replyAt">
+			<![CDATA[
+					<tr>
+						<th scope="row"><label for="replyAt">답변상태</label></th>
+						<td>
+							<c:if test="${result.replyAt eq PetitionStatus.NON_PROCESS}">미처리</c:if>
+							<c:if test="${result.replyAt eq PetitionStatus.ANSWERING}">중간답변</c:if>
+							<c:if test="${result.replyAt eq PetitionStatus.COMPLETE_ANSWER}">완료</c:if>
+							<c:if test="${result.replyAt eq PetitionStatus.NON_ANSWERING}">미답변</c:if>
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="frstRegisterPnttm">
+			<![CDATA[
+				<c:if test="${not empty result}">
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td><fmt:formatDate value="${result.regDate}" pattern="yyyy-MM-dd kk:mm:ss"/></td>
+					</tr>
+				</c:if>
+			]]>
+			</isEqual>
+			<isEqual value="inqireCo">
+			<![CDATA[
+				<c:if test="${not empty result}">
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>${result.inqireCo}</td>
+					</tr>
+				</c:if>
+			]]>
+			</isEqual>
+			<isEqual value="atchFileId">
+			<![CDATA[
+			<c:if test="${masterVO.fileAtchPosblAt eq 'Y'}">
+				<tr>
+					<th scope="row">첨부파일</th>
+					<td>
+						<jsp:include page="/WEB-INF/jsp/bos/share/EgovFileList.jsp" flush="true" />
+					</td>
+				</tr>
+				<tr>
+					<th scope="row">첨부파일</th>
+					<td>
+						<jsp:include page="/WEB-INF/jsp/bos/share/FileSubmit.jsp" flush="true" />
+					</td>
+				</tr>
+			</c:if>
+			]]>
+			</isEqual>
+			<isEqual value="ntcrTel">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							${result.[fieldName]}
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="ntcrMobile">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							${result.[fieldName]}
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="ntcrEmail">
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							${result.[fieldName]}
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+			<isEqual value="ntcrZipcode">
+			<![CDATA[
+			<![CDATA[
+					<tr>
+						<th scope="row">[fieldText]</th>
+						<td>
+							${result.[fieldName]}
+						</td>
+					</tr>
+			]]>
+			</isEqual>
+		</forEach>
+	<![CDATA[
+				</tbody>
+			</table>
+		</div>
+	</form>
+
+
+	<div class="btnSet">
+		<a class="btn btn-default btn_edit" href="/bos/bbs/${paramVO.bbsId}/forUpdate.do?${pageQueryString}&amp;nttId=${result.nttId}"><span>수정</span></a>
+		<a class="btn btn-default btn_del" href="javascript:del();" onclick="return confirm('정말로 삭제하시겠습니까?');"><span>삭제</span></a>
+		<c:url var="url" value="/bos/bbs/${paramVO.bbsId}/list.do?${pageQueryString}" />
+		<a class="btn btn-default btn_list" href="${url}"><span>목록</span></a>
+	</div>
+
+<c:if test="${masterVO.replyPosblAt eq 'Y' and result.parnts eq 0}">
+	<form id="replyFrm" name="replyFrm" method="post" enctype="multipart/form-data" action="/bos/bbs/${paramVO.bbsId}/insertRe.do" >
+		<input type="hidden" name="pageQueryString" value="${pageQueryString}"/>
+		<input type="hidden" name="nttId" value="${result.nttId}" />
+		<input type="hidden" name="parnts" value="${result.nttId}" />
+		<input type="hidden" name="bbsId" value="${masterVO.bbsId}" />
+		<input type="hidden" id="atchFileId" name="atchFileId" value="">
+		<div class="bdView">
+			<table>
+				 <caption class="tit">답변쓰기</caption>
+				<colgroup>
+					<col width="15%"/>
+					<col width="85%"/>
+				</colgroup>
+				<tbody>
+					<tr>
+						<th scope="row"><label for="nttSj">제목</label></th>
+						<td>
+							<input type="text" name="nttSj" id="subject" class="input_txt wi100per" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row"><label for="ntcrNm">작성자</label></th>
+						<td>
+							<input type="text" name="ntcrNm" id="ntcrNm" class="input_txt name" />
+						</td>
+					</tr>
+					<tr>
+						<th scope="row" class="con_tit"><label for="nttCn1">답변내용</label></th>
+						<td class="outputEditor">
+							<textarea name="nttCn" id="nttCn1" cols="50" rows="10" style="width:90%;"></textarea>
+							<input type="hidden" name="htmlYn" value="N" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<div class="btnSet">
+			<a class="btn btn-default btn_rereg" href="javascript:checkForm2();"><span>답변등록</span></a>
+		</div>
+	</form>
+
+
+	<div class="bdList">
+		<table>
+			 <caption class="tit">답변목록</caption>
+			<colgroup>
+				<col style="width:8%" />
+				<col />
+				<col style="width:20%" />
+				<col style="width:10%" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col">번호</th>
+					<th scope="col">제목</th>
+					<th scope="col">작성자</th>
+					<th scope="col" class="last">등록일</th>
+				</tr>
+			</thead>
+			<tbody>
+			<c:forEach var="reply" items="${replyList}" varStatus="status">
+					<tr id="ftr_${reply.nttId}" class="notice_on">
+						<td >${reply.nttId}</td>
+						<td ><a href="/bos/bbs/${paramVO.bbsId}/forUpdateRe.do?nttId=${reply.nttId}&parnts=${reply.parnts}&${pageQueryString}">${reply.nttSj}</a></td>
+						<td >${reply.ntcrNm}</td>
+						<td ><span title="${reply.frstRegisterPnttm}">${reply.frstRegisterPnttm}</span></td>
+					</tr>
+				<c:set var="replyListCnt" value="${replyListCnt-1}" />
+			</c:forEach>
+			<c:if test="${fn:length(replyList) eq 0}"><tr><td colspan="4" class"noData">데이터가 없습니다.</td></tr></c:if>
+			</tbody>
+		</table>
+	</div>
+
+	<c:if test="${fn:length(replyList) > 0}"> <util:out escapeXml="false">${pageNav}</util:out> </c:if>
+</c:if>
+
+]]>
+</page>

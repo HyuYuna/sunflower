@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.message.message">
+
+	<sql id="findAllMessage-where">
+		<if test='dataGroup == "GET"'>
+			<![CDATA[ AND SEQ IN (select SEQ FROM SUN_MESSAGE_TGT where RECEIVER = #{userId}]]>
+			<if test='searchGroup == "name"'>
+				<if test='searchText != null and searchText != ""'>
+					<![CDATA[ AND FU_GETUSER_NM(WUSER) LIKE CONCAT('%', #{searchText}, '%') ]]>
+				</if>
+			</if>
+			<![CDATA[ )]]>
+		</if>
+		<if test='dataGroup == "SEND"'>
+			<![CDATA[ AND WUSER = #{userId}]]>
+			<if test='searchGroup == "name"'>
+				<if test='searchText != null and searchText != ""'>
+					<![CDATA[ AND SEQ IN (SELECT SEQ FROM SUN_MESSAGE_TGT WHERE FU_GETUSER_NM(RECEIVER) LIKE CONCAT('%', #{searchText}, '%')) ]]>
+				</if>
+			</if>
+		</if>
+		<if test='searchGroup == "title"'>
+			<if test='searchText != null and searchText != ""'>
+				<![CDATA[	AND TITLE LIKE CONCAT('%',#{searchText},'%') 		]]>
+			</if>
+		</if>
+	</sql>
+
+	<sql id="findAllMessage-order">
+		<choose>
+			<when test='orderWdate == "ASC"'>
+				<![CDATA[ORDER BY a.WDATE ASC]]>
+			</when>
+			<when test='orderWdate == "DESC"'>
+				<![CDATA[ORDER BY a.WDATE DESC]]>
+			</when>
+			<otherwise>
+				<![CDATA[ORDER BY a.WDATE desc]]>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<!-- 메일 목록 -->
+	<select id="findAllMessage" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllMessage */
+
+			SELECT	a.SEQ, a.TITLE, FU_GETUSER_NM2(WUSER) AS USER_NAME, a.WDATE, FVNAME1
+					, (SELECT COUNT(*) + (CASE WHEN LENGTH(FVNAME1)>4 THEN 1 ELSE 0 END) FROM TB_UPLOAD_FILE uf WHERE UFL_REL_CODE='message' AND UFL_REL_NUMBER=a.SEQ) AS MSG_FILE_HAS
+					, (SELECT MAX(smt.RDATE) FROM SUN_MESSAGE_TGT smt WHERE smt.SEQ=a.SEQ AND smt.RECEIVER=#{userId}) AS RDATE
+					, (SELECT MIN(smt.RDATE) FROM SUN_MESSAGE_TGT smt WHERE smt.SEQ=a.SEQ) AS RDATE2
+					, (SELECT MAX(FU_GETUSER_NM2(RECEIVER)) FROM SUN_MESSAGE_TGT smt WHERE smt.SEQ=a.SEQ) AS RUSER
+			FROM SUN_MESSAGE a
+			WHERE	1=1
+		]]>
+		<include refid="findAllMessage-where"/>
+		<include refid="findAllMessage-order"/>
+		<![CDATA[
+			limit #{firstIndex}, #{recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 메일 전체count수 -->
+	<select id="countMessage" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countMessage  */
+			
+			SELECT COUNT(SEQ) AS TOTCNT
+			FROM SUN_MESSAGE
+			WHERE  1=1
+		]]>
+		<include refid="findAllMessage-where"/>
+	</select>
+
+	<!-- 메일 상세 -->
+	<select id="findOneMessage" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneMessage  */
+			
+            SELECT	a.SEQ, a.TITLE, a.CONTENT, a.WUSER, FU_GETUSER_NM(a.WUSER) AS WUSER_NM, a.TARGET, a.WDATE
+					, FPATH, FVNAME1, FSNAME1, FVNAME2, FSNAME2, FVNAME3, FSNAME3, FVNAME4, FSNAME4
+					, FN_GET_CODE_NAME('CM05', CENTER_CODE) as CENTER_CODE_NAME
+					, (SELECT MIN(smt.RDATE) FROM SUN_MESSAGE_TGT smt WHERE smt.SEQ=a.SEQ) AS RDATE2
+			FROM	SUN_MESSAGE a, TA_USER b
+			WHERE	a.WUSER = b.USER_ID
+					AND SEQ = #{seq}
+		]]>
+	</select>
+	
+	<select id="findOneMessageStatus" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneMessageStatus  */
+			
+			SELECT	STATUS, RDATE
+			FROM	SUN_MESSAGE_TGT
+			WHERE	SEQ = #{seq}
+					AND receiver = #{userId}
+			LIMIT	1
+		]]>
+	</select>
+	<!-- AND receiver = '" & gstrUSER_ID & "' -->
+	
+	<select id="updateMessageTgtStatus" parameterType="zvl">
+		<![CDATA[
+		/* updateMessageTgtStatus */
+		
+		UPDATE SUN_MESSAGE_TGT SET
+				STATUS = 'R',
+				RDATE = NOW()
+		WHERE SEQ = #{seq}
+				AND receiver = #{userId}
+		]]>
+	</select>
+	<!-- AND receiver = '" & gstrUSER_ID & "' -->
+	
+	<select id="findOneMessageReceiver" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneMessageReceiver  */
+			
+			SELECT 	FU_GETUSER_NM2(RECEIVER) as RUSER, RDATE
+			FROM 	SUN_MESSAGE_TGT WHERE seq = #{seq}
+		]]>
+	</select>
+
+	<!-- 메일 등록 -->
+	<insert id="saveMessage" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="seq">
+			SELECT IFNULL(MAX(SEQ),0)+1 AS SEQ  FROM SUN_MESSAGE
+		</selectKey>
+		<![CDATA[
+			/* saveMessage  */
+			
+			INSERT INTO SUN_MESSAGE (
+				SEQ, TITLE, CONTENT, WUSER, WDATE, COM_ID, COM_ID2, STATUS
+			) VALUES (
+		    	#{seq}, #{title}, #{content}, #{wuser}, NOW(), #{comId}, #{comId2}, #{status}
+		    )
+		]]>
+	</insert>
+	
+	<!-- 메일 타겟 등록 -->
+	<insert id="saveMessageTgt" parameterType="zvl">
+		<![CDATA[
+			/* saveMessageTgt */
+			
+			INSERT INTO SUN_MESSAGE_TGT (
+				SEQ, RECEIVER, STATUS
+			) VALUES (
+				#{seq}, #{receiver}, #{status}
+			)
+		]]>
+	</insert>
+
+	<!-- 메일 수정-->
+	<update id="updateMessage" parameterType="zvl">
+		<![CDATA[
+		/* updateMessage */
+		
+		UPDATE TB_CODE_GROUP
+		SET	CODEG_NAME = #{codegName}
+		WHERE CODEG_CODE = #{codegCode}
+		]]>
+	</update>
+	
+	<select id="fnMakeSelectboxCenterUserMemo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT	USER_ID, USER_NAME
+			FROM	TA_USER US
+			WHERE	CENTER_CODE = #{centerCode} 
+		]]>
+		<if test='state == "Y"'>
+			<![CDATA[ AND USER_STATE = 'Y' ]]>
+		</if>
+		<![CDATA[
+			ORDER BY 2
+		]]>
+	</select>
+	
+</mapper>

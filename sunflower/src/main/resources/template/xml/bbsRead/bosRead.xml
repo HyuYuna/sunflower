@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+<![CDATA[
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://bibeault.org/tld/ccc" prefix="ccc" %>
+
+<ccc:constantsMap className="kr.co.unp.bbs.vo.SearchVO" var="SearchVO"/>
+
+<script src="/static/jslibrary/miya_validator.js"></script>
+<script>
+	var form = $("#board")[0];
+	function del(){
+		if(confirm('정말로 삭제하시겠습니까?')){
+		form.action = "/bos/bbs/${paramVO.bbsId}/delete.do";
+		form.submit();
+		}
+	}
+
+	function restore(){
+		if(confirm('정말로 복구하시겠습니까?')){
+			form.action = "/bos/bbs/${paramVO.bbsId}/restore.do";
+			form.submit();
+		}
+	}
+
+	function delPermanently(){
+		if(confirm('정말로 영구삭제하시겠습니까?')){
+			form.action = "/bos/bbs/${paramVO.bbsId}/delPermanently.do";
+			form.submit();
+		}
+	}
+</script>
+
+<form id="board" name="board" method="post" enctype="multipart/form-data" action="${action}">
+	<input type="hidden" name="pageQueryString" value="${pageQueryString}" />
+	<input type="hidden" name="nttId" value="${empty result.nttId ? 0 : result.nttId }" />
+	<input type="hidden" name="bbsId" value="${masterVO.bbsId}" />
+	<input type="hidden" id="atchFileId0" name="atchFileId" value="${result.atchFileId}" />
+
+<div class="bdView">
+		<table>
+			<caption>${result.nttSj} (읽기)</caption>
+			<colgroup>
+				<col style="width:15%"/>
+				<col/>
+			</colgroup>
+			<tbody>
+]]>
+	<forEach>
+		<isEqual value="default">
+		<![CDATA[
+				<tr>
+					<th scope="row">[fieldText]</th>
+					<td>
+						${result.[fieldName]}
+					</td>
+				</tr>
+		]]>
+		</isEqual>
+		<isEqual value="default-checkbox">
+		<![CDATA[
+				<tr>
+					<th scope="row">[fieldText]</th>
+					<td>
+						${result.[fieldName]}
+					</td>
+				</tr>
+		]]>
+		</isEqual>
+		<isEqual value="default-radio">
+		<![CDATA[
+				<tr>
+					<th scope="row">[fieldText]</th>
+					<td>
+						${result.[fieldName]}
+					</td>
+				</tr>
+		]]>
+		</isEqual>
+		<isEqual value="default-select">
+		<![CDATA[
+				<tr>
+					<th scope="row">[fieldText]</th>
+					<td>
+						${result.[fieldName]}
+					</td>
+				</tr>
+		]]>
+		</isEqual>
+		<isEqual value="frstRegisterPnttm">
+		<![CDATA[
+			<c:if test="${not empty result}">
+				<tr>
+					<th scope="row">[fieldText]</th>
+					<td>${result.regDate}</td>
+				</tr>
+			</c:if>
+		]]>
+		</isEqual>
+		<isEqual value="inqireCo">
+		<![CDATA[
+			<c:if test="${not empty result}">
+				<tr>
+					<th scope="row">[fieldText]</th>
+					<td>${result.inqireCo}</td>
+				</tr>
+			</c:if>
+		]]>
+		</isEqual>
+		<isEqual value="atchFileId">
+		<![CDATA[
+				<tr>
+					<th scope="row">첨부파일</th>
+					<td>
+						<jsp:include page="/WEB-INF/jsp/bos/share/EgovFileList.jsp" flush="true" />
+					</td>
+				</tr>
+
+		]]>
+		</isEqual>
+		<isEqual value="replyAt">
+		<![CDATA[
+				<tr>
+					<th scope="row">답변상태</th>
+					<td>
+					  <c:choose>
+						<c:when test="${result.replyAt eq SearchVO.RECEIPT}">접수</c:when>
+						<c:when test="${result.replyAt eq SearchVO.COMPLETE_ANSWER}">보급완료</c:when>
+						<c:when test="${result.replyAt eq SearchVO.CANCEL}">보급제외</c:when>
+					  </c:choose>
+					</td>
+				</tr>
+
+		]]>
+		</isEqual>
+	</forEach>
+
+<![CDATA[
+
+			</tbody>
+		</table>
+	</div>
+</form>
+<div class="btnSet">
+	<c:if test="${not empty result}">
+	<div class="fl">
+		<button type="button" class="btn btn-danger" onclick="delPermanently();">영구삭제</button>
+	</div>
+	</c:if>
+
+ 	<div class="fl">
+		<c:if test="${prevNextMap['PREV'].prevNttId > 0}">
+		<a class="btn btn-default" href="/bos/bbs/${paramVO.bbsId}/view.do?nttId=${prevNextMap['PREV'].prevNttId}&${pageQueryString}"><span>이전글</span></a>
+	    </c:if>
+		<c:if test="${prevNextMap['NEXT'].nextNttId > 0}">
+		<a class="btn btn-default" href="/bos/bbs/${paramVO.bbsId}/view.do?${prevNextMap['NEXT'].nextNttId}.do&${pageQueryString}"><span>다음글</span></a>
+	    </c:if>
+	</div>
+	<div class="fr" >
+		<a class="btn btn-primary" href="/bos/bbs/${paramVO.bbsId}/forUpdate.do?nttId=${result.nttId}&${pageQueryString}&${result.delcode}"><span>수정</span></a>
+	<c:if test="${result.delcode eq '0' }" >
+		<button type="button" class="btn btn-danger" onclick="del();">삭제</button>
+	</c:if>
+	<c:if test="${result.delcode eq '1' }" >
+		<button type="button" class="btn btn-inverse" onclick="restore();">원글복구</button>
+	</c:if>
+		<c:url var="url" value="/bos/bbs/${paramVO.bbsId}/list.do?${pageQueryString}" />
+		<a class="btn btn-primary" href="${url}">목록</a>
+	</div>
+</div>
+
+<c:if test="${masterVO.cmmntPosblAt eq 'Y' and not empty result}">
+
+<div class="bdView">
+	<table>
+		 <caption class="tit">네티즌의견목록</caption>
+		<colgroup>
+			<col style="width:8%" />
+			<col style="width:10%" />
+			<col />
+			<col style="width:10%" />
+		</colgroup>
+		<thead>
+			<tr>
+				<th scope="col">번호</th>
+				<th scope="col">관리자</th>
+				<th scope="col">내용</th>
+				<th scope="col" class="last">등록일</th>
+			</tr>
+		</thead>
+		<tbody>
+		<c:forEach var="cmmnt" items="${cmmntList}" varStatus="status">
+			<tr id="ftr_${cmmnt.cmmntId}" class="notice_on">
+				<td>${fn:length(cmmntList) - status.count + 1}</td>
+				<td>${cmmnt.name}</td>
+				<td>${cmmnt.content}</td>
+				<td><span title="등록일">${cmmnt.regDate}</span></td>
+			</tr>
+		</c:forEach>
+		<c:if test="${fn:length(cmmntList) == 0}"><tr><td colspan="4" class="noData">데이터가 없습니다.</td></tr></c:if>
+		</tbody>
+	</table>
+</div>
+</c:if>
+]]>
+</page>

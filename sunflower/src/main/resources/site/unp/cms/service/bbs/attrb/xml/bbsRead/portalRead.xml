@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page>
+<![CDATA[
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="util" uri="http://www.unp.co.kr/util" %>
+
+<div class="board_view">
+	<h5 class="htit">공지사항의 게시물 제목입니다.</h5>
+
+	<table class="viewTable" >
+		<caption>제목 - 내용</caption>
+		<colgroup>
+			<col width="15%" />
+			<col width="35%" />
+			<col width="15%" />
+			<col width="35%" />
+		</colgroup>
+		<tr>
+			<th scope="row">분류</th>
+			<td>HRST</td>
+			<th scope="row">작성자</th>
+			<td>${result.ntcrNm}</td>
+		</tr>
+		<tr>
+			<th scope="row">등록일</th>
+			<td>${result.regDate}</td>
+			<th scope="row">조회</th>
+			<td>${result.inqireCo}</td>
+		</tr>
+		<tr>
+			<th scope="row">첨부파일</th>
+			<td colspan="3">
+				<jsp:include page="/WEB-INF/jsp/bos/share/EgovFileList.jsp" flush="true" />
+			</td>
+		</tr>
+	</table>
+	<div id="dbdata" class="mt20 mb20">
+		<c:choose>
+			<c:when test="${result.htmlYn=='Y'}">${result.nttCn}</c:when>
+			<c:otherwise>
+				<util:out escapeXml="false">${result.nttCn}</util:out>
+			</c:otherwise>
+		</c:choose>
+	</div>
+</div>
+<div class="btn_set">
+	<c:url var="url" value="/portal/bbs/${paramVO.bbsId}/list.do?${pageQueryString}" />
+	<a href="${url}" class="button list"><span>목록</span></a>
+</div>
+<div class="boardView_PN">
+	<dl>
+		<dt>
+			<span>이전글</span>
+		</dt>
+<c:choose>
+	<c:when test="${prevNextMap['NEXT'].nttId > 0}">
+		<dd>
+			<a href="/portal/bbs/${paramVO.bbsId}/view.do?nttId=${prevNextMap['NEXT'].nttId}&amp;${pageQueryString}"> 
+				<span class="txt">${prevNextMap['NEXT'].nextNttSj}</span> <span class="date">${prevNextMap['NEXT'].regDate}</span>
+			</a>
+		</dd>
+	</c:when>
+	<c:otherwise>
+		<dd>이전글이 없습니다.</dd>
+	</c:otherwise>
+</c:choose>
+		<dt>
+			<span>다음글</span>
+		</dt>
+<c:choose>
+	<c:when test="${prevNextMap['PREV'].nttId > 0}">
+		<dd>
+			<a href="/portal/bbs/${paramVO.bbsId}/view.do?nttId=${prevNextMap['PREV'].nttId}&amp;${pageQueryString}"> 
+				<span class="txt">${prevNextMap['PREV'].prevNttSj}</span> <span class="date">${prevNextMap['PREV'].regDate}</span>
+			</a>
+		</dd>
+	</c:when>
+	<c:otherwise>
+		<dd>다음글이 없습니다.</dd>
+	</c:otherwise>
+</c:choose>
+	</dl>
+</div>
+
+]]>
+</page>

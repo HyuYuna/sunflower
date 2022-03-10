@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.dao.cmmnCd.cmmnCdCl">
+
+	<!-- 공통코드분류 목록 -->
+	<select id="findAllCmmnCdCl" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT  *
+			  FROM  (
+				SELECT ROWNUM RNUM, ALL_LIST.*
+				  FROM  (
+
+			SELECT  CL_CD
+			     ,  CL_CD_NM
+			     ,  USE_AT
+			  FROM  TC_CMMN_CD_CL
+			 WHERE  1 = 1
+		]]>
+			<if test='searchKwd != null and searchKwd != ""'>
+				<if test='searchCnd eq "1"'>
+					<![CDATA[ and CL_CD LIKE '%' || #{searchKwd} || '%']]>
+				</if>
+				<if test='searchCnd eq "2"'>
+					<![CDATA[ and CL_CD_NM LIKE '%' || #{searchKwd} || '%']]>
+				</if>
+			</if>
+		<![CDATA[
+
+		    ORDER BY REGIST_DT DESC
+			) ALL_LIST
+		     )
+			 WHERE  RNUM  > #{firstIndex}
+			   AND  RNUM <= #{firstIndex} +
+			   #{recordCountPerPage}
+		]]>
+	</select>
+
+	<!-- 공통코드분류 전체count수 -->
+	<select id="countCmmnCdCl" parameterType="zvl" resultType="Long">
+		<![CDATA[
+			/* countAllCmmnCdCl  */
+			SELECT  COUNT(*) AS totCnt
+			  FROM  TC_CMMN_CD_CL
+			 WHERE  1 = 1
+		]]>
+		<if test='searchKwd != null and searchKwd != ""'>
+			<if test='searchCnd == "1"'>
+				<![CDATA[ and CL_CD LIKE '%' || #{searchKwd} || '%']]>
+			</if>
+			<if test='searchCnd == "2"'>
+				<![CDATA[ and CL_CD_NM LIKE '%' || #{searchKwd} || '%']]>
+			</if>
+		</if>
+	</select>
+
+	<!-- 공통코드분류 상세 -->
+	<select id="findOneCmmnCdCl" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+            SELECT  CL_CD
+			     ,  CL_CD_NM
+                 ,  CL_CD_DC
+                 ,  USE_AT
+              FROM  TC_CMMN_CD_CL
+             WHERE  CL_CD    = #{clCd}
+		]]>
+	</select>
+
+	<!-- 공통코드분류 등록 -->
+	<insert id="saveCmmnCdCl" parameterType="zvl">
+		<![CDATA[
+			INSERT INTO TC_CMMN_CD_CL (
+		    	CL_CD,
+           		CL_CD_NM,
+           		CL_CD_DC,
+           		USE_AT,
+           		REGIST_ID,
+           		REGIST_DT
+		    )
+		    VALUES (
+		    	#{clCd},
+           		#{clCdNm},
+           		#{clCdDc},
+           		#{useAt},
+           		#{registId},
+           		SYSDATE
+		    )
+		]]>
+	</insert>
+
+	<!-- 공통코드분류 수정-->
+	<update id="updateCmmnCdCl" parameterType="zvl">
+		<![CDATA[
+		UPDATE TC_CMMN_CD_CL SET
+       		CL_CD_NM = #{clCdNm},
+       		CL_CD_DC = #{clCdDc},
+       		USE_AT = #{useAt},
+       		UPDT_ID = #{updtId},
+       		UPDT_DT = SYSDATE
+ 		WHERE CL_CD = #{clCd}
+		]]>
+	</update>
+
+	<!-- 공통코드분류 삭제(사용안함)-->
+	<delete id="deleteCmmnCdCl" parameterType="zvl">
+		<![CDATA[
+            DELETE FROM TC_CMMN_CD_CL
+			WHERE CL_CD = #{clCd}
+		]]>
+	</delete>
+
+	<!-- 사용중인 공통코드분류목록  -->
+	<select id="findAllCmmnCdClByUse" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			SELECT
+				CL_CD
+		     ,  CL_CD_NM
+		     ,  USE_AT
+		  FROM  TC_CMMN_CD_CL WHERE USE_AT = 'Y'
+
+		  ORDER BY CL_CD_NM ASC
+		]]>
+	</select>
+</mapper>

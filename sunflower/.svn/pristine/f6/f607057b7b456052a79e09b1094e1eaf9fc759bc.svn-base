@@ -1,0 +1,82 @@
+.loginSet{
+	margin:100px auto;
+	form{
+		position:relative;
+		width:70%;
+		margin: 0 auto;
+		@include breakpoint($xs){ width: 90%; }
+		span{
+			display:block;
+			margin-bottom:10px;
+			overflow:hidden;
+			label{
+				float:left;
+				width:132px;
+				@include breakpoint($tb){ width: 27%; }
+				@include breakpoint($xs){ width: 30%; font-size: 14px; }
+				font-size:22px;
+				font-family:'Nanum Square';
+				font-weight:bold;
+				line-height:50px;
+				margin-bottom:0;
+				&:before {
+					content: '';
+					width:4px;
+					height:4px;
+					display:inline-block;
+					background-color:#163d40;
+					vertical-align:middle;
+					margin-right:19px;
+					@include breakpoint($xs){ margin-right: 10px; }
+				}
+			}
+			input{
+				width:350px;
+				@include breakpoint($tb){ width: 40%; }
+				@include breakpoint($xs){ width: 43%; }
+				border:1px solid $bdcolor;
+				height:50px;
+				text-indent:10px;
+			}
+		}
+		>input{
+			position:absolute;
+			right:0;
+			top:0;
+			font-size:20px;
+			font-family:'Nanum Square';
+			font-weight:bold;
+			border:none;
+			color:#fff;
+			width:200px;
+			@include breakpoint($tb){ width: 30%; }
+			@include breakpoint($xs){ width: 25%; font-size: 18px; }
+			height:110px;
+			background-color:#163d40;
+		}
+	}
+	.moreLink{
+		border-top:1px solid #bdbdbd;
+		margin-top:36px;
+		padding:20px;
+		>div{
+			margin-bottom:10px;
+			font-size:13px;
+		}
+		>div a{
+			color:#cdcdcd;
+			display:inline-block;
+			width:132px;
+			height:35px;
+			line-height:33px;
+			padding:0 0 0 9px;
+			font-size:12px;
+			border:1px solid #cdcdcd;
+			color:#565656;
+			margin-left:4px;
+			background:#fff url(/static/ucms/img/joinArr.png) 109px center no-repeat;
+			&:hover,
+			&:focus{color:#df6900;}
+		}
+	}
+}

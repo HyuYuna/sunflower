@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- SNS ETC param tran -->
+	<bean id="snsAuthEtcParameters" class="site.unp.cms.service.oauth.SnsAuthEtcParameters" />
+
+	<!-- SNS -->
+	<bean id="facebookConnectionFactory" class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+		<constructor-arg value="${facebook.clientId}" />
+		<constructor-arg value="${facebook.clientSecret}" />
+	</bean>
+
+	<bean id="googleConnectionFactory" class="org.springframework.social.google.connect.GoogleConnectionFactory">
+		<constructor-arg value="${google.clientId}" />
+		<constructor-arg value="${google.clientSecret}" />
+	</bean>
+
+	<bean id="twitterConnectionFactory" class="org.springframework.social.twitter.connect.TwitterConnectionFactory">
+		<constructor-arg value="${twitter.clientId}" />
+		<constructor-arg value="${twitter.clientSecret}" />
+	</bean>
+
+	<bean id="kakaoConnectionFactory" class="org.springframework.social.kakao.connect.KakaoConnectionFactory">
+		<constructor-arg value="${kakao.clientId}" />
+	</bean>
+
+	<bean id="naverConnectionFactory" class="org.springframework.social.naver.connect.NaverConnectionFactory">
+		<constructor-arg value="${naver.clientId}" />
+		<constructor-arg value="${naver.clientSecret}" />
+	</bean>
+
+	<bean id="naverOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<property name="state" value="${naver.state}"/>
+		<property name="redirectUri" value="${naver.callbackUrl}"/>
+	</bean>
+
+	<bean id="facebookOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<property name="scope" value="${facebook.scope}"/>
+		<property name="redirectUri" value="${facebook.callbackUrl}"/>
+	</bean>
+
+	<bean id="kakaoOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<property name="redirectUri" value="${kakao.callbackUrl}"/>
+	</bean>
+
+	<bean id="googleOAuth2Parameters" class="org.springframework.social.oauth2.OAuth2Parameters">
+		<property name="scope" value="${google.scope}"/>
+		<property name="redirectUri" value="${google.callbackUrl}"/>
+	</bean>
+
+	<bean id="lineAPIService" class="org.springframework.social.line.api.v2.impl.LineAPIServiceImpl"/>
+	<!-- SNS -->
+
+</beans>

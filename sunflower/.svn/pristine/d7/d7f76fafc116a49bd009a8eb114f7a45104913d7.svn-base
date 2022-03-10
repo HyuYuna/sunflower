@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="site.unp.cms.service.singl.deptInfo">
+
+	<select id="findAllDeptInfo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findAllDeptInfo */
+			SELECT DEPT_ID
+				 , DEPT_CD
+			     , DEPT_KOR_NM
+			     , DEPT_ENG_NM
+			     , UPPER_DEPT_ID
+			     , DEPT_LEVEL
+			     , DEPT_JOB_CN
+			     , DEPT_INFO
+			     , DEPT_TELNO
+			     , DEPT_FAXNO
+			    , CASE
+			           WHEN
+			               (
+			               SELECT TOP 1 'A'
+			                 FROM TM_DEPT_INFO B
+			                WHERE B.UPPER_DEPT_ID=A.DEPT_ID AND DELETE_CD='0'
+			               )= 'A' THEN 'jstree-folder'
+			           ELSE 'jstree-file'
+			       END AS ICON
+			     , USE_AT
+			     , SORT_ORDR
+			  FROM TM_DEPT_INFO A
+			 WHERE DELETE_CD=0
+		]]>
+			<choose>
+			    <when test='upperDeptId != "" and upperDeptId != null'>
+			    	<![CDATA[  AND A.UPPER_DEPT_ID = #{upperDeptId}	]]>
+			    </when>
+			    <otherwise>
+			    	<![CDATA[  AND A.UPPER_DEPT_ID=0 	]]>
+			    </otherwise>
+		    </choose>
+			ORDER BY A.SORT_ORDR
+	</select>
+
+	<select id="findOneByIdDeptInfo" parameterType="zvl" resultType="zvl">
+		<![CDATA[
+			/* findOneByIdDeptInfo */
+			SELECT DEPT_ID
+				 , DEPT_CD
+			     , DEPT_KOR_NM
+			     , DEPT_ENG_NM
+			     , UPPER_DEPT_ID
+			     , DEPT_LEVEL
+			     , DEPT_JOB_CN
+			     , DEPT_INFO
+			     , DEPT_TELNO
+			     , DEPT_FAXNO
+			     , USE_AT
+			     , SORT_ORDR
+			     , CASE
+			           WHEN
+			               (
+			               SELECT TOP 1 'A'
+			                 FROM TM_DEPT_INFO B
+			                WHERE B.UPPER_DEPT_ID=A.DEPT_ID AND DELETE_CD='0'
+			               )='A' THEN 'Y'
+			           ELSE 'N'
+			       END AS SUB_YN
+			  FROM TM_DEPT_INFO A
+			 WHERE DELETE_CD = 0
+			   AND A.DEPT_ID=#{cDeptId}
+		]]>
+	</select>
+
+	<update id="updateDeptInfo" parameterType="zvl">
+		<![CDATA[
+			/* updateDeptInfo */
+			UPDATE TM_DEPT_INFO
+			SET
+				DEPT_CD		= #{deptCd},
+			    DEPT_KOR_NM = #{deptKorNm},
+			    DEPT_ENG_NM = #{deptEngNm},
+			    DEPT_JOB_CN = #{deptJobCn},
+			    DEPT_INFO 	= #{deptInfo},
+			    DEPT_TELNO 	= #{telno},
+			    DEPT_FAXNO 	= #{faxno},
+			    SORT_ORDR 	= #{sortOrdr},
+			    USE_AT 		= #{useAt},
+			    UPDT_ID 	= #{updtId},
+			    UPDT_DT 	= GETDATE()
+			WHERE DEPT_ID 	= #{deptId}
+		]]>
+	</update>
+
+	<insert id="saveDeptInfo" parameterType="zvl">
+		<selectKey resultType="Integer" order="BEFORE" keyProperty="deptId">
+			SELECT ISNULL(MAX(CONVERT(INT,DEPT_ID)),100000)+1 AS MENU_NO FROM TM_DEPT_INFO
+		</selectKey>
+		<![CDATA[
+			/* saveDeptInfo */
+			INSERT INTO TM_DEPT_INFO (
+		           DEPT_ID
+		         , DEPT_CD
+		         , DEPT_KOR_NM
+		         , DEPT_ENG_NM
+		         , UPPER_DEPT_ID
+		         , DEPT_LEVEL
+		         , SORT_ORDR
+		         , DEPT_JOB_CN
+		         , DEPT_INFO
+		         , DEPT_TELNO
+		         , DEPT_FAXNO
+		         , DELETE_CD
+		         , USE_AT
+		         , REGIST_ID
+		         , REGIST_DT
+		         , UPDT_ID
+		         , UPDT_DT
+			)
+			VALUES (
+			     #{deptId}
+			    ,#{deptCd}
+			    ,#{deptKorNm}
+			    ,#{deptEngNm}
+			    ,#{upperDeptId}
+			    ,ISNULL(#{deptLevel},1)
+			    ,(
+					SELECT ROUND(ISNULL(MAX(SORT_ORDR),0)/10,0)*10+10
+					  FROM TM_DEPT_INFO A
+					 WHERE UPPER_DEPT_ID=#{upperDeptId}
+			      )
+			    ,#{deptJobCn}
+			    ,#{deptInfo}
+			    ,#{telno}
+			    ,#{faxno}
+			    ,0
+			    ,#{useAt}
+			    ,#{registId}
+			    ,GETDATE()
+			    ,#{updtId}
+			    ,GETDATE()
+			)
+		]]>
+	</insert>
+
+	<delete id="deleteDeptInfo" parameterType="zvl">
+		<![CDATA[
+			 /* deleteDeptInfo */
+		     UPDATE
+		     	TM_DEPT_INFO
+		     SET DELETE_CD='2'
+			 WHERE
+			 	DEPT_ID = #{cDeptId}
+		]]>
+	</delete>
+
+	<!-- 부서명 수정(부서관리 오른쪽 마우스 rename기능) -->
+	<update id="updateDeptInfoNm" parameterType="zvl">
+		<![CDATA[
+			/* deleteDeptInfo */
+			UPDATE TM_DEPT_INFO
+			SET
+			    DEPT_KOR_NM = #{deptKorNm},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = GETDATE()
+			WHERE DEPT_ID = #{cDeptId}
+		]]>
+	</update>
+
+	<!-- 부서명 수정(부서관리 오른쪽 마우스 rename기능) -->
+	<update id="updateMenuForUpperDeptId" parameterType="zvl">
+		<![CDATA[
+			/* updateMenuForUpperDeptId */
+			UPDATE TM_DEPT_INFO
+			SET
+			    UPPER_DEPT_ID = #{upperDeptId},
+			    SORT_ORDR = 0,
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = GETDATE()
+			WHERE DEPT_ID = #{cDeptId}
+		]]>
+	</update>
+
+	<!-- 부서 순서 변경 -->
+	<update id="updateMoveDeptId" parameterType="zvl">
+		<![CDATA[
+			UPDATE TM_DEPT_INFO
+			SET
+			    SORT_ORDR = #{sortOrdr},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = GETDATE()
+			WHERE DEPT_ID = #{cDeptId}
+		]]>
+	</update>
+
+	<!-- 관리자에 부서지정 여부 COUNT -->
+	<select id="countDeptInfoMngr" parameterType="zvl" resultType="long" >
+		<![CDATA[
+			SELECT
+				COUNT(A.DEPT_ID)
+			FROM TM_MNGR_INFO A
+			WHERE DEPT_ID = #{cDeptId}
+			AND DELETE_CD = 0
+		]]>
+	</select>
+
+	<!-- 부서 미사용 변경 -->
+	<update id="updateDeptInfoUseAt" parameterType="zvl">
+		<![CDATA[
+			UPDATE TM_DEPT_INFO
+			SET
+			    USE_AT = #{useAt},
+			    UPDT_ID = #{updtId},
+			    UPDT_DT = GETDATE()
+			WHERE DEPT_ID = #{cDeptId}
+		]]>
+	</update>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site.unp.cms.dao.dgnss">
+
+	<insert id="saveDgnssRecord" parameterType="zvl" >
+		<![CDATA[
+		/* saveDgnssRecord */
+	  INSERT INTO tc_wa_dgnss 
+	       (
+	           SITE_ID, 
+	           PRSEC_YM, 
+	           MENU_NO, 
+	           URLAD,
+	           BRWSR_SE, 
+	           OPERSYSM_SE, 
+	           PAGE_SJ, 
+	           ERROR_CNT, 
+	           WARN_CNT, 
+	           NRMLTY_CNT, 
+	           RISK_CNT, 
+	           SERIUS_CNT, 
+	           LAST_PRSEC_DT, 
+	           HLPRT_VER, 
+	           PRSEC_CN, 
+	           ERROR_CN
+	       ) 
+	       VALUES 
+	       (
+	           #{siteId}, 
+	           date_format(NOW(),'%Y%m'), 
+	           ifnull(#{menuNo},0), 
+	           ifnull(#{urlad},''), 
+	           #{brwsrSe}, 
+	           #{opersysmSe}, 
+	           #{pageSj}, 
+	           ifnull(#{errorCnt},0), 
+	           ifnull(#{warnCnt},0), 
+	           ifnull(#{nrmltyCnt},0), 
+	           ifnull(#{riskCnt},0), 
+	           ifnull(#{seriusCnt},0), 
+	           NOW(), 
+	           #{hlprtVer}, 
+	           #{prsecCn}, 
+	           #{errorCn}
+	       )
+	       ON DUPLICATE KEY 
+	       UPDATE 
+	       		BRWSR_SE=#{brwsrSe}
+	       		, OPERSYSM_SE=#{opersysmSe}
+	       		, PAGE_SJ=#{pageSj}
+	       		, ERROR_CNT=ifnull(#{errorCnt},0)
+	       		, WARN_CNT=ifnull(#{warnCnt},0)
+	       		, NRMLTY_CNT=ifnull(#{nrmltyCnt},0) 
+	       		, RISK_CNT=ifnull(#{riskCnt},0)
+	       		, SERIUS_CNT=ifnull(#{seriusCnt},0) 
+	       		, LAST_PRSEC_DT=NOW()
+	       		, HLPRT_VER=#{hlprtVer}
+	       		, PRSEC_CN=#{prsecCn}
+	       		, ERROR_CN=#{errorCn}
+		]]>
+	</insert>
+
+</mapper>
