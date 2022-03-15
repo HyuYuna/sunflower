@@ -733,8 +733,12 @@ function fn_export(){
    		var valChecked = $("#formSearch input[name='CASE_TYPE']:checked").val();
    		var valChecked2 = $("#formSearch input[name='CHEK_CASE_TYPE']:checked").val();
    		
-   		if($("input:checkbox[name='VISIT_CASE_CHECK1']").is(":checked")){
+   		/* if($("input:checkbox[name='VISIT_CASE_CHECK1']").is(":checked")){
    			$("#VISIT_CASE_CHECK").val("N");
+   		} */
+   		
+   		if(document.getElementById("VISIT_CASE_CHECK").checked) {
+   		    document.getElementById("VISIT_CASE_CHECK1").disabled = true;
    		}
    		
    		/* if (valChecked=="ATTKR_STATE_YN" || valChecked=="ATTKR_STATE" || valChecked=="ATTKR_AGE") {
@@ -2044,7 +2048,7 @@ function fn_export(){
 		<input type="hidden" id="searchOption" name="searchOption" value="close" /> 
 		<input type="hidden" name="targetType" value="" /> 
 		<input type="hidden" name="arr_CNTR_COD" id="arr_CNTR_COD" value="" /> 
-		<input type="hidden" name="VISIT_CASE_CHECK" id="VISIT_CASE_CHECK" value="" /> 
+		<input type="hidden" name="VISIT_CASE_CHECK" id="VISIT_CASE_CHECK1" value="" /> 
 		<input type="hidden" name="CHEK_CASE_TYPE_VALUE" id="CHEK_CASE_TYPE_VALUE" value="" />
 		<input type="hidden" name="userCenterCode" id="userCenterCode" value="${userVO.centerCode }"/>
 
@@ -3201,7 +3205,7 @@ function fn_export(){
 			<tr style="height: 35px;">
 				<td style="text-align: center;">내방 사례 여부</td>
 				<td colspan=3>
-					<span style="display: inline-block; width: 80px;"><input type="checkbox" name="VISIT_CASE_CHECK1" value="N"></span>
+					<span style="display: inline-block; width: 80px;"><input type="checkbox" name="VISIT_CASE_CHECK" id="VISIT_CASE_CHECK" value="N"></span>
 				</td>
 			</tr>
 

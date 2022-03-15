@@ -201,7 +201,7 @@ pageContext.setAttribute("siteVO", site);
 			<!--//가상키보드 실행 버튼 생성태그 -->
 		</div>
 		<p><a href="javascript:actionLogin2();" class="pure-button pure-button-warning" style="width:265px; height:35px;">로그인</a></p>
-		<span class="damdang">시스템 관련 문의 ☞ 사용자 문의게시판 ☜<br>헬프데스크 0505-362-8888</span>
+		<span class="damdang">시스템 관련 문의 ☞ 사용자 문의게시판 ☜<br>헬프데스크 070-5184-8888</span>
 	</div>
 <p>${SPRING_SECURITY_LAST_EXCEPTION.message}</p>
 </form>
