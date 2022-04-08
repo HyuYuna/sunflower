@@ -715,7 +715,8 @@
 						</when>
 					
 						<when test='CASE_TYPE=="VICTIM_AGE" || CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE"  || CASE_TYPE=="CS_TYPE_06_AGE"  || CASE_TYPE=="CS_TYPE_11_AGE" || CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
-							, CASE WHEN ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+							<!-- , CASE WHEN ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL -->
+							, 1 AS FIELD_NAME_ALL
 						</when>
 						<otherwise>
 							,CASE WHEN ${fieldName} NOT IN ('XX', 
@@ -1139,7 +1140,8 @@
 						
 						
 						<when test='CASE_TYPE=="VICTIM_AGE" || CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE" || CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
-							, CASE WHEN ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL
+							<!-- , CASE WHEN ${fieldName} is null THEN 0 ELSE 1 END AS FIELD_NAME_ALL -->
+							1 AS FIELD_NAME_ALL
 						</when>
 						<!-- <when test='sqlWhereType == "check"'>
 							SUBSTRING_INDEX(case_help, ',', 1) NOT IN ('XX', 
