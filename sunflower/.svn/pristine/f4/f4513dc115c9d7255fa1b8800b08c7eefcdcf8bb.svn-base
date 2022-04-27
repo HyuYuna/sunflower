@@ -1,3 +1,0 @@
-.pointer { cursor: pointer; } /* 그림이나 글자위에 마우스 포인터로 변환 */
-
-label.error	{ color: red; } /* 필수항목 스타일 */

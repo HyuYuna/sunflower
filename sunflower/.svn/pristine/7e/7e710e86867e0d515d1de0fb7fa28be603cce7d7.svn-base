@@ -1,2 +1,0 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"  errorPage="/cmmn/error.jsp" %>
-<p class="content-commingsoon"><span class="sr-only">콘텐츠 준비중입니다. 현재 페이지는 업데이트중입니다. 빠른 시일 내에 콘텐츠를 준비하여 이용에 불편함이 없도록 하겠습니다.</span></p>
