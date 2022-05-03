@@ -535,6 +535,9 @@ function fn_list2(menuNo){
 	<c:if test="${((userVO.userId eq result.caseManager) || (empty result.caseManager) || (userVO.authorCd eq 'BM')) && rbool eq 'true'}">
 		<a class="pure-button btnUpdate" href="/bos/instance/case/caseReg.do?menuNo=${param.menuNo}&caseSeq=${result.caseSeq}"><span>사례수정</span></a>
 	</c:if>
+	 끽${rbool}
+	 흠 ${result.caseManager}
+	 으 ${ }(empty result.caseManager)
 	<c:if test="${((userVO.userId eq result.caseManager) || (empty result.caseManager) || (userVO.authorCd eq 'BM')) && rbool ne 'true'}">
 		<a class="pure-button btnUpdate" href="/bos/instance/case/caseUpdate.do?menuNo=${param.menuNo}&caseSeq=${result.caseSeq}"><span>사례수정</span></a>
 	</c:if>

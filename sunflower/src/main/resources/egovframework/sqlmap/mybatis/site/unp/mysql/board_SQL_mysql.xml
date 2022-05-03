@@ -212,6 +212,10 @@
 		<if test="gCode != null and gCode != ''">
 			AND SUBSTR(CODE_CODE, 1, 1) = #{gCode}
 		</if>
+		<!-- 통합형 서울북부해바라기센터, 전남서부해바라기센터제외 -->
+		<if test="sCode == 'CM05'">
+			AND CODE_CODE NOT IN ('302','312')
+		</if>
 		<![CDATA[
 		ORDER BY CODE_SORT
 		]]>
