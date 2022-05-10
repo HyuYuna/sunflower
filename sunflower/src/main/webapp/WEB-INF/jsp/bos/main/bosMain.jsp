@@ -761,7 +761,7 @@ jQuery(document).ready(function(){
 		<div id="main">
 			<!-- visual -->
 			<div class="popupList"><img src="/static/bos/image/20210326_img01.png" alt="" /></div>
-			<div class="popupList" style="display:none;"><img src="/static/bos/image/20210326_img02.png" alt="" /></div>
+			<div class="popupList" style="display:none;"><img src="/static/bos/image/20220326_img02.png" alt="" /></div>
 			
 			<div class="main_cont">
 				<!-- 마이페이지 설정 안 했을 경우 -->

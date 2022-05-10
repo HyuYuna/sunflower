@@ -11,6 +11,7 @@
 <script>
 //센터 출력
 fnCodeDepthCheckbox = function(gCode){
+	//통합형 서울북부해바라기센터, 전남서부해바라기센터제외
 	$.ajax({
 		url: "/bos/board/board/checkboxCodeList.json",
 		type: "post",
