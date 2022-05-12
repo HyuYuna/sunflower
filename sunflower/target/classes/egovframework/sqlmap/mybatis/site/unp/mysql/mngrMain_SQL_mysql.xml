@@ -363,7 +363,11 @@
 			FROM TB_BOARD_DATA A
 			WHERE BDS_SEQ = 'demand'
 			  AND BDD_STATE = 'C'
-			  AND CONCAT(BDD_TARGET,',') REGEXP #{bddcCenter}
+			  AND
+		      	(
+			  			(bdd_notice = '1')
+					OR  (bdd_notice != '1' and CONCAT(BDD_TARGET,',') REGEXP #{bddcCenter})
+				)
 			ORDER BY BDD_CDATE DESC
 			limit 0, 5
 		]]>
