@@ -200,6 +200,7 @@ public class UserMemberServiceImpl extends MemberServiceImpl implements Serializ
         param.put("logCate", "권한 부여");
         param.put("regUserId", user.getUserId());
         param.put("regUserName", user.getUserNm());
+        param.put("regUserLevel", user.getAuthorCd());
         sqlDao.save("insertUserLog", param);
 
         MVUtils.goUrl("/"+param.getString("siteId")+"/member/user/list.do?menuNo=100017", "회원등록이 완료되었습니다.", model);
@@ -239,6 +240,7 @@ public class UserMemberServiceImpl extends MemberServiceImpl implements Serializ
         param.put("logCate", "권한 삭제");
         param.put("regUserId", user.getUserId());
         param.put("regUserName", user.getUserNm());
+        param.put("regUserLevel", user.getAuthorCd());
         sqlDao.save("insertUserLog", param);
         
         MVUtils.goUrl("/"+param.getString("siteId")+"/member/user/list.do?menuNo="+param.getString("menuNo"), "삭제되었습니다.", model);
@@ -1034,10 +1036,12 @@ public class UserMemberServiceImpl extends MemberServiceImpl implements Serializ
         	param.put("logCate", "퇴직 처리");
         } else {
         	param.put("logCate", "권한 변경");
+        	param.put("regExiUserAuth", param.getString("exiUserLevel"));
         }
         
         param.put("regUserId", user.getUserId());
         param.put("regUserName", user.getUserNm());
+        param.put("regUserLevel", user.getAuthorCd());
         System.out.println(param);
         sqlDao.save("insertUserLog", param);
 

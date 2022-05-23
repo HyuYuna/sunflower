@@ -107,7 +107,25 @@ function filePopZip(now,searchWrd,searchKwd,sdate,edate,searchCnd,searchCnd1,sea
                 <td>${result.userId}</td>
                 <td>${result.userName2}</td>
                 <td><fmt:formatDate value="${result.logPdate}" pattern="yyyy-MM-dd HH:mm"/></td>
-                <td>${result.logCate}</td>
+                <td>${result.logCate}
+                	<c:choose>
+                		<c:when test="${result.logCate eq '권한 변경'}"> 
+                			<c:if test='${not empty result.exiLevelName}'> 
+                				(${result.exiLevelName} => ${result.userLevelName})
+                			</c:if>
+                		</c:when>
+                		<c:when test="${result.logCate eq '권한 부여'}">
+                			<c:if test='${not empty result.userLevelName}'> 
+                				(${result.userLevelName})
+                			</c:if>
+                		</c:when>
+                		<c:when test="${result.logCate eq '퇴직 처리'}">
+                			<c:if test='${not empty result.regLevelName}'> 
+                				(${result.regLevelName})
+                			</c:if>
+                		</c:when>
+                	</c:choose>
+            	</td>
                 <td>${result.regName}</td>
             </tr>
             <c:set var="resultCnt" value="${resultCnt-1}" />

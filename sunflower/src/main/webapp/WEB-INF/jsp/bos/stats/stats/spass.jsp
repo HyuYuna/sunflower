@@ -143,14 +143,14 @@
             			if(sexYN == "Y"){
             				table += "<tr>";
                 			for(var i=0; i<codeResult.length + 1; i++){
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>남자</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>여자</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>모름</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>합계</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>남자</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>여자</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>모름</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>합계</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>남자</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>여자</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>모름</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>합계</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>남자</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>여자</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>모름</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>합계</th>";
                 			}
                 			table += "</tr>";
             			}
@@ -180,10 +180,10 @@
             			if(sexYN == "Y"){
             				table += "<tr>";
                 			for(var i=0; i<codeResult.length + 1; i++){
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>남자</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>여자</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>모름</th>";
-                				table += "<th style='width:60px; padding:5px 0 5px 0;'>합계</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>남자</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>여자</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>모름</th>";
+                				table += "<th style='width:60px; min-width:60px; padding:5px 0 5px 0;'>합계</th>";
                 			}
                 			table += "</tr>";
             			}

@@ -286,6 +286,7 @@ $(function() {
 <form name="regForm" id="regForm" method="post" action="/bos/member/user/${empty result ? 'insert' : 'update'}.do" enctype="multipart/form-data" class="pure-form">
 	<input type="hidden" name="csrfToken" value="${csrfToken}"/>
 	<input type="hidden" name="menuNo" value="${param.menuNo }" />
+	<input type="hidden" name="exiUserLevel" value="${result.userLevel }" />
 	<input type="hidden" name="pageQueryString" value='${pageQueryString}'/>
 	<input type="hidden" id="atchFileId" name="atchFileId" value="${fn:trim(result.atchFileId)}">
     <table class="table03">
