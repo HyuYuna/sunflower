@@ -1003,8 +1003,8 @@
         <![CDATA[
         /* insertUserLog */
         
-        INSERT INTO TA_USER_LOG (LOG_SEQ, USER_ID, USER_NAME, LOG_CATE, REG_ID, REG_NAME, LOG_PDATE)
-        VALUES (#{logSeq}, #{userId}, #{userName}, #{logCate}, #{regUserId}, #{regUserName}, NOW())
+        INSERT INTO TA_USER_LOG (LOG_SEQ, USER_ID, USER_NAME, USER_LEVEL, LOG_CATE, REG_ID, REG_NAME, REG_USER_LEVEL, EXI_USER_LEVEL, LOG_PDATE)
+        VALUES (#{logSeq}, #{userId}, #{userName}, #{userLevel}, #{logCate}, #{regUserId}, #{regUserName}, #{regUserLevel}, #{exiUserLevel}, NOW())
         ]]>
     </insert>
 </mapper>

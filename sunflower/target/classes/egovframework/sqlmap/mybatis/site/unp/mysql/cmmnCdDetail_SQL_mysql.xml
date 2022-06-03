@@ -37,14 +37,18 @@
 			AND A.CODE_GROUP = ""
 		</if>
 		<choose>
-	    <when test='siteId == "bos"'>
-	    	<if test='codeUseYn != null and codeUseYn != ""'>
-				<![CDATA[ AND A.CODE_USE_YN = #{codeUseYn} 	]]>
-			</if>
-	    </when>
-	    <otherwise>
-		    <![CDATA[  and A.CODE_USE_YN = 'Y'	]]>
-	    </otherwise>
+			<!-- 전체 센터목록 보이게 수정 -->
+		   	<when test='codegCode == "CM05"'>
+		   		
+		   	</when>
+		    <when test='siteId == "bos"'>
+		    	<if test='codeUseYn != null and codeUseYn != ""'>
+					<![CDATA[ AND A.CODE_USE_YN = #{codeUseYn} 	]]>
+				</if>
+		    </when>
+		    <otherwise>
+			    <![CDATA[  and A.CODE_USE_YN = 'Y'	]]>
+		    </otherwise>
 	    </choose>
 
 

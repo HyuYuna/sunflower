@@ -820,8 +820,7 @@
 				</choose>
 					and	 caseT.CENTER_CODE IN (SELECT CODE_CODE FROM tb_code WHERE codeg_code='CM05' 
 					and code_group not in ('5','6','7') 
-					and code_use_yn = 'Y'
-					
+					<!-- and code_use_yn = 'Y' -->
 					
 					<choose>
 						<when test='term_type != "N"'>
