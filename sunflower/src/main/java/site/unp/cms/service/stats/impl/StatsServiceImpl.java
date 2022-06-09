@@ -108,8 +108,15 @@ public class StatsServiceImpl extends DefaultCrudServiceImpl implements StatsSer
 		List<String> code3 = new ArrayList<String>();
 		List<String> code4 = new ArrayList<String>();
 		
+		String age = param.getString("CASE_TYPE");
+		
 		for(int i=0; i<codeResult.size(); i++){
-			code.add(i, codeResult.get(i).getString("cd"));
+			// 아이디 특수기호 방지
+			if (age.equals("VICTIM_AGE")) {
+				code.add(i, "Agestats"+i);
+			} else {
+				code.add(i, codeResult.get(i).getString("cd"));
+			}
 			code3.add(i, codeResult.get(i).getString("cdNm2"));
 			code4.add(i, codeResult.get(i).getString("cdNm3"));
 		}
@@ -440,7 +447,6 @@ public class StatsServiceImpl extends DefaultCrudServiceImpl implements StatsSer
 			for(int t=6; t<=codeCount2; t++){
 				
 				sumArray0[t][0] = sumArray0[t][0] + caseStats.get(i).getInt("fieldName" + codename[t]);
-				
 				
 				if(param.getString("dsaYN").equals("Y")){
 					if(caseStatd.size() >i ) {
