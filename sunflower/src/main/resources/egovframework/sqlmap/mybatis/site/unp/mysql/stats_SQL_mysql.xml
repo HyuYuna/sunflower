@@ -673,7 +673,7 @@
 				<choose>
 					<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
 						,CASE_TYPE_GRP
-						
+						<if test='sexYN == "Y"'>, VICTIM_SEX </if>
 					</when>
 					<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
 						,CASE_ROUTE_GRP
@@ -693,7 +693,7 @@
 					<choose>
 						<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_05_AGE" || CASE_TYPE=="CS_TYPE_06_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
 							, caseT.CASE_TYPE_GRP
-							
+							<if test='sexYN == "Y"'>, caseT.VICTIM_SEX </if>
 						</when>
 						<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
 							, caseT.CASE_ROUTE_GRP
@@ -1089,7 +1089,7 @@
 				<choose>
 					<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
 						,CASE_TYPE_GRP
-						
+						<if test='sexYN == "Y"'>, VICTIM_SEX </if>
 					</when>
 					<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
 						,CASE_ROUTE_GRP
@@ -1109,7 +1109,7 @@
 					<choose>
 						<when test='CASE_TYPE=="CS_TYPE_01_AGE" || CASE_TYPE=="CS_TYPE_02_AGE" || CASE_TYPE=="CS_TYPE_03_AGE" || CASE_TYPE=="CS_TYPE_11_AGE"'>
 							, caseT.CASE_TYPE_GRP
-							
+							<if test='sexYN == "Y"'>, caseT.VICTIM_SEX </if>
 						</when>
 						<when test='CASE_TYPE=="CASE_ROUTE_GRP_AGE"'>
 							, caseT.CASE_ROUTE_GRP
